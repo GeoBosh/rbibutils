@@ -1,0 +1,7 @@
+useDynLib(bibutils, .registration=TRUE, .fixes = "C_")
+
+## exportPattern("^[[:alpha:]]+")
+
+export(
+    bibConvert
+    )

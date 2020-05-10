@@ -1,0 +1,18 @@
+Package: bibutils
+Type: Package
+Title: Convert Between Bibliography Formats
+Version: 0.1.0
+Date: 2020-05-10
+Authors@R: c( person(given = "Chris", family = "Putman",
+                     role = c("aut"), comment = "author of the bibutils libraries"),
+              person(given = c("Georgi", "N."), family = "Boshnakov", 
+                     role = c("aut", "cre"), 
+                     email = "georgi.boshnakov@manchester.ac.uk") )
+Description: Convert between bibliography formats, including BibTeX and BibLaTeX. based on
+    the 'bibutils' library by Chris Putnam <https://sourceforge.net/projects/bibutils/>.
+License: GPL-2
+URL: https://github.com/GeoBosh/bibutils 
+BugReports: https://github.com/GeoBosh/bibutils/issues
+Encoding: UTF-8
+LazyData: true
+NeedsCompilation: yes
