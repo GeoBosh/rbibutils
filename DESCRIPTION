@@ -1,8 +1,8 @@
 Package: bibutils
 Type: Package
 Title: Convert Between Bibliography Formats
-Version: 0.1.0
-Date: 2020-05-10
+Version: 0.2.0
+Date: 2020-06-18
 Authors@R: c( person(given = "Chris", family = "Putman",
                      role = c("aut"), comment = "author of the bibutils libraries"),
               person(given = c("Georgi", "N."), family = "Boshnakov", 

@@ -1337,20 +1337,47 @@ static int
 bibtexin_convertf( fields *bibin, fields *bibout, int reftype, param *p )
 {
 	static int (*convertfns[NUM_REFTYPES])(fields *, int, str *, str *, int, param *, char *, fields *) = {
-		[ 0 ... NUM_REFTYPES-1 ] = generic_null,
-		[ SIMPLE       ] = generic_simple,
-		[ TITLE        ] = bibtexin_title,
-		[ PERSON       ] = generic_simple,
-		[ PAGES        ] = generic_pages,
-		[ KEYWORD      ] = bibtexin_keyword,
-		[ EPRINT       ] = bibtexin_eprint,
-		[ HOWPUBLISHED ] = bibtexin_howpublished,
-		[ LINKEDFILE   ] = bibtexin_linkedfile,
-		[ NOTES        ] = generic_notes,
-		[ GENRE        ] = generic_genre,
-		[ BT_SENTE     ] = bibtexin_btsente,
-		[ BT_ORG       ] = bibtexin_btorg,
-		[ URL          ] = generic_url
+		// [ 0 ... NUM_REFTYPES-1 ] = generic_null,
+		// [ SIMPLE       ] = generic_simple,
+		// [ TITLE        ] = bibtexin_title,
+		// [ PERSON       ] = generic_simple,
+		// [ PAGES        ] = generic_pages,
+		// [ KEYWORD      ] = bibtexin_keyword,
+		// [ EPRINT       ] = bibtexin_eprint,
+		// [ HOWPUBLISHED ] = bibtexin_howpublished,
+		// [ LINKEDFILE   ] = bibtexin_linkedfile,
+		// [ NOTES        ] = generic_notes,
+		// [ GENRE        ] = generic_genre,
+		// [ BT_SENTE     ] = bibtexin_btsente,
+		// [ BT_ORG       ] = bibtexin_btorg,
+		// [ URL          ] = generic_url
+
+                [ ALWAYS           ] = generic_null,  // (0)
+		[ DEFAULT          ] = generic_null,  // (1)
+		[ SKIP             ] = generic_null,  // (2)
+		[ SIMPLE           ] = generic_simple,  // (3) 
+		[ TYPE             ] = generic_null,  // (4) 
+		[ PERSON           ] = generic_simple, // (5) 
+		[ DATE             ] = generic_null,  // (6) 
+		[ PAGES            ] = generic_pages,  // (7) 
+		[ SERIALNO         ] = generic_null,  // (8) 
+		[ TITLE            ] = bibtexin_title, // (9) 
+		[ NOTES            ] = generic_notes,  // (10)
+		[ DOI              ] = generic_null,  // (11)
+		[ HOWPUBLISHED     ] = bibtexin_howpublished,  // (12)
+		[ LINKEDFILE       ] = bibtexin_linkedfile,  // (13)
+		[ KEYWORD          ] = bibtexin_keyword, // (14)
+		[ URL              ] = generic_url,  // (15)
+		[ GENRE            ] = generic_genre, // (16)
+		[ BT_SENTE         ] = bibtexin_btsente,  // (17) /* Bibtex 'Sente' */
+		[ BT_EPRINT        ] = generic_null,  // (18) /* Bibtex 'Eprint' */
+		[ BT_ORG           ] = bibtexin_btorg, // (19) /* Bibtex Organization */
+		[ BLT_THESIS_TYPE  ] = generic_null, // (20) /* Biblatex Thesis Type */
+		[ BLT_SCHOOL       ] = generic_null,  // (21) /* Biblatex School */
+		[ BLT_EDITOR       ] = generic_null, // (22) /* Biblatex Editor */
+		[ BLT_SUBTYPE      ] = generic_null,  // (23) /* Biblatex entrysubtype */
+		[ BLT_SKIP         ] = generic_skip,  // (24) /* Biblatex Skip Entry */
+		[ EPRINT           ] = bibtexin_eprint // (25)
 	};
 
 	int process, level, i, nfields, status = BIBL_OK;

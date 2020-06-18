@@ -374,14 +374,42 @@ static int
 isiin_convertf( fields *bibin, fields *bibout, int reftype, param *p )
 {
 	static int (*convertfns[NUM_REFTYPES])(fields *, int, str *, str *, int, param *, char *, fields *) = {
-		[ 0 ... NUM_REFTYPES-1 ] = generic_null,
-		[ SIMPLE       ] = generic_simple,
-		[ TITLE        ] = generic_title,
-		[ PERSON       ] = generic_person,
-		[ SERIALNO     ] = generic_serialno,
-		[ DATE         ] = generic_simple,
-		[ NOTES        ] = generic_notes,
-		[ KEYWORD      ] = isiin_keyword,
+		// [ 0 ... NUM_REFTYPES-1 ] = generic_null,
+		// [ SIMPLE       ] = generic_simple,
+		// [ TITLE        ] = generic_title,
+		// [ PERSON       ] = generic_person,
+		// [ SERIALNO     ] = generic_serialno,
+		// [ DATE         ] = generic_simple,
+		// [ NOTES        ] = generic_notes,
+		// [ KEYWORD      ] = isiin_keyword,
+													       
+                [ ALWAYS           ] = generic_null,  // (0)
+		[ DEFAULT          ] = generic_null,  // (1)
+		[ SKIP             ] = generic_null,  // (2)
+		[ SIMPLE           ] = generic_simple, // (3) 
+		[ TYPE             ] = generic_null,  // (4) 
+		[ PERSON           ] = generic_person,  // (5) 
+		[ DATE             ] = generic_simple,  // (6) 
+		[ PAGES            ] = generic_null,  // (7) 
+		[ SERIALNO         ] = generic_serialno,  // (8) 
+		[ TITLE            ] = generic_title,  // (9) 
+		[ NOTES            ] = generic_notes,  // (10)
+		[ DOI              ] = generic_null,  // (11)
+		[ HOWPUBLISHED     ] = generic_null,  // (12)
+		[ LINKEDFILE       ] = generic_null,  // (13)
+		[ KEYWORD          ] = isiin_keyword,  // (14)
+		[ URL              ] = generic_null,  // (15)
+		[ GENRE            ] = generic_null,  // (16)
+		[ BT_SENTE         ] = generic_null,  // (17) /* Bibtex 'Sente' */
+		[ BT_EPRINT        ] = generic_null,  // (18) /* Bibtex 'Eprint' */
+		[ BT_ORG           ] = generic_null,  // (19) /* Bibtex Organization */
+		[ BLT_THESIS_TYPE  ] = generic_null,  // (20) /* Biblatex Thesis Type */
+		[ BLT_SCHOOL       ] = generic_null,  // (21) /* Biblatex School */
+		[ BLT_EDITOR       ] = generic_null,  // (22) /* Biblatex Editor */
+		[ BLT_SUBTYPE      ] = generic_null,  // (23) /* Biblatex entrysubtype */
+		[ BLT_SKIP         ] = generic_null,  // (24) /* Biblatex Skip Entry */
+		[ EPRINT           ] = generic_null,  // (25)
+
 	};
 
 	int process, level, i, nfields, status;

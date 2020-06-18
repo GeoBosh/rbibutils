@@ -98,19 +98,79 @@ enum {
 };
 
 static int type_is_element[ NUM_TYPES ] = {
-	[ 0 ... NUM_TYPES-1 ] = 0,
-	[ TYPE_ARTICLE      ] = 1,
-	[ TYPE_INBOOK       ] = 1,
-	[ TYPE_MAGARTICLE   ] = 1,
-	[ TYPE_NEWSPAPER    ] = 1,
-	[ TYPE_ABSTRACT     ] = 1,
-	[ TYPE_CONF         ] = 1,
+	// [ 0 ... NUM_TYPES-1 ] = 0,
+	// [ TYPE_ARTICLE      ] = 1,
+	// [ TYPE_INBOOK       ] = 1,
+	// [ TYPE_MAGARTICLE   ] = 1,
+	// [ TYPE_NEWSPAPER    ] = 1,
+	// [ TYPE_ABSTRACT     ] = 1,
+	// [ TYPE_CONF         ] = 1,
+
+	[ TYPE_UNKNOWN            ] = 0,
+	[ TYPE_STD                ] = 0,                /* standard/generic */
+	[ TYPE_ABSTRACT           ] =    1,           /* abstract */
+	[ TYPE_ARTICLE            ] =    1,            /* article */
+	[ TYPE_BOOK               ] = 0,               /* book */
+	[ TYPE_CASE               ] = 0,               /* case */
+	[ TYPE_INBOOK             ] =    1,             /* chapter */
+	[ TYPE_CONF               ] =    1,               /* conference */
+	[ TYPE_ELEC               ] = 0,               /* electronic */
+	[ TYPE_HEAR               ] = 0,               /* hearing */
+	[ TYPE_MAGARTICLE         ] =    1,         /* magazine article */
+	[ TYPE_NEWSPAPER          ] =    1,          /* newspaper */
+	[ TYPE_MPCT               ] = 0,               /* mpct */
+	[ TYPE_PAMPHLET           ] = 0,           /* pamphlet */
+	[ TYPE_PATENT             ] = 0,             /* patent */
+	[ TYPE_PCOMM              ] = 0,              /* personal communication */
+	[ TYPE_PROGRAM            ] = 0,            /* program */
+	[ TYPE_REPORT             ] = 0,             /* report */
+	[ TYPE_STATUTE            ] = 0,            /* statute */
+	[ TYPE_THESIS             ] = 0,             /* thesis */
+	[ TYPE_LICENTIATETHESIS   ] = 0,   /* thesis */
+	[ TYPE_MASTERSTHESIS      ] = 0,      /* thesis */
+	[ TYPE_PHDTHESIS          ] = 0,          /* thesis */
+	[ TYPE_DIPLOMATHESIS      ] = 0,      /* thesis */
+	[ TYPE_DOCTORALTHESIS     ] = 0,     /* thesis */
+	[ TYPE_HABILITATIONTHESIS ] = 0, /* thesis */
+	[ TYPE_MAP                ] = 0,                /* map, cartographic data */
+	[ TYPE_UNPUBLISHED        ] = 0,        /* unpublished */
+
 };
 
 static int type_uses_journal[ NUM_TYPES ] = {
-	[ 0 ... NUM_TYPES-1 ] = 0,
-	[ TYPE_ARTICLE      ] = 1,
-	[ TYPE_MAGARTICLE   ] = 1,
+	// [ 0 ... NUM_TYPES-1 ] = 0,
+	// [ TYPE_ARTICLE      ] = 1,
+	// [ TYPE_MAGARTICLE   ] = 1,
+
+	[ TYPE_UNKNOWN            ] = 0,
+	[ TYPE_STD                ] = 0,                /* standard/generic */
+	[ TYPE_ABSTRACT           ] = 0,           /* abstract */
+	[ TYPE_ARTICLE            ] =    1,            /* article */
+	[ TYPE_BOOK               ] = 0,               /* book */
+	[ TYPE_CASE               ] = 0,               /* case */
+	[ TYPE_INBOOK             ] = 0,             /* chapter */
+	[ TYPE_CONF               ] = 0,               /* conference */
+	[ TYPE_ELEC               ] = 0,               /* electronic */
+	[ TYPE_HEAR               ] = 0,               /* hearing */
+	[ TYPE_MAGARTICLE         ] =    1,         /* magazine article */
+	[ TYPE_NEWSPAPER          ] = 0,          /* newspaper */
+	[ TYPE_MPCT               ] = 0,               /* mpct */
+	[ TYPE_PAMPHLET           ] = 0,           /* pamphlet */
+	[ TYPE_PATENT             ] = 0,             /* patent */
+	[ TYPE_PCOMM              ] = 0,              /* personal communication */
+	[ TYPE_PROGRAM            ] = 0,            /* program */
+	[ TYPE_REPORT             ] = 0,             /* report */
+	[ TYPE_STATUTE            ] = 0,            /* statute */
+	[ TYPE_THESIS             ] = 0,             /* thesis */
+	[ TYPE_LICENTIATETHESIS   ] = 0,   /* thesis */
+	[ TYPE_MASTERSTHESIS      ] = 0,      /* thesis */
+	[ TYPE_PHDTHESIS          ] = 0,          /* thesis */
+	[ TYPE_DIPLOMATHESIS      ] = 0,      /* thesis */
+	[ TYPE_DOCTORALTHESIS     ] = 0,     /* thesis */
+	[ TYPE_HABILITATIONTHESIS ] = 0, /* thesis */
+	[ TYPE_MAP                ] = 0,                /* map, cartographic data */
+	[ TYPE_UNPUBLISHED        ] = 0,        /* unpublished */
+	
 };
 
 static void

@@ -1094,21 +1094,51 @@ static int
 biblatexin_convertf( fields *bibin, fields *bibout, int reftype, param *p )
 {
 	static int (*convertfns[NUM_REFTYPES])(fields *, int, str *, str *, int, param *, char *, fields *) = {
-		[ 0 ... NUM_REFTYPES-1 ] = generic_null,
-		[ SIMPLE          ] = generic_simple,
-		[ PAGES           ] = generic_pages,
-		[ NOTES           ] = generic_notes,
-		[ PERSON          ] = biblatexin_person,
-		[ BLT_EDITOR      ] = biblatexin_blteditor,
-		[ HOWPUBLISHED    ] = biblatexin_howpublished,
-		[ URL             ] = generic_url,
-		[ GENRE           ] = biblatexin_btgenre,
-		[ BT_EPRINT       ] = biblatexin_bteprint,
-		[ BLT_THESIS_TYPE ] = biblatexin_bltthesistype,
-		[ BLT_SCHOOL      ] = biblatexin_bltschool,
-		[ BLT_SUBTYPE     ] = biblatexin_bltsubtype,
-		[ BLT_SKIP        ] = generic_skip,
-		[ TITLE           ] = generic_null,    /* delay processing until later */
+                // 2020-06-18 Georgi: deal with:
+		//   warning: ISO C forbids specifying range of elements to initialize [-Wpedantic]
+	        //
+		// [ 0 ... NUM_REFTYPES-1 ] = generic_null,
+		// [ SIMPLE          ] = generic_simple,
+		// [ PAGES           ] = generic_pages,
+		// [ NOTES           ] = generic_notes,
+		// [ PERSON          ] = biblatexin_person,
+		// [ BLT_EDITOR      ] = biblatexin_blteditor,
+		// [ HOWPUBLISHED    ] = biblatexin_howpublished,
+		// [ URL             ] = generic_url,
+		// [ GENRE           ] = biblatexin_btgenre,
+		// [ BT_EPRINT       ] = biblatexin_bteprint,
+		// [ BLT_THESIS_TYPE ] = biblatexin_bltthesistype,
+		// [ BLT_SCHOOL      ] = biblatexin_bltschool,
+		// [ BLT_SUBTYPE     ] = biblatexin_bltsubtype,
+		// [ BLT_SKIP        ] = generic_skip,
+		// [ TITLE           ] = generic_null,    /* delay processing until later */
+		
+                [ ALWAYS           ] = generic_null,  // (0)
+		[ DEFAULT          ] = generic_null,  // (1)
+		[ SKIP             ] = generic_null,  // (2)
+		[ SIMPLE           ] = generic_simple,  // (3) 
+		[ TYPE             ] = generic_null,  // (4) 
+		[ PERSON           ] = biblatexin_person,  // (5) 
+		[ DATE             ] = generic_null,  // (6) 
+		[ PAGES            ] = generic_pages,  // (7) 
+		[ SERIALNO         ] = generic_null,  // (8) 
+		[ TITLE            ] = generic_null,  // (9) 
+		[ NOTES            ] = generic_notes,  // (10)
+		[ DOI              ] = generic_null,  // (11)
+		[ HOWPUBLISHED     ] = biblatexin_howpublished,  // (12)
+		[ LINKEDFILE       ] = generic_null,  // (13)
+		[ KEYWORD          ] = generic_null,  // (14)
+		[ URL              ] = generic_url,  // (15)
+		[ GENRE            ] = biblatexin_btgenre,  // (16)
+		[ BT_SENTE         ] = generic_null,  // (17) /* Bibtex 'Sente' */
+		[ BT_EPRINT        ] = biblatexin_bteprint,  // (18) /* Bibtex 'Eprint' */
+		[ BT_ORG           ] = generic_null,  // (19) /* Bibtex Organization */
+		[ BLT_THESIS_TYPE  ] = biblatexin_bltthesistype,  // (20) /* Biblatex Thesis Type */
+		[ BLT_SCHOOL       ] = biblatexin_bltschool,  // (21) /* Biblatex School */
+		[ BLT_EDITOR       ] = biblatexin_blteditor, // (22) /* Biblatex Editor */
+		[ BLT_SUBTYPE      ] = biblatexin_bltsubtype,  // (23) /* Biblatex entrysubtype */
+		[ BLT_SKIP         ] = generic_skip,  // (24) /* Biblatex Skip Entry */
+		[ EPRINT           ] = generic_null,  // (25)   /* delay processing until later */
 	};
 
 	int process, level, i, nfields, status = BIBL_OK;
