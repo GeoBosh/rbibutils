@@ -12,6 +12,9 @@
  */
 #include <stdlib.h>
 #include <assert.h>
+
+#include <R.h>
+
 #include "intlist.h"
 
 #define INTLIST_MINALLOC (20)
@@ -410,7 +413,9 @@ static int
 randomint( int floor, int ceil )
 {
 	int len = ceil - floor;
-	return floor + rand() % len;
+	// Georgi was: return floor + rand() % len;
+	// TODO: test comprehensively
+	return floor + ( (int) R_unif_index((double) RAND_MAX) ) % len;
 }
 
 static void
@@ -430,11 +435,13 @@ intlist_randomize( intlist *il )
 	assert( il );
 
 	if ( il->n < 2 ) return;
+	GetRNGstate(); // added by Georgi, needed for randomint()
 	for ( i=0; i<il->n; ++i ) {
 		j = randomint( i, il->n );
 		if ( i==j ) continue;
 		swap( &(il->data[i]), &(il->data[j]) );
 	}
+	PutRNGstate(); //  // added by Georgi
 }
 
 /* Returns INTLIST_OK/INTLIST_MEMERR */
