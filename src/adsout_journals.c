@@ -1,9 +1,9 @@
 /* http://adsabs.harvard.edu/abs_doc/journals1.html
  * download URL source then parse with
- * fgrep setfields journals1.html | awk -F ';' '{printf "%s\n",$2}'
+ * fgrep setfields journals1.html | awk -F ';' '{Rprintf "%s\n",$2}'
  * | cut -c 7-12,24- | sed 's/"//g'
- * | awk '{ for(i=1;i<=length($0);++i){c=substr($0,i,1);if(c==" "&&i<6) { printf(".");} else {printf("%s",c);}}printf("\n");}'
- * | awk '{printf "\"%s\",\n",$0 }' | sort -n -k2 
+ * | awk '{ for(i=1;i<=length($0);++i){c=substr($0,i,1);if(c==" "&&i<6) { Rprintf(".");} else {Rprintf("%s",c);}}Rprintf("\n");}'
+ * | awk '{Rprintf "\"%s\",\n",$0 }' | sort -n -k2 
  *
  */
 static const char *journals[] = {

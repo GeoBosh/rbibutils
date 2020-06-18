@@ -41,12 +41,17 @@ bibConvert(infile, outfile, informat, outformat)
 fn_biblatex <- system.file("inst", "bib", "ex0.biblatex",  package = "bibutils")
 fn_biblatex
 ## file.show(fn_biblatex)
+
+## convert a biblatex file to xml
 modl <- tempfile(fileext = ".xml")
 bibConvert(infile = fn_biblatex, outfile = modl, informat = "biblatex", outformat = "xml")
 ## file.show(modl)
+
+## convert a biblatex file to bibtex
 bib <- tempfile(fileext = ".bib")
 bibConvert(infile = fn_biblatex, outfile = bib, informat = "biblatex", outformat = "bib")
 ## file.show(bib)
+
 unlink(modl)
 unlink(bib)
 }

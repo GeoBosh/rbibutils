@@ -9,6 +9,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+#include <R.h>
+
 #include "is_ws.h"
 #include "strsearch.h"
 #include "xml.h"
@@ -262,13 +265,13 @@ xml_draw( xml *node, int n )
 
 	if ( !node ) return;
 
-	for ( i=0; i<n; ++i ) printf( "    " );
+	for ( i=0; i<n; ++i ) Rprintf( "    " );
 
-	printf("n=%d tag='%s' value='%s'\n", n, str_cstr( &(node->tag) ), str_cstr( &(node->value) ) );
+	Rprintf("n=%d tag='%s' value='%s'\n", n, str_cstr( &(node->tag) ), str_cstr( &(node->value) ) );
 
 	for ( j=0; j<node->attributes.n; ++j ) {
-		for ( i=0; i<n; ++i ) printf( "    " );
-		printf( "    attribute='%s' value='%s'\n",
+		for ( i=0; i<n; ++i ) Rprintf( "    " );
+		Rprintf( "    attribute='%s' value='%s'\n",
 			slist_cstr( &(node->attributes), j ),
 			slist_cstr( &(node->attribute_values), j )
 		);

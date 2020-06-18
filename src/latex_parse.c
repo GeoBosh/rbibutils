@@ -11,6 +11,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+#include <R.h>
+
 #include "bibdefs.h"
 #include "is_ws.h"
 #include "latex_parse.h"
@@ -295,15 +298,15 @@ write_latex_graph( latex_node *n )
 	while ( n ) {
 
 		if ( n->down_node ) {
-			printf( "+{" );
+			Rprintf( "+{" );
 			write_latex_graph( n->down_node );
-			printf( "}" );
+			Rprintf( "}" );
 		}
-		else printf( "." );
+		else Rprintf( "." );
 
 		e = n->next_edge;
 		if ( e ) {
-			if ( str_has_value( &(e->text) ) ) printf( "%s", str_cstr( &(e->text) ) );
+			if ( str_has_value( &(e->text) ) ) Rprintf( "%s", str_cstr( &(e->text) ) );
 			n = e->next_node;
 		}
 		else n = NULL;
