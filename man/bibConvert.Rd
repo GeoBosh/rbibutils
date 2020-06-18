@@ -55,5 +55,5 @@ bibConvert(infile = fn_biblatex, outfile = bib, informat = "biblatex", outformat
 unlink(modl)
 unlink(bib)
 }
-%\keyword{ ~kwd1 }
+\keyword{documentation}
 % use one of  RShowDoc("KEYWORDS")

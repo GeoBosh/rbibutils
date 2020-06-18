@@ -5,10 +5,13 @@ bibConvert <- function(infile, outfile, informat, outformat){
     ## sink(outfile)
     ## on.exit(sink())
 
-    xmlfile <- tempfile(fileext = ".xml")
+    xmlfile <- if(outformat == "xml")
+                   outfile
+               else
+                   tempfile(fileext = ".xml")
     
     wrk <- .C(C_biblatex2xml_main, argc, argv, xmlfile)
-
+#browser()
     if(outformat == "bib"){
         argv <- c("dummy", xmlfile)
         ##     xml2bib_main( int *argc, char *argv[], char *outfile[] )
