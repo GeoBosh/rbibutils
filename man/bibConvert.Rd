@@ -49,7 +49,7 @@ bibConvert(infile = fn_biblatex, outfile = modl, informat = "biblatex", outforma
 
 ## convert a biblatex file to bibtex
 bib <- tempfile(fileext = ".bib")
-bibConvert(infile = fn_biblatex, outfile = bib, informat = "biblatex", outformat = "bib")
+bibConvert(infile = fn_biblatex, outfile = bib, informat = "biblatex", outformat = "bib")xo
 ## file.show(bib)
 
 unlink(modl)
