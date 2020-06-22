@@ -1,6 +1,6 @@
 useDynLib(bibutils, .registration=TRUE, .fixes = "C_")
 
-importFrom("utils", "person")
+importFrom("utils", "person", "bibentry")
 import(xml2)
 
 ## exportPattern("^[[:alpha:]]+")

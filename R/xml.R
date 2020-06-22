@@ -28,12 +28,46 @@ bibmods <- function(col){ # col - object returned by read_mods
     structure(res, class = "bibmods")
 }
 
+.toBibentry1 <- function(x){
+    do.call(bibentry, x)
+}
+
+toBibentry <- function(object){
+    set_bibtype <- function(k){
+        object[[k]]$bibtype <<-
+            if(is.null(object[[k]]$entry_type))
+                "Misc"
+            else object[[k]]$entry_type
+    }
+    set_key <- function(k){
+        object[[k]]$key <<-
+            if(is.null(object[[k]]$citekey)){
+                message("TODO: generate an automatic key?")
+                stop("citekey is absent")
+            }else object[[k]]$citekey
+    }
+
+    set_journal <- function(k){ # temporary fudge
+        if(object[[k]]$bibtype == "Article" && is.null(object[[k]]$journal)){
+            object[[k]]$journal <<- object[[k]]$relatedItem
+        }
+    }
+    
+    
+    lapply(seq_along(object), set_bibtype)
+    lapply(seq_along(object), set_key)
+    lapply(seq_along(object), set_journal) ## TODO: patch
+    wrk <- lapply(object, .toBibentry1)
+    do.call("c", wrk)
+}
+
 
 .name_piece <- function(cur, type, new){
     cur[[type]] <- if(is.null(cur[[type]]))
                        new
-                   else
+                   else{
                        c(cur[[type]], new)
+                   }
     cur
 }
 
@@ -82,9 +116,6 @@ mods_name <- function(field){
                stop("unknown element ", xml_name(piece), " in 'name'")
                )
     }
-    prs <- do.call("person", personal)
-#browser()         
-    ##    persons <- c(persons, prs)
                     
     personal
 }
@@ -138,9 +169,44 @@ mods_typeOfResource <- function(field){
 
 mods_genre <- function(field){
     stopifnot(xml_name(field) == "genre")
+ 
+    type <- xml_text(field)
+    switch(type,
+           "journal article" =        "Article",      
 
-    cat(xml_name(field), "\n")
-    #browser()
+           ## bibtexout.c/genre_matches
+           ##   simplified here
+           "periodical" =              "Article",      
+           "academic journal" =        "Article",      
+           "magazine" =                "Article",      
+           "newspaper" =               "Article",      
+           "article" =                 "Article",      
+           "instruction" =             "Manual",       
+           "book" =                    "Book",         
+           #"book" =                    "Inbook",       
+           "book chapter" =            "Inbook",       
+           "unpublished" =             "Unpublished",  
+           "manuscript" =              "Unpublished",  
+           "conference publication" =  "Proceedings",  
+           #"conference publication" =  "InProceedings",
+           "collection" =              "Collection",   
+           #"collection" =              "InCollection", 
+           "report" =                  "Report",       
+           "technical report" =        "Report",       
+           "Masters thesis" =          "MastersThesis",
+           "Diploma thesis" =          "DiplomaThesis",
+           "Ph.D. thesis" =            "PhdThesis",    
+           "Licentiate thesis" =       "PhdThesis",    
+           "thesis" =                  "PhdThesis",    
+           "electronic" =              "Electronic",   
+           "miscellaneous" =           "Misc",
+           ## default
+           {
+               ## TODO: change this to return "Article" in this case?
+               message("unknown type '", type, "' of 'genre', returning it as is'")
+               type
+           }
+           )
 }
 
 mods_relatedItem <- function(field){
@@ -152,14 +218,30 @@ mods_relatedItem <- function(field){
 mods_identifier <- function(field){
     stopifnot(xml_name(field) == "identifier")
 
+    ## see modstypes.c
     field.type <- xml_attr(field, "type")
     switch(field.type,
-           citekey = ,
-           doi = ,
-           issn = ,
-           isbn = {
-               structure(xml_text(field), names = field.type)
-           },
+           citekey = ,      
+           issn = ,         
+           isbn = ,         
+           doi = ,          
+           url = ,          
+           uri = ,          
+           pubmed = ,       
+           medline = ,      
+           pmc = ,          
+           pii = ,          
+           isi = ,          
+           lccn = ,         
+           accessnum = 
+               {
+                   structure(xml_text(field), names = field.type)
+               },
+           "serial number" = 
+               {
+                   ## as above but remove the space from the name
+                   structure(xml_text(field), names = "serialnumber")
+               },
            {
                ## default
                message("unknown type '", field.type, "' of 'identifier'")
@@ -211,8 +293,20 @@ mods_part_namePart <- function(piece){
 }
 
 
-
-
+## fn_biblatex <- system.file("inst", "bib", "ex0.biblatex",  package = "bibutils")
+## 
+## bib <- tempfile(fileext = ".bib")
+## bibConvert(infile = fn_biblatex, outfile = bib, informat = "biblatex", outformat = "bib")
+## 
+## modl <- tempfile(fileext = ".xml")
+## bibConvert(infile = fn_biblatex, outfile = modl, informat = "biblatex", outformat = "xml")
+## 
+## modl.obj <- read_mods(modl)
+## modl.obj # {xml_document} <modsCollection> ...
+## 
+## y <- bibmods(modl.obj)
+## toBibentry(y)
+##
 ## process a single mods entry
 process_mods <- function(modsbib){
     
@@ -223,6 +317,7 @@ process_mods <- function(modsbib){
 
     ## process fields
     persons <- person()
+    part_persons <- person()
     res <- list()
     res[["author"]] <- persons
     for(i in seq_along(fields)){
@@ -253,7 +348,7 @@ process_mods <- function(modsbib){
                 res[["typeOfResource"]] <- mods_typeOfResource(field)
             },
             "genre" = {
-                mods_genre(field)
+                res[["entry_type"]] <- mods_genre(field)
             },
             "relatedItem" = {
                 res[[fieldname]] <- mods_relatedItem(field)
@@ -264,6 +359,7 @@ process_mods <- function(modsbib){
                     res[[s]] <- wrk[[s]]
             },
             "part" = {
+                part_personal <- person()
                 ## for now assuming each attribute appears at most once
                 pieces <- xml_children(field)
                 ## note: xml_length() gives the lengths of the children
@@ -281,18 +377,10 @@ process_mods <- function(modsbib){
                                res[["pages"]] <- mods_part_extent(piece)
                            },
                            namePart = {
-                                   # type <- xml_attr(piece, "type")
-                                   # if(type %in% c("given", "family")){
-                                   #     personal <- .name_piece(personal, type, xml_text(piece))
-                                   # }else if(type == "email")
-                                   #     personal <- .name_piece(personal, type, xml_text(piece))
-                                   # else
-                                   #     message("namePart", type, " not implemented yet for persons")
                                mpnp <- mods_part_namePart(piece)
-                               browser()
                                if(!is.null(mpnp))
-                                   ## TODO: this is almost certainly wrong!
-                                   personal <- mpnp
+                                   
+                                   part_personal <- mpnp
                            },
                            ## default
                            {
@@ -300,10 +388,11 @@ process_mods <- function(modsbib){
                            }
                            )
                 }
-                prs <- do.call("person", personal)
+                if(length(part_personal) > 0){
+                    prs <- do.call("person", part_personal)
 #browser()         
-                persons <- c(persons, prs)
-                    
+                    part_persons <- c(part_persons, prs)
+                }
             },
             ## default
             ##     cat("skipping ", fieldname, "\n")
@@ -316,6 +405,7 @@ process_mods <- function(modsbib){
     }
 
     res[["author"]] <- persons
+    ## TODO: part_persons?
     
     res
 }
