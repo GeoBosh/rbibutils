@@ -43,7 +43,7 @@
 <meta property="og:description" content="
 
 Read a bibliography file in one of the supported formats, convert it
-  to annother format and write it to a file." />
+  to annother format, and write it to a file." />
 
 
 
@@ -123,7 +123,7 @@ Read a bibliography file in one of the supported formats, convert it
     
 
 <p>Read a bibliography file in one of the supported formats, convert it
-  to annother format and write it to a file.</p>
+  to annother format, and write it to a file.</p>
     </div>
 
     <pre class="usage"><span class='fu'>bibConvert</span>(<span class='no'>infile</span>, <span class='no'>outfile</span>, <span class='no'>informat</span>, <span class='no'>outformat</span>)</pre>
@@ -153,22 +153,20 @@ Read a bibliography file in one of the supported formats, convert it
 
     
 
-<p>It should be remembered that there may be loss of information when
-  converting from one format to another.</p>
-<p>Bibutils knows two formats for bib files: BibTeX and BibLaTeX and
-  hence can be used to convert between them.</p>  
 <p>Arguments <code>informat</code> and <code>outformat</code> can usually be omitted,
   since <code>bibConvert</code> infers them from the extensions of the names
-  of the input and output files.</p>
-<p>There is ambiguity for the extension <code>"bib"</code>, since it is used
-  for Bibtex and Biblatex entries. For this extension, if
-  <code>informat</code> is missing it is set to <code>"biblatex"</code> but if
-  <code>outformat</code> is missing it is set to <code>"bibtex"</code>. This ensures
-  maximum portability, since on input Biblatex is largely a superset of
-  Bibtex. For output the situation is reversed.</p>
-<p>For complete list of formats supported by the package, see the
-  documentation of the original bibutils library.</p>
-<p>bibentry</p>
+  of the input and output files.
+  However, there is ambiguity for the extension <code>"bib"</code>, since it
+  is used for Bibtex and Biblatex entries. For this extension, the
+  default for both , <code>informat</code> and <code>outformat</code>, is
+  <code>"bibtex"</code>.</p>
+<p>Package <span class="pkg">bibutils</span> supports format <code>"bibentry"</code>, in addition to the
+  formats supported by the bibutil library. On output, <code>"bibentry"</code>
+  is saved using <code>saveRDS</code> with default extension <code>"rds"</code>.</p>
+<p>For complete list of supported formats, see the documentation of the
+  original bibutils library.</p>
+<p>It should be remembered that there may be loss of information when
+  converting from one format to another.</p>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>The function is used for the side effect of creating a file in the
@@ -184,12 +182,28 @@ Read a bibliography file in one of the supported formats, convert it
 
 <span class='co'>## convert a biblatex file to xml</span>
 <span class='no'>modl</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".xml"</span>)
-<span class='fu'>bibConvert</span>(<span class='kw'>infile</span> <span class='kw'>=</span> <span class='no'>fn_biblatex</span>, <span class='kw'>outfile</span> <span class='kw'>=</span> <span class='no'>modl</span>, <span class='kw'>informat</span> <span class='kw'>=</span> <span class='st'>"biblatex"</span>, <span class='kw'>outformat</span> <span class='kw'>=</span> <span class='st'>"xml"</span>)</div><div class='output co'>#&gt; [1] "/tmp/RtmpaXVBwy/filefaac70421c1.xml"</div><div class='input'><span class='co'>## file.show(modl)</span>
+<span class='fu'>bibConvert</span>(<span class='kw'>infile</span> <span class='kw'>=</span> <span class='no'>fn_biblatex</span>, <span class='kw'>outfile</span> <span class='kw'>=</span> <span class='no'>modl</span>, <span class='kw'>informat</span> <span class='kw'>=</span> <span class='st'>"biblatex"</span>, <span class='kw'>outformat</span> <span class='kw'>=</span> <span class='st'>"xml"</span>)</div><div class='output co'>#&gt; [1] "/tmp/RtmpMbJbRz/file1099a74a754c6.xml"</div><div class='input'><span class='co'>## file.show(modl)</span>
 
 <span class='co'>## convert a biblatex file to bibtex</span>
 <span class='no'>bib</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".bib"</span>)
 <span class='fu'>bibConvert</span>(<span class='kw'>infile</span> <span class='kw'>=</span> <span class='no'>fn_biblatex</span>, <span class='kw'>outfile</span> <span class='kw'>=</span> <span class='no'>bib</span>, <span class='kw'>informat</span> <span class='kw'>=</span> <span class='st'>"biblatex"</span>, <span class='kw'>outformat</span> <span class='kw'>=</span> <span class='st'>"bib"</span>)
 <span class='co'>## file.show(bib)</span>
+
+<span class='co'>## convert a biblatex file to bibentry</span>
+<span class='no'>rds</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".rds"</span>)
+<span class='fu'>bibConvert</span>(<span class='no'>fn_biblatex</span>, <span class='no'>rds</span>, <span class='st'>"biblatex"</span>, <span class='st'>"bibentry"</span>)</div><div class='output co'>#&gt; 
+#&gt; count_type:
+#&gt; 
+#&gt;  no_type not_char 
+#&gt;        0        0 
+#&gt; 
+#&gt; </div><div class='output co'>#&gt; NULL</div><div class='input'><span class='fu'>bibConvert</span>(<span class='no'>fn_biblatex</span>, <span class='no'>rds</span>, <span class='st'>"biblatex"</span>) <span class='co'># same</span></div><div class='output co'>#&gt; 
+#&gt; count_type:
+#&gt; 
+#&gt;  no_type not_char 
+#&gt;        0        0 
+#&gt; 
+#&gt; </div><div class='output co'>#&gt; NULL</div><div class='input'>
 
 <span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span>(<span class='no'>modl</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span>(<span class='no'>bib</span>)</div></pre>
