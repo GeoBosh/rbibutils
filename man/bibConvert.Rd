@@ -55,7 +55,7 @@ bibConvert(infile, outfile, informat, outformat)
 %%% ~~objects to See Also as \code{\link{help}}, ~~~
 %}
 \examples{
-fn_biblatex <- system.file("inst", "bib", "ex0.biblatex",  package = "bibutils")
+fn_biblatex <- system.file("bib", "ex0.biblatex",  package = "bibutils")
 fn_biblatex
 ## file.show(fn_biblatex)
 
@@ -71,9 +71,11 @@ bibConvert(infile = fn_biblatex, outfile = bib, informat = "biblatex", outformat
 
 ## convert a biblatex file to bibentry
 rds <- tempfile(fileext = ".rds")
-bibConvert(fn_biblatex, rds, "biblatex", "bibentry")
-bibConvert(fn_biblatex, rds, "biblatex") # same
-
+fn_biblatex
+rds
+be <- bibConvert(fn_biblatex, rds, "biblatex", "bibentry")
+bea <- bibConvert(fn_biblatex, rds, "biblatex") # same
+readRDS(rds)
 
 unlink(modl)
 unlink(bib)
