@@ -1,7 +1,12 @@
 \name{bibConvert}
 \alias{bibConvert}
 \title{Convert between bibliography formats}
-\description{Convert between bibliography formats.}
+\description{
+
+  Read a bibliography file in one of the supported formats, convert it
+  to annother format, and write it to a file.
+
+}
 \usage{
 bibConvert(infile, outfile, informat, outformat)
 }
@@ -13,15 +18,27 @@ bibConvert(infile, outfile, informat, outformat)
 }
 \details{
 
-  For complete list of formats supported by the package, see the
-  documentation of the original bibutils library.
+  Arguments \code{informat} and \code{outformat} can usually be omitted,
+  since \code{bibConvert} infers them from the extensions of the names
+  of the input and output files.
+  However, there is ambiguity for the extension \code{"bib"}, since it
+  is used for Bibtex and Biblatex entries. For this extension, the
+  default for both , \code{informat} and \code{outformat}, is
+  \code{"bibtex"}.
 
-  Note that bibutils knows two formats for bib files: BibTeX and
-  BibLaTeX and hence can be used to nvert between them.
+  Package \pkg{bibutils} supports format \code{"bibentry"}, in addition to the
+  formats supported by the bibutil library. On output, \code{"bibentry"}
+  is saved using \code{saveRDS} with default extension \code{"rds"}.
 
+  For complete list of supported formats, see the documentation of the
+  original bibutils library.
+
+  It should be remembered that there may be loss of information when
+  converting from one format to another.
+  
 }
 \value{
-  The functiion is used for the side effect of creating a file in the
+  The function is used for the side effect of creating a file in the
   requested format.
 }
 \author{Georgi N. Boshnakov}
@@ -51,6 +68,12 @@ bibConvert(infile = fn_biblatex, outfile = modl, informat = "biblatex", outforma
 bib <- tempfile(fileext = ".bib")
 bibConvert(infile = fn_biblatex, outfile = bib, informat = "biblatex", outformat = "bib")
 ## file.show(bib)
+
+## convert a biblatex file to bibentry
+rds <- tempfile(fileext = ".rds")
+bibConvert(fn_biblatex, rds, "biblatex", "bibentry")
+bibConvert(fn_biblatex, rds, "biblatex") # same
+
 
 unlink(modl)
 unlink(bib)

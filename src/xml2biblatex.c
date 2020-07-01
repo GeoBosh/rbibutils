@@ -1,5 +1,5 @@
 /*
- * xml2bib.c
+ * xml2biblatex.c
  *
  * Copyright (c) Chris Putnam 2003-2020
  *
@@ -16,22 +16,22 @@
 #include "args.h"
 #include "bibprog.h"
 
-const char progname[] = "xml2bib";
+const char progname_biblatex[] = "xml2biblatex";
 
 void
-help( char *progname )
+help_biblatex( char *progname )
 {
 	args_tellversion( progname );
-	REprintf( "Converts the MODS XML intermediate reference file "
-			"into Bibtex\n\n");
+	REprintf("Converts the MODS XML intermediate reference file "
+			"into BibLaTex\n\n");
 
-	REprintf("usage: %s xml_file > bibtex_file\n\n",progname);
+	REprintf("usage: %s xml_file > biblatex_file\n\n",progname);
         REprintf("  xml_file can be replaced with file list or omitted to use as a filter\n\n");
 
 	REprintf("  -h,  --help               display this help\n");
 	REprintf("  -v,  --version            display version\n");
 	REprintf("  -at, --abbreviatedtitles  use abbreviated titles, if available\n");
-	REprintf("  -fc, --finalcomma         add final comman to bibtex output\n");
+	REprintf("  -fc, --finalcomma         add final comman to biblatex output\n");
 	REprintf("  -sd, --singledash         use one dash '-', not two '--', in page ranges\n" );
 	REprintf("  -b,  --brackets           use brackets, not quotation marks surrounding data\n");
 	REprintf("  -w,  --whitespace         use beautifying whitespace to output\n");
@@ -39,7 +39,7 @@ help( char *progname )
 	REprintf("                            (overly strict, but useful for other programs)\n");
 	REprintf("  -nl, --no-latex           no latex encodings; put characters in directly\n");
 	REprintf("  -nb, --no-bom             do not write Byte Order Mark in UTF8 output\n");
-	REprintf("  -U,  --uppercase          write bibtex tags/types in upper case\n" );
+	REprintf("  -U,  --uppercase          write biblatex tags/types in upper case\n" );
 	REprintf("  -s,  --single-refperfile  one reference per output file\n");
 	REprintf("  -i, --input-encoding      interpret input file with requested character set\n" );
 	REprintf("                            (use argument for current list)\n");
@@ -54,14 +54,14 @@ help( char *progname )
 }
 
 void
-process_args( int *argc, char *argv[], param *p )
+process_args_biblatex( int *argc, char *argv[], param *p )
 {
 	int i, j, subtract;
 	i = 1;
 	while ( i<*argc ) {
 		subtract = 0;
 		if ( args_match( argv[i], "-h", "--help" ) ) {
-			help( p->progname );
+			help_biblatex( p->progname );
 			error("\n"); // exit( EXIT_SUCCESS );
 		} else if ( args_match( argv[i], "-v", "--version" ) ) {
 			args_tellversion( p->progname );
@@ -119,17 +119,17 @@ process_args( int *argc, char *argv[], param *p )
 
 // int
 void
-xml2bib_main( int *argc, char *argv[], char *outfile[] )
+xml2biblatex_main( int *argc, char *argv[], char *outfile[] )
 {
 	param p;
-	modsin_initparams( &p, progname );
-	bibtexout_initparams( &p, progname );
+	modsin_initparams( &p, progname_biblatex );
+	biblatexout_initparams( &p, progname_biblatex );
 
 	// process_charsets( &argc, argv, &p );
 	process_charsets( argc, argv, &p );
 
 	// process_args( &argc, argv, &p );
-	process_args( argc, argv, &p );
+	process_args_biblatex( argc, argv, &p );
 
 	// bibprog( argc, argv, &p );
 	bibprog( argc[0], argv, &p, outfile );

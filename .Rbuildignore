@@ -1,3 +1,4 @@
 .emacs\.desktop
 .emacs\.desktop\.lock
 .*_removed$
+^data-raw$

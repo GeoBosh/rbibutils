@@ -1,0 +1,6 @@
+
+- 2020-06-27
+
+  If the first entry in the bibtex file starts from the first line it gets lost
+  when read in, eg bibConvert("./inst/bib/ex0.bibtex", "tmp.rds").
+
