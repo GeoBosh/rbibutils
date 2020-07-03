@@ -1,20 +1,20 @@
-\name{bibutils-package}
-\alias{bibutils-package}
-\alias{bibutils}
+\name{rbibutils-package}
+\alias{rbibutils-package}
+\alias{rbibutils}
 \docType{package}
 \title{
-\packageTitle{bibutils}
+\packageTitle{rbibutils}
 }
 \description{
-\packageDescription{bibutils}
+\packageDescription{rbibutils}
 }
 \details{
 
 The DESCRIPTION file:
-\packageDESCRIPTION{bibutils}
-\packageIndices{bibutils}
+\packageDESCRIPTION{rbibutils}
+\packageIndices{rbibutils}
 
-  Package \pkg{bibutils} provides an \R port of the \code{bibutils}
+  Package \pkg{rbibutils} provides an \R port of the \code{bibutils}
   programs and functions to convert to \R's \code{bibentry} Bibtex-based
   bibliography format.
 
@@ -43,9 +43,9 @@ The DESCRIPTION file:
 
 }
 \author{
-\packageAuthor{bibutils}
+\packageAuthor{rbibutils}
 
-Maintainer: \packageMaintainer{bibutils}
+Maintainer: \packageMaintainer{rbibutils}
 }
 \references{
   Chris Putnam, Library \code{bibutils},

@@ -1,3 +1,8 @@
+# rbibutils 0.3.0
+
+- renamed the repository and the package from `bibutils` to `rbibutils`.
+
+
 # bibutils 0.2.0
 
 - output to Bibentry is now fairly complete.

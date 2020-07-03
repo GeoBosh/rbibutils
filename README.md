@@ -3,12 +3,12 @@ Convert bibliography files between various formats, including BibTeX and
 BibLaTeX. This is an R port of the bibutils utilities.
 
 
-# Installing bibutils
+# Installing rbibutils
 
-Install the development version of `bibutils` from Github:
+Install the development version of `rbibutils` from Github:
 
     library(devtools)
-    install_github("GeoBosh/bibutils")
+    install_github("GeoBosh/rbibutils")
 
 
 # Overview

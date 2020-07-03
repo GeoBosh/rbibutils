@@ -7,7 +7,6 @@
 
 /* .C calls */
 
-// extern void poly_mult(void *, void *, void *, void *, void *);
 extern void bibl_freeparams( void * );
 extern void biblatex2xml_main( int argc, char *argv[], char *outfile[] );
 extern void bib2xml_main( int argc, char *argv[], char *outfile[] );
@@ -21,7 +20,7 @@ static const R_CMethodDef CEntries[] = {
   {NULL, NULL, 0}
 };
 
-void R_init_bibutils(DllInfo *dll)
+void R_init_rbibutils(DllInfo *dll)
 {
   R_registerRoutines(dll, CEntries, NULL, NULL, NULL);
   R_useDynamicSymbols(dll, FALSE);

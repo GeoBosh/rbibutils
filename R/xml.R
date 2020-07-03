@@ -663,7 +663,7 @@ mods_part_namePart <- function(piece){
 }
 
 
-## fn_biblatex <- system.file("inst", "bib", "ex0.biblatex",  package = "bibutils")
+## fn_biblatex <- system.file("inst", "bib", "ex0.biblatex",  package = "rbibutils")
 ## 
 ## bib <- tempfile(fileext = ".bib")
 ## bibConvert(infile = fn_biblatex, outfile = bib, informat = "biblatex", outformat = "bib")

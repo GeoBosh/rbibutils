@@ -26,7 +26,7 @@ bibConvert(infile, outfile, informat, outformat)
   default for both , \code{informat} and \code{outformat}, is
   \code{"bibtex"}.
 
-  Package \pkg{bibutils} supports format \code{"bibentry"}, in addition to the
+  Package \pkg{rbibutils} supports format \code{"bibentry"}, in addition to the
   formats supported by the bibutil library. On output, \code{"bibentry"}
   is saved using \code{saveRDS} with default extension \code{"rds"}.
 
@@ -55,7 +55,7 @@ bibConvert(infile, outfile, informat, outformat)
 %%% ~~objects to See Also as \code{\link{help}}, ~~~
 %}
 \examples{
-fn_biblatex <- system.file("bib", "ex0.biblatex",  package = "bibutils")
+fn_biblatex <- system.file("bib", "ex0.biblatex",  package = "rbibutils")
 fn_biblatex
 ## file.show(fn_biblatex)
 
