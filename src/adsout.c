@@ -343,10 +343,20 @@ output_4digit_value( char *pos, long long n )
 #else
 	sprintf( buf, "%lld", n );
 #endif
-	if ( n < 10 )        strncpy( pos+3, buf, 1 );
-	else if ( n < 100 )  strncpy( pos+2, buf, 2 );
-	else if ( n < 1000 ) strncpy( pos+1, buf, 3 );
-	else                 strncpy( pos,   buf, 4 );
+	// Georgi:
+	// replaced this with the code further below to avoid the warning about strncpy.
+	// TODO: not tested yet, test it when output to 'ads' format is activated.
+	// 
+	// if ( n < 10 )        strncpy( pos+3, buf, 1 );
+	// else if ( n < 100 )  strncpy( pos+2, buf, 2 );
+	// else if ( n < 1000 ) strncpy( pos+1, buf, 3 );
+	// else                 strncpy( pos,   buf, 4 );
+
+	size_t len = strlen(buf);
+	if ( len == 1 )       strncpy( pos+3, buf, 1 );
+	else if ( len == 2 )  strncpy( pos+2, buf, 2 );
+	else if ( len == 3 )  strncpy( pos+1, buf, 3 );
+	else if ( len == 4 )  strncpy( pos,   buf, 4 );
 }
 
 static char

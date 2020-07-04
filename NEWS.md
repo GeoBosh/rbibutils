@@ -2,6 +2,8 @@
 
 - renamed the repository and the package from `bibutils` to `rbibutils`.
 
+- fix the last compiler warnings about 'strncpy' and 'strncat'.
+
 
 # bibutils 0.2.0
 

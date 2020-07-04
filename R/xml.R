@@ -26,10 +26,8 @@ bibmods <- function(col){ # col - object returned by read_mods
     names(res) <- ids
     for(i in seq_along(ids)){
         res[[i]] <- process_mods(mods[[i]])
-        ## if(!is.null(res[[i]]$entry_type)  && res[[i]]$entry_type == "TechReport")
-        ##     browser()
 
-        et <- res[[i]]$entry_type
+        et <- res[[i]]$bibtype
         if(!is.null(et)){
             if(is.character(et) && length(et) == 1)
                 count_type[et] <- 1 + if(is.na(count_type[et]))
@@ -49,8 +47,6 @@ bibmods <- function(col){ # col - object returned by read_mods
     print(count_type)
     cat("\n\n")
 
-#browser()    
-
     structure(res, class = "bibmods")
 }
 
@@ -59,45 +55,32 @@ bibmods <- function(col){ # col - object returned by read_mods
 }
 
 toBibentry <- function(object){
-    set_bibtype <- function(k){
-        object[[k]]$bibtype <<-
-            if(is.null(object[[k]]$entry_type))
-                "Misc"
-            else object[[k]]$entry_type
-    }
+
     set_key <- function(k){
         object[[k]]$key <<-
             if(is.null(object[[k]]$citekey)){
-                message("TODO: generate an automatic key?")
-                stop("citekey is absent")
-            }else object[[k]]$citekey
+                stop("citekey is absent")      # TODO: generate an automatic key?
+            }else
+                object[[k]]$citekey
     }
-
-    set_journal <- function(k){ # temporary fudge
-        if(object[[k]]$bibtype == "Article" && is.null(object[[k]]$journal)){
-            object[[k]]$journal <<- object[[k]]$relatedItem
-        }
-    }
-    
-    
-    lapply(seq_along(object), set_bibtype)
+     
     lapply(seq_along(object), set_key)
-    lapply(seq_along(object), set_journal) ## TODO: patch
     
     ## wrk <- lapply(object, .toBibentry1)
     wrk <- vector(length(object), mode = "list")
     names(wrk) <- names(object)
     for(i in seq_along(object)){
         item <- try(.toBibentry1(object[[i]]))
-        if(inherits(item, "try-error")){
-            wrk[[i]] <- NA
-        }else
-            wrk[[i]] <- item
+        wrk[[i]] <- if(inherits(item, "try-error"))
+                        NA
+                    else
+                        item
     }
     flag.na <- sapply(wrk, function(x) is.logical(x) && is.na(x) )
-#browser()    
+
     if(any(flag.na)){
-        message("\n", length(flag.na[flag.na]), " out of ", length(flag.na), " items could not be converted:\n",
+        message("\n", length(flag.na[flag.na]), " out of ", length(flag.na),
+                " items could not be converted:\n",
                 paste(names(object)[flag.na], collapse = "\n"), "\n")
         wrk <- wrk[!flag.na]
     }
@@ -107,11 +90,10 @@ toBibentry <- function(object){
 
 
 .name_piece <- function(cur, type, new){
-    cur[[type]] <- if(is.null(cur[[type]]))
+    cur[[type]] <- if(is.null(old <- cur[[type]]))
                        new
-                   else{
-                       c(cur[[type]], new)
-                   }
+                   else
+                       c(old, new)
     cur
 }
 
@@ -151,8 +133,12 @@ mods_name <- function(field){
                        personal <- .name_piece(personal, type, xml_text(piece))
                    }else if(type == "email")
                        personal <- .name_piece(personal, type, xml_text(piece))
-                   else
-                       message("namePart", type, " not implemented yet for persons")
+                   else if(type == "suffix")
+                       ## TODO: verify this
+                       personal <- .name_piece(personal, "family", xml_text(piece))
+                   else{
+                       message("namePart ", type, " not implemented yet for persons")
+                   }
                },
                role = {
                    role <- tolower(xml_text(piece))
@@ -218,9 +204,6 @@ mods_originInfo <- function(field){
     res$publisher <- c(publisher = publisher, place = place)
     res$edition <- edition
 
-    ## print(names(res))
-    
-          
     res
 }
 
@@ -235,225 +218,181 @@ mods_typeOfResource <- function(field){
 ## genre terms authority = marcgt, downloaded on 2020-06-24
 ## https://www.loc.gov/standards/valuelist/marcgt.html
 genre_marcgt <- c(
-    "abstract"			 , NA_character_,
-    "summary"			 , NA_character_, # equiv. to abstract
-    "art original"		 , NA_character_,
-    "art reproduction"		 , NA_character_,
-    "article"                    , "Article",
-    "atlas"			 , NA_character_,
-    "autobiography"		 , NA_character_,
-    "bibliography"		 , NA_character_,
-    "biography"			 , NA_character_,
-    "book"                       , "Book",
-    "calendar"			 , NA_character_,
-    "catalog"			 , NA_character_,
-    "chart"			 , NA_character_,
-    "comedy"			 , NA_character_,
-    "comic or graphic novel"	 , NA_character_,
-    "conference publication"     , "Proceedings", # "InProceedings"?
-    "database"			 , NA_character_,
-    "dictionary"		 , NA_character_,
-    "diorama"			 , NA_character_,
-    "directory"			 , NA_character_,
-    "discography"		 , NA_character_,
-    "document (computer)"	 , NA_character_,
-    "drama"			 , NA_character_,
-    "encyclopedia"		 , NA_character_,
-    "essay"			 , NA_character_,
-    "festschrift"		 , NA_character_,
-    "fiction"			 , NA_character_,
-    "filmography"		 , NA_character_,
-    "filmstrip"			 , NA_character_,
-    "finding aid"		 , NA_character_,
-    "flash card"		 , NA_character_,
-    "folktale"			 , NA_character_,
-    "font"			 , NA_character_,
-    "game"			 , NA_character_,
-    "government publication"	 , NA_character_,
-    "graphic"			 , NA_character_,
-    "globe"			 , NA_character_,
-    "handbook"			 , NA_character_,
-    "history"			 , NA_character_,
-    "hymnal"			 , NA_character_,
-    "humor"			 , NA_character_,
-    "satire"			 , NA_character_, # equiv
-    "index"			 , NA_character_,
-    "instruction"                , "Manual",
-    "interview"			 , NA_character_,
-    "issue"			 , NA_character_,
-    "journal"			 , NA_character_,
-    "kit"			 , NA_character_,
-    "language instruction"	 , NA_character_,
-    "law report or digest"	 , NA_character_,
-    "legal article"		 , NA_character_,
-    "legal case and case notes"	 , NA_character_,
-    "legislation"		 , NA_character_,
-    "letter"			 , NA_character_,
-    "loose-leaf"		 , NA_character_,
-    "map"			 , NA_character_,
-    "memoir"			 , NA_character_,
-    "microscope slide"		 , NA_character_,
-    "model"			 , NA_character_,
-    "motion picture"		 , NA_character_,
-    "multivolume monograph"	 , NA_character_,
-    "newspaper"			 , "Article",
-    "nonmusical sound"		 , NA_character_,
-    "novel"			 , NA_character_,
-    "numeric data"		 , NA_character_,
-    "offprint"			 , NA_character_,
-    "online system or service"	 , NA_character_,
-    "patent"			 , NA_character_,
-    "periodical"		 , "Article",  # todo: check if ok
-    "picture"			 , NA_character_,
-    "poetry"			 , NA_character_,
-    "programmed text"		 , NA_character_,
-    "realia"			 , NA_character_,
-    "rehearsal"			 , NA_character_,
-    "remote sensing image"	 , NA_character_,
-    "reporting"			 , NA_character_,
-    "review"			 , NA_character_,
-    "script"			 , NA_character_,
-    "series"			 , NA_character_,
-    "short story"		 , NA_character_,
-    "slide"			 , NA_character_,
-    "sound"			 , NA_character_,
-    "speech"			 , NA_character_,
-    "standard or specification"	 , NA_character_,
-    "statistics"		 , NA_character_,
-    "survey of literature"	 , NA_character_,
-    "technical drawing"		 , NA_character_,
-    "technical report"		 , "TechReport",       
-    "thesis"			 , "PhdThesis",
-    "toy"			 , NA_character_,
-    "transparency"		 , NA_character_,
-    "treaty"			 , NA_character_,
-    "videorecording"		 , NA_character_,
-    "web site"			 , NA_character_,
-    "yearbook"                   , NA_character_
+    "abstract"			 , NA_character_, NA_character_,
+    "summary"			 , NA_character_, NA_character_, # equiv. to abstract
+    "art original"		 , NA_character_, NA_character_,
+    "art reproduction"		 , NA_character_, NA_character_,
+    "article"                    , "Article",     "Article",    
+    "atlas"			 , NA_character_, NA_character_,
+    "autobiography"		 , NA_character_, NA_character_,
+    "bibliography"		 , NA_character_, NA_character_,
+    "biography"			 , NA_character_, NA_character_,
+    "book"                       , "Book",        "Book",        # "book" = "Inbook",
+    "calendar"			 , NA_character_, NA_character_,
+    "catalog"			 , NA_character_, NA_character_,
+    "chart"			 , NA_character_, NA_character_,
+    "comedy"			 , NA_character_, NA_character_,
+    "comic or graphic novel"	 , NA_character_, NA_character_,
+    "conference publication"     , "Proceedings", "Proceedings", # "InProceedings"?
+    "database"			 , NA_character_, NA_character_,
+    "dictionary"		 , NA_character_, NA_character_,
+    "diorama"			 , NA_character_, NA_character_,
+    "directory"			 , NA_character_, NA_character_,
+    "discography"		 , NA_character_, NA_character_,
+    "document (computer)"	 , NA_character_, NA_character_,
+    "drama"			 , NA_character_, NA_character_,
+    "encyclopedia"		 , NA_character_, NA_character_,
+    "essay"			 , NA_character_, NA_character_,
+    "festschrift"		 , NA_character_, NA_character_,
+    "fiction"			 , NA_character_, NA_character_,
+    "filmography"		 , NA_character_, NA_character_,
+    "filmstrip"			 , NA_character_, NA_character_,
+    "finding aid"		 , NA_character_, NA_character_,
+    "flash card"		 , NA_character_, NA_character_,
+    "folktale"			 , NA_character_, NA_character_,
+    "font"			 , NA_character_, NA_character_,
+    "game"			 , NA_character_, NA_character_,
+    "government publication"	 , NA_character_, NA_character_,
+    "graphic"			 , NA_character_, NA_character_,
+    "globe"			 , NA_character_, NA_character_,
+    "handbook"			 , NA_character_, NA_character_,
+    "history"			 , NA_character_, NA_character_,
+    "hymnal"			 , NA_character_, NA_character_,
+    "humor"			 , NA_character_, NA_character_,
+    "satire"			 , NA_character_, NA_character_,
+    "index"			 , NA_character_, NA_character_,
+    "instruction"                , "Manual",      "Manual",     
+    "interview"			 , NA_character_, NA_character_,
+    "issue"			 , NA_character_, NA_character_,
+    "journal"			 , NA_character_, NA_character_,
+    "kit"			 , NA_character_, NA_character_,
+    "language instruction"	 , NA_character_, NA_character_,
+    "law report or digest"	 , NA_character_, NA_character_,
+    "legal article"		 , NA_character_, NA_character_,
+    "legal case and case notes"	 , NA_character_, NA_character_,
+    "legislation"		 , NA_character_, NA_character_,
+    "letter"			 , NA_character_, NA_character_,
+    "loose-leaf"		 , NA_character_, NA_character_,
+    "map"			 , NA_character_, NA_character_,
+    "memoir"			 , NA_character_, NA_character_,
+    "microscope slide"		 , NA_character_, NA_character_,
+    "model"			 , NA_character_, NA_character_,
+    "motion picture"		 , NA_character_, NA_character_,
+    "multivolume monograph"	 , NA_character_, NA_character_,
+    "newspaper"			 , "Article",     "Article",    
+    "nonmusical sound"		 , NA_character_, NA_character_,
+    "novel"			 , NA_character_, NA_character_,
+    "numeric data"		 , NA_character_, NA_character_,
+    "offprint"			 , NA_character_, NA_character_,
+    "online system or service"	 , NA_character_, NA_character_,
+    "patent"			 , NA_character_, NA_character_,
+    "periodical"		 , "Article",     "Article",    
+    "picture"			 , NA_character_, NA_character_,
+    "poetry"			 , NA_character_, NA_character_,
+    "programmed text"		 , NA_character_, NA_character_,
+    "realia"			 , NA_character_, NA_character_,
+    "rehearsal"			 , NA_character_, NA_character_,
+    "remote sensing image"	 , NA_character_, NA_character_,
+    "reporting"			 , NA_character_, NA_character_,
+    "review"			 , NA_character_, NA_character_,
+    "script"			 , NA_character_, NA_character_,
+    "series"			 , NA_character_, NA_character_,
+    "short story"		 , NA_character_, NA_character_,
+    "slide"			 , NA_character_, NA_character_,
+    "sound"			 , NA_character_, NA_character_,
+    "speech"			 , NA_character_, NA_character_,
+    "standard or specification"	 , NA_character_, NA_character_,
+    "statistics"		 , NA_character_, NA_character_,
+    "survey of literature"	 , NA_character_, NA_character_,
+    "technical drawing"		 , NA_character_, NA_character_,
+    "technical report"		 , "TechReport",  "TechReport",      
+    "thesis"			 , "PhdThesis",   "PhdThesis",  
+    "toy"			 , NA_character_, NA_character_,
+    "transparency"		 , NA_character_, NA_character_,
+    "treaty"			 , NA_character_, NA_character_,
+    "videorecording"		 , NA_character_, NA_character_,
+    "web site"			 , NA_character_, NA_character_,
+    "yearbook"                   , NA_character_, NA_character_ 
 )
 
 ## bu_auth.c, const char *bu_genre[] =
 ## bibutils genre that are not in marcgt
 genre_bibutils <- c(
-    "academic journal"     , "Article",
-    "airtel"               , NA_character_,
-    "collection"           , "Collection",  #"collection" = "InCollection", 
-    "communication"        , NA_character_,
-    "Diploma thesis"       , "DiplomaThesis",
-    "Doctoral thesis"      , NA_character_,
-    "electronic"           , "Electronic",
-    "e-mail communication" , NA_character_,
-    "Habilitation thesis"  , NA_character_,
-    "handwritten note"     , NA_character_,
-    "hearing"              , NA_character_,
-    "journal article"      , "Article",
-    "Licentiate thesis"    , "PhdThesis",
-    "magazine"             , "Article", # todo: check if ok
-    "magazine article"     , "Article",
-    "manuscript"           , NA_character_,
-    "Masters thesis"       , "MastersThesis",
-    "memo"                 , NA_character_,
-    "miscellaneous"        , "Misc",
-    "newspaper article"    , NA_character_,
-    "pamphlet"             , NA_character_,
-    "Ph.D. thesis"         , "PhdThesis",
-    "press release"        , NA_character_,
-    "teletype"             , NA_character_,
-    "television broadcast" , NA_character_,
-    "unpublished"          , "Unpublished"
+    "academic journal"     , "Article",       "Article",       # TODO: no this is not article
+    "airtel"               , NA_character_,   NA_character_,  
+    "collection"           , "InCollection",  "InCollection",  #"collection" = "Collection"?
+    "communication"        , NA_character_,   NA_character_,  
+    "Diploma thesis"       , "DiplomaThesis", "DiplomaThesis",
+    "Doctoral thesis"      , NA_character_,   NA_character_,  
+    "electronic"           , "Electronic",    "Electronic",   # TODO: correct this
+    "e-mail communication" , NA_character_,   NA_character_,  
+    "Habilitation thesis"  , NA_character_,   NA_character_,  
+    "handwritten note"     , NA_character_,   NA_character_,  
+    "hearing"              , NA_character_,   NA_character_,  
+    "journal article"      , "Article",       "Article",      
+    "Licentiate thesis"    , "PhdThesis",     "PhdThesis",    
+    "magazine"             , "Article",       "Article",        # todo: check if ok
+    "magazine article"     , "Article",       "Article",      
+    "manuscript"           , "Unpublished",   "Unpublished",  
+    "Masters thesis"       , "MastersThesis", "MastersThesis",
+    "memo"                 , NA_character_,   NA_character_,  
+    "miscellaneous"        , "Misc",          "Misc",         
+    "newspaper article"    , NA_character_,   NA_character_,  
+    "pamphlet"             , NA_character_,   NA_character_,  
+    "Ph.D. thesis"         , "PhdThesis",     "PhdThesis",    
+    "press release"        , NA_character_,   NA_character_,  
+    "teletype"             , NA_character_,   NA_character_,  
+    "television broadcast" , NA_character_,   NA_character_,  
+    "unpublished"          , "Unpublished",   "Unpublished"   
 )
 
 ## defined in bibutils as output type (for bibtex?) but not in the above
 genre_other <- c(
-    "book chapter" ,            "InBook",
-    "report" ,                  "TechReport"
+    "book chapter" ,            "InBook",     "InBook",   
+    "report" ,                  "TechReport", "TechReport"
 )
 
 genre_all_bibtex <- matrix(c(genre_marcgt, genre_bibutils, genre_other),
-                           ncol = 2, byrow = TRUE)
+                           ncol = 3, byrow = TRUE)
 rownames(genre_all_bibtex) <- tolower(genre_all_bibtex[ , 1])
-colnames(genre_all_bibtex) <- c("Mods", "Bibtex")
+colnames(genre_all_bibtex) <- c("Mods", "Bibtex", "Bibentry")
 
 
 mods_genre <- function(field){
     stopifnot(xml_name(field) == "genre")
- 
+    
+    ## TODO: this logic is for toBibtex or toBibentry
+    
     type <- xml_text(field)
-    ## switch(type,
-    ##        "journal article" =        "Article",      
-    ## 
-    ##        ## bibtexout.c/genre_matches
-    ##        ##   simplified here
-    ##        "periodical" =              "Article",      
-    ##        "academic journal" =        "Article",      
-    ##        "magazine" =                "Article",      
-    ##        "newspaper" =               "Article",      
-    ##        "article" =                 "Article",      
-    ##        "instruction" =             "Manual",       
-    ##        "book" =                    "Book",         
-    ##        #"book" =                    "Inbook",       
-    ##        "book chapter" =            "Inbook",       
-    ##        "unpublished" =             "Unpublished",  
-    ##        "manuscript" =              "Unpublished",  
-    ##        "conference publication" =  "Proceedings",  
-    ##        #"conference publication" =  "InProceedings",
-    ##        "collection" =              "Collection",   
-    ##        #"collection" =              "InCollection", 
-    ##        "report" =                  "Report",       
-    ##        "technical report" =        "Report",       
-    ##        "Masters thesis" =          "MastersThesis",
-    ##        "Diploma thesis" =          "DiplomaThesis",
-    ##        "Ph.D. thesis" =            "PhdThesis",    
-    ##        "Licentiate thesis" =       "PhdThesis",    
-    ##        "thesis" =                  "PhdThesis",    
-    ##        "electronic" =              "Electronic",   
-    ##        "miscellaneous" =           "Misc",
-    ##        ## default
-    ##        {
-    ##            ## TODO: change this to return "Article" in this case?
-    ##            message("unknown type '", type, "' of 'genre', returning it as is'")
-    ##            type
-    ##        }
-    ##        )
+    lotype <- tolower(type)
 
-    ## TODO: this logic is for toBibtex or toBibentry, just return type here.
-    if(grepl("research report" , tolower(xml_text(field))))
-        ## krapka, TODO: add to genre_all_bibtex?
-        return("Report")
-    else{
-##         if(tolower(bt_genre) %in% c("report", "Rapport de recherche")){
-##             ## TODO: krapka
-##             "TechReport"
-##         }else if(tolower(bt_genre) == "m.sc. thesis"){
-##             ## TODO: krapka
-##             "MastersThesis"
-##         }else if(!(tolower(type) %in% rownames(genre_all_bibtex))){
-        
-        #if(tolower(type) %in% c("report", "rapport de recherche")){
-        #    ## TODO: krapka
-        #    "TechReport"
-        #}else
-        if(tolower(type) == "m.sc. thesis"){
-            ## TODO: krapka
-            type <- "masters thesis"
-        #}else if(tolower(type) == "book chapter"){
-        #    ## TODO: krapka
-        #    type <- "InBook"
-        }else if(!(tolower(type) %in% rownames(genre_all_bibtex))){
-            message("genre ", type,
-                    " is currently unknown to bibConvert; using Misc instead")
-            return("Misc")
-        }
-       
-        bt_genre <- genre_all_bibtex[tolower(type), "Bibtex"]
+    if(lotype %in% rownames(genre_all_bibtex)){
+        bt_genre <- genre_all_bibtex[lotype, "Bibentry"]
         if(is.na(bt_genre)){
             warning("Can't convert genre '", type, "' to Bibtex; using 'Misc' instead")
             "Misc"
-        #}else if(tolower(bt_genre) %in% c("report", "rapport de recherche")){
-        #    ## TODO: krapka
-        #    "TechReport"
         }else{
             bt_genre
+        }
+    }else{
+        ## "research report", "Diploma thesis", "Licentiate thesis", "thesis", etc.
+        if(grepl("report" , lotype) ||
+           grepl("de recherche", lotype) ||
+           grepl("memorandum", lotype) ||
+           grepl("note", lotype) ||
+           grepl("preprint" , lotype)   )
+            list(bibtype ="TechReport", type = type)
+        else if(lotype == "m.sc. thesis")
+            list(bibtype = "MastersThesis", type = type)
+        else if(grepl(" thesis" , lotype))
+            list(bibtype = "PhdThesis", type = type)
+        else if(lotype %in% c("section", "chapter"))
+            ## can't tell the type from "genre" here
+            list(type = type)
+        else{
+            message("genre ", type,
+                    " is currently unknown to bibConvert; using Misc instead")
+            "Misc"
         }
     }
 }
@@ -489,7 +428,7 @@ mods_relatedItem <- function(field){
                "collection" = {
                    res$booktitle = title
                    #browser()
-                   res$entry_type <- "InCollection"
+                   res$bibtype <- "InCollection"
                    if("name" %in% nams){
                        ## no, this doesn't work out of the box:
                        ## res[["booktitle"]] <- process_mods(field)
@@ -502,7 +441,7 @@ mods_relatedItem <- function(field){
                                persons = {
                                    res[["editor"]] = wrk[["persons"]]
                                },
-                               entry_type = {
+                               bibtype = {
                                    "" # do nothing
                                },
                                ##default
@@ -518,7 +457,7 @@ mods_relatedItem <- function(field){
                },
                "conference publication" = {
                    res$booktitle = title
-                   res$entry_type = "InProceedings"
+                   res$bibtype = "InProceedings"
                    if("name" %in% nams){
                        ## res[["booktitle"]] <- process_mods(field)
                        wrk <- process_mods(field)
@@ -530,7 +469,7 @@ mods_relatedItem <- function(field){
                                persons = {
                                    res[["editor"]] = wrk[["persons"]]
                                },
-                               entry_type = {
+                               bibtype = {
                                    "" # do nothing
                                },
                                ##default
@@ -726,13 +665,21 @@ process_mods <- function(modsbib){
                         res[[s]] <- wrk[[s]]
             },
             "typeOfResource" = {
-                res[["typeOfResource"]] <- mods_typeOfResource(field)
+                ## res[["typeOfResource"]] <- mods_typeOfResource(field)
+                ## do nothing
+                mods_typeOfResource(field)
             },
             "genre" = {
                 ## note: entry types for bibtex and bibentry are the same except
                 ##       for "booklet" which is only in bibtex
-                res[["entry_type"]] <- mods_genre(field)            
-                # print(res[["entry_type"]])
+                wrk <- mods_genre(field)            
+                if(is.character(wrk))
+                    res[["bibtype"]] <- mods_genre(field)
+                else{
+                    for(s in names(wrk)){
+                        res[[s]] <- wrk[[s]]
+                    }
+                }
             },
             "relatedItem" = {
                 wrk <- mods_relatedItem(field)

@@ -2,7 +2,7 @@ Package: rbibutils
 Type: Package
 Title: Convert Between Bibliography Formats
 Version: 0.3.0
-Date: 2020-07-03
+Date: 2020-07-04
 Authors@R: c( person(given = c("Georgi", "N."), family = "Boshnakov", 
                      role = c("aut", "cre"), 	
                      email = "georgi.boshnakov@manchester.ac.uk"),
