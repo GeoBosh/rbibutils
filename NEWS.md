@@ -2,7 +2,13 @@
 
 - renamed the repository and the package from `bibutils` to `rbibutils`.
 
-- fix the last compiler warnings about 'strncpy' and 'strncat'.
+- fixed the last compiler warnings about 'strncpy' and 'strncat'.
+
+- added conversion from/to R bibentry source files.
+
+- now all conversions from 'bibutils' are supported.
+
+- added more examples for `bibConvert()`.
 
 
 # bibutils 0.2.0

@@ -77,8 +77,16 @@ be <- bibConvert(fn_biblatex, rds, "biblatex", "bibentry")
 bea <- bibConvert(fn_biblatex, rds, "biblatex") # same
 readRDS(rds)
 
+## convert to R source file
+r <- tempfile(fileext = ".R")
+bibConvert(fn_biblatex, r, "biblatex")
+file.show(r)
+cat(readLines(r), sep = "\n")
+
 unlink(modl)
 unlink(bib)
+unlink(r)
+unlink(rds)
 }
 \keyword{documentation}
 % use one of  RShowDoc("KEYWORDS")

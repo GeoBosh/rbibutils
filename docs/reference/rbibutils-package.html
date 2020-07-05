@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Changelog • rbibutils</title>
+<title>Convert Between Bibliography Formats — rbibutils-package • rbibutils</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,10 @@
 
 
 
-<meta property="og:title" content="Changelog" />
+<meta property="og:title" content="Convert Between Bibliography Formats — rbibutils-package" />
+<meta property="og:description" content="Converts between a number of bibliography formats, including
+    BibTeX, BibLaTeX and Bibentry. Includes a port of the 'bibutils'
+    utilities by Chris Putnam  &amp;lt;https://sourceforge.net/projects/bibutils/&amp;gt;." />
 
 
 
@@ -58,7 +61,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-news">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -110,47 +113,59 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-      <h1 data-toc-skip>Changelog <small></small></h1>
-      <small>Source: <a href='https://github.com/GeoBosh/rbibutils/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
+    <h1>Convert Between Bibliography Formats</h1>
+    
+    <div class="hidden name"><code>rbibutils-package.Rd</code></div>
     </div>
 
-    <div id="rbibutils-030" class="section level1">
-<h1 class="page-header" data-toc-text="0.3.0">
-<a href="#rbibutils-030" class="anchor"></a>rbibutils 0.3.0</h1>
-<ul>
-<li><p>renamed the repository and the package from <code>bibutils</code> to <code>rbibutils</code>.</p></li>
-<li><p>fixed the last compiler warnings about ‘strncpy’ and ‘strncat’.</p></li>
-<li><p>added conversion from/to R bibentry source files.</p></li>
-<li><p>now all conversions from ‘bibutils’ are supported.</p></li>
-<li><p>added more examples for <code><a href="../reference/bibConvert.html">bibConvert()</a></code>.</p></li>
-</ul>
-</div>
-    <div id="bibutils-020" class="section level1">
-<h1 class="page-header" data-toc-text="0.2.0">
-<a href="#bibutils-020" class="anchor"></a>bibutils 0.2.0</h1>
-<ul>
-<li><p>output to Bibentry is now fairly complete.</p></li>
-<li><p>input Bibtex, Biblatex, and XML mods intermediate.</p></li>
-<li><p>output Bibentry, Bibtex, Biblatex, and XML mods intermediate.</p></li>
-</ul>
-</div>
-    <div id="bibutils-010" class="section level1">
-<h1 class="page-header" data-toc-text="0.1.0">
-<a href="#bibutils-010" class="anchor"></a>bibutils 0.1.0</h1>
-<ul>
-<li><p>input Biblatex and XML mods intermediate formats.</p></li>
-<li><p>output Bibtex and XML mods intermediate formats</p></li>
-<li><p>initial version</p></li>
-</ul>
-</div>
-  </div>
+    <div class="ref-description">
+    <p>Converts between a number of bibliography formats, including
+    BibTeX, BibLaTeX and Bibentry. Includes a port of the 'bibutils'
+    utilities by Chris Putnam  &lt;https://sourceforge.net/projects/bibutils/&gt;.</p>
+    </div>
 
+
+
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    
+
+<p>Package <span class="pkg">rbibutils</span> provides an <span style="R">R</span> port of the <code>bibutils</code>
+  programs and functions to convert to <span style="R">R</span>'s <code>bibentry</code> Bibtex-based
+  bibliography format.</p>
+<p>The core functionality is provided by the <code>bibutils</code> programs
+  which convert between various bibliography formats using a common
+  intermediate MODS XML format, see the source cited below.
+  The <code>bibutils</code> library is included in a number of software
+  packages, including pandoc. Executable programs for conversion are
+  available for Linux distributions but are not easily available for
+  Windows. Executable and libraries can also be generated out-of-the-box
+  from the <code>bibutils</code> disribution (on Windows under MSYS).</p>
+<p>Currently we provide the function <code><a href='bibConvert.html'>bibConvert</a></code>
+  for conversion between supported bibliography formats. For complete
+  list of formats supported by the package, see the documentation of
+  the original bibutils library.</p>
+<p>Further functiionality may be provided in future releases, in
+  particular, the underlying C functions could be exposed to package
+  authors. Further R wrappers may be added, as well.</p>  
+<p>The only external dependency (import) is package <span class="pkg">xml2</span> and
+  conversion between formats not involving bibentry do not need it, so
+  it could be made &#8220;suggested&#8221; if there is a strong use case for
+  that.</p>
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    <p>Chris Putnam, Library <code>bibutils</code>,
+  <a href='https://sourceforge.net/projects/bibutils/'>https://sourceforge.net/projects/bibutils/</a>.</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><code><a href='bibConvert.html'>bibConvert</a></code></p></div>
+
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
       <h2 data-toc-skip>Contents</h2>
     </nav>
   </div>
-
 </div>
 
 
