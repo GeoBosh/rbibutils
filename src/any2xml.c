@@ -68,52 +68,69 @@ char *help0[] = {
 
 // int
 void
-any2xml_main( int *argc, char *argv[], char *outfile[], const char *progname[] )
+//any2xml_main( int *argcin, char *argv[], char *outfile[], const char *progname_in[] )
+any2xml_main( int *argcin, char *argv[], char *outfile[], double *nref)
 {
+  int argc = *argcin;
+  // const char *progname = progname_in[0];
+  const char *progname = argv[0];
+
+  // REprintf("argc: %d\n", argc);
+  // REprintf("argv[0]: %s\n", argv[0]);
+  // REprintf("argv[1]: %s\n", argv[1]);
+  
 	param p;
 	int ihelp;
-	if(strcmp(*progname, "bib2xml") == 0){
-	  bibtexin_initparams( &p, *progname );
+	if(strcmp(progname, "bib2xml") == 0){
+	  bibtexin_initparams( &p, progname );
 	  ihelp = 0;
-	}else if(strcmp(*progname, "biblatex2xml") == 0){
-	  biblatexin_initparams( &p, *progname );
+	}else if(strcmp(progname, "biblatex2xml") == 0){
+	  biblatexin_initparams( &p, progname );
 	  ihelp = 2;
-	}else if(strcmp(*progname, "copac2xml") == 0){
-	  copacin_initparams( &p, *progname );
+	}else if(strcmp(progname, "copac2xml") == 0){
+	  copacin_initparams( &p, progname );
 	  ihelp = 4;
-	}else if(strcmp(*progname, "ebi2xml") == 0){
-	  ebiin_initparams( &p, *progname );
+	}else if(strcmp(progname, "ebi2xml") == 0){
+	  ebiin_initparams( &p, progname );
 	  ihelp = 6;
-	}else if(strcmp(*progname, "end2xml") == 0){
-	  endin_initparams( &p, *progname );
+	}else if(strcmp(progname, "end2xml") == 0){
+	  endin_initparams( &p, progname );
 	  ihelp = 8;
-	}else if(strcmp(*progname, "endx2xml") == 0){
-	  endxmlin_initparams( &p, *progname );
+	}else if(strcmp(progname, "endx2xml") == 0){
+	  endxmlin_initparams( &p, progname );
 	  ihelp = 10;
-	}else if(strcmp(*progname, "isi2xml") == 0){
-	  isiin_initparams( &p, *progname );
+	}else if(strcmp(progname, "isi2xml") == 0){
+	  isiin_initparams( &p, progname );
 	  ihelp = 12;
-	}else if(strcmp(*progname, "med2xml") == 0){
-	  medin_initparams( &p, *progname );
+	}else if(strcmp(progname, "med2xml") == 0){
+	  medin_initparams( &p, progname );
 	  ihelp = 14;
-	}else if(strcmp(*progname, "nbib2xml") == 0){
-	  nbibin_initparams( &p, *progname );
+	}else if(strcmp(progname, "nbib2xml") == 0){
+	  nbibin_initparams( &p, progname );
 	  ihelp = 16;
-	}else if(strcmp(*progname, "ris2xml") == 0){
-	  risin_initparams( &p, *progname );
+	}else if(strcmp(progname, "ris2xml") == 0){
+	  risin_initparams( &p, progname );
 	  ihelp = 18;
-	}else if(strcmp(*progname, "wordbib2xml") == 0){
-	  wordin_initparams( &p, *progname );
+	}else if(strcmp(progname, "wordbib2xml") == 0){
+	  wordin_initparams( &p, progname );
 	  ihelp = 20;
-	}else if(strcmp(*progname, "ads2xml") == 0){
-	  // adsin_initparams( &p, *progname );
+	}else if(strcmp(progname, "ads2xml") == 0){
+	  // adsin_initparams( &p, progname );
 	  ihelp = 22;
 	}else
-	  error("cannot deduce input format from name %s", *progname);
+	  error("cannot deduce input format from name %s", progname);
 
-	modsout_initparams( &p, *progname );
-	tomods_processargs( argc, argv, &p, help0[ihelp], help0[ihelp + 1] );
-	bibprog( argc[0], argv, &p, outfile );
+	modsout_initparams( &p, progname );
+	tomods_processargs( &argc, argv, &p, help0[ihelp], help0[ihelp + 1] );
+
+	*nref = bibprog( argc, argv, &p, outfile );
+	// Georgi, no need to print, returned to caller
+	// if( p.progname ) REprintf( "%s: ", p.progname );
+	// REprintf( "processed %g references.\n", *nref );
+
+
 	bibl_freeparams( &p );
+
+	*argcin = argc;
 	// return EXIT_SUCCESS;
 }

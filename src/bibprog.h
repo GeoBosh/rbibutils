@@ -11,6 +11,8 @@
 
 #include "bibutils.h"
 
-void bibprog( int argc, char *argv[], param *p, char *outfile[] );
+// Georgi
+//void bibprog( int argc, char *argv[], param *p, char *outfile[] );
+double bibprog( int argc, char *argv[], param *p, char *outfile[] );
 
 #endif

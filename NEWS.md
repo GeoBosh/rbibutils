@@ -1,29 +1,13 @@
-# rbibutils 0.3.0
+# rbibutils 1.0.0 (CRAN)
 
-- renamed the repository and the package from `bibutils` to `rbibutils`.
+Features of this version:
 
-- fixed the last compiler warnings about 'strncpy' and 'strncat'.
+- includes an R port of `bibutils` libraries (currently `bibutils_6.10`).
 
-- added conversion from/to R bibentry source files.
+- supports all character encodings available in `bibutils` (defaults are UTF-8).
 
-- now all conversions from 'bibutils' are supported.
+- supports all input/output bibliography formats available in `bibutils`,
+  including Bibtex, Biblatex, and XML mods intermediate.
 
-- added more examples for `bibConvert()`.
-
-
-# bibutils 0.2.0
-
-- output to Bibentry is now fairly complete.
-
-- input Bibtex, Biblatex, and XML mods intermediate.
-
-- output Bibentry, Bibtex, Biblatex, and XML mods intermediate.
-
-
-# bibutils 0.1.0
-
-- input Biblatex and XML mods intermediate formats.
-
-- output Bibtex and XML mods intermediate formats
-
-- initial version
+- in addition, supports conversions of the above formats from/to `bibentry` R
+  source files or `rds` objects.

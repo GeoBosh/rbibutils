@@ -233,7 +233,6 @@ output_name( FILE *outptr, char *p, int level )
 	int n=0;
 
 	strs_init( &family, &part, &suffix, NULL );
-
 	while ( *p && *p!='|' ) str_addchar( &family, *p++ );
 	if ( *p=='|' ) p++;
 

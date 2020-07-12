@@ -441,7 +441,7 @@ intlist_randomize( intlist *il )
 		if ( i==j ) continue;
 		swap( &(il->data[i]), &(il->data[j]) );
 	}
-	PutRNGstate(); //  // added by Georgi
+	PutRNGstate();   // added by Georgi
 }
 
 /* Returns INTLIST_OK/INTLIST_MEMERR */

@@ -1,16 +1,20 @@
 Package: rbibutils
 Type: Package
 Title: Convert Between Bibliography Formats
-Version: 0.3.0
-Date: 2020-07-05
+Version: 1.0.0
+Date: 2020-07-12
 Authors@R: c( person(given = c("Georgi", "N."), family = "Boshnakov", 
                      role = c("aut", "cre"), 	
                      email = "georgi.boshnakov@manchester.ac.uk"),
               person(given = "Chris", family = "Putman",
-                     role = c("aut"), comment = "author of the bibutils libraries") )
-Description: Converts between a number of bibliography formats, including
-    BibTeX, BibLaTeX and Bibentry. Includes a port of the 'bibutils'
-    utilities by Chris Putnam  <https://sourceforge.net/projects/bibutils/>.
+                     role = c("aut"),
+		     comment = "author of the bibutils libraries") )
+Description: Converts between a number of bibliography formats,
+    including BibTeX, BibLaTeX and Bibentry.  Includes a port of the
+    'bibutils' utilities by Chris Putnam
+    <https://sourceforge.net/projects/bibutils/>. Supports all
+    bibliography formats and character encodings implemented in
+    'bibutils'. 
 License: GPL-2
 URL: https://geobosh.github.io/rbibutils/ (website), https://github.com/GeoBosh/rbibutils (devel)
 BugReports: https://github.com/GeoBosh/rbibutils/issues
@@ -19,3 +23,5 @@ Imports: utils, tools, xml2
 Encoding: UTF-8
 LazyData: true
 NeedsCompilation: yes
+Suggests: 
+    testthat

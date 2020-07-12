@@ -1,16 +1,12 @@
 #include <stdlib.h> // for NULL
 #include <R_ext/Rdynload.h>
 
-// #include "bibutils.h"
-// #include "bibformats.h"
-
-
 /* .C calls */
 
 extern void bibl_freeparams( void * );
 
-extern void any2xml_main( int *argc, char *argv[], char *outfile[], const char *progname[] );
-extern void xml2any_main( int *argc, char *argv[], char *outfile[], const char *progname[] );
+extern void any2xml_main( int *argcin, char *argv[], char *outfile[], double *nref );
+extern void xml2any_main( int *argcin, char *argv[], char *outfile[], double *nref );
 
 
 // extern void biblatex2xml_main( int argc, char *argv[], char *outfile[] );

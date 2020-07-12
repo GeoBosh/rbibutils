@@ -62,8 +62,10 @@ tomods_processargs( int *argc, char *argv[], param *p,
 	char *help1, char *help2 )
 {
 	int i, j, subtract, status;
+
 	process_charsets( argc, argv, p );
-	i = 0;
+
+        i = 0;
 	while ( i<*argc ) {
 		subtract = 0;
 		if ( args_match( argv[i], "-h", "--help" ) ) {

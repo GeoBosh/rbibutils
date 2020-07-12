@@ -685,7 +685,7 @@ fields_report_stdout( fields *f)
 	n = fields_num( f );
 	Rprintf( "# NUM   level = LEVEL   'TAG' = 'VALUE'\n" );
 	for ( i=0; i<n; ++i ) {
-		REprintf( "%d\tlevel = %d\t'%s' = '%s'\n",
+		Rprintf( "%d\tlevel = %d\t'%s' = '%s'\n",
 			i+1,
 			_fields_level( f, i ),
 			_fields_tag_char( f, i ),

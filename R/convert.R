@@ -1,8 +1,6 @@
-bibConvert <- function(infile, outfile, informat, outformat){
-    argc <- 2L
-    argv <- c("dummy", infile)
-                                        # sink(outfile)
-                                        # on.exit(sink())
+bibConvert <- function(infile, outfile, informat, outformat, ..., tex, encoding, options){
+    stopifnot(length(list(...)) == 0) # no ... arguments allowed
+    
     if(missing(informat)){
         ext <- tools::file_ext(infile)
         informat <- switch(ext,
@@ -57,19 +55,113 @@ bibConvert <- function(infile, outfile, informat, outformat){
                            )
     }
 
-    if(outformat == "xml")
+    if(informat == "xml")
+        xmlfile <- infile
+    else if(outformat == "xml")
         xmlfile <- outfile
     else{
         xmlfile <- tempfile(fileext = ".xml")
         on.exit(unlink(xmlfile))
     }
+
+    #argv <- c("dummy", xmlfile)
+    #argv <- c("dummy", "-i", "cp1251",  xmlfile)
+    #argv <- c("dummy", "-i", "cp1251", "-o", "utf8", xmlfile)
+
+    argv_2xml <- c("dummy")
+    argv_xml2 <- c("dummy")
+
+    if(!missing(encoding)){
+        if(length(encoding) == 1)
+            encoding <- rep(encoding, 2)
+
+        ## todo: UTF-8 => utf8 ?
+        argv_2xml <- c(argv_2xml, "-i", encoding[1])
+        argv_xml2 <- c(argv_xml2, "-o", encoding[2])
+    }
+
+    if(!missing(tex)){
+        switch(tex,
+               no_latex = { # accents to letters
+                   argv_2xml <- c(argv_2xml, "-nl")
+                   argv_xml2 <- c(argv_xml2, "-nl")
+               },
+               uppercase = {
+                   argv_xml2 <- c(argv_xml2, "-U")
+               },
+               brackets = {
+                   argv_xml2 <- c(argv_xml2, "-b")
+               },
+               dash = {
+                   argv_xml2 <- c(argv_xml2, "-sd")
+               },
+               comma = {
+                   argv_xml2 <- c(argv_xml2, "-fc")
+               },
+               ## default
+               stop("unsupported 'tex' option")
+               )
+            
+    }
     
+    if(!missing(options)){
+        nams <- names(options)
+        ## options <- as.vector(options)
+        for(j in seq_along(options)){
+            switch(nams[j],
+                   i = { argv_2xml <- c(argv_2xml, "-i", options[j])},
+                   o = {
+                       argv_xml2 <- c(argv_xml2, "-o", options[j])
+                       ## print(argv_xml2)
+                   },
+                   oxml = {argv_2xml <- c(argv_2xml, "-o", options[j])},
+                   h = {argv_2xml <- c(argv_2xml, "-h")},
+                   v = {argv_2xml <- c(argv_2xml, "-v")},
+                   a = {argv_2xml <- c(argv_2xml, "-a")},
+                   s = {argv_2xml <- c(argv_2xml, "-s")},
+                   u = {argv_2xml <- c(argv_2xml, "-u")},
+                   U = {argv_xml2 <- c(argv_xml2, "-U")},
+                   un = {argv_2xml <- c(argv_2xml, "-un")},
+                   x = {argv_2xml <- c(argv_2xml, "-x")},
+                   nl = {
+                       argv_2xml <- c(argv_2xml, "-nl")
+                       argv_xml2 <- c(argv_xml2, "-nl")},
+                   d = { argv_2xml <- c(argv_2xml, "-d") },
+                   c = {argv_2xml <- c(argv_2xml, "-c", options[j])},
+                   ## as = {argv_2xml <- c(argv_2xml, "-as", options[j])},
+                   nt = {argv_2xml <- c(argv_2xml, "-nt")},
+                   verbose = {argv_2xml <- c(argv_2xml, "--verbose")},
+                   debug = {
+                       argv_2xml <- c(argv_2xml, "--debug")
+                       argv_xml2 <- c(argv_xml2, "--debug")
+                   },
+                   
+                   ##default
+                   stop("unsupported option '", nams[j])
+                   )
+        }
+    }
+
+    ## print(argv_xml2)    
+
+    argv_2xml <- c(argv_2xml, infile)
+    argv_xml2 <- c(argv_xml2, xmlfile)
+
+    argc_2xml <- as.integer(length(argv_2xml))
+    argc_xml2 <- as.integer(length(argv_xml2))
+
+    n_2xml <- as.double(0) # for the number of references (double
+    n_xml2 <- as.double(0) 
+
     wrk <- switch(informat,
-                  xml      = xmlfile,
+                  xml      = {
+                      wrk_in <- list(xmlfile)
+                  },
 
                   bibtex   = {
                       prg <- paste0("bib", "2xml")
-                      .C(C_any2xml_main, argc, argv, xmlfile, prg)
+                      argv_2xml[1] <- prg
+                      wrk_in <- .C(C_any2xml_main, argc_2xml, argv_2xml, xmlfile, nref_in = n_2xml)
                   }, 
                   biblatex = ,
                   ads      = ,
@@ -82,7 +174,8 @@ bibConvert <- function(infile, outfile, informat, outformat){
                   ris      = ,
                   wordbib  = {
                       prg <- paste0(informat, "2xml")
-                      .C(C_any2xml_main, argc, argv, xmlfile, prg)
+                      argv_2xml[1] <- prg
+                      wrk_in <- .C(C_any2xml_main, argc_2xml, argv_2xml, xmlfile, nref_in = n_2xml)
                   },
 
                   r        = ,
@@ -104,29 +197,33 @@ bibConvert <- function(infile, outfile, informat, outformat){
                       }
 
                       writeLines(toBibtex(bibe), bibfn)
-                      argv[2] <- bibfn
-                      
-                      .C(C_any2xml_main, argc, argv, xmlfile, "bib2xml")
+                      argv_2xml[length(argv_2xml)] <- bibfn
+                      argv_2xml[1] <- "bib2xml"
+                      wrk_in <- .C(C_any2xml_main, argc_2xml, argv_2xml, xmlfile, nref_in = n_2xml)
                   },
                   ## default
                   stop("converting a file from format ", informat, " not available yet")
                   )
 
-    argv <- c("dummy", xmlfile)
+#browser()
+##print(argv_xml2)    
+argv_xml2 <- as.character(argv_xml2)    
     switch(outformat,
-           xml = xmlfile,
+           xml = {
+               wrk_out = list(xmlfile)
+           },
            bibtex = ,
            bib = {
-                    #  wrk <- .C(C_xml2bib_main, argc, argv, outfile, "xml2bib")
+                    #  wrk_out <- .C(C_xml2bib_main, argc_xml2, argv_xml2, outfile, "xml2bib")
                prg <- paste0("xml2", "bib")
-               wrk <- .C(C_xml2any_main, argc, argv, outfile, prg)
-
+               argv_xml2[1] <- prg
+               wrk_out <- .C(C_xml2any_main, as.integer(argc_xml2), argv_xml2, outfile, nref_out = n_xml2)
            },
                # biblatex = {
                # 
-               #         # wrk <- .C(C_xml2biblatex_main, argc, argv, outfile, "xml2biblatex")
+               #         # wrk_out <- .C(C_xml2biblatex_main, argc_xml2, argv_xml2, outfile, "xml2biblatex")
                #     prg <- paste0("xml2", "biblatex")
-               #     wrk <- .C(C_xml2any_main, argc, argv, outfile, prg)
+               #     wrk_out <- .C(C_xml2any_main, argc_xml2, argv_xml2, outfile, prg)
                # },
            R = ,
            r = ,
@@ -139,16 +236,25 @@ bibConvert <- function(infile, outfile, informat, outformat){
                }else{ # r
                    writeBibentry(bibe, outfile)
                }
-               ## TODO: think of suitable return value
-               bibe
+               wrk_out <- list(bib = bibe, nref_out = length(bibe))
            },
            {
                ## default
                    # stop("outformat ", outformat, " not supported by bibConvert yet")
                prg <- paste0("xml2", outformat)
-               wrk <- .C(C_xml2any_main, argc, argv, outfile, prg)
+               argv_xml2[1] <- prg
+               wrk_out <- .C(C_xml2any_main, argc_xml2, argv_xml2, outfile, nref_out = n_xml2)
            }
            )
+    
+    wrk <- list("infile" = infile, "outfile" = outfile,
+                nref_in = wrk_in$nref_in,
+                nref_out = wrk_out$nref_out
+                )
+    if(!is.null(wrk_out$bib))
+       wrk <- c(wrk, list(bib = wrk_out$bib))
+    
+    wrk
 }
 
 readBibentry <- function(file){

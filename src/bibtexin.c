@@ -844,6 +844,12 @@ bibtexin_cleanref( fields *bibin, param *pm )
 		tag = fields_tag( bibin, i, FIELDS_STRP_NOUSE );
 		if ( is_url_tag( tag ) ) continue; /* protect url from parsing */
 
+		/* Georgi:  protecting names, otherwise havoc ensues if the input is 
+                            in a different encoding; 
+                       TODO: test side effects of doing this.
+		   delay names from undergoing any parsing */
+		if ( is_name_tag( tag ) ) return BIBL_OK;
+		
 		value = fields_value( bibin, i, FIELDS_STRP_NOUSE );
 		if ( str_is_empty( value ) ) continue;
 

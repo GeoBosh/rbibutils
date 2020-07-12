@@ -10,7 +10,9 @@
 #include "bibutils.h"
 #include "bibprog.h"
 
-void
+//Georgi
+// void
+double
 bibprog( int argc, char *argv[], param *p, char *outfile[] )
 {
 	FILE *fp;
@@ -38,9 +40,18 @@ bibprog( int argc, char *argv[], param *p, char *outfile[] )
 	}
         bibl_write( &b, fout, p );
         fflush( fout );
-	// if( p->progname ) fprintf( stderr, "%s: ", p->progname );
-	// fprintf( stderr, "Processed %ld references.\n", b.n );
+
+	// // Georgi - now the value is returned to the caller
+	// if( p->progname ) REprintf( "%s: ", p->progname );
+	// REprintf( "Processed %ld references.\n", b.n );
+
+	// Georgi
+	double val = (double)b.n;
+
 	bibl_free( &b );
+
+	//Georgi
+	return val; 
 }
 
 

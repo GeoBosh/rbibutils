@@ -147,6 +147,11 @@ write_unicode( str *s, unsigned int ch, int charsetout, int latexout,
 		int utf8out, int xmlout )
 {
 	unsigned int c;
+
+	// Georgi
+	//REprintf("ch: %x, latexout: %d, utf8out: %d\n", ch, utf8out, charsetout);
+
+	
 	if ( latexout ) {
 		addlatexchar( s, ch, xmlout, utf8out );
 	} else if ( utf8out ) {
@@ -157,7 +162,15 @@ write_unicode( str *s, unsigned int ch, int charsetout, int latexout,
 		c = charset_lookupuni( charsetout, ch );
 		if ( xmlout ) addxmlchar( s, c );
 		else str_addchar( s, c );
+
+		// // Georgi
+		// REprintf("kiki: %x", c);
+		// int len = strlen(s); // s is str *, not char *
+		// for(int j = 0; j < len ; j++){
+		//   REprintf(" %x", s[j]);
+		  
 	}
+
 	return 1;
 }
 

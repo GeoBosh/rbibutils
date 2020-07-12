@@ -372,17 +372,18 @@ str_prepend( str *s, const char *addstr )
 		for ( i=s->len+lenaddstr-1; i>=lenaddstr; i-- )
 			s->data[i] = s->data[i-lenaddstr];
 	}
-	// Georgi: fix the warning about truncation in strncpy
-	//   I am not sure why not use strcpy here, given that 'addstr' is a proper string,
-	//                                                       (see strlen(addstr) above)
-	// copy lenaddstr + 1 bytes to let strncpy put the terminating 0.
-	strncpy( s->data, addstr, lenaddstr + 1 );
-	s->len += lenaddstr;
-	// s->data[ s->len ] = '\0';
-
+	// Georgi: fix the warning about truncation in strncpy; strcpy cannot be used here (at
+	//   least not without further adjustments) since here the final null would replace
+	//   the first char of the original string (see above, where the original string was
+	//   moved to the right to make place for the string to be prepended).
+        //
+	// So, use a simple loop
+	for ( i = 0; i < lenaddstr; i++ )
+	  s->data[i] = addstr[i];
 	// strncpy( s->data, addstr, lenaddstr );
-	// s->len += lenaddstr;
-	// s->data[ s->len ] = '\0';
+
+	s->len += lenaddstr;
+	s->data[ s->len ] = '\0';
 }
 
 static inline void
@@ -517,14 +518,9 @@ str_strcpy_internal( str *s, const char *p, unsigned long n )
 	// Georgi: this fixes the warning about truncation in strncpy
 	//   strcpy cannot be used here since at least one of the calls below
 	//   passes a non-NULL terminated 'p'
-	//
-	// copy n + 1 bytes to let strncpy put the terminating 0.
 	strncpy( s->data, p, n + 1);
-	//s->data[n] = '\0';
-
 	// strncpy( s->data, p, n );
 	// s->data[n] = '\0';
-
 	s->len = n;
 }
 

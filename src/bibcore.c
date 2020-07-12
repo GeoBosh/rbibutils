@@ -305,10 +305,23 @@ bibl_verbose_reference( fields *f, char *filename, long refnum )
 	n = fields_num( f );
 	REprintf( "======== %s %ld : converted\n", filename, refnum );
 	for ( i=0; i<n; ++i ) {
-		REprintf( "'%s'='%s' level=%d\n",
+	  // REprintf( "'%s'='%s' level=%d\n",
+	  // 		(char*) fields_tag( f, i, FIELDS_CHRP_NOUSE ),
+	  // 		(char*) fields_value( f, i, FIELDS_CHRP_NOUSE ),
+	  // 		fields_level( f, i ) );
+	  // Georgi
+	  REprintf( "'%s'='%s' level=%d; ",
 			(char*) fields_tag( f, i, FIELDS_CHRP_NOUSE ),
 			(char*) fields_value( f, i, FIELDS_CHRP_NOUSE ),
 			fields_level( f, i ) );
+	  REprintf( "    \n" );
+	  unsigned char *val = (unsigned char*) fields_value( f, i, FIELDS_CHRP_NOUSE );
+	  int len = strlen(val);
+	  for(int j = 0; j < len ; j++){
+	    REprintf(" %x", val[j]);
+	  }
+	  REprintf( "\n" );
+	  
 	}
 	REprintf( "\n" );
 }
@@ -519,6 +532,9 @@ bibl_fixcharsetdata( fields *ref, param *p )
 
 		tag  = fields_tag( ref, i, FIELDS_CHRP_NOUSE );
 		data = fields_value( ref, i, FIELDS_STRP_NOUSE );
+
+		// Georgi:
+		//REprintf("p->latexout: %d, p->charsetout: %d\n", p->latexout, p->charsetout );
 
 		if ( bibl_notexify( tag ) ) {
 			ok = str_convert( data,
@@ -858,7 +874,7 @@ bibl_read( bibl *b, FILE *fp, char *filename, param *p )
 	}
 
 	if ( ( !read_params.output_raw ) || ( read_params.output_raw & BIBL_RAW_WITHCHARCONVERT ) ) {
-		status = bibl_fixcharsets( &bin, &read_params );
+	  	status = bibl_fixcharsets( &bin, &read_params );
 		if ( status!=BIBL_OK ) goto out;
 		if ( debug_set( &read_params ) ) bibl_verbose( &bin, "post_fixcharsets", "for bibl_read" );
 	}
@@ -1021,6 +1037,7 @@ bibl_write( bibl *b, FILE *fp, param *p )
 	if ( debug_set( p ) ) bibl_verbose( b, "raw_input", "for bibl_write" );
 
 	status = bibl_fixcharsets( b, &lp );
+
 	if ( status!=BIBL_OK ) goto out;
 
 	if ( debug_set( p ) ) bibl_verbose( b, "post-fixcharsets", "for bibl_write" );

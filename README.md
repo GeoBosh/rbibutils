@@ -15,14 +15,15 @@ Install the development version of `rbibutils` from Github:
 
 Convert bibliography files between various formats.  All formats supported by
 the `bibutils` utilities are available.  In addition, conversion from and to
-`bibentry` (the R native representation based on Bibtex) is supported.
+`bibentry`, (the R native representation based on Bibtex, is supported.
 
 The main function is `bibConvert()`. It takes an input bibliography file in one
 of the supported formats, converts its contents to another format, and writes
 the result to a file. All formats, except for `rds` (see below) are plain text
-files.  In the initial release only UTF-8 and ASCII encodings are guaranteed to
-work, although the underlying code contains information for numerous encodings
-and may be able to make correct guess behind the scene.
+files.
+
+The default encoding is UTF-8 for both, input and output. All encodings handled
+by `bibutils` are supported.
 
 Bibentry objects can be input from an `R` source file or from an `rds` file. The
 `rds` file should contain a `bibentry` R object, saved from R with `saveRDS()`.
