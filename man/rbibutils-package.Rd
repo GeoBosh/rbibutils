@@ -25,15 +25,18 @@
   list of formats supported by the package, see the documentation of
   the original bibutils library.
 
+  All encodings supported by the bibutils library are available for
+  \code{\link{bibConvert}}. 
+
   Further functionality may be provided in future releases, in
   particular, the underlying C functions could be exposed to package
   authors. Further R wrappers may be added, as well. However, the scope
   of the package will remain conversion between formats based on
-  \verb{bibutils}. \pkg{rbibutils} can be used as an alternative to
-  package \pkg{bibtex} (Francois 2020). For bibliography management, see
-  package \pkg{RefManager} (McLean 2017). For citations in R
-  documentation (Rd or roxygen2) see package \pkg{Rdpack} (Boshnakov
-  2020).
+  \verb{bibutils} and manipulation of the MODS XML intermediate
+  format. \pkg{rbibutils} can be used also as an alternative to package
+  \pkg{bibtex} (Francois 2020). For bibliography management see package
+  \pkg{RefManager} (McLean 2017). For citations in R documentation (Rd
+  or roxygen2) see package \pkg{Rdpack} (Boshnakov 2020).
   
   The only external dependency (import) is package \pkg{xml2} and
   conversion between formats not involving bibentry do not need it, so

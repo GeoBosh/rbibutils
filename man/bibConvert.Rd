@@ -71,7 +71,8 @@ bibConvert(infile, outfile, informat, outformat, \dots, tex, encoding,
   default encodings are UTF-8 for input and output. A large number of
   familiar encodings are supported, e.g. \code{"latin1"} and
   \code{"cp1251"} (Windows Cyrillic). Some encodings have two or more
-  aliases, such as "ISO-xxx", and they are also accepted.
+  aliases and they are also accepted. If an unknown encodingis
+  requested, a list of all supported encodings will be printed.
 
   Argument \code{tex} is an unnamed character vector containing switches
   for bibtex input and output (mostly output). Currently, the following
@@ -180,11 +181,23 @@ fn_cyr_utf8 <- system.file("bib", "cyr_utf8.bib",  package = "rbibutils")
 ## Can't have files with different encodings in the package, so below
 ## first convert a UTF-8 file to something else.
 ##
-## input here contains cyrillic (UTF-8) output to Windows Cyrillic
-bibConvert(fn_cyr_utf8, bib , encoding = c("utf8", "cp1251"), tex = "no_latex")
+## input here contains cyrillic (UTF-8) output to Windows Cyrillic,
+## notice the "no_latex" option
+a <- bibConvert(fn_cyr_utf8, bib, encoding = c("utf8", "cp1251"), tex = "no_latex")
 
 ## now take the bib file and convert it to UTF-8
 bibConvert(bib, bib2, encoding = c("cp1251", "utf8"))
+
+## Latin-1 example: Author and Title fileds contain Latin-1 accented
+##   characters, not real names. As above, the file is in UTF-8
+fn_latin1_utf8  <- system.file("bib", "latin1accents_utf8.bib", package = "rbibutils")
+## convert to Latin-1, by default the accents are converted to TeX combinations:
+b <- bibConvert(fn_latin1_utf8, bib , encoding = c("utf8", "latin1"))
+cat(readLines(bib), sep = "\n")
+## use "no_latex" option to keep them Latin1:
+c <- bibConvert(fn_latin1_utf8, bib , encoding = c("utf8", "latin1"), tex = "no_latex")
+## this will show properly in Latin-1 locale (or suitable text editor):
+##cat(readLines(bib), sep = "\n")
 
 
 unlink(c(modl, bib, bib2, r, rds))

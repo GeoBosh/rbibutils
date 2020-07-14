@@ -1,4 +1,8 @@
-# rbibutils 1.0.0 (CRAN)
+# rbibutils 1.0.1 (CRAN)
+
+- clarify the copyright holders in DESCRIPTION
+
+# rbibutils 1.0.0 
 
 Features of this version:
 

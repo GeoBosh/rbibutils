@@ -75,7 +75,7 @@ Read a bibliography file in one of the supported formats, convert it
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rbibutils</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1</span>
       </span>
     </div>
 
@@ -210,7 +210,8 @@ Read a bibliography file in one of the supported formats, convert it
   default encodings are UTF-8 for input and output. A large number of
   familiar encodings are supported, e.g. <code>"latin1"</code> and
   <code>"cp1251"</code> (Windows Cyrillic). Some encodings have two or more
-  aliases, such as "ISO-xxx", and they are also accepted.</p>
+  aliases and they are also accepted. If an unknown encodingis
+  requested, a list of all supported encodings will be printed.</p>
 <p>Argument <code>tex</code> is an unnamed character vector containing switches
   for bibtex input and output (mostly output). Currently, the following
   are available:</p>
@@ -271,15 +272,15 @@ Read a bibliography file in one of the supported formats, convert it
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>fn_biblatex</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"bib"</span>, <span class='st'>"ex0.biblatex"</span>,  <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"rbibutils"</span>)
-<span class='no'>fn_biblatex</span></div><div class='output co'>#&gt; [1] "/tmp/Rtmpp3r237/temp_libpathcd164c24969f/rbibutils/bib/ex0.biblatex"</div><div class='input'><span class='co'>## file.show(fn_biblatex)</span>
+<span class='no'>fn_biblatex</span></div><div class='output co'>#&gt; [1] "/tmp/RtmpbxfeRn/temp_libpath1e63aadd46a/rbibutils/bib/ex0.biblatex"</div><div class='input'><span class='co'>## file.show(fn_biblatex)</span>
 
 <span class='co'>## convert a biblatex file to xml</span>
 <span class='no'>modl</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".xml"</span>)
 <span class='fu'>bibConvert</span>(<span class='kw'>infile</span> <span class='kw'>=</span> <span class='no'>fn_biblatex</span>, <span class='kw'>outfile</span> <span class='kw'>=</span> <span class='no'>modl</span>, <span class='kw'>informat</span> <span class='kw'>=</span> <span class='st'>"biblatex"</span>, <span class='kw'>outformat</span> <span class='kw'>=</span> <span class='st'>"xml"</span>)</div><div class='output co'>#&gt; $infile
-#&gt; [1] "/tmp/Rtmpp3r237/temp_libpathcd164c24969f/rbibutils/bib/ex0.biblatex"
+#&gt; [1] "/tmp/RtmpbxfeRn/temp_libpath1e63aadd46a/rbibutils/bib/ex0.biblatex"
 #&gt; 
 #&gt; $outfile
-#&gt; [1] "/tmp/RtmpmvLAPO/fileda3e261dcdeb.xml"
+#&gt; [1] "/tmp/Rtmp4Sjn6A/file4823ac97e64.xml"
 #&gt; 
 #&gt; $nref_in
 #&gt; [1] 3
@@ -292,10 +293,10 @@ Read a bibliography file in one of the supported formats, convert it
 <span class='no'>bib</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".bib"</span>)
 <span class='no'>bib2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".bib"</span>)
 <span class='fu'>bibConvert</span>(<span class='kw'>infile</span> <span class='kw'>=</span> <span class='no'>fn_biblatex</span>, <span class='kw'>outfile</span> <span class='kw'>=</span> <span class='no'>bib</span>, <span class='kw'>informat</span> <span class='kw'>=</span> <span class='st'>"biblatex"</span>, <span class='kw'>outformat</span> <span class='kw'>=</span> <span class='st'>"bib"</span>)</div><div class='output co'>#&gt; $infile
-#&gt; [1] "/tmp/Rtmpp3r237/temp_libpathcd164c24969f/rbibutils/bib/ex0.biblatex"
+#&gt; [1] "/tmp/RtmpbxfeRn/temp_libpath1e63aadd46a/rbibutils/bib/ex0.biblatex"
 #&gt; 
 #&gt; $outfile
-#&gt; [1] "/tmp/RtmpmvLAPO/fileda3e34fbf154.bib"
+#&gt; [1] "/tmp/Rtmp4Sjn6A/file482354d17a2f.bib"
 #&gt; 
 #&gt; $nref_in
 #&gt; [1] 3
@@ -306,7 +307,7 @@ Read a bibliography file in one of the supported formats, convert it
 
 <span class='co'>## convert a biblatex file to bibentry</span>
 <span class='no'>rds</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".rds"</span>)
-<span class='no'>fn_biblatex</span></div><div class='output co'>#&gt; [1] "/tmp/Rtmpp3r237/temp_libpathcd164c24969f/rbibutils/bib/ex0.biblatex"</div><div class='input'><span class='no'>rds</span></div><div class='output co'>#&gt; [1] "/tmp/RtmpmvLAPO/fileda3e72528a85.rds"</div><div class='input'><span class='no'>be</span> <span class='kw'>&lt;-</span> <span class='fu'>bibConvert</span>(<span class='no'>fn_biblatex</span>, <span class='no'>rds</span>, <span class='st'>"biblatex"</span>, <span class='st'>"bibentry"</span>)</div><div class='output co'>#&gt; 
+<span class='no'>fn_biblatex</span></div><div class='output co'>#&gt; [1] "/tmp/RtmpbxfeRn/temp_libpath1e63aadd46a/rbibutils/bib/ex0.biblatex"</div><div class='input'><span class='no'>rds</span></div><div class='output co'>#&gt; [1] "/tmp/Rtmp4Sjn6A/file48232864ac1d.rds"</div><div class='input'><span class='no'>be</span> <span class='kw'>&lt;-</span> <span class='fu'>bibConvert</span>(<span class='no'>fn_biblatex</span>, <span class='no'>rds</span>, <span class='st'>"biblatex"</span>, <span class='st'>"bibentry"</span>)</div><div class='output co'>#&gt; 
 #&gt; count_type:
 #&gt; 
 #&gt;  no_type not_char  Article     Book 
@@ -338,10 +339,10 @@ Read a bibliography file in one of the supported formats, convert it
 #&gt;        0        0        2        1 
 #&gt; 
 #&gt; </div><div class='output co'>#&gt; $infile
-#&gt; [1] "/tmp/Rtmpp3r237/temp_libpathcd164c24969f/rbibutils/bib/ex0.biblatex"
+#&gt; [1] "/tmp/RtmpbxfeRn/temp_libpath1e63aadd46a/rbibutils/bib/ex0.biblatex"
 #&gt; 
 #&gt; $outfile
-#&gt; [1] "/tmp/RtmpmvLAPO/fileda3e31bf440f.R"
+#&gt; [1] "/tmp/Rtmp4Sjn6A/file4823567ef112.R"
 #&gt; 
 #&gt; $nref_in
 #&gt; [1] 3
@@ -412,25 +413,16 @@ Read a bibliography file in one of the supported formats, convert it
 <span class='co'>## Can't have files with different encodings in the package, so below</span>
 <span class='co'>## first convert a UTF-8 file to something else.</span>
 <span class='co'>##</span>
-<span class='co'>## input here contains cyrillic (UTF-8) output to Windows Cyrillic</span>
-<span class='fu'>bibConvert</span>(<span class='no'>fn_cyr_utf8</span>, <span class='no'>bib</span> , <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"utf8"</span>, <span class='st'>"cp1251"</span>), <span class='kw'>tex</span> <span class='kw'>=</span> <span class='st'>"no_latex"</span>)</div><div class='output co'>#&gt; $infile
-#&gt; [1] "/tmp/Rtmpp3r237/temp_libpathcd164c24969f/rbibutils/bib/cyr_utf8.bib"
-#&gt; 
-#&gt; $outfile
-#&gt; [1] "/tmp/RtmpmvLAPO/fileda3e34fbf154.bib"
-#&gt; 
-#&gt; $nref_in
-#&gt; [1] 2
-#&gt; 
-#&gt; $nref_out
-#&gt; [1] 2
-#&gt; </div><div class='input'>
+<span class='co'>## input here contains cyrillic (UTF-8) output to Windows Cyrillic,</span>
+<span class='co'>## notice the "no_latex" option</span>
+<span class='no'>a</span> <span class='kw'>&lt;-</span> <span class='fu'>bibConvert</span>(<span class='no'>fn_cyr_utf8</span>, <span class='no'>bib</span>, <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"utf8"</span>, <span class='st'>"cp1251"</span>), <span class='kw'>tex</span> <span class='kw'>=</span> <span class='st'>"no_latex"</span>)
+
 <span class='co'>## now take the bib file and convert it to UTF-8</span>
 <span class='fu'>bibConvert</span>(<span class='no'>bib</span>, <span class='no'>bib2</span>, <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"cp1251"</span>, <span class='st'>"utf8"</span>))</div><div class='output co'>#&gt; $infile
-#&gt; [1] "/tmp/RtmpmvLAPO/fileda3e34fbf154.bib"
+#&gt; [1] "/tmp/Rtmp4Sjn6A/file482354d17a2f.bib"
 #&gt; 
 #&gt; $outfile
-#&gt; [1] "/tmp/RtmpmvLAPO/fileda3e1f81efa6.bib"
+#&gt; [1] "/tmp/Rtmp4Sjn6A/file48233df29aad.bib"
 #&gt; 
 #&gt; $nref_in
 #&gt; [1] 2
@@ -438,6 +430,23 @@ Read a bibliography file in one of the supported formats, convert it
 #&gt; $nref_out
 #&gt; [1] 2
 #&gt; </div><div class='input'>
+<span class='co'>## Latin-1 example: Author and Title fileds contain Latin-1 accented</span>
+<span class='co'>##   characters, not real names. As above, the file is in UTF-8</span>
+<span class='no'>fn_latin1_utf8</span>  <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"bib"</span>, <span class='st'>"latin1accents_utf8.bib"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"rbibutils"</span>)
+<span class='co'>## convert to Latin-1, by default the accents are converted to TeX combinations:</span>
+<span class='no'>b</span> <span class='kw'>&lt;-</span> <span class='fu'>bibConvert</span>(<span class='no'>fn_latin1_utf8</span>, <span class='no'>bib</span> , <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"utf8"</span>, <span class='st'>"latin1"</span>))
+<span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span>(<span class='no'>bib</span>), <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>"\n"</span>)</div><div class='output co'>#&gt; @Article{test1,
+#&gt; author="K{\`a}r{\`e} L{\^e}{\'a}{\'e}",
+#&gt; title="K{\`a}r{\`e} L{\^e}{\'a}{\'e}",
+#&gt; journal="Latin-1 accents",
+#&gt; year="2020",
+#&gt; note="Having the same title and author could be helpful for debugging since authors are processed differently. "
+#&gt; }
+#&gt; </div><div class='input'><span class='co'>## use "no_latex" option to keep them Latin1:</span>
+<span class='no'>c</span> <span class='kw'>&lt;-</span> <span class='fu'>bibConvert</span>(<span class='no'>fn_latin1_utf8</span>, <span class='no'>bib</span> , <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"utf8"</span>, <span class='st'>"latin1"</span>), <span class='kw'>tex</span> <span class='kw'>=</span> <span class='st'>"no_latex"</span>)
+<span class='co'>## this will show properly in Latin-1 locale (or suitable text editor):</span>
+<span class='co'>##cat(readLines(bib), sep = "\n")</span>
+
 
 <span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='no'>modl</span>, <span class='no'>bib</span>, <span class='no'>bib2</span>, <span class='no'>r</span>, <span class='no'>rds</span>))</div></pre>
   </div>

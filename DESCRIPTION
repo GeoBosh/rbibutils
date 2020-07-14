@@ -1,16 +1,19 @@
 Package: rbibutils
 Type: Package
 Title: Convert Between Bibliography Formats
-Version: 1.0.0
-Date: 2020-07-12
+Version: 1.0.1
+Date: 2020-07-14
 Authors@R: c( person(given = c("Georgi", "N."), family = "Boshnakov", 
-                     role = c("aut", "cre"), 	
-                     email = "georgi.boshnakov@manchester.ac.uk"),
+                     role = c("aut", "cre", "cph"), 	
+                     email = "georgi.boshnakov@manchester.ac.uk",
+		     comment = "R code and modifications to bibutils' C code"
+		     ),
               person(given = "Chris", family = "Putman",
-                     role = c("aut"),
-		     comment = "author of the bibutils libraries") )
+                     role = c("aut", "cph"),
+		     comment = "author of the bibutils libraries, https://sourceforge.net/projects/bibutils/")
+		     )
 Description: Converts between a number of bibliography formats,
-    including BibTeX, BibLaTeX and Bibentry.  Includes a port of the
+    including 'BibTeX', 'BibLaTeX' and 'Bibentry'.  Includes a port of the
     'bibutils' utilities by Chris Putnam
     <https://sourceforge.net/projects/bibutils/>. Supports all
     bibliography formats and character encodings implemented in
