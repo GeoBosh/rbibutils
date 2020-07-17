@@ -1,6 +1,13 @@
-# rbibutils 1.0.1 (CRAN)
+# rbibutils 1.0.2 (CRAN)
 
-- clarify the copyright holders in DESCRIPTION
+- completed the copyright credits in DESCRIPTION (there were contributors not
+  mentioned anywhere except in the C source files they contributed).
+
+
+# rbibutils 1.0.1 
+
+- clarified the copyright holders in DESCRIPTION.
+
 
 # rbibutils 1.0.0 
 
