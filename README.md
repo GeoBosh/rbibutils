@@ -1,3 +1,4 @@
+[![CRANStatusBadge](http://www.r-pkg.org/badges/version/rbibutils)](https://cran.r-project.org/package=rbibutils)
 
 Convert bibliography files between various formats, including BibTeX, BibLaTeX
 and Bibentry. Includes an R port of the `bibutils` utilities.
@@ -5,35 +6,43 @@ and Bibentry. Includes an R port of the `bibutils` utilities.
 
 # Installing rbibutils
 
-Install the development version of `rbibutils` from Github:
+Install the  [latest stable version](https://cran.r-project.org/package=rbibutils) from CRAN:
+
+    install.packages("rbibutils")
+
+You can also install the [development version](https://github.com/GeoBosh/rbibutils) of `rbibutils` from Github:
 
     library(devtools)
     install_github("GeoBosh/rbibutils")
+
 
 
 # Overview
 
 Convert bibliography files between various formats.  All formats supported by
 the `bibutils` utilities are available.  In addition, conversion from and to
-`bibentry`, (the R native representation based on Bibtex, is supported.
+`bibentry`, the R native representation based on Bibtex, is supported.
 
 The main function is `bibConvert()`. It takes an input bibliography file in one
 of the supported formats, converts its contents to another format, and writes
 the result to a file. All formats, except for `rds` (see below) are plain text
-files.
+files. `bibConvert()` tries to infer the input/output formats from the file
+extentions. There is ambiguity however about `bib` files, which can be either
+Bibtex or Biblatex. Bibtex is assumed if the format is not specified.
 
 The default encoding is UTF-8 for both, input and output. All encodings handled
-by `bibutils` are supported.
+by `bibutils` are supported. Besides UTF-8, these include `gb18030` (Chinese),
+ISO encodings such as `iso8859_1`, Windows code pages (e.g. `cp1251` for Windows
+Cyrillic) and many others. Common alternative names are also accepted
+(e.g. `latin1`).
 
 Bibentry objects can be input from an `R` source file or from an `rds` file. The
 `rds` file should contain a `bibentry` R object, saved from R with `saveRDS()`.
 The `rds` format is a compressed binary format`. Alternatively, an R source file
-can contain one or more bibentry instructions and maybe other commands can be used.
+containing one or more bibentry instructions and maybe other commands can be used.
 The R file is sourced and all bibentry objects created by it are collected. 
 
-`bibConvert()` tries to infer the input/output formats from the file
-extentions. There is ambiguity however about `bib` files, which can be either
-Bibtex or Biblatex. Bibtex is assumed if the format is not specified.
+
 
 # Examples:
 

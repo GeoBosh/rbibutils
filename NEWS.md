@@ -1,3 +1,10 @@
+# rbibutils 1.0.3
+
+- fix typo's in the documentation.
+
+- update website.
+
+
 # rbibutils 1.0.2 (CRAN)
 
 - completed the copyright credits in DESCRIPTION (there were contributors not

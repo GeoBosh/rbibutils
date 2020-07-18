@@ -11,10 +11,11 @@
 \details{
 
   Package \pkg{rbibutils} provides an \R port of the \code{bibutils}
-  programs. The main function, \code{bibConvert}, offers all conversions
-  between bibliography formats supported by library \code{bibutils}.  In
-  addition, package \pkg{rbibutils} converts to and from \R's
-  \code{bibentry} Bibtex-based bibliography format.
+  programs plus additional facilities. The main function,
+  \code{bibConvert}, offers all conversions between bibliography formats
+  supported by library \code{bibutils}.  In addition, package
+  \pkg{rbibutils} converts to and from \R's \code{bibentry} Bibtex-based
+  bibliography format.
 
   The core functionality is provided by the \code{bibutils} programs
   which convert between various bibliography formats using a common MODS
@@ -55,7 +56,7 @@
 \note{
 
   The \code{bibutils} library is included in a number of software
-  packages. Thesinclude include pandocand a library for
+  packages. These include include pandoc and a library for
   Haskell. Executable programs for conversion are available for Linux
   distributions but seem not easily available for Windows. Executable
   and libraries can also be generated out-of-the-box from the
