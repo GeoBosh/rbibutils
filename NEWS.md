@@ -1,12 +1,12 @@
 # rbibutils 1.0.3
 
-- in `adsout.c`, fixed several (what looked like) typo's in `else if`
-  clauses. One was always evaluating to `false`, the rest always to `true`. This
-  was raising warnings on CRAN's tests with `clang` on Linux.
+- fixed warnings from `clang` compilers on CRAN. (These were about tautology
+  `if` clauses in `src/adsout.c` and default argument promotion of the second
+  argument in a couple of invocations of `va_start` in `src/modsout.c`).
 
-- fix typo's in the documentation.
+- fixed typo's in the documentation.
 
-- update website.
+- updated the website.
 
 
 # rbibutils 1.0.2 (CRAN)
@@ -33,10 +33,3 @@ Features of this version:
 
 - in addition, supports conversions of the above formats from/to `bibentry` R
   source files or `rds` objects.
-
-
-
-     adsout.c:433:24: warning: overlapping comparisons always evaluate to false [-Wtautological-overlap-compare]
-     adsout.c:426:24: warning: overlapping comparisons always evaluate to true [-Wtautological-overlap-compare]
-     adsout.c:413:24: warning: overlapping comparisons always evaluate to true [-Wtautological-overlap-compare]
-     adsout.c:400:24: warning: overlapping comparisons always evaluate to true [-Wtautological-overlap-compare]

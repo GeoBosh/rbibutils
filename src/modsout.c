@@ -131,7 +131,9 @@ output_tag_core( FILE *outptr, int nindents, char *tag, char *data, unsigned cha
  * will be output in the tag
  */
 static void
-output_tag( FILE *outptr, int nindents, char *tag, char *value, unsigned char mode, unsigned char newline, ... )
+// (Georgi) changing the type of 'newline' to int
+// output_tag( FILE *outptr, int nindents, char *tag, char *value, unsigned char mode, unsigned char newline, ... )
+output_tag( FILE *outptr, int nindents, char *tag, char *value, unsigned char mode, int newline, ... )
 {
 	va_list attrs;
 
@@ -150,7 +152,9 @@ output_tag( FILE *outptr, int nindents, char *tag, char *value, unsigned char mo
  * value looked up in fields will only be used in mode TAG_OPENCLOSE
  */
 static void
-output_fil( FILE *outptr, int nindents, char *tag, fields *f, int n, unsigned char mode, unsigned char newline, ... )
+// (Georgi) changing the type of 'newline' to int
+// output_fil( FILE *outptr, int nindents, char *tag, fields *f, int n, unsigned char mode, unsigned char newline, ... )
+output_fil( FILE *outptr, int nindents, char *tag, fields *f, int n, unsigned char mode, int newline, ... )
 {
 	va_list attrs;
 	char *value;

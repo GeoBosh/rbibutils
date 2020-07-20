@@ -2,20 +2,20 @@ Package: rbibutils
 Type: Package
 Title: Convert Between Bibliography Formats
 Version: 1.0.3
-Date: 2020-07-17
+Date: 2020-07-20
 Authors@R: c( person(given = c("Georgi", "N."), family = "Boshnakov", 
-                     role = c("aut", "cre", "cph"), 	
+                     role = c("aut", "cre"), 	
                      email = "georgi.boshnakov@manchester.ac.uk",
 		     comment = "R port, modifications to bibutils' C code"
 		     ),
               person(given = "Chris", family = "Putman",
-                     role = c("aut", "cph"),
+                     role = "aut",
 		     comment = "src/*, author of the bibutils libraries, https://sourceforge.net/projects/bibutils/"),
               person(given = "Richard", family = "Mathar",
-                     role = c("ctb", "cph"),
+                     role = "ctb",
 		     comment = "src/addsout.c"),
               person(given = "Johannes", family = "Wilm",
-                     role = c("ctb", "cph"),
+                     role = "ctb",
 		     comment = "src/biblatexin.c, src/bltypes.c")
 		     )
 Description: Converts between a number of bibliography formats,
