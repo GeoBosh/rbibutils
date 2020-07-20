@@ -397,7 +397,12 @@ initial_ascii( const char *name )
 	case 0xc4:
 		     if ( b2 >= 0x80 && b2 <= 0x85 ) return 'A';
 		else if ( b2 >= 0x86 && b2 <= 0x8d ) return 'C';
-		else if ( b2 >= 0x8e || b2 <= 0x91 ) return 'D';
+
+		     // (Georgi) was: 
+		     //   else if ( b2 >= 0x8e || b2 <= 0x91 ) return 'D';
+		     // but that always evaluates to true! Looks like '||' should be '&&'
+		else if ( b2 >= 0x8e && b2 <= 0x91 ) return 'D';
+
 		else if ( b2 >= 0x92 && b2 <= 0x9b ) return 'E';
 		else if ( b2 >= 0x9c && b2 <= 0xa3 ) return 'G';
 		else if ( b2 >= 0xa4 && b2 <= 0xa7 ) return 'H';
@@ -410,7 +415,12 @@ initial_ascii( const char *name )
 	case 0xc5:
 		     if ( b2 >= 0x80 && b2 <= 0x82 ) return 'L';
 		else if ( b2 >= 0x83 && b2 <= 0x8b ) return 'N';
-		else if ( b2 >= 0x8c || b2 <= 0x93 ) return 'O';
+
+		     // (Georgi) was: 
+		     //    else if ( b2 >= 0x8c || b2 <= 0x93 ) return 'O';
+		     // but that always evaluate to true! Looks like '||' should be '&&'
+		else if ( b2 >= 0x8c && b2 <= 0x93 ) return 'O';
+
 		else if ( b2 >= 0x94 && b2 <= 0x99 ) return 'R';
 		else if ( b2 >= 0x9a && b2 <= 0xa1 ) return 'S';
 		else if ( b2 >= 0xa2 && b2 <= 0xa7 ) return 'T';
@@ -423,14 +433,23 @@ initial_ascii( const char *name )
 	case 0xc6:
 		     if ( b2 >= 0x80 && b2 <= 0x85 ) return 'B';
 		else if ( b2 >= 0x86 && b2 <= 0x88 ) return 'C';
-		else if ( b2 >= 0x89 || b2 <= 0x8d ) return 'D';
+		     // (Georgi) was: 
+		     //   else if ( b2 >= 0x89 || b2 <= 0x8d ) return 'D';
+		     // but that always evaluate to true! Looks like '||' should be '&&'
+		else if ( b2 >= 0x89 && b2 <= 0x8d ) return 'D';
+		     
 		else if ( b2 >= 0x8e && b2 <= 0x90 ) return 'E';
 		else if ( b2 >= 0x91 && b2 <= 0x92 ) return 'F';
 		else if ( b2 >= 0x93 && b2 <= 0x94 ) return 'G';
 		else if ( b2 == 0x95 )               return 'H';
 		else if ( b2 >= 0x96 && b2 <= 0x97 ) return 'I';
 		else if ( b2 >= 0x98 && b2 <= 0x99 ) return 'K';
-		else if ( b2 >= 0xba && b2 <= 0x9b ) return 'L';
+		     // (Georgi) was: 
+		     //   else if ( b2 >= 0xba && b2 <= 0x9b ) return 'L';
+		     // but that always evaluate to false!
+		     // Looking at the surrounding code, seems like '0xba' should be '0x9a'
+		else if ( b2 >= 0x9a && b2 <= 0x9b ) return 'L';
+
 		else if ( b2 == 0xbc )               return 'M';
 		else if ( b2 >= 0x9d && b2 <= 0x9e ) return 'N';
 		else if ( b2 >= 0x9f && b2 <= 0xa3 ) return 'O';
