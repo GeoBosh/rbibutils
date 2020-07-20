@@ -1,4 +1,4 @@
-# rbibutils 1.0.3
+# rbibutils 1.0.3 (CRAN)
 
 - fixed warnings from `clang` compilers on CRAN. (These were about tautology
   `if` clauses in `src/adsout.c` and default argument promotion of the second
