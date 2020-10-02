@@ -8,5 +8,6 @@ import(xml2)
 ## exportPattern("^[[:alpha:]]+")
 
 export(
-    bibConvert
+    bibConvert,
+    readBib
     )

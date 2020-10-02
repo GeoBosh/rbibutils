@@ -299,3 +299,17 @@ writeBibentry <- function(be, file){
     sink()
     NULL
 }
+
+
+readBib <- function(file, encoding){
+    rds <- tempfile(fileext = ".rds")
+    if(encoding == "UTF-8")
+        encoding = "utf8"
+    
+    be <- bibConvert(file, rds, "bibtex",
+            "bibentry", encoding = c(encoding, "utf8"), tex = "no_latex")
+    res <- readRDS(rds)
+    unlink(rds)
+
+    res
+}

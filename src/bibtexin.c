@@ -682,6 +682,7 @@ bibtex_cleanvalue( str *value )
 	str parsed;
 
 	str_init( &parsed );
+// REprintf("before clean: %s\n", value->data);
 
 	status = latex_parse( value, &parsed );
 	if ( status!=BIBL_OK ) goto out;
@@ -689,6 +690,8 @@ bibtex_cleanvalue( str *value )
 	str_strcpy( value, &parsed );
 	if ( str_memerr( value ) ) status = BIBL_ERR_MEMERR;
 
+// REprintf("after clean: %s\n", value->data);
+	
 out:
 	str_free( &parsed );
 	return status;
@@ -739,18 +742,33 @@ bibtex_person_tokenize( fields *bibin, int m, param *pm, slist *tokens )
 	int i, ok, status;
 	str *s;
 
+// REprintf("person!\n");
 	status = latex_tokenize( tokens, fields_value( bibin, m, FIELDS_STRP ) );
 	if ( status!=BIBL_OK ) return status;
 
+	
 	for ( i=0; i<tokens->n; ++i ) {
 
 		s = slist_str( tokens, i );
 
+		// Georgi: removing since changes latex characters to unicode
+		//         in names, see comments in bibtexin_cleanref() (in bibtexin.c
+		//    TODO: check if this causes bad side effects, ideally correct
+		//
+		// Reinstating this, bad side effects
 		status = bibtex_cleanvalue( s );
 		if ( status!=BIBL_OK ) return status;
 
-		ok = str_convert( s, pm->charsetin,  1, pm->utf8in,  pm->xmlin,
-		                     pm->charsetout, 0, pm->utf8out, pm->xmlout );
+		// !!! Georgi: conversion is here!
+		// !!!
+		// REprintf("\ns before str_convert: %s\n", s->data);
+		  ok = str_convert( s, pm->charsetin,  1, pm->utf8in,  pm->xmlin,
+				    // Georgi: change arg. latexout to 1
+				    // TODO: make it argument to this function?
+				    //       it should depend on --no-latex
+				    // v1.3 - restoring latexout to 0
+				    pm->charsetout, 0, pm->utf8out, pm->xmlout );
+		  // REprintf("s after str_convert: %s\n", s->data);
 		if ( !ok ) return BIBL_ERR_MEMERR;
 
 	}
@@ -769,6 +787,7 @@ bibtex_person_add_names( fields *bibin, int m, slist *tokens )
 	int begin, end, ok, n, etal;
 
 	etal = name_findetal( tokens );
+// REprintf("person_add_names!\n");
 
 	begin = 0;
 	n = tokens->n - etal;
@@ -810,6 +829,7 @@ bibtexin_person( fields *bibin, int m, param *pm )
 {
 	int status, match = 0;
 	slist tokens;
+// REprintf("bibtexin_person!\n");
 
 	status = bibtex_matches_asis_or_corps( bibin, m, pm, &match );
 	if ( status!=BIBL_OK || match==1 ) return status;
@@ -838,45 +858,99 @@ bibtexin_cleanref( fields *bibin, param *pm )
 	intlist_init( &toremove );
 
 	n = fields_num( bibin );
+// REprintf("n = %d\n", n);
 
+	  // REprintf("n = %d\n" , n);
+	  // for(i = 0; i < n; i++) {
+	  //   REprintf("i = %d, value = %s\n", i, (bibin->value[i]).data);
+	  // }
+	  
+
+ 
 	for ( i=0; i<n; ++i ) {
 
 		tag = fields_tag( bibin, i, FIELDS_STRP_NOUSE );
+// REprintf("\ntag = %s\n", tag->data);
 		if ( is_url_tag( tag ) ) continue; /* protect url from parsing */
 
 		/* Georgi:  protecting names, otherwise havoc ensues if the input is 
                             in a different encoding; 
                        TODO: test side effects of doing this.
 		   delay names from undergoing any parsing */
-		if ( is_name_tag( tag ) ) return BIBL_OK;
-		
+		/* 2020-09-26: but names need parsing since there may be more than one!
+                       Commenting out to process properly names fields
+
+                       TODO: return to this and check again!
+                            I commented this out because of encodings - do tests!
+                       Amendment: run the nex two lines  but only if tag is not names tag
+                        (actually, moved them to the else part)
+		 */
+		// if ( is_name_tag( tag ) ) return BIBL_OK;
+		// if ( !is_name_tag( tag ) ){
 		value = fields_value( bibin, i, FIELDS_STRP_NOUSE );
 		if ( str_is_empty( value ) ) continue;
 
+		// }
 		if ( is_name_tag( tag ) ) {
 			status = bibtexin_person( bibin, i, pm );
+// REprintf("i = %d\n", i);
+// REprintf("value = %s\n", (bibin->value[i]).data);
+ 
 			if ( status!=BIBL_OK ) goto out;
 
 			fstatus = intlist_add( &toremove, i );
 			if ( fstatus!=INTLIST_OK ) { status = BIBL_ERR_MEMERR; goto out; }
+// REprintf("nout = %d\n" , fields_num( bibin ));
+                        // goto out;
 		}
 
-		else {
-			status = bibtex_cleanvalue( value );
-			if ( status!=BIBL_OK ) goto out;
-		}
+		// else {
+                // //         // REprintf("i = %d, value = %s\n", i, (bibin->value[i]).data);
+		// // 
+                //          value = fields_value( bibin, i, FIELDS_STRP_NOUSE );
+		//          if ( str_is_empty( value ) ) continue;
+		// // 
+                // //         // Georgi: bibtex_cleanvalue() drops $, {, }, for now just skip it
+                // //         //   TODO: fix bibtex_cleanvalue() to not do that when not necessary 
+		// // 	// // REprintf("i = %d, value = %s\n", i, value->data);
+		// //         // status = bibtex_cleanvalue( value );
+		// // 	// // REprintf("i = %d, value = %s\n", i, (bibin->value[i]).data);
+		// // 	// if ( status!=BIBL_OK ) goto out;
+		// }
 
 	}
 
+
+	// int nout = fields_num( bibin );
+	// if(nout > n) {
+	//   REprintf("nout = %d\n" , nout);
+	//   for(i = 0; i < nout; i++) {
+	//     REprintf("i = %d, value = %s\n", i, (bibin->value[i]).data);
+	//   }
+	//   
+	// }
+
+	
 	for ( i=toremove.n-1; i>=0; i-- ) {
 		fstatus = fields_remove( bibin, intlist_get( &toremove, i ) );
 		if ( fstatus!=FIELDS_OK ) { status = BIBL_ERR_MEMERR; goto out; }
 	}
 
+	
 out:
 
 	intlist_free( &toremove );
 
+	
+	// nout = fields_num( bibin );
+	// if(nout > n) {
+	//   REprintf("nout = %d\n" , nout);
+	//   for(i = 0; i < nout; i++) {
+	//     REprintf("i = %d, value = %s\n", i, (bibin->value[i]).data);
+	//   }
+	//   
+	// }
+	
 	return status;
 }
 

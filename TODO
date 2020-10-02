@@ -1,3 +1,10 @@
+- 2020-09-27
+
+  In bibtex import, mathematial formulas are exported without the enclosing dollars for
+  entries coming before field AUTHORS. If field AUTHORS is the first in a reference item
+  there is no problem.
+
+
 
 - 2020-06-27
 

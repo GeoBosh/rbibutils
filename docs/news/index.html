@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rbibutils</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3</span>
       </span>
     </div>
 
@@ -114,6 +114,44 @@
       <small>Source: <a href='https://github.com/GeoBosh/rbibutils/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="rbibutils-13" class="section level1">
+<h1 class="page-header" data-toc-text="1.3">
+<a href="#rbibutils-13" class="anchor"></a>rbibutils 1.3<small> Unreleased </small>
+</h1>
+<ul>
+<li><p>reverted a change in v1.2 which caused trouble with some latex characters.</p></li>
+<li><p>trim white space in cite keys and some others to avoid getting cite keys such as “abcd\n” (possible if the comma after the key is on a new line.</p></li>
+<li><p>new function <code>readBib</code> for importing a bibtex file.</p></li>
+</ul>
+</div>
+    <div id="rbibutils-121" class="section level1">
+<h1 class="page-header" data-toc-text="1.2.1">
+<a href="#rbibutils-121" class="anchor"></a>rbibutils 1.2.1<small> Unreleased </small>
+</h1>
+<ul>
+<li>improve processing of URL field when converting to bibentry.</li>
+</ul>
+</div>
+    <div id="rbibutils-12" class="section level1">
+<h1 class="page-header" data-toc-text="1.2">
+<a href="#rbibutils-12" class="anchor"></a>rbibutils 1.2<small> Unreleased </small>
+</h1>
+<ul>
+<li><p>fixed inBook processing.</p></li>
+<li><p>fixed encoding bug introduced in v1.1.</p></li>
+<li><p>fixed misterous loss of <code><a href="https://rdrr.io/r/base/Extract.html">$</a></code>s and curly braces in certain circumstances.</p></li>
+</ul>
+</div>
+    <div id="rbibutils-110-cran" class="section level1">
+<h1 class="page-header" data-toc-text="1.1.0">
+<a href="#rbibutils-110-cran" class="anchor"></a>rbibutils 1.1.0 (CRAN)<small> 2020-09-27 </small>
+</h1>
+<ul>
+<li><p>fixed processing of multiple person names in bibtex import.</p></li>
+<li><p>mathematical formulas were wrongly exported without dollars in some cases.</p></li>
+<li><p>stopped printing some messages causing problems to Rdpack.</p></li>
+</ul>
+</div>
     <div id="rbibutils-103-cran" class="section level1">
 <h1 class="page-header" data-toc-text="1.0.3">
 <a href="#rbibutils-103-cran" class="anchor"></a>rbibutils 1.0.3 (CRAN)<small> 2020-07-20 </small>

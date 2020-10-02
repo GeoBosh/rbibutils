@@ -455,6 +455,46 @@ mods_relatedItem <- function(field){
                        res$publisher <- xml_text(publ)
                    
                },
+
+               "book" = { # new 2020-09-27
+                   res$booktitle = title
+                   #browser()
+                   res$bibtype <- "inBook"
+                   if("name" %in% nams){
+                       ## no, this doesn't work out of the box:
+                       ## res[["booktitle"]] <- process_mods(field)
+                       wrk <- process_mods(field)
+                       #browser()
+                       for(nam in names(wrk)){
+                           switch(nam,
+                               title = {
+                                   res[["booktitle"]] = wrk[["title"]]
+                               },
+                               persons = { # TODO: does this case happen anymore?
+                                   res[["editor"]] = wrk[["persons"]]
+                               },
+                               author = {
+                                   ## treat like collection
+                                   res[["editor"]] = wrk[["author"]]
+                               },
+                               bibtype = {
+                                   "" # do nothing
+                               },
+                               ##default
+                               res[[nam]] <- wrk[[nam]]
+                           )
+
+                       }
+                   }
+                   publ <- xml_find_first(field, ".//publisher")
+                   if(!is.na(publ))
+                       res$publisher <- xml_text(publ)
+                   
+               },
+               
+
+
+               
                "conference publication" = {
                    res$booktitle = title
                    res$bibtype = "InProceedings"
@@ -502,13 +542,17 @@ mods_location <- function(field){
     kids <- xml_children(field)
     nams <- xml_name(kids)
     txt <- xml_text(kids)
-    res <- sapply(seq_along(nams),
-                  function(i) switch(nams[i],
-                                     "url" = paste0("\\url{", txt[i], "}"),
-                                     ## default
-                                     txt[i] )
-                  )
-    paste(res, collapse = " ")
+    if(length(nams) == 1  &&  nams == "url"){
+        c(url = txt[1])
+    } else {
+        wrk <- sapply(seq_along(nams),
+                      function(i) switch(nams[i],
+                                         "url" = paste0("\\url{", txt[i], "}"),
+                                         ## default
+                                         txt[i] )
+                      )
+        paste(wrk, collapse = " ")
+    }
 }
 
 mods_identifier <- function(field){
@@ -534,7 +578,7 @@ mods_identifier <- function(field){
            lccn = ,         
            accessnum = 
                {
-                   structure(xml_text(field), names = field.type)
+                   structure(trimws(xml_text(field)), names = field.type)
                },
            "serial number" = 
                {
@@ -543,7 +587,7 @@ mods_identifier <- function(field){
                },
            {
                ## default
-               message("unknown type '", field.type, "' of 'identifier'")
+               ## message("unknown type '", field.type, "' of 'identifier'")
                character(0)
            }
            )
@@ -687,6 +731,8 @@ process_mods <- function(modsbib){
                     res[[fieldname]] <- wrk
                 else ## must be 'list'
                     res[names(wrk)] <- wrk
+
+                #browser()
                     
             },
             "identifier" = {
@@ -695,7 +741,13 @@ process_mods <- function(modsbib){
                     res[[s]] <- wrk[[s]]
             },
             "location" = {
-                res[["howpublished"]] <- mods_location(field)
+                wrk <- mods_location(field)
+
+                wrknames <- names(wrk)
+                if(!is.null(wrknames) && length(wrknames) == 1 && wrknames == "url")
+                    res[["url"]] <- wrk
+                else
+                    res[["howpublished"]] <- wrk
             },
             "part" = {
                 part_personal <- person()

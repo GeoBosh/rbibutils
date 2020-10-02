@@ -88,7 +88,9 @@ build_latex_graph_r( str *in, unsigned long *offset, int *mathmode, int depth, l
 	p = str_cstr( in ) + *offset;
 
 	while ( *p ) {
+	  
 		if ( is_unescaped( p, offset, '{' ) ) {
+		  // REprintf("unescaped {\n");
 			*offset += 1;
 			newnode = latex_node_new();
 			if ( !newnode ) { status = BIBL_ERR_MEMERR; goto out; }
@@ -102,6 +104,7 @@ build_latex_graph_r( str *in, unsigned long *offset, int *mathmode, int depth, l
 			p = str_cstr( in ) + *offset;
 		}
 		else if ( is_unescaped( p, offset, '}' ) ) {
+		  // REprintf("unescaped }\n");
 			*offset += 1;
 			if ( depth==0 ) {
 				REprintf( "Unmatched '}' character in LaTeX encoding '%s'.\n", str_cstr( in ) );
@@ -111,9 +114,12 @@ build_latex_graph_r( str *in, unsigned long *offset, int *mathmode, int depth, l
 			goto out;
 		}
 		else if ( is_unescaped( p, offset, '$' ) ) {
+		  // REprintf("unescaped $ ");
+ 
 			*mathmode = !(*mathmode);
 			*offset += 1;
 			if ( *mathmode ) {
+			  // REprintf("mathmode!\n");
 				newnode = latex_node_new();
 				if ( !newnode ) { status = BIBL_ERR_MEMERR; goto out; }
 				newedge->next_node = newnode;
@@ -126,6 +132,7 @@ build_latex_graph_r( str *in, unsigned long *offset, int *mathmode, int depth, l
 				p = str_cstr( in ) + *offset;
 			}
 			else {
+			  // REprintf("not mathmode!\n");
 				if ( depth==0 ) {
 					REprintf( "Unmatched '$' character in LaTeX encoding '%s'.\n", str_cstr( in ) );
 					p++;
