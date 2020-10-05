@@ -316,7 +316,7 @@ bibl_verbose_reference( fields *f, char *filename, long refnum )
 			fields_level( f, i ) );
 	  REprintf( "    \n" );
 	  unsigned char *val = (unsigned char*) fields_value( f, i, FIELDS_CHRP_NOUSE );
-	  int len = strlen(val);
+	  int len = strlen((const char *)val);
 	  for(int j = 0; j < len ; j++){
 	    REprintf(" %x", val[j]);
 	  }
