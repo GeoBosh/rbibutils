@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rbibutils</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.1</span>
       </span>
     </div>
 
@@ -114,13 +114,22 @@
       <small>Source: <a href='https://github.com/GeoBosh/rbibutils/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="rbibutils-131" class="section level1">
+<h1 class="page-header" data-toc-text="1.3.1">
+<a href="#rbibutils-131" class="anchor"></a>rbibutils 1.3.1<small> Unreleased </small>
+</h1>
+<ul>
+<li><p>somehow <code>README.md</code> went missing in v1.3, now reinstated.</p></li>
+<li><p>fixed a compiler warning about a pointer differing in signedness from the expected type (reported by Patrice Kiener).</p></li>
+</ul>
+</div>
     <div id="rbibutils-13" class="section level1">
 <h1 class="page-header" data-toc-text="1.3">
-<a href="#rbibutils-13" class="anchor"></a>rbibutils 1.3<small> Unreleased </small>
+<a href="#rbibutils-13" class="anchor"></a>rbibutils 1.3<small> 2020-10-05 </small>
 </h1>
 <ul>
 <li><p>reverted a change in v1.2 which caused trouble with some latex characters.</p></li>
-<li><p>trim white space in cite keys and some others to avoid getting cite keys such as “abcd\n” (possible if the comma after the key is on a new line.</p></li>
+<li><p>trimmed white space in cite keys and some others to avoid getting cite keys containing the newline character (possible if the comma after the key is on a new line).</p></li>
 <li><p>new function <code>readBib</code> for importing a bibtex file.</p></li>
 </ul>
 </div>
