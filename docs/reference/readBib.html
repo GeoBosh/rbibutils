@@ -120,7 +120,9 @@
     <p>Import bibtex files.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>readBib</span>(<span class='no'>file</span>, <span class='no'>encoding</span>)</pre>
+    <pre class="usage"><span class='fu'>readBib</span>(<span class='no'>file</span>, <span class='no'>encoding</span>)
+
+<span class='fu'>writeBib</span>(<span class='no'>object</span>, <span class='kw'>con</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/showConnections.html'>stdout</a></span>(), <span class='kw'>append</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -132,6 +134,18 @@
     <tr>
       <th>encoding</th>
       <td><p>the encoding of <code>file</code>, a character string.</p></td>
+    </tr>
+    <tr>
+      <th>object</th>
+      <td></td>
+    </tr>
+    <tr>
+      <th>con</th>
+      <td><p>filename (a character string) or a text connection</p></td>
+    </tr>
+    <tr>
+      <th>append</th>
+      <td><p>if <code>TRUE</code> append to the file.</p></td>
     </tr>
     </table>
 
@@ -150,6 +164,23 @@
 
     <div class='dont-index'><p><code><a href='bibConvert.html'>bibConvert</a></code></p></div>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='co'>## create a bibentry object</span>
+<span class='no'>bibs</span> <span class='kw'>&lt;-</span> <span class='fu'>readBib</span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"REFERENCES.bib"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"rbibutils"</span>),
+                <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"UTF-8"</span>)</div><div class='output co'>#&gt; 
+#&gt; count_type:
+#&gt; 
+#&gt;  no_type not_char   Manual     Misc  Article 
+#&gt;        0        0        1        1        1 
+#&gt; 
+#&gt; </div><div class='input'><span class='co'>## write bibs to a file</span>
+<span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".bib"</span>)
+<span class='fu'>writeBib</span>(<span class='no'>bibs</span>, <span class='no'>fn</span>)
+
+<span class='co'>## see the contents of the file</span>
+<span class='fu'><a href='https://rdrr.io/r/base/file.show.html'>file.show</a></span>(<span class='no'>fn</span>) <span class='co'># or: readLines(fn)</span>
+
+<span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span>(<span class='no'>fn</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
