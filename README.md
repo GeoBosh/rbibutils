@@ -1,4 +1,5 @@
 [![CRANStatusBadge](http://www.r-pkg.org/badges/version/rbibutils)](https://cran.r-project.org/package=rbibutils)
+[![CRAN RStudio mirror downloads](https://cranlogs.r-pkg.org/badges/rbibutils)](https://www.r-pkg.org/pkg/rbibutils)
 
 Convert bibliography files between various formats, including BibTeX, BibLaTeX
 and Bibentry. Includes an R port of the `bibutils` utilities.
