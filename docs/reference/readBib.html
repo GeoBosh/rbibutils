@@ -153,13 +153,12 @@
 
     
 
-<p>Reads a bibtex file and converts the result to <code>bibentry</code>.</p>
+<p>Read a bibtex file and convert the result to <code>bibentry</code> or write
+  a <code>bibentry</code> to a bibtex file.</p>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a <code>bibentry</code> object</p>
-    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
-
-    <p>This function is experimental and should be considered internal.</p>
+    <p>for <code>readBib</code>, a <code>bibentry</code> object</p>
+<p>for <code>readBib</code>, the <code>bibentry</code> object (invisibly)</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='bibConvert.html'>bibConvert</a></code></p></div>
@@ -178,8 +177,32 @@
 <span class='fu'>writeBib</span>(<span class='no'>bibs</span>, <span class='no'>fn</span>)
 
 <span class='co'>## see the contents of the file</span>
-<span class='fu'><a href='https://rdrr.io/r/base/file.show.html'>file.show</a></span>(<span class='no'>fn</span>) <span class='co'># or: readLines(fn)</span>
-
+<span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span>(<span class='no'>fn</span>) <span class='co'># or: file.show(fn)</span></div><div class='output co'>#&gt;  [1] "@Manual{Rpackage:bibtex,"                                                      
+#&gt;  [2] "  author = {Romain Francois},"                                                 
+#&gt;  [3] "  title = {bibtex: bibtex parser},"                                            
+#&gt;  [4] "  year = {2014},"                                                              
+#&gt;  [5] "  note = {R package version 0.4.0},"                                           
+#&gt;  [6] "  citekey = {Rpackage:bibtex},"                                                
+#&gt;  [7] "}"                                                                             
+#&gt;  [8] ""                                                                              
+#&gt;  [9] "@Misc{Rpackage:Rdpack,"                                                        
+#&gt; [10] "  author = {Georgi N Boshnakov},"                                              
+#&gt; [11] "  title = {{Rdpack}: Update and Manipulate Rd Documentation Objects},"         
+#&gt; [12] "  year = {2020},"                                                              
+#&gt; [13] "  note = {R package version 2.0.0},"                                           
+#&gt; [14] "  citekey = {Rpackage:Rdpack},"                                                
+#&gt; [15] "  doi = {10.5281/zenodo.3925612},"                                             
+#&gt; [16] "}"                                                                             
+#&gt; [17] ""                                                                              
+#&gt; [18] "@Article{Rpackage:RefManageR,"                                                 
+#&gt; [19] "  author = {Mathew William McLean},"                                           
+#&gt; [20] "  title = {RefManageR: Import and Manage BibTeX and BibLaTeX References in R},"
+#&gt; [21] "  year = {2017},"                                                              
+#&gt; [22] "  genre = {academic journal},"                                                 
+#&gt; [23] "  journal = {The Journal of Open Source Software},"                            
+#&gt; [24] "  citekey = {Rpackage:RefManageR},"                                            
+#&gt; [25] "  doi = {10.21105/joss.00338},"                                                
+#&gt; [26] "}"                                                                             </div><div class='input'>
 <span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span>(<span class='no'>fn</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
