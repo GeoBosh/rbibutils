@@ -46,7 +46,7 @@ fn <- tempfile(fileext = ".bib")
 writeBib(bibs, fn)
 
 ## see the contents of the file
-file.show(fn) # or: readLines(fn)
+readLines(fn) # or: file.show(fn)
 
 unlink(fn)
 }
