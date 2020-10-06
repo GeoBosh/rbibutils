@@ -1,4 +1,10 @@
+^revdep$
+^.*\.rds$
+^auto$
+.rsync_exclude
 .emacs\.desktop
 .emacs\.desktop\.lock
 .*_removed$
 ^data-raw$
+^Org$
+^docs$
