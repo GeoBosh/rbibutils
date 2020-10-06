@@ -9,5 +9,6 @@ import(xml2)
 
 export(
     bibConvert,
-    readBib
+    readBib,
+    writeBib
     )

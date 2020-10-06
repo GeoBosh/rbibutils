@@ -4,9 +4,11 @@
 
 - fixed a compiler warning about a pointer differing in
   signedness from the expected type (reported by Patrice Kiener).
-  
 
-# rbibutils 1.3
+- new function `writeBib` for writing bibtex files.
+
+
+# rbibutils 1.3 (CRAN)
 
 - reverted a change in v1.2 which caused trouble with some latex characters.
 
@@ -14,7 +16,7 @@
   containing the newline character (possible if the comma after the key is on a
   new line).
 
-- new function `readBib` for importing a bibtex file.
+- new function `readBib` for importing bibtex files.
 
 
 # rbibutils 1.2.1
