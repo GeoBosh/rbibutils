@@ -7,6 +7,8 @@
 
 - new function `writeBib` for writing bibtex files.
 
+- improve processing of entries for theses/dissertations.
+
 
 # rbibutils 1.3 (CRAN)
 

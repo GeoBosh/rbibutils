@@ -384,7 +384,7 @@ mods_genre <- function(field){
             list(bibtype ="TechReport", type = type)
         else if(lotype == "m.sc. thesis")
             list(bibtype = "MastersThesis", type = type)
-        else if(grepl(" thesis" , lotype))
+        else if(grepl("[ {]thesis" , lotype))
             list(bibtype = "PhdThesis", type = type)
         else if(lotype %in% c("section", "chapter"))
             ## can't tell the type from "genre" here
