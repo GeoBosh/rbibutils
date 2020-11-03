@@ -1,5 +1,8 @@
 # rbibutils 1.3.1
 
+- fixed erroneous processing of PhD thesis bib entries with some values of field `type`.
+  (reported by Kisung You for `Rdpack`, issue #17).
+
 - somehow `README.md` went missing in v1.3, now reinstated.
 
 - fixed a compiler warning about a pointer differing in
@@ -7,7 +10,6 @@
 
 - new function `writeBib` for writing bibtex files.
 
-- improve processing of entries for theses/dissertations.
 
 
 # rbibutils 1.3 (CRAN)

@@ -24,7 +24,7 @@ writeBib(object, con = stdout(), append = FALSE)
 \value{
   for \code{readBib}, a \code{bibentry} object
 
-  for \code{readBib}, the \code{bibentry} object (invisibly)
+  for \code{writeBib}, the \code{bibentry} object (invisibly)
 }
 % \references{
 % %% ~put references to the literature/web site here ~
