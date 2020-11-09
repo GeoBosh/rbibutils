@@ -1,4 +1,4 @@
-# rbibutils 1.4 (CRAN)
+# rbibutils 1.4.1
 
 - completely reimplemented the conversion to `bibentry` - now this is done
   entirely in `C` and it now has the same speed as the conversions to other
@@ -11,6 +11,9 @@
 
 - moved `xml2` to suggests, since it is now used only by the legacy code.
   Likely to be removed entirely in the future.
+
+
+# rbibutils 1.4 (CRAN)
 
 - new function `writeBib` for writing bibtex files.
 
