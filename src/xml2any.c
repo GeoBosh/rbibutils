@@ -399,6 +399,8 @@ xml2any_main( int *argc, char *argv[], char *outfile[], double *nref )
 	}else if(strcmp(progname, "xml2ads") == 0){
 	  adsout_initparams( &p, progname );
 	  // ihelp = 22;
+	}else if(strcmp(progname,  "xml2bibentry") == 0){
+	  bibentryout_initparams( &p, progname );
 	}else
 	  error("cannot deduce input format from name %s", progname);
 	

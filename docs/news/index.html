@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rbibutils</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.1</span>
       </span>
     </div>
 
@@ -116,9 +116,12 @@
 
     <div id="rbibutils-14-cran" class="section level1">
 <h1 class="page-header" data-toc-text="1.4">
-<a href="#rbibutils-14-cran" class="anchor"></a>rbibutils 1.4 (CRAN)<small> Unreleased </small>
+<a href="#rbibutils-14-cran" class="anchor"></a>rbibutils 1.4 (CRAN)<small> 2020-11-06 </small>
 </h1>
 <ul>
+<li><p>completely reimplemented the conversion to <code>bibentry</code> - now this is done entirely in <code>C</code> and it now has the same speed as the conversions to other bibliograthy formats.</p></li>
+<li><p>the R implementation of the conversion to <code>bibentry</code>, <code>rds</code>, etc., can be requested by adding suffix <code>_legacy</code> to the corresponding argument value or funaction name. It is likely that the legacy code will be removed in the future.</p></li>
+<li><p>moved <code>xml2</code> to suggests, since it is now used only by the legacy code. Likely to be removed entirely in the future.</p></li>
 <li><p>new function <code>writeBib</code> for writing bibtex files.</p></li>
 <li><p>fixed erroneous processing of PhD thesis bib entries with some values of field <code>type</code>. (reported by Kisung You for <code>Rdpack</code>, issue <a href='https://github.com/GeoBosh/rbibutils/issues/17'>#17</a>)</p></li>
 <li><p>fixed a compiler warning about a pointer differing in signedness from the expected type (reported by Patrice Kiener).</p></li>

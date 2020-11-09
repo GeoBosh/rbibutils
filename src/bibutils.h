@@ -1,7 +1,7 @@
 /*
  * bibutils.h
  *
- * Copyright (c) Chris Putnam 2005-2020
+ * Copyright (c) Chris Putnam 2005-2020, Georgi N. Boshnakov 2020
  *
  * Source code released under GPL version 2
  *
@@ -45,7 +45,8 @@ extern "C" {
 #define BIBL_ADSABSOUT    (BIBL_FIRSTOUT+6)
 #define BIBL_NBIBOUT      (BIBL_FIRSTOUT+7)
 #define BIBL_BIBLATEXOUT  (BIBL_FIRSTOUT+8)
-#define BIBL_LASTOUT      (BIBL_FIRSTOUT+8)
+#define BIBL_BIBENTRYOUT  (BIBL_FIRSTOUT+9) // Georgi
+#define BIBL_LASTOUT      (BIBL_FIRSTOUT+9) // Georgi
 
 #define BIBL_FORMAT_VERBOSE             (1)
 #define BIBL_FORMAT_BIBOUT_FINALCOMMA   (2)

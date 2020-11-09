@@ -75,7 +75,7 @@ Read a bibliography file in one of the supported formats, convert it
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rbibutils</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.1</span>
       </span>
     </div>
 
@@ -184,19 +184,20 @@ Read a bibliography file in one of the supported formats, convert it
   <code>"bibtex"</code>.</p>
 <p>Package <span class="pkg">rbibutils</span> supports format <code>"bibentry"</code>, in addition
   to the formats supported by the bibutils library. A <code>bibentry</code>
-  objects contains one or more references.  Two formats are supported
-  for <code>"bibentry"</code> for both input and output. A bibentry object
+  object contains one or more references.  Two formats are supported for
+  <code>"bibentry"</code> for both input and output. A bibentry object
   previously saved to a file using <code>saveRDS</code> (default extension
   <code>"rds"</code>) or an R source file containing one or more
   <code>bibentry</code> commands. The <code>"rds"</code> file is just read in and
   should contain a <code>bibentry</code> object.</p>
-<p>When <code>bibconvert</code> outputs to an R source file, there is one
-  <code>bibentry</code> call for each reference, just as in a Bibtex file,
-  each reference is a single entry. Such a file can be used as input to
-  <code>bibConvert</code>. For input <code>bibConvert</code> accepts also R code
-  containing additional instructions. The input file is (effectively)
-  <code>source</code>'d, all bibentry objects created by it are collected and
-  merged into a single <code>bibentry</code> object.</p>
+<p>When <code>bibconvert</code> outputs to an R source file (<code>outformat =
+  "R"</code>, there is one <code>bibentry</code> call for each reference, just as in
+  a Bibtex file, each reference is a single entry. Such a file can be
+  used as input to <code>bibConvert</code> (<code>informat = "R"</code>). For input
+  <code>bibConvert</code> accepts also R code containing additional
+  instructions. The input file is (effectively) <code>source</code>'d, all
+  bibentry objects created by it are collected and merged into a single
+  <code>bibentry</code> object.</p>
 <p>Note that when the input format and output format are identical, the
   conversion is not necessarilly a null operation (except for
   <code>xml</code>, and even that may change).  It should be remembered also
@@ -272,15 +273,15 @@ Read a bibliography file in one of the supported formats, convert it
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>fn_biblatex</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"bib"</span>, <span class='st'>"ex0.biblatex"</span>,  <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"rbibutils"</span>)
-<span class='no'>fn_biblatex</span></div><div class='output co'>#&gt; [1] "/tmp/Rtmp7Lwrpu/temp_libpatha732959f42b/rbibutils/bib/ex0.biblatex"</div><div class='input'><span class='co'>## file.show(fn_biblatex)</span>
+<span class='no'>fn_biblatex</span></div><div class='output co'>#&gt; [1] "/tmp/RtmpYfNliB/temp_libpath2090fdfb04a20/rbibutils/bib/ex0.biblatex"</div><div class='input'><span class='co'>## file.show(fn_biblatex)</span>
 
 <span class='co'>## convert a biblatex file to xml</span>
 <span class='no'>modl</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".xml"</span>)
 <span class='fu'>bibConvert</span>(<span class='kw'>infile</span> <span class='kw'>=</span> <span class='no'>fn_biblatex</span>, <span class='kw'>outfile</span> <span class='kw'>=</span> <span class='no'>modl</span>, <span class='kw'>informat</span> <span class='kw'>=</span> <span class='st'>"biblatex"</span>, <span class='kw'>outformat</span> <span class='kw'>=</span> <span class='st'>"xml"</span>)</div><div class='output co'>#&gt; $infile
-#&gt; [1] "/tmp/Rtmp7Lwrpu/temp_libpatha732959f42b/rbibutils/bib/ex0.biblatex"
+#&gt; [1] "/tmp/RtmpYfNliB/temp_libpath2090fdfb04a20/rbibutils/bib/ex0.biblatex"
 #&gt; 
 #&gt; $outfile
-#&gt; [1] "/tmp/RtmpaJ44FQ/file406736ec00ea.xml"
+#&gt; [1] "/tmp/RtmpWSMpyn/file2091496d84b325.xml"
 #&gt; 
 #&gt; $nref_in
 #&gt; [1] 3
@@ -293,10 +294,10 @@ Read a bibliography file in one of the supported formats, convert it
 <span class='no'>bib</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".bib"</span>)
 <span class='no'>bib2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".bib"</span>)
 <span class='fu'>bibConvert</span>(<span class='kw'>infile</span> <span class='kw'>=</span> <span class='no'>fn_biblatex</span>, <span class='kw'>outfile</span> <span class='kw'>=</span> <span class='no'>bib</span>, <span class='kw'>informat</span> <span class='kw'>=</span> <span class='st'>"biblatex"</span>, <span class='kw'>outformat</span> <span class='kw'>=</span> <span class='st'>"bib"</span>)</div><div class='output co'>#&gt; $infile
-#&gt; [1] "/tmp/Rtmp7Lwrpu/temp_libpatha732959f42b/rbibutils/bib/ex0.biblatex"
+#&gt; [1] "/tmp/RtmpYfNliB/temp_libpath2090fdfb04a20/rbibutils/bib/ex0.biblatex"
 #&gt; 
 #&gt; $outfile
-#&gt; [1] "/tmp/RtmpaJ44FQ/file40671b7a2185.bib"
+#&gt; [1] "/tmp/RtmpWSMpyn/file20914961bf90bb.bib"
 #&gt; 
 #&gt; $nref_in
 #&gt; [1] 3
@@ -307,19 +308,9 @@ Read a bibliography file in one of the supported formats, convert it
 
 <span class='co'>## convert a biblatex file to bibentry</span>
 <span class='no'>rds</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".rds"</span>)
-<span class='no'>fn_biblatex</span></div><div class='output co'>#&gt; [1] "/tmp/Rtmp7Lwrpu/temp_libpatha732959f42b/rbibutils/bib/ex0.biblatex"</div><div class='input'><span class='no'>rds</span></div><div class='output co'>#&gt; [1] "/tmp/RtmpaJ44FQ/file40675ebeb018.rds"</div><div class='input'><span class='no'>be</span> <span class='kw'>&lt;-</span> <span class='fu'>bibConvert</span>(<span class='no'>fn_biblatex</span>, <span class='no'>rds</span>, <span class='st'>"biblatex"</span>, <span class='st'>"bibentry"</span>)</div><div class='output co'>#&gt; 
-#&gt; count_type:
-#&gt; 
-#&gt;  no_type not_char  Article     Book 
-#&gt;        0        0        2        1 
-#&gt; 
-#&gt; </div><div class='input'><span class='no'>bea</span> <span class='kw'>&lt;-</span> <span class='fu'>bibConvert</span>(<span class='no'>fn_biblatex</span>, <span class='no'>rds</span>, <span class='st'>"biblatex"</span>) <span class='co'># same</span></div><div class='output co'>#&gt; 
-#&gt; count_type:
-#&gt; 
-#&gt;  no_type not_char  Article     Book 
-#&gt;        0        0        2        1 
-#&gt; 
-#&gt; </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/readRDS.html'>readRDS</a></span>(<span class='no'>rds</span>)</div><div class='output co'>#&gt; Beach CM, Davidson R (1983). “Distribution-free statistical inference
+<span class='no'>fn_biblatex</span></div><div class='output co'>#&gt; [1] "/tmp/RtmpYfNliB/temp_libpath2090fdfb04a20/rbibutils/bib/ex0.biblatex"</div><div class='input'><span class='no'>rds</span></div><div class='output co'>#&gt; [1] "/tmp/RtmpWSMpyn/file2091497972260d.rds"</div><div class='input'><span class='no'>be</span> <span class='kw'>&lt;-</span> <span class='fu'>bibConvert</span>(<span class='no'>fn_biblatex</span>, <span class='no'>rds</span>, <span class='st'>"biblatex"</span>, <span class='st'>"bibentry"</span>)
+<span class='no'>bea</span> <span class='kw'>&lt;-</span> <span class='fu'>bibConvert</span>(<span class='no'>fn_biblatex</span>, <span class='no'>rds</span>, <span class='st'>"biblatex"</span>) <span class='co'># same</span>
+<span class='fu'><a href='https://rdrr.io/r/base/readRDS.html'>readRDS</a></span>(<span class='no'>rds</span>)</div><div class='output co'>#&gt; Beach CM, Davidson R (1983). “Distribution-free statistical inference
 #&gt; with Lorenz curves and income shares.” _Review of Economic Studies_,
 #&gt; *50*, 723-735.
 #&gt; 
@@ -332,17 +323,11 @@ Read a bibliography file in one of the supported formats, convert it
 #&gt; Manchester.</div><div class='input'>
 <span class='co'>## convert to R source file</span>
 <span class='no'>r</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".R"</span>)
-<span class='fu'>bibConvert</span>(<span class='no'>fn_biblatex</span>, <span class='no'>r</span>, <span class='st'>"biblatex"</span>)</div><div class='output co'>#&gt; 
-#&gt; count_type:
-#&gt; 
-#&gt;  no_type not_char  Article     Book 
-#&gt;        0        0        2        1 
-#&gt; 
-#&gt; </div><div class='output co'>#&gt; $infile
-#&gt; [1] "/tmp/Rtmp7Lwrpu/temp_libpatha732959f42b/rbibutils/bib/ex0.biblatex"
+<span class='fu'>bibConvert</span>(<span class='no'>fn_biblatex</span>, <span class='no'>r</span>, <span class='st'>"biblatex"</span>)</div><div class='output co'>#&gt; $infile
+#&gt; [1] "/tmp/RtmpYfNliB/temp_libpath2090fdfb04a20/rbibutils/bib/ex0.biblatex"
 #&gt; 
 #&gt; $outfile
-#&gt; [1] "/tmp/RtmpaJ44FQ/file40674d477359.R"
+#&gt; [1] "/tmp/RtmpWSMpyn/file20914965cb99b3.R"
 #&gt; 
 #&gt; $nref_in
 #&gt; [1] 3
@@ -366,47 +351,37 @@ Read a bibliography file in one of the supported formats, convert it
 <span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span>(<span class='no'>r</span>), <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>"\n"</span>)</div><div class='output co'>#&gt; bibentry(bibtype = "Article",
 #&gt;          key = "beachanddavidson1983",
 #&gt;          author = c(person(given = c("Charles", "M"),
-#&gt;                            family = "Beach",
-#&gt;                            role = "aut"),
+#&gt;                            family = "Beach"),
 #&gt;                     person(given = "Russell",
-#&gt;                            family = "Davidson",
-#&gt;                            role = "aut")),
+#&gt;                            family = "Davidson")),
 #&gt;          title = "Distribution-free statistical inference with Lorenz curves and income shares",
-#&gt;          year = "1983",
-#&gt;          month = "02",
-#&gt;          genre = "periodical",
 #&gt;          journal = "Review of Economic Studies",
-#&gt;          citekey = "beachanddavidson1983",
+#&gt;          year = "1983",
+#&gt;          month = "Feb",
 #&gt;          volume = "50",
 #&gt;          pages = "723--735")
 #&gt; 
 #&gt; bibentry(bibtype = "Article",
 #&gt;          key = "beachandkaliski1986a",
 #&gt;          author = c(person(given = c("C", "M"),
-#&gt;                            family = "Beach",
-#&gt;                            role = "aut"),
+#&gt;                            family = "Beach"),
 #&gt;                     person(given = c("S", "F"),
-#&gt;                            family = "Kaliski",
-#&gt;                            role = "aut")),
+#&gt;                            family = "Kaliski")),
 #&gt;          title = "Lorenz curve inference with sample weights: an application to the distribution of unemployment experience",
-#&gt;          year = "1986",
-#&gt;          genre = "periodical",
 #&gt;          journal = "Appl. Statist.",
-#&gt;          citekey = "beachandkaliski1986a",
+#&gt;          year = "1986",
 #&gt;          volume = "35",
 #&gt;          pages = "38--45")
 #&gt; 
 #&gt; bibentry(bibtype = "Book",
 #&gt;          key = "lambert1993",
 #&gt;          author = person(given = c("Peter", "J"),
-#&gt;                          family = "Lambert",
-#&gt;                          role = "aut"),
+#&gt;                          family = "Lambert"),
 #&gt;          title = "The distribution and redistribution of income. A mathematical analysis",
-#&gt;          publisher = "Manchester University Press, Manchester",
-#&gt;          institution = "Manchester University Press, Manchester",
 #&gt;          year = "1993",
 #&gt;          edition = "2",
-#&gt;          citekey = "lambert1993")
+#&gt;          publisher = "Manchester University Press",
+#&gt;          address = "Manchester")
 #&gt; </div><div class='input'>
 <span class='no'>fn_cyr_utf8</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"bib"</span>, <span class='st'>"cyr_utf8.bib"</span>,  <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"rbibutils"</span>)
 
@@ -419,10 +394,10 @@ Read a bibliography file in one of the supported formats, convert it
 
 <span class='co'>## now take the bib file and convert it to UTF-8</span>
 <span class='fu'>bibConvert</span>(<span class='no'>bib</span>, <span class='no'>bib2</span>, <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"cp1251"</span>, <span class='st'>"utf8"</span>))</div><div class='output co'>#&gt; $infile
-#&gt; [1] "/tmp/RtmpaJ44FQ/file40671b7a2185.bib"
+#&gt; [1] "/tmp/RtmpWSMpyn/file20914961bf90bb.bib"
 #&gt; 
 #&gt; $outfile
-#&gt; [1] "/tmp/RtmpaJ44FQ/file40677a49f44d.bib"
+#&gt; [1] "/tmp/RtmpWSMpyn/file20914924ff2d42.bib"
 #&gt; 
 #&gt; $nref_in
 #&gt; [1] 2

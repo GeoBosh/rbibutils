@@ -205,9 +205,8 @@ bibConvert <- function(infile, outfile, informat, outformat, ..., tex, encoding,
                   stop("converting a file from format ", informat, " not available yet")
                   )
 
-#browser()
-##print(argv_xml2)    
-argv_xml2 <- as.character(argv_xml2)    
+    ## output
+    argv_xml2 <- as.character(argv_xml2)    
     switch(outformat,
            xml = {
                wrk_out = list(xmlfile)
@@ -227,13 +226,40 @@ argv_xml2 <- as.character(argv_xml2)
                # },
            R = ,
            r = ,
+           Rstyle = , # 2020-11-08 new:
+                      # as print(be, style = "R"), currently this is returned by the C code
            bibentry = {
+               ## TODO: !!! the variants for bibentry should probably be specified by
+               ##       options, not different main leevel types.
+               
+                    #  wrk_out <- .C(C_xml2bib_main, argc_xml2, argv_xml2, outfile, "xml2bib")
+               prg <- paste0("xml2", "bibentry") # "bibentryC"
+               argv_xml2[1] <- prg
+               wrk_out <- .C(C_xml2any_main, as.integer(argc_xml2), argv_xml2, outfile, nref_out = n_xml2)
+   #browser()
+
+               if(outformat != "Rstyle"){
+                   bibe <- source(outfile)$value # TODO: is the return value of source()
+                                                 #       'official'? 
+                   names(bibe) <- unlist(bibe$key)
+                   
+                   if(outformat == "bibentry"){
+                       saveRDS(bibe, outfile)
+                   }else{ # R   TODO: (2020-11-07) now it could just return the outfile!!!
+                       writeBibentry(bibe, outfile)
+                   }
+                   wrk_out <- list(bib = bibe, nref_out = length(bibe))
+               }# else - do nothing if outformat == "Rstyle")
+           },
+           R_legacy = ,
+           r_legacy = ,
+           bibentry_legacy = {
                modsi.obj <- read_mods(xmlfile)
-               bm <- bibmods(modsi.obj)
-               bibe <- toBibentry(bm)
+               bm <- bibmods(modsi.obj) # get a list (has class "bibmods")
+               bibe <- toBibentry(bm)   
                if(outformat == "bibentry"){
                    saveRDS(bibe, outfile)
-               }else{ # r
+               }else{ # R
                    writeBibentry(bibe, outfile)
                }
                wrk_out <- list(bib = bibe, nref_out = length(bibe))
@@ -301,7 +327,7 @@ writeBibentry <- function(be, file){
 }
 
 
-readBib <- function(file, encoding){
+readBib_legacy <- function(file, encoding){
     rds <- tempfile(fileext = ".rds")
     on.exit(unlink(rds))
 
@@ -331,3 +357,19 @@ writeBib <- function(object, con = stdout(), append = FALSE){
              
     invisible(object)
 }
+
+
+## temporary, for testing
+readBib <- function(file, encoding){
+    bib <- tempfile(fileext = ".bib")
+    on.exit(unlink(bib))
+
+    if(encoding == "UTF-8")
+        encoding = "utf8"
+    
+    be <- bibConvert(file, bib, "bibtex",
+                     "bibentry", encoding = c(encoding, "utf8"), tex = "no_latex")
+#browser()
+    be$bib
+}
+

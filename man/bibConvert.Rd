@@ -41,20 +41,21 @@ bibConvert(infile, outfile, informat, outformat, \dots, tex, encoding,
 
   Package \pkg{rbibutils} supports format \code{"bibentry"}, in addition
   to the formats supported by the bibutils library. A \code{bibentry}
-  objects contains one or more references.  Two formats are supported
-  for \code{"bibentry"} for both input and output. A bibentry object
+  object contains one or more references.  Two formats are supported for
+  \code{"bibentry"} for both input and output. A bibentry object
   previously saved to a file using \code{saveRDS} (default extension
   \code{"rds"}) or an R source file containing one or more
   \code{bibentry} commands. The \code{"rds"} file is just read in and
   should contain a \code{bibentry} object.
 
-  When \code{bibconvert} outputs to an R source file, there is one
-  \code{bibentry} call for each reference, just as in a Bibtex file,
-  each reference is a single entry. Such a file can be used as input to
-  \code{bibConvert}. For input \code{bibConvert} accepts also R code
-  containing additional instructions. The input file is (effectively)
-  \code{source}'d, all bibentry objects created by it are collected and
-  merged into a single \code{bibentry} object.
+  When \code{bibconvert} outputs to an R source file (\code{outformat =
+  "R"}, there is one \code{bibentry} call for each reference, just as in
+  a Bibtex file, each reference is a single entry. Such a file can be
+  used as input to \code{bibConvert} (\code{informat = "R"}). For input
+  \code{bibConvert} accepts also R code containing additional
+  instructions. The input file is (effectively) \code{source}'d, all
+  bibentry objects created by it are collected and merged into a single
+  \code{bibentry} object.
 
   Note that when the input format and output format are identical, the
   conversion is not necessarilly a null operation (except for

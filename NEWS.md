@@ -1,5 +1,17 @@
 # rbibutils 1.4 (CRAN)
 
+- completely reimplemented the conversion to `bibentry` - now this is done
+  entirely in `C` and it now has the same speed as the conversions to other
+  bibliograthy formats. 
+
+- the R implementation of the conversion to `bibentry`, `rds`, etc., can be
+  requested by adding suffix `_legacy` to the corresponding argument value or
+  funaction name. It is likely that the legacy code will be removed in the
+  future.
+
+- moved `xml2` to suggests, since it is now used only by the legacy code.
+  Likely to be removed entirely in the future.
+
 - new function `writeBib` for writing bibtex files.
 
 - fixed erroneous processing of PhD thesis bib entries with some values of field

@@ -133,7 +133,7 @@ static lookups report[] = {
 	{ "editor:ASIS",  "EDITOR:ASIS",    PERSON,       LEVEL_MAIN },
 	{ "editor:CORP",  "EDITOR:CORP",    PERSON,       LEVEL_MAIN },
 	{ "publisher",    "PUBLISHER",  SIMPLE,       LEVEL_MAIN },
-	{ "institution",  "PUBLISHER",  SIMPLE,       LEVEL_MAIN },
+  	{ "institution",  "PUBLISHER",  SIMPLE,       LEVEL_MAIN },
 	{ "address",      "ADDRESS",    SIMPLE,       LEVEL_MAIN },
 	{ "year",         "DATE:YEAR",  SIMPLE,       LEVEL_MAIN },
 	{ "month",        "DATE:MONTH", SIMPLE,       LEVEL_MAIN },

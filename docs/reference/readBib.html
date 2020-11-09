@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rbibutils</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.1</span>
       </span>
     </div>
 
@@ -166,13 +166,8 @@
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>## create a bibentry object</span>
 <span class='no'>bibs</span> <span class='kw'>&lt;-</span> <span class='fu'>readBib</span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"REFERENCES.bib"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"rbibutils"</span>),
-                <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"UTF-8"</span>)</div><div class='output co'>#&gt; 
-#&gt; count_type:
-#&gt; 
-#&gt;  no_type not_char   Manual     Misc  Article 
-#&gt;        0        0        1        1        1 
-#&gt; 
-#&gt; </div><div class='input'><span class='co'>## write bibs to a file</span>
+                <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"UTF-8"</span>)
+<span class='co'>## write bibs to a file</span>
 <span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".bib"</span>)
 <span class='fu'>writeBib</span>(<span class='no'>bibs</span>, <span class='no'>fn</span>)
 
@@ -182,27 +177,25 @@
 #&gt;  [3] "  title = {bibtex: bibtex parser},"                                            
 #&gt;  [4] "  year = {2014},"                                                              
 #&gt;  [5] "  note = {R package version 0.4.0},"                                           
-#&gt;  [6] "  citekey = {Rpackage:bibtex},"                                                
-#&gt;  [7] "}"                                                                             
-#&gt;  [8] ""                                                                              
-#&gt;  [9] "@Misc{Rpackage:Rdpack,"                                                        
-#&gt; [10] "  author = {Georgi N Boshnakov},"                                              
-#&gt; [11] "  title = {{Rdpack}: Update and Manipulate Rd Documentation Objects},"         
-#&gt; [12] "  year = {2020},"                                                              
-#&gt; [13] "  note = {R package version 2.0.0},"                                           
-#&gt; [14] "  citekey = {Rpackage:Rdpack},"                                                
-#&gt; [15] "  doi = {10.5281/zenodo.3925612},"                                             
-#&gt; [16] "}"                                                                             
-#&gt; [17] ""                                                                              
-#&gt; [18] "@Article{Rpackage:RefManageR,"                                                 
-#&gt; [19] "  author = {Mathew William McLean},"                                           
-#&gt; [20] "  title = {RefManageR: Import and Manage BibTeX and BibLaTeX References in R},"
+#&gt;  [6] "}"                                                                             
+#&gt;  [7] ""                                                                              
+#&gt;  [8] "@Misc{Rpackage:Rdpack,"                                                        
+#&gt;  [9] "  author = {Georgi N Boshnakov},"                                              
+#&gt; [10] "  title = {{Rdpack}: Update and Manipulate Rd Documentation Objects},"         
+#&gt; [11] "  year = {2020},"                                                              
+#&gt; [12] "  note = {R package version 2.0.0},"                                           
+#&gt; [13] "  doi = {10.5281/zenodo.3925612},"                                             
+#&gt; [14] "  url = {https://doi.org/10.5281/zenodo.3925612},"                             
+#&gt; [15] "}"                                                                             
+#&gt; [16] ""                                                                              
+#&gt; [17] "@Article{Rpackage:RefManageR,"                                                 
+#&gt; [18] "  author = {Mathew William McLean},"                                           
+#&gt; [19] "  title = {RefManageR: Import and Manage BibTeX and BibLaTeX References in R},"
+#&gt; [20] "  journal = {The Journal of Open Source Software},"                            
 #&gt; [21] "  year = {2017},"                                                              
-#&gt; [22] "  genre = {academic journal},"                                                 
-#&gt; [23] "  journal = {The Journal of Open Source Software},"                            
-#&gt; [24] "  citekey = {Rpackage:RefManageR},"                                            
-#&gt; [25] "  doi = {10.21105/joss.00338},"                                                
-#&gt; [26] "}"                                                                             </div><div class='input'>
+#&gt; [22] "  doi = {10.21105/joss.00338},"                                                
+#&gt; [23] "  url = {https://doi.org/10.21105/joss.00338},"                                
+#&gt; [24] "}"                                                                             </div><div class='input'>
 <span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span>(<span class='no'>fn</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

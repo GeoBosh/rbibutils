@@ -3,7 +3,7 @@ useDynLib(rbibutils, .registration=TRUE, .fixes = "C_")
 importFrom("utils", "person", "bibentry", "toBibtex")
 importFrom(tools, file_ext)
 
-import(xml2)
+## import(xml2)
 
 ## exportPattern("^[[:alpha:]]+")
 
@@ -11,4 +11,5 @@ export(
     bibConvert,
     readBib,
     writeBib
+    , readBib_legacy
     )

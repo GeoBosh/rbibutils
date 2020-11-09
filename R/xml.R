@@ -1,7 +1,7 @@
 ## read a mods xml file
 read_mods <- function(x, ..., strip_ns = TRUE, modsCollection = TRUE){
-    col <- read_xml(x, ...)
-    if(xml_name(xml_root(col)) != "modsCollection"){
+    col <- xml2::read_xml(x, ...)
+    if(xml2::xml_name(xml2::xml_root(col)) != "modsCollection"){
         msg <- paste0("xml file '", x, "' is not modsCollection")
         if(modsCollection)
             stop(msg)
@@ -9,7 +9,7 @@ read_mods <- function(x, ..., strip_ns = TRUE, modsCollection = TRUE){
             message(msg)
     }
     if(strip_ns)
-        xml_ns_strip(col)
+        xml2::xml_ns_strip(col)
 #browser()    
     col
  }
@@ -18,9 +18,9 @@ read_mods <- function(x, ..., strip_ns = TRUE, modsCollection = TRUE){
 bibmods <- function(col){ # col - object returned by read_mods
     count_type <- c("no_type" = 0, "not_char" = 0) # for testing only
     
-    mods <- xml_find_all(col, ".//mods")
-    ids <- xml_attr(mods, "ID")
-    ## xml_length(mods) # number of children of each element
+    mods <- xml2::xml_find_all(col, ".//mods")
+    ids <- xml2::xml_attr(mods, "ID")
+    ## xml2::xml_length(mods) # number of children of each element
 
     res <- vector(length(ids), mode = "list")
     names(res) <- ids
@@ -99,9 +99,9 @@ toBibentry <- function(object){
 
 .add_field <- function(res, field, fieldname){
     if(is.null(res[[fieldname]]))
-        xml_text(field)
+        xml2::xml_text(field)
     else
-        c(res[[fieldname]], xml_text(field))
+        c(res[[fieldname]], xml2::xml_text(field))
 }
 
 
@@ -113,35 +113,35 @@ toBibentry <- function(object){
 ## #: [13] "Unpublished"  
 
 mods_name <- function(field){
-    stopifnot(xml_name(field) == "name")
+    stopifnot(xml2::xml_name(field) == "name")
 
     ## person(given = NULL, family = NULL, middle = NULL,
     ##        email = NULL, role = NULL, comment = NULL,
     ##        first = NULL, last = NULL)
     personal <- list()
-    pieces <- xml_children(field)
-    ## note: xml_length() gives the lengths of the children, not the number of children
-    for(j in seq_along(xml_length(pieces))){
+    pieces <- xml2::xml_children(field)
+    ## note: xml2::xml_length() gives the lengths of the children, not the number of children
+    for(j in seq_along(xml2::xml_length(pieces))){
         piece <- pieces[[j]]
-        switch(xml_name(piece),
+        switch(xml2::xml_name(piece),
                namePart = {
-                   type <- xml_attr(piece, "type")
+                   type <- xml2::xml_attr(piece, "type")
                    if(is.na(type))
                        ## krapka, possibly name of organisation
-                       personal <- .name_piece(personal, "family", xml_text(piece))
+                       personal <- .name_piece(personal, "family", xml2::xml_text(piece))
                    else if(type %in% c("given", "family")){
-                       personal <- .name_piece(personal, type, xml_text(piece))
+                       personal <- .name_piece(personal, type, xml2::xml_text(piece))
                    }else if(type == "email")
-                       personal <- .name_piece(personal, type, xml_text(piece))
+                       personal <- .name_piece(personal, type, xml2::xml_text(piece))
                    else if(type == "suffix")
                        ## TODO: verify this
-                       personal <- .name_piece(personal, "family", xml_text(piece))
+                       personal <- .name_piece(personal, "family", xml2::xml_text(piece))
                    else{
                        message("namePart ", type, " not implemented yet for persons")
                    }
                },
                role = {
-                   role <- tolower(xml_text(piece))
+                   role <- tolower(xml2::xml_text(piece))
 
                    ## krapka
                    switch(role,
@@ -158,7 +158,7 @@ mods_name <- function(field){
                    }
                },
                ## default
-               stop("unknown element ", xml_name(piece), " in 'name'")
+               stop("unknown element ", xml2::xml_name(piece), " in 'name'")
                )
     }
                     
@@ -166,11 +166,11 @@ mods_name <- function(field){
 }
 
 mods_titleInfo <- function(field){
-    stopifnot(xml_name(field) == "titleInfo")
+    stopifnot(xml2::xml_name(field) == "titleInfo")
 
     ## todo: for now just get the title
-    title <- xml_text(xml_find_all(field, ".//title"))
-    subtitle <- xml_text(xml_find_all(field, ".//subTitle"))
+    title <- xml2::xml_text(xml2::xml_find_all(field, ".//title"))
+    subtitle <- xml2::xml_text(xml2::xml_find_all(field, ".//subTitle"))
     if(length(subtitle) == 0)       
         title
     else
@@ -179,11 +179,11 @@ mods_titleInfo <- function(field){
 
 
 mods_originInfo <- function(field){
-    stopifnot(xml_name(field) == "originInfo")
+    stopifnot(xml2::xml_name(field) == "originInfo")
 
     res <- list()
     
-    dateIssued <- xml_text(xml_find_first(field, ".//dateIssued"))
+    dateIssued <- xml2::xml_text(xml2::xml_find_first(field, ".//dateIssued"))
     ## TODO: this is lazy and incomplete
     if(grepl("^[0-9][0-9][0-9][0-9]$", dateIssued))
         res$year <- dateIssued
@@ -197,9 +197,9 @@ mods_originInfo <- function(field){
         ##res$date <- dateIssued
         res$year <- dateIssued
     
-    publisher <- xml_text(xml_find_first(field, ".//publisher"))
-    place <- xml_text(xml_find_first(field, ".//place"))
-    edition <- xml_text(xml_find_first(field, ".//edition"))
+    publisher <- xml2::xml_text(xml2::xml_find_first(field, ".//publisher"))
+    place <- xml2::xml_text(xml2::xml_find_first(field, ".//place"))
+    edition <- xml2::xml_text(xml2::xml_find_first(field, ".//edition"))
 
     res$publisher <- c(publisher = publisher, place = place)
     res$edition <- edition
@@ -209,9 +209,9 @@ mods_originInfo <- function(field){
 
 
 mods_typeOfResource <- function(field){
-    stopifnot(xml_name(field) == "typeOfResource")
+    stopifnot(xml2::xml_name(field) == "typeOfResource")
 
-    xml_text(field)
+    xml2::xml_text(field)
 }
 
 
@@ -359,11 +359,11 @@ colnames(genre_all_bibtex) <- c("Mods", "Bibtex", "Bibentry")
 
 
 mods_genre <- function(field){
-    stopifnot(xml_name(field) == "genre")
+    stopifnot(xml2::xml_name(field) == "genre")
     
     ## TODO: this logic is for toBibtex or toBibentry
     
-    type <- xml_text(field)
+    type <- xml2::xml_text(field)
     lotype <- tolower(type)
 
     if(lotype %in% rownames(genre_all_bibtex)){
@@ -398,13 +398,13 @@ mods_genre <- function(field){
 }
 
 mods_relatedItem <- function(field){
-    stopifnot(xml_name(field) == "relatedItem")
+    stopifnot(xml2::xml_name(field) == "relatedItem")
     
-    type <- xml_attr(field, "type")
+    type <- xml2::xml_attr(field, "type")
     res <- list()
     if(!is.null(type) && type == "host"){
-        subfields <- xml_children(field)
-        nams <- xml_name(subfields)
+        subfields <- xml2::xml_children(field)
+        nams <- xml2::xml_name(subfields)
 
         ## ##  TODO: more informed check here?
         ## if("name" %in% nams){
@@ -412,11 +412,11 @@ mods_relatedItem <- function(field){
         ##     return(res) # NOTE: early return !!!
         ## }
         
-        title <- xml_text(xml_find_all(field, ".//titleInfo"))
+        title <- xml2::xml_text(xml2::xml_find_all(field, ".//titleInfo"))
 
-        xml_genre <- xml_find_all(field, "./genre")
-        genre <- xml_text(xml_genre)
-        names(genre) <- xml_attr(xml_genre, "authority")
+        xml_genre <- xml2::xml_find_all(field, "./genre")
+        genre <- xml2::xml_text(xml_genre)
+        names(genre) <- xml2::xml_attr(xml_genre, "authority")
         res$genre <- genre["bibutilsgt"]
         if(is.na(res))
             res$genre <- genre["marcgt"]
@@ -450,9 +450,9 @@ mods_relatedItem <- function(field){
 
                        }
                    }
-                   publ <- xml_find_first(field, ".//publisher")
+                   publ <- xml2::xml_find_first(field, ".//publisher")
                    if(!is.na(publ))
-                       res$publisher <- xml_text(publ)
+                       res$publisher <- xml2::xml_text(publ)
                    
                },
 
@@ -486,9 +486,9 @@ mods_relatedItem <- function(field){
 
                        }
                    }
-                   publ <- xml_find_first(field, ".//publisher")
+                   publ <- xml2::xml_find_first(field, ".//publisher")
                    if(!is.na(publ))
-                       res$publisher <- xml_text(publ)
+                       res$publisher <- xml2::xml_text(publ)
                    
                },
                
@@ -518,9 +518,9 @@ mods_relatedItem <- function(field){
 
                        }
                    }
-                   publ <- xml_find_first(field, ".//publisher")
+                   publ <- xml2::xml_find_first(field, ".//publisher")
                    #if(!is.na(publ))
-                   #    res$publisher <- xml_text(publ)
+                   #    res$publisher <- xml2::xml_text(publ)
                    
                },
                {
@@ -533,15 +533,15 @@ mods_relatedItem <- function(field){
         res
     }else{
          ## krapka, true processing returns a list (here it is 'character')
-         res <- xml_text(xml_find_all(field, ".//titleInfo"))
+         res <- xml2::xml_text(xml2::xml_find_all(field, ".//titleInfo"))
     }
     res
 }
 
 mods_location <- function(field){
-    kids <- xml_children(field)
-    nams <- xml_name(kids)
-    txt <- xml_text(kids)
+    kids <- xml2::xml_children(field)
+    nams <- xml2::xml_name(kids)
+    txt <- xml2::xml_text(kids)
     if(length(nams) == 1  &&  nams == "url"){
         c(url = txt[1])
     } else {
@@ -556,10 +556,10 @@ mods_location <- function(field){
 }
 
 mods_identifier <- function(field){
-    stopifnot(xml_name(field) == "identifier")
+    stopifnot(xml2::xml_name(field) == "identifier")
 
     ## see modstypes.c
-    field.type <- xml_attr(field, "type")
+    field.type <- xml2::xml_attr(field, "type")
     switch(field.type,
            eprint = ,
            arXiv = ,
@@ -578,12 +578,12 @@ mods_identifier <- function(field){
            lccn = ,         
            accessnum = 
                {
-                   structure(trimws(xml_text(field)), names = field.type)
+                   structure(trimws(xml2::xml_text(field)), names = field.type)
                },
            "serial number" = 
                {
                    ## as above but remove the space from the name
-                   structure(xml_text(field), names = "serialnumber")
+                   structure(xml2::xml_text(field), names = "serialnumber")
                },
            {
                ## default
@@ -594,9 +594,9 @@ mods_identifier <- function(field){
 }
 
 mods_part_detail <- function(piece){
-    stopifnot(xml_name(piece) == "detail")
+    stopifnot(xml2::xml_name(piece) == "detail")
 
-    piece.type <- xml_attr(piece, "type")
+    piece.type <- xml2::xml_attr(piece, "type")
     switch(piece.type,
            volume = ,
            number = ,
@@ -605,14 +605,14 @@ mods_part_detail <- function(piece){
            chapter = , # some of these may not be in use
            section = {
                ## making this text since the things are not always integer:
-               ##     structure(xml_integer(piece), names = piece.type)
+               ##     structure(xml2::xml_integer(piece), names = piece.type)
                #browser()
-               structure(xml_text(piece), names = piece.type)
+               structure(xml2::xml_text(piece), names = piece.type)
            },
            page = {
                ## it is not neessarilly integer, may be more like id
                ## with leading zeroes and maybe letters
-               structure(xml_text(piece), names = piece.type)
+               structure(xml2::xml_text(piece), names = piece.type)
            },
            {
                ## default
@@ -623,22 +623,22 @@ mods_part_detail <- function(piece){
 }
 
 mods_part_extent <- function(piece){
-    stopifnot(xml_name(piece) == "extent")
+    stopifnot(xml2::xml_name(piece) == "extent")
 
     ## there is 'unit' attribute for this, assume pages for now
-    st <- xml_text(xml_find_first(piece, ".//start"))
-    en <- xml_text(xml_find_first(piece, ".//end"))
+    st <- xml2::xml_text(xml2::xml_find_first(piece, ".//start"))
+    en <- xml2::xml_text(xml2::xml_find_first(piece, ".//end"))
     paste0(st, "--", en)
 }
 
 mods_part_namePart <- function(piece){
-    stopifnot(xml_name(piece) == "namePart")
+    stopifnot(xml2::xml_name(piece) == "namePart")
 
-    type <- xml_attr(piece, "type")
+    type <- xml2::xml_attr(piece, "type")
     if(type %in% c("given", "family")){
-        personal <- .name_piece(personal, type, xml_text(piece))
+        personal <- .name_piece(personal, type, xml2::xml_text(piece))
     }else if(type == "email")
-        personal <- .name_piece(personal, type, xml_text(piece))
+        personal <- .name_piece(personal, type, xml2::xml_text(piece))
     else{
         message("namePart", type, " not implemented yet for persons")
         NULL
@@ -655,17 +655,17 @@ mods_part_namePart <- function(piece){
 ## bibConvert(infile = fn_biblatex, outfile = modl, informat = "biblatex", outformat = "xml")
 ## 
 ## modl.obj <- read_mods(modl)
-## modl.obj # {xml_document} <modsCollection> ...
+## modl.obj # {xml2::xml_document} <modsCollection> ...
 ## 
 ## y <- bibmods(modl.obj)
 ## toBibentry(y)
 ##
 ## process a single mods entry
 process_mods <- function(modsbib){
-    fields <- xml_find_all(modsbib, "./*")
-    fields.names <- xml_name(fields)
+    fields <- xml2::xml_find_all(modsbib, "./*")
+    fields.names <- xml2::xml_name(fields)
     
-    paths <- xml_path(xml_find_all(modsbib, "./*"))
+    paths <- xml2::xml_path(xml2::xml_find_all(modsbib, "./*"))
 
     ## process fields
     persons <- person()
@@ -752,15 +752,15 @@ process_mods <- function(modsbib){
             "part" = {
                 part_personal <- person()
                 ## for now assuming each attribute appears at most once
-                pieces <- xml_children(field)
-                ## note: xml_length() gives the lengths of the children
-                for(j in seq_along(xml_length(pieces))){
+                pieces <- xml2::xml_children(field)
+                ## note: xml2::xml_length() gives the lengths of the children
+                for(j in seq_along(xml2::xml_length(pieces))){
                     piece <- pieces[[j]]
-                    nam <- xml_name(piece)
+                    nam <- xml2::xml_name(piece)
                     switch(nam,
                            date = {
                                ## TODO: this needs more care
-                               res[["year"]] <- xml_text(piece)
+                               res[["year"]] <- xml2::xml_text(piece)
                            },
 
                            detail = {
@@ -793,7 +793,7 @@ process_mods <- function(modsbib){
             },
             ## default
             ##     cat("skipping ", fieldname, "\n")
-                       # res[[fieldname]] <- xml_text(field)
+                       # res[[fieldname]] <- xml2::xml_text(field)
             res[[fieldname]] <- .add_field(res, field, fieldname)
 #browser()
 
