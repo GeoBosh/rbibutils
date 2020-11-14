@@ -2,7 +2,7 @@ Package: rbibutils
 Type: Package
 Title: Convert Between Bibliography Formats
 Version: 1.4.1
-Date: 2020-11-07
+Date: 2020-11-14
 Authors@R: c( person(given = c("Georgi", "N."), family = "Boshnakov", 
                      role = c("aut", "cre"), 	
                      email = "georgi.boshnakov@manchester.ac.uk",
@@ -29,7 +29,7 @@ URL: https://geobosh.github.io/rbibutils/ (website), https://github.com/GeoBosh/
 BugReports: https://github.com/GeoBosh/rbibutils/issues
 Depends: R (>= 2.10)
 Imports: utils, tools
-Suggests: xml2, testthat
+Suggests: testthat
 Encoding: UTF-8
 LazyData: true
 NeedsCompilation: yes

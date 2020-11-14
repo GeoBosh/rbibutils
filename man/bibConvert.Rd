@@ -48,14 +48,20 @@ bibConvert(infile, outfile, informat, outformat, \dots, tex, encoding,
   \code{bibentry} commands. The \code{"rds"} file is just read in and
   should contain a \code{bibentry} object.
 
-  When \code{bibconvert} outputs to an R source file (\code{outformat =
+  When \code{bibconvert} outputs to an R source file, two variants are
+  supported: \code{"R"} and \code{"Rstyle"}.  When (\code{outformat =
   "R"}, there is one \code{bibentry} call for each reference, just as in
-  a Bibtex file, each reference is a single entry. Such a file can be
-  used as input to \code{bibConvert} (\code{informat = "R"}). For input
-  \code{bibConvert} accepts also R code containing additional
-  instructions. The input file is (effectively) \code{source}'d, all
-  bibentry objects created by it are collected and merged into a single
-  \code{bibentry} object.
+  a Bibtex file, each reference is a single entry.  \code{outformat =
+  "Rstyle"} uses the format of \code{print(be, style = "R")}, i.e., the
+  \code{bibentry} calls are output as a comma separated sequence wrapped
+  in \code{c()}. For input, it is not necessary to specify which
+  variant is used.
+
+  % Such a file can be used as input to \code{bibConvert} (\code{informat
+  % = "R"}). For input \code{bibConvert} accepts also R code containing
+  % additional instructions. The input file is (effectively)
+  % \code{source}'d, all bibentry objects created by it are collected and
+  % merged into a single \code{bibentry} object.
 
   Note that when the input format and output format are identical, the
   conversion is not necessarilly a null operation (except for

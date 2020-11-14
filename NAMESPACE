@@ -10,6 +10,7 @@ importFrom(tools, file_ext)
 export(
     bibConvert,
     readBib,
-    writeBib
-    , readBib_legacy
+    writeBib,
+    readBibentry,
+    writeBibentry
     )

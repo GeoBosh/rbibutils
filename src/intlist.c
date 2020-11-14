@@ -2,8 +2,9 @@
  * intlist.c
  *
  * Copyright (c) Chris Putnam 2007-2020
+ * Copyright (c) Georgi N. Boshnakov 2020
  *
- * Version 1/12/2017
+ * Version 1/12/2017 (GNB: updated 2020 - changed random generation)
  *
  * Source code released under the GPL version 2
  *

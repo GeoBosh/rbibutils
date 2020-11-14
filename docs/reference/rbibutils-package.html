@@ -149,6 +149,11 @@
   for conversion between supported bibliography formats. For complete
   list of formats supported by the package, see the documentation of
   the original bibutils library.</p>
+<p><code><a href='readBib.html'>readBib</a></code> and <code><a href='readBib.html'>writeBib</a></code> import/export BiBTeX
+  files.  <code><a href='readBibentry.html'>readBibentry</a></code> and <code><a href='readBibentry.html'>writeBibentry</a></code>
+  import/export <span style="R">R</span> source files in which the references are represented
+  by <code><a href='https://rdrr.io/r/utils/bibentry.html'>bibentry()</a></code> calls. These functions are wrappers around
+  <code>bibConvert</code>.</p>
 <p>All encodings supported by the bibutils library are available for
   <code><a href='bibConvert.html'>bibConvert</a></code>.</p>
 <p>Further functionality may be provided in future releases, in
@@ -160,10 +165,14 @@
   <span class="pkg">bibtex</span> (Francois 2020). For bibliography management see package
   <span class="pkg">RefManager</span> (McLean 2017). For citations in R documentation (Rd
   or roxygen2) see package <span class="pkg">Rdpack</span> (Boshnakov 2020).</p>  
-<p>The only external dependency (import) is package <span class="pkg">xml2</span> and
-  conversion between formats not involving bibentry do not need it, so
-  it could be made &#8220;suggested&#8221; if there is a strong use case for
-  that.</p>
+<p>The only external dependency is package <span class="pkg">xml2</span>.</p>
+<p>Up to version 1.4 of <span class="pkg">rbibutils</span> conversion to <code>"bibentry"</code>
+  was done in <span style="R">R</span> using package <span class="pkg">xml2</span>. From version 1.4.1 this
+  conversion is done in the C code, just as all other conversions, so
+  <span class="pkg">xml2</span> is no longer needed.</p>
+<p><!-- % The legacy R code is still available and conversion between formats -->
+  <!-- % not involving bibentry do not need it.  (import) so it could be made -->
+  <!-- % \dQuote{suggested} if there is a strong use case for that. --></p>
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
     

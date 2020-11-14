@@ -2,15 +2,22 @@
 
 - completely reimplemented the conversion to `bibentry` - now this is done
   entirely in `C` and it now has the same speed as the conversions to other
-  bibliograthy formats. 
+  bibliograthy formats.
 
-- the R implementation of the conversion to `bibentry`, `rds`, etc., can be
-  requested by adding suffix `_legacy` to the corresponding argument value or
+- removed `xml2` from the imports - it is no longer needed now that the
+  conversion to bibentry is done in `C`.
+
+- new functions `readBibentry` and `writeBibentry` for reading from and writing
+  bibentries to R source files.
+
+- now errors when reading bibentry files are turned into warnings with suitable
+  messages.
+
+- the legacy R implementation of the conversion to `bibentry`, `rds`, etc., can
+  be requested by adding suffix `_legacy` to the corresponding argument value or
   funaction name. It is likely that the legacy code will be removed in the
   future.
 
-- moved `xml2` to suggests, since it is now used only by the legacy code.
-  Likely to be removed entirely in the future.
 
 
 # rbibutils 1.4 (CRAN)

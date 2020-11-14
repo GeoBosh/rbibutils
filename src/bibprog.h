@@ -2,6 +2,7 @@
  * bibprogs.h
  *
  * Copyright (c) Chris Putnam 2008-2020
+ * Copyright (c) Georgi N. Boshnakov 2020
  *
  * Program and source code released under the GPL version 2
  *

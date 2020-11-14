@@ -1,8 +1,8 @@
 \name{readBib}
 \alias{readBib}
 \alias{writeBib}
-\title{Import bibtex files}
-\description{Import bibtex files.}
+\title{Read and write bibtex files}
+\description{Read and write bibtex files.}
 \usage{
 readBib(file, encoding)
 
@@ -11,14 +11,16 @@ writeBib(object, con = stdout(), append = FALSE)
 \arguments{
   \item{file}{name or path to the file, a character string.}
   \item{encoding}{the encoding of \code{file}, a character string.}
-  \item{object}{}
+  \item{object}{a \code{bibentry} object.}
   \item{con}{filename (a character string) or a text connection}
   \item{append}{if \code{TRUE} append to the file.}
 }
 \details{
 
-  Read a bibtex file and convert the result to \code{bibentry} or write
-  a \code{bibentry} to a bibtex file.
+  \code{readBib} is wrapper around \code{bibConvert} for import of
+  bibtex files into bibentry objects.
+
+  \code{writeBib} writes a \code{bibentry} object to a bibtex file.
 
 }
 \value{
@@ -35,6 +37,9 @@ writeBib(object, con = stdout(), append = FALSE)
 % }
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 \seealso{
+  \code{\link{readBibentry}} and \code{\link{writeBibentry}} for
+  import/export to R code.
+  
   \code{\link{bibConvert}}
 }
 \examples{
@@ -59,4 +64,3 @@ unlink(fn)
 % \concept{ ~cpt1 }
 % \concept{ ~cpt2 }
 % Use only one concept per line.
-\keyword{ internal }

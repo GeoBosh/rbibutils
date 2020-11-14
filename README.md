@@ -31,6 +31,10 @@ files. `bibConvert()` tries to infer the input/output formats from the file
 extentions. There is ambiguity however about `bib` files, which can be either
 Bibtex or Biblatex. Bibtex is assumed if the format is not specified.
 
+`readBib()` and `writeBib()` import/export BiBTeX files.  `readBibentry()` and
+`writeBibentry()` import/export `R` source files in which the references are represented by
+`bibentry()` calls. These functions are wrappers around `bibConvert`.
+
 The default encoding is UTF-8 for both, input and output. All encodings handled
 by `bibutils` are supported. Besides UTF-8, these include `gb18030` (Chinese),
 ISO encodings such as `iso8859_1`, Windows code pages (e.g. `cp1251` for Windows

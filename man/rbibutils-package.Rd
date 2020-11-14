@@ -26,6 +26,12 @@
   list of formats supported by the package, see the documentation of
   the original bibutils library.
 
+  \code{\link{readBib}} and \code{\link{writeBib}} import/export BiBTeX
+  files.  \code{\link{readBibentry}} and \code{\link{writeBibentry}}
+  import/export \R source files in which the references are represented
+  by \code{bibentry()} calls. These functions are wrappers around
+  \code{bibConvert}.
+
   All encodings supported by the bibutils library are available for
   \code{\link{bibConvert}}. 
 
@@ -39,10 +45,16 @@
   \pkg{RefManager} (McLean 2017). For citations in R documentation (Rd
   or roxygen2) see package \pkg{Rdpack} (Boshnakov 2020).
   
-  The only external dependency (import) is package \pkg{xml2} and
-  conversion between formats not involving bibentry do not need it, so
-  it could be made \dQuote{suggested} if there is a strong use case for
-  that.
+  The only external dependency is package \pkg{xml2}.
+
+  Up to version 1.4 of \pkg{rbibutils} conversion to \code{"bibentry"}
+  was done in \R using package \pkg{xml2}. From version 1.4.1 this
+  conversion is done in the C code, just as all other conversions, so
+  \pkg{xml2} is no longer needed.
+
+  % The legacy R code is still available and conversion between formats
+  % not involving bibentry do not need it.  (import) so it could be made
+  % \dQuote{suggested} if there is a strong use case for that.
 
 }
 

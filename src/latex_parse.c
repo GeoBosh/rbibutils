@@ -4,6 +4,7 @@
  * Parse LaTeX code.
  *
  * Copyright (c) Chris Putnam 2020
+ * Copyright (c) Georgi N. Boshnakov 2020
  *
  * Source code released under the GPL version 2
  *

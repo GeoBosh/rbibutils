@@ -230,7 +230,7 @@ bibConvert <- function(infile, outfile, informat, outformat, ..., tex, encoding,
                       # as print(be, style = "R"), currently this is returned by the C code
            bibentry = {
                ## TODO: !!! the variants for bibentry should probably be specified by
-               ##       options, not different main leevel types.
+               ##       options, not different main level types.
                
                     #  wrk_out <- .C(C_xml2bib_main, argc_xml2, argv_xml2, outfile, "xml2bib")
                prg <- paste0("xml2", "bibentry") # "bibentryC"
@@ -239,31 +239,33 @@ bibConvert <- function(infile, outfile, informat, outformat, ..., tex, encoding,
    #browser()
 
                if(outformat != "Rstyle"){
-                   bibe <- source(outfile)$value # TODO: is the return value of source()
-                                                 #       'official'? 
-                   names(bibe) <- unlist(bibe$key)
+                   # bibe <- source(outfile)$value # TODO: is the return value of source()
+                   #                               #       'official'? (no, it isn't)
+                   # names(bibe) <- unlist(bibe$key)
+
+                   bibe <- readBibentry(outfile)
                    
                    if(outformat == "bibentry"){
                        saveRDS(bibe, outfile)
                    }else{ # R   TODO: (2020-11-07) now it could just return the outfile!!!
-                       writeBibentry(bibe, outfile)
+                       writeBibentry(bibe, outfile, style = "loose")
                    }
                    wrk_out <- list(bib = bibe, nref_out = length(bibe))
                }# else - do nothing if outformat == "Rstyle")
            },
-           R_legacy = ,
-           r_legacy = ,
-           bibentry_legacy = {
-               modsi.obj <- read_mods(xmlfile)
-               bm <- bibmods(modsi.obj) # get a list (has class "bibmods")
-               bibe <- toBibentry(bm)   
-               if(outformat == "bibentry"){
-                   saveRDS(bibe, outfile)
-               }else{ # R
-                   writeBibentry(bibe, outfile)
-               }
-               wrk_out <- list(bib = bibe, nref_out = length(bibe))
-           },
+           ## R_legacy = ,
+           ## r_legacy = ,
+           ## bibentry_legacy = {
+           ##     modsi.obj <- read_mods(xmlfile)
+           ##     bm <- bibmods(modsi.obj) # get a list (has class "bibmods")
+           ##     bibe <- toBibentry(bm)   
+           ##     if(outformat == "bibentry"){
+           ##         saveRDS(bibe, outfile)
+           ##     }else{ # R
+           ##         writeBibentry(bibe, outfile, style = "loose")
+           ##     }
+           ##     wrk_out <- list(bib = bibe, nref_out = length(bibe))
+           ## },
            {
                ## default
                    # stop("outformat ", outformat, " not supported by bibConvert yet")
@@ -283,63 +285,111 @@ bibConvert <- function(infile, outfile, informat, outformat, ..., tex, encoding,
     wrk
 }
 
-readBibentry <- function(file){
-    expr <- parse(file, encoding = "UTF-8") # NOTE: fixed encoding for now
+## readBibentry <- function(file){
+##     expr <- parse(file, encoding = "UTF-8") # NOTE: fixed encoding for now
+## 
+##     fu <- function(){
+##         .allval <- vector(length(expr), mode = "list")
+##         for(.i in seq_along(expr)){
+##             .val <- eval(expr[.i])
+##             .allval[[.i]] <- if(is.null(.val))
+##                                NA
+##                            else
+##                                .val
+##         }
+##         .bibflag <- sapply(.allval, function(x) inherits(x, "bibentry"))
+##         .wrk <- .allval[.bibflag]
+##         .vars <- mget(ls())
+##         if(length(.vars) > 0){
+##             .bibflag <- sapply(.vars, function(x) inherits(x, "bibentry"))
+##             .vars <- .vars[.bibflag]
+##             if(length(.vars) > 0)
+##                 .wrk <- c(.vars, .wrk)
+##         }
+##         
+##         do.call("c", .wrk)
+##     }
+##     
+##     fu()
+## }
 
-    fu <- function(){
-        .allval <- vector(length(expr), mode = "list")
-        for(i in seq_along(expr)){
-            .val <- eval(expr[i])
-            .allval[[i]] <- if(is.null(.val))
-                               NA
-                           else
-                               .val
-        }
-        .bibflag <- sapply(.val, function(x) inherits(x, "bibentry"))
-        .wrk <- .allval[.bibflag]
-        .vars <- mget(ls())
-        if(length(.vars) > 0){
-            .bibflag <- sapply(.vars, function(x) inherits(x, "bibentry"))
-            .vars <- .vars[.bibflag]
-            .wrk <- c(.vars, .wrk)
-        }
-        
-        do.call("c", .wrk)
+readBibentry <- function(file){
+    exprs <- parse(n = -1, file = file, srcfile = NULL, keep.source = FALSE,
+                   encoding = "UTF-8")    # TODO: fixed encoding for now
+
+    if(length(exprs) == 1){
+        res <- try(eval(exprs))
+        if(!inherits(res, "try-error")) { # TODO: check that it is bibentry?
+            
+            names(res) <- unlist(res$key)
+            return(res)
+
+        } else if(identical(exprs[[1]][[1]], as.name("c")))
+            exprs <- exprs[[1]][-1]  # drop enclosing c()
+    }
+
+    envir <- environment()              # for (i in seq_along(exprs))  eval(exprs[i], envir)
+    n <- length(exprs)
+    wrk <- vector("list", n)
+    caution <- list()
+    for (i in seq_along(exprs)){
+        wrk[[i]] <- tryCatch(eval(exprs[[i]], envir = envir),
+                             error = function(e){
+                                 txt <- if(is.null(exprs[[i]]$key))
+                                            paste(as.character(exprs[[i]]), collapse = ", ")
+                                        else
+                                            paste0("key '", exprs[[i]]$key, "'")
+                                     
+                                 mess <- paste0(txt, "\n      ",
+                                                geterrmessage() )
+                                 caution <<- c(caution, mess)
+                                 NA
+                             }
+                             ## ,
+                             ##  warning = function(w){
+                             ##      caution <<- c(caution, w)
+                             ##      NA
+                             ##  }
+                             )
+    }
+    if(length(caution) > 0) {
+        ind <- sapply(wrk, function(x) identical(x, NA))
+        wrk <- wrk[!ind]
+        for(i in seq_along(caution))
+            warning(caution[[i]])
     }
     
-    fu()
+    res <- do.call("c", wrk)
+    names(res) <- unlist(res$key) # TODO: what if 'key' is missing in some entries?  (this
+                                        # cannot happen for the output of bibConvert() though)
+                                        # If you change this, don't forget
+                                        # to do it also for the return statement earlier
+                                        # in this function!
+    res
 }
 
-writeBibentry <- function(be, file){
+writeBibentry <- function(be, file, style = c("Rstyle", "loose")){
+    style <- match.arg(style)
+
     con <- file(file, "wt")
     on.exit(close(con))
 
-
     sink(con)
-    # on.exit(sink(), add = TRUE)
+    ## on.exit(sink(), add = TRUE)
 
-    for(i in seq_along(be)){
-        print(be[i], style = "R")
-        cat("\n")
+    if(style == "Rstyle"){
+        print(be, style = "R")
+    }else{ # "loose"
+        for(i in seq_along(be)){
+            print(be[i], style = "R")
+            cat("\n")
+        }
     }
+   
     sink()
-    NULL
+    invisible()
 }
 
-
-readBib_legacy <- function(file, encoding){
-    rds <- tempfile(fileext = ".rds")
-    on.exit(unlink(rds))
-
-    if(encoding == "UTF-8")
-        encoding = "utf8"
-    
-    be <- bibConvert(file, rds, "bibtex",
-            "bibentry", encoding = c(encoding, "utf8"), tex = "no_latex")
-    res <- readRDS(rds)
-
-    res
-}
 
 writeBib <- function(object, con = stdout(), append = FALSE){
     if(!inherits(object, "bibentry"))
@@ -359,7 +409,6 @@ writeBib <- function(object, con = stdout(), append = FALSE){
 }
 
 
-## temporary, for testing
 readBib <- function(file, encoding){
     bib <- tempfile(fileext = ".bib")
     on.exit(unlink(bib))
@@ -373,3 +422,16 @@ readBib <- function(file, encoding){
     be$bib
 }
 
+## readBib_legacy <- function(file, encoding){
+##     rds <- tempfile(fileext = ".rds")
+##     on.exit(unlink(rds))
+## 
+##     if(encoding == "UTF-8")
+##         encoding = "utf8"
+##     
+##     be <- bibConvert(file, rds, "bibtex",
+##             "bibentry", encoding = c(encoding, "utf8"), tex = "no_latex")
+##     res <- readRDS(rds)
+## 
+##     res
+## }

@@ -1,0 +1,14 @@
+
+reference:
+  - title: "rbibutils overview"
+    contents:
+      "rbibutils-package"
+  - title: "Core function"
+    contents:
+      - bibConvert
+  - title: "Specialised convertors"
+    contents:
+      - readBib
+      - writeBib
+      - readBibentry
+      - writeBibentry

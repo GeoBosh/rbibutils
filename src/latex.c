@@ -4,6 +4,7 @@
  * convert between latex special chars and unicode
  *
  * Copyright (c) Chris Putnam 2004-2020
+ * Copyright (c) Georgi N. Boshnakov 2020
  *
  * Source code released under the GPL version 2
  *

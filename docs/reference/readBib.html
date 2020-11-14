@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Import bibtex files — readBib • rbibutils</title>
+<title>Read and write bibtex files — readBib • rbibutils</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Import bibtex files — readBib" />
-<meta property="og:description" content="Import bibtex files." />
+<meta property="og:title" content="Read and write bibtex files — readBib" />
+<meta property="og:description" content="Read and write bibtex files." />
 
 
 
@@ -111,13 +111,13 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Import bibtex files</h1>
+    <h1>Read and write bibtex files</h1>
     
     <div class="hidden name"><code>readBib.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Import bibtex files.</p>
+    <p>Read and write bibtex files.</p>
     </div>
 
     <pre class="usage"><span class='fu'>readBib</span>(<span class='no'>file</span>, <span class='no'>encoding</span>)
@@ -137,7 +137,7 @@
     </tr>
     <tr>
       <th>object</th>
-      <td></td>
+      <td><p>a <code>bibentry</code> object.</p></td>
     </tr>
     <tr>
       <th>con</th>
@@ -153,15 +153,18 @@
 
     
 
-<p>Read a bibtex file and convert the result to <code>bibentry</code> or write
-  a <code>bibentry</code> to a bibtex file.</p>
+<p><code>readBib</code> is wrapper around <code>bibConvert</code> for import of
+  bibtex files into bibentry objects.</p>
+<p><code>writeBib</code> writes a <code>bibentry</code> object to a bibtex file.</p>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>for <code>readBib</code>, a <code>bibentry</code> object</p>
 <p>for <code>writeBib</code>, the <code>bibentry</code> object (invisibly)</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='bibConvert.html'>bibConvert</a></code></p></div>
+    <div class='dont-index'><p><code><a href='readBibentry.html'>readBibentry</a></code> and <code><a href='readBibentry.html'>writeBibentry</a></code> for
+  import/export to R code.</p>  
+<p><code><a href='bibConvert.html'>bibConvert</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>## create a bibentry object</span>

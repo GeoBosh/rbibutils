@@ -1,7 +1,7 @@
 /*
- * bibentryout.c
+ * bibentryout.c  (based on bibtexout.c)
  *
- * Copyright (c) Georgi N. Boshnakov 2020 (based on bibtexout.c)
+ * Copyright (c) Georgi N. Boshnakov 2020
  *
  * Program and source code released under the GPL version 2
  *

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • rbibutils</title>
+<title>Read and write bibentry files — readBibentry • rbibutils</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,8 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Read and write bibentry files — readBibentry" />
+<meta property="og:description" content="Read and write bibentry files." />
 
 
 
@@ -58,7 +59,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -108,86 +109,71 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Read and write bibentry files</h1>
+    
+    <div class="hidden name"><code>readBibentry.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    <p>Read and write bibentry files.</p>
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
+    <pre class="usage"><span class='fu'>readBibentry</span>(<span class='no'>file</span>)
 
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-rbibutils-overview" class="hasAnchor"><a href="#section-rbibutils-overview" class="anchor"></a>rbibutils overview</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="rbibutils-package.html">rbibutils-package</a></code> </p>
-        </td>
-        <td><p>Convert Between Bibliography Formats</p></td>
-      </tr>
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-core-function" class="hasAnchor"><a href="#section-core-function" class="anchor"></a>Core function</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="bibConvert.html">bibConvert()</a></code> </p>
-        </td>
-        <td><p>Convert between bibliography formats</p></td>
-      </tr>
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-specialised-convertors" class="hasAnchor"><a href="#section-specialised-convertors" class="anchor"></a>Specialised convertors</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="readBib.html">readBib()</a></code> <code><a href="readBib.html">writeBib()</a></code> </p>
-        </td>
-        <td><p>Read and write bibtex files</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="readBibentry.html">readBibentry()</a></code> <code><a href="readBibentry.html">writeBibentry()</a></code> </p>
-        </td>
-        <td><p>Read and write bibentry files</p></td>
-      </tr>
-    </tbody>
+<span class='fu'>writeBibentry</span>(<span class='no'>be</span>, <span class='no'>file</span>, <span class='kw'>style</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Rstyle"</span>, <span class='st'>"loose"</span>))</pre>
+
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>be</th>
+      <td><p>a bibentry object.</p></td>
+    </tr>
+    <tr>
+      <th>file</th>
+      <td><p>filename, a character string.</p></td>
+    </tr>
+    <tr>
+      <th>style</th>
+      <td><p>if <code>"Rstyle"</code> (default), wrap in <code><a href='https://rdrr.io/r/base/c.html'>c()</a></code>, otherwise don't
+    wrap and don't put commas between the entries, see Details section.</p></td>
+    </tr>
     </table>
-  </div>
 
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    
+
+<p>These functions read/write <code>bibentry</code> objects from/to R source
+  files. Two styles are supported. <code>"Rstyle"</code> is the format used by
+  <code><a href='https://rdrr.io/r/base/print.html'>print(be, style = "R")</a></code>, which writes the <code>bibentry</code> calls
+  as a comma separated sequence wrapped in <code><a href='https://rdrr.io/r/base/c.html'>c()</a></code>. Style
+  <code>"loose"</code> writes the entries without separators and no wrapping.</p>
+<p><code>writeBibentry</code> writes the object to the specified file in the
+  requested style (default is <code>"Rstyle"</code>).</p>
+<p><code>readBibentry</code> reads the file and creates a <code>bibentry</code>
+  object. It doesn't have argument for style, since that is inferred
+  from the contents of the file.</p>
+<p><code><a href='https://rdrr.io/r/utils/bibentry.html'>bibentry()</a></code> calls that throw errors are not included in the
+  returned object. The errors are intercepted and converted to warnings,
+  identifying the corresponding <code><a href='https://rdrr.io/r/utils/bibentry.html'>bibentry()</a></code> calls by their keys,
+  if present (otherwise the text of the whole bibentry is shown).</p>
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>for <code>writeBibentry</code>, <code>NULL</code> (invisibly)</p>
+<p>for <code>readBibentry</code>, a <code>bibentry</code> object with the keys as
+  names</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><code><a href='readBib.html'>readBib</a></code> and <code><a href='readBib.html'>writeBib</a></code> for reading/writing
+  bib files,</p>  
+<p><code><a href='bibConvert.html'>bibConvert</a></code></p></div>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'></div></pre>
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
       <h2 data-toc-skip>Contents</h2>
