@@ -15,6 +15,7 @@
 #include <assert.h>
 
 #include <R.h>
+#include <Rversion.h>
 
 #include "intlist.h"
 
@@ -416,7 +417,13 @@ randomint( int floor, int ceil )
 	int len = ceil - floor;
 	// Georgi was: return floor + rand() % len;
 	// TODO: test comprehensively
-	return floor + ( (int) R_unif_index((double) RAND_MAX) ) % len;
+	// 2020-11-15 was: return floor + ( (int) R_unif_index((double) RAND_MAX) ) % len;
+	//    fix due to Henrik Sloot (#1)
+#if defined(R_VERSION) && R_VERSION >= R_Version(3, 4, 0)
+	return floor + ( (int) R_unif_index((double) len));
+#else
+	return  floor + ( (int) floor(len * unif_rand()));
+#endif	
 }
 
 static void

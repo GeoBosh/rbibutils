@@ -119,6 +119,7 @@
 <a href="#rbibutils-141" class="anchor"></a>rbibutils 1.4.1<small> Unreleased </small>
 </h1>
 <ul>
+<li><p>there is no longer (unintended) dependence on R &gt;= 3.4. This was because of the use of <code>R_unif_index</code>. Report and fix due to Henrik Sloot (<a href='https://github.com/GeoBosh/rbibutils/issues/1'>#1</a>).</p></li>
 <li><p>completely reimplemented the conversion to <code>bibentry</code> - now this is done entirely in <code>C</code> and it now has the same speed as the conversions to other bibliograthy formats.</p></li>
 <li><p>removed <code>xml2</code> from the imports - it is no longer needed now that the conversion to bibentry is done in <code>C</code>.</p></li>
 <li><p>new functions <code>readBibentry</code> and <code>writeBibentry</code> for reading from and writing bibentries to R source files.</p></li>

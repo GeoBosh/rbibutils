@@ -1,5 +1,8 @@
 # rbibutils 1.4.1
 
+- there is no longer (unintended) dependence on R >= 3.4. This was because of
+  the use of `R_unif_index`. Report and fix due to Henrik Sloot (#1).
+
 - completely reimplemented the conversion to `bibentry` - now this is done
   entirely in `C` and it now has the same speed as the conversions to other
   bibliograthy formats.

@@ -60,6 +60,17 @@ writeBibentry(be, file, style = c("Rstyle", "loose"))
   \code{\link{bibConvert}}
 }
 \examples{
+bibs <- readBib(system.file("REFERENCES.bib", package = "rbibutils"),
+                encoding = "UTF-8")
+fn <- tempfile(fileext = ".bib")
+
+writeBibentry(bibs, file = fn) # style = "Rstyle" (default)
+cat(readLines(fn), sep = "\n")
+
+writeBibentry(bibs, file = fn, style = "loose")
+cat(readLines(fn), sep = "\n")
+
+unlink(fn)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory (show via RShowDoc("KEYWORDS")):

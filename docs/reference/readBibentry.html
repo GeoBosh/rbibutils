@@ -172,7 +172,66 @@
 <p><code><a href='bibConvert.html'>bibConvert</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'></div></pre>
+    <pre class="examples"><div class='input'><span class='no'>bibs</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='readBib.html'>readBib</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"REFERENCES.bib"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"rbibutils"</span>),
+                <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"UTF-8"</span>)
+<span class='no'>fn</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".bib"</span>)
+
+<span class='fu'>writeBibentry</span>(<span class='no'>bibs</span>, <span class='kw'>file</span> <span class='kw'>=</span> <span class='no'>fn</span>) <span class='co'># style = "Rstyle" (default)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span>(<span class='no'>fn</span>), <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>"\n"</span>)</div><div class='output co'>#&gt; c(bibentry(bibtype = "Manual",
+#&gt;            key = "Rpackage:bibtex",
+#&gt;            author = person(given = "Romain",
+#&gt;                            family = "Francois"),
+#&gt;            title = "bibtex: bibtex parser",
+#&gt;            year = "2014",
+#&gt;            note = "R package version 0.4.0"),
+#&gt;   bibentry(bibtype = "Misc",
+#&gt;            key = "Rpackage:Rdpack",
+#&gt;            author = person(given = c("Georgi", "N"),
+#&gt;                            family = "Boshnakov"),
+#&gt;            title = "{Rdpack}: Update and Manipulate Rd Documentation Objects",
+#&gt;            year = "2020",
+#&gt;            note = "R package version 2.0.0",
+#&gt;            doi = "10.5281/zenodo.3925612",
+#&gt;            url = "https://doi.org/10.5281/zenodo.3925612"),
+#&gt;   bibentry(bibtype = "Article",
+#&gt;            key = "Rpackage:RefManageR",
+#&gt;            author = person(given = c("Mathew", "William"),
+#&gt;                            family = "McLean"),
+#&gt;            title = "RefManageR: Import and Manage BibTeX and BibLaTeX References in R",
+#&gt;            journal = "The Journal of Open Source Software",
+#&gt;            year = "2017",
+#&gt;            doi = "10.21105/joss.00338",
+#&gt;            url = "https://doi.org/10.21105/joss.00338"))</div><div class='input'>
+<span class='fu'>writeBibentry</span>(<span class='no'>bibs</span>, <span class='kw'>file</span> <span class='kw'>=</span> <span class='no'>fn</span>, <span class='kw'>style</span> <span class='kw'>=</span> <span class='st'>"loose"</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span>(<span class='no'>fn</span>), <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>"\n"</span>)</div><div class='output co'>#&gt; bibentry(bibtype = "Manual",
+#&gt;          key = "Rpackage:bibtex",
+#&gt;          author = person(given = "Romain",
+#&gt;                          family = "Francois"),
+#&gt;          title = "bibtex: bibtex parser",
+#&gt;          year = "2014",
+#&gt;          note = "R package version 0.4.0")
+#&gt; 
+#&gt; bibentry(bibtype = "Misc",
+#&gt;          key = "Rpackage:Rdpack",
+#&gt;          author = person(given = c("Georgi", "N"),
+#&gt;                          family = "Boshnakov"),
+#&gt;          title = "{Rdpack}: Update and Manipulate Rd Documentation Objects",
+#&gt;          year = "2020",
+#&gt;          note = "R package version 2.0.0",
+#&gt;          doi = "10.5281/zenodo.3925612",
+#&gt;          url = "https://doi.org/10.5281/zenodo.3925612")
+#&gt; 
+#&gt; bibentry(bibtype = "Article",
+#&gt;          key = "Rpackage:RefManageR",
+#&gt;          author = person(given = c("Mathew", "William"),
+#&gt;                          family = "McLean"),
+#&gt;          title = "RefManageR: Import and Manage BibTeX and BibLaTeX References in R",
+#&gt;          journal = "The Journal of Open Source Software",
+#&gt;          year = "2017",
+#&gt;          doi = "10.21105/joss.00338",
+#&gt;          url = "https://doi.org/10.21105/joss.00338")
+#&gt; </div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span>(<span class='no'>fn</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
