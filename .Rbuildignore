@@ -8,3 +8,7 @@
 ^data-raw$
 ^Org$
 ^docs$
+^.*\.Rproj$
+^\.Rproj\.user$
+^\.github$
+^_pkgdown\.yml$
