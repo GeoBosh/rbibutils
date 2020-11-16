@@ -13,6 +13,7 @@
  */
 #include <stdlib.h>
 #include <assert.h>
+#include <math.h>
 
 #include <R.h>
 #include <Rversion.h>
@@ -410,20 +411,20 @@ intlist_sort( intlist *il )
 	qsort( il->data, il->n, sizeof( int ), intcomp );
 }
 
-/* Returns random integer in the range [floor,ceil) */
+/* Returns random integer in the range [lower,upper) */
 static int
-randomint( int floor, int ceil )
+randomint( int lower, int upper )
 {
-	int len = ceil - floor;
-	// Georgi was: return floor + rand() % len;
+	int len = upper - lower;
+	// Georgi was: return lower + rand() % len;
 	// TODO: test comprehensively
-	// 2020-11-15 was: return floor + ( (int) R_unif_index((double) RAND_MAX) ) % len;
+	// 2020-11-15 was: return lower + ( (int) R_unif_index((double) RAND_MAX) ) % len;
 	//    fix due to Henrik Sloot (#1)
 #if defined(R_VERSION) && R_VERSION >= R_Version(3, 4, 0)
-	return floor + ( (int) R_unif_index((double) len));
+	return lower + ( (int) R_unif_index((double) len));
 #else
-	return  floor + ( (int) floor(len * unif_rand()));
-#endif	
+	return  lower + ( (int) floor(len * unif_rand()));
+#endif
 }
 
 static void

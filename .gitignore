@@ -6,6 +6,10 @@ jss.cls
 ## Emacs
 .emacs.desktop
 .emacs.desktop.lock
+
+## RStudio
+*.RProj
+
 *~
 ## AucTeX
 auto/
