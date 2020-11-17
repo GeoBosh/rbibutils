@@ -124,7 +124,6 @@
 <li><p>removed <code>xml2</code> from the imports - it is no longer needed now that the conversion to bibentry is done in <code>C</code>.</p></li>
 <li><p>new functions <code>readBibentry</code> and <code>writeBibentry</code> for reading from and writing bibentries to R source files.</p></li>
 <li><p>now errors when reading bibentry files are turned into warnings with suitable messages.</p></li>
-<li><p>the legacy R implementation of the conversion to <code>bibentry</code>, <code>rds</code>, etc., can be requested by adding suffix <code>_legacy</code> to the corresponding argument value or funaction name. It is likely that the legacy code will be removed in the future.</p></li>
 </ul>
 </div>
     <div id="rbibutils-14-cran" class="section level1">
@@ -133,7 +132,7 @@
 </h1>
 <ul>
 <li><p>new function <code>writeBib</code> for writing bibtex files.</p></li>
-<li><p>fixed erroneous processing of PhD thesis bib entries with some values of field <code>type</code>. (reported by Kisung You for <code>Rdpack</code>, issue <a href='https://github.com/GeoBosh/rbibutils/issues/17'>#17</a>)</p></li>
+<li><p>fixed erroneous processing of PhD thesis bib entries with some values of field <code>type</code>. (reported by Kisung You for GeoBosh/Rdpack<a href='https://github.com/GeoBosh/rbibutils/issues/17'>#17</a>)</p></li>
 <li><p>fixed a compiler warning about a pointer differing in signedness from the expected type (reported by Patrice Kiener).</p></li>
 <li><p>somehow <code>README.md</code> went missing in v1.3, now reinstated.</p></li>
 </ul>

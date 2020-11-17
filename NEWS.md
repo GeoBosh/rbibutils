@@ -22,7 +22,7 @@
 - new function `writeBib` for writing bibtex files.
 
 - fixed erroneous processing of PhD thesis bib entries with some values of field
-  `type`.  (reported by Kisung You for `Rdpack`, issue #17)
+  `type`.  (reported by Kisung You for GeoBosh/Rdpack#17)
 
 - fixed a compiler warning about a pointer differing in
   signedness from the expected type (reported by Patrice Kiener).
