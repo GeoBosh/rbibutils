@@ -253,19 +253,6 @@ bibConvert <- function(infile, outfile, informat, outformat, ..., tex, encoding,
                    wrk_out <- list(bib = bibe, nref_out = length(bibe))
                }# else - do nothing if outformat == "Rstyle")
            },
-           ## R_legacy = ,
-           ## r_legacy = ,
-           ## bibentry_legacy = {
-           ##     modsi.obj <- read_mods(xmlfile)
-           ##     bm <- bibmods(modsi.obj) # get a list (has class "bibmods")
-           ##     bibe <- toBibentry(bm)   
-           ##     if(outformat == "bibentry"){
-           ##         saveRDS(bibe, outfile)
-           ##     }else{ # R
-           ##         writeBibentry(bibe, outfile, style = "loose")
-           ##     }
-           ##     wrk_out <- list(bib = bibe, nref_out = length(bibe))
-           ## },
            {
                ## default
                    # stop("outformat ", outformat, " not supported by bibConvert yet")

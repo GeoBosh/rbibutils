@@ -1,4 +1,9 @@
-# rbibutils 1.4.1
+# rbibutils 2.0.1
+
+- minor tweaks in the documentation.
+
+
+# rbibutils 2.0 (CRAN)
 
 - there is no longer (unintended) dependence on R >= 3.4. This was because of
   the use of `R_unif_index`. Report and fix due to Henrik Sloot (#1).
@@ -43,7 +48,7 @@
 
 # rbibutils 1.2.1
 
-- improve processing of URL field when converting to bibentry.
+- improved processing of URL field when converting to bibentry.
 
 
 # rbibutils 1.2

@@ -45,12 +45,12 @@
   \pkg{RefManager} (McLean 2017). For citations in R documentation (Rd
   or roxygen2) see package \pkg{Rdpack} (Boshnakov 2020).
   
-  The only external dependency is package \pkg{xml2}.
-
-  Up to version 1.4 of \pkg{rbibutils} conversion to \code{"bibentry"}
-  was done in \R using package \pkg{xml2}. From version 1.4.1 this
-  conversion is done in the C code, just as all other conversions, so
-  \pkg{xml2} is no longer needed.
+  % The only external dependency is package \pkg{xml2}.
+  % 
+  % Up to version 1.4 of \pkg{rbibutils} conversion to \code{"bibentry"}
+  % was done in \R using package \pkg{xml2}. From version 1.4.1 this
+  % conversion is done in the C code, just as all other conversions, so
+  % \pkg{xml2} is no longer needed.
 
   % The legacy R code is still available and conversion between formats
   % not involving bibentry do not need it.  (import) so it could be made
