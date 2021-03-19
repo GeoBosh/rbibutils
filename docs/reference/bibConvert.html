@@ -177,7 +177,7 @@ Read a bibliography file in one of the supported formats, convert it
 
 <p>Arguments <code>informat</code> and <code>outformat</code> can usually be omitted,
   since <code>bibConvert</code> infers them from the extensions of the names
-  of the input and output files.
+  of the input and output files, see section "File extensions" below.
   However, there is ambiguity for the extension <code>"bib"</code>, since it
   is used for Bibtex and Biblatex entries. For this extension, the
   default for both, <code>informat</code> and <code>outformat</code>, is
@@ -203,20 +203,24 @@ Read a bibliography file in one of the supported formats, convert it
   <!-- % additional instructions. The input file is (effectively) -->
   <!-- % \code{source}'d, all bibentry objects created by it are collected and -->
   <!-- % merged into a single \code{bibentry} object. --></p>
-<p>Note that when the input format and output format are identical, the
+<p>Note that when the input format and output formats are identical, the
   conversion is not necessarilly a null operation (except for
-  <code>xml</code>, and even that may change).  It should be remembered also
-  that there may be loss of information when converting from one format
-  to another.</p>
-<p>For complete list of supported bibliography formats, see the
-  documentation of the original bibutils library.</p>
+  <code>xml</code>, and even that may change). For example, depending on the
+  arguments the character encoding may change. Also, input BibTeX files
+  may contain additional instructions, such as journal abbreviations,
+  which are expanded and incorporated in the references but not
+  exported.  It should be remembered also that there may be loss of
+  information when converting from one format to another.</p>
+<p>For complete list of supported bibliography formats, see section
+  "Supported input and output formats" in <code><a href='rbibutils-package.html'>rbibutils</a></code> and
+  the documentation of the original bibutils library.</p>
 <p>Argument <code>encoding</code> is a character vector containing 2 elements,
   specifying the encoding of the input and output files.  If the
   encodings are the same, a length one vector can be supplied. The
   default encodings are UTF-8 for input and output. A large number of
   familiar encodings are supported, e.g. <code>"latin1"</code> and
   <code>"cp1251"</code> (Windows Cyrillic). Some encodings have two or more
-  aliases and they are also accepted. If an unknown encodingis
+  aliases and they are also accepted. If an unknown encoding is
   requested, a list of all supported encodings will be printed.</p>
 <p>Argument <code>tex</code> is an unnamed character vector containing switches
   for bibtex input and output (mostly output). Currently, the following
@@ -233,7 +237,7 @@ Read a bibliography file in one of the supported formats, convert it
 <p>By default latex encodings for accented characters are converted to
   letters. This may be a problem if the output encoding is not UTF-8,
   since some characters created by this process may be invalid in that
-  encoding. For example, a Bibtex file which otherwise contain only
+  encoding. For example, a BibTeX file which otherwise contains only
   cyriilic and latin characters may have a few entries with authors
   containing latin accented characters represented using the TeX
   convention.  If those characters are not converted to Unicode letters,
@@ -259,6 +263,37 @@ Read a bibliography file in one of the supported formats, convert it
 
   
 
+    <h2 class="hasAnchor" id="file-extensions"><a class="anchor" href="#file-extensions"></a>File extensions</h2>
+
+    
+  
+<p>If an input or output format is not specified by arguments, it is
+  inferred, if possible, from the file extension. The table below
+  contains the file extension in the in the first column and the
+  corresponding default format in the second.</p>
+<p></p><table class='table'>
+<tr><td><!-- % -->
+    ads</td><td>ADS reference format</td></tr>
+<tr><td>bib</td><td>BibTeX</td></tr>
+<tr><td>bibtex</td><td>BibTeX</td></tr>
+<tr><td>biblatex</td><td>biblatex</td></tr>
+<tr><td>copac</td><td>COPAC format references</td></tr>
+<tr><td>end</td><td>EndNote (Refer format)</td></tr>
+<tr><td>endx</td><td>EndNote XML</td></tr>
+<tr><td>isi</td><td>ISI web of science</td></tr>
+<tr><td>med</td><td>Pubmed XML references</td></tr>
+<tr><td>nbib</td><td>Pubmed/National Library of Medicine nbib format</td></tr>
+<tr><td>ris</td><td>RIS format</td></tr>
+<tr><td>R</td><td>R source file containing <code>bibentry</code> commands</td></tr>
+<tr><td>r</td><td>R source file containing <code>bibentry</code> commands</td></tr>
+<tr><td>Rstyle</td><td>R source file containing <code>bibentry</code> commands</td></tr>
+<tr><td>rds</td><td>bibentry object in a binary file created by <code><a href='https://rdrr.io/r/base/readRDS.html'>saveRDS()</a></code></td></tr>
+<tr><td>xml</td><td>MODS XML intermediate</td></tr>
+<tr><td>wordbib</td><td>Word 2007 bibliography format</td></tr>
+</table>
+
+
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>The function is used for the side effect of creating a file in the
@@ -278,15 +313,15 @@ Read a bibliography file in one of the supported formats, convert it
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>fn_biblatex</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"bib"</span>, <span class='st'>"ex0.biblatex"</span>,  <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"rbibutils"</span>)
-<span class='no'>fn_biblatex</span></div><div class='output co'>#&gt; [1] "/tmp/RtmpREGFip/temp_libpath6c221656d415/rbibutils/bib/ex0.biblatex"</div><div class='input'><span class='co'>## file.show(fn_biblatex)</span>
+<span class='no'>fn_biblatex</span></div><div class='output co'>#&gt; [1] "/tmp/RtmpNyRzGs/temp_libpath5cbe1687896/rbibutils/bib/ex0.biblatex"</div><div class='input'><span class='co'>## file.show(fn_biblatex)</span>
 
 <span class='co'>## convert a biblatex file to xml</span>
 <span class='no'>modl</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".xml"</span>)
 <span class='fu'>bibConvert</span>(<span class='kw'>infile</span> <span class='kw'>=</span> <span class='no'>fn_biblatex</span>, <span class='kw'>outfile</span> <span class='kw'>=</span> <span class='no'>modl</span>, <span class='kw'>informat</span> <span class='kw'>=</span> <span class='st'>"biblatex"</span>, <span class='kw'>outformat</span> <span class='kw'>=</span> <span class='st'>"xml"</span>)</div><div class='output co'>#&gt; $infile
-#&gt; [1] "/tmp/RtmpREGFip/temp_libpath6c221656d415/rbibutils/bib/ex0.biblatex"
+#&gt; [1] "/tmp/RtmpNyRzGs/temp_libpath5cbe1687896/rbibutils/bib/ex0.biblatex"
 #&gt; 
 #&gt; $outfile
-#&gt; [1] "/tmp/RtmpGkNhFR/file6c78386073cf.xml"
+#&gt; [1] "/tmp/Rtmpb2aF6o/file810e6d71dab1.xml"
 #&gt; 
 #&gt; $nref_in
 #&gt; [1] 3
@@ -299,10 +334,10 @@ Read a bibliography file in one of the supported formats, convert it
 <span class='no'>bib</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".bib"</span>)
 <span class='no'>bib2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".bib"</span>)
 <span class='fu'>bibConvert</span>(<span class='kw'>infile</span> <span class='kw'>=</span> <span class='no'>fn_biblatex</span>, <span class='kw'>outfile</span> <span class='kw'>=</span> <span class='no'>bib</span>, <span class='kw'>informat</span> <span class='kw'>=</span> <span class='st'>"biblatex"</span>, <span class='kw'>outformat</span> <span class='kw'>=</span> <span class='st'>"bib"</span>)</div><div class='output co'>#&gt; $infile
-#&gt; [1] "/tmp/RtmpREGFip/temp_libpath6c221656d415/rbibutils/bib/ex0.biblatex"
+#&gt; [1] "/tmp/RtmpNyRzGs/temp_libpath5cbe1687896/rbibutils/bib/ex0.biblatex"
 #&gt; 
 #&gt; $outfile
-#&gt; [1] "/tmp/RtmpGkNhFR/file6c787d2dd0da.bib"
+#&gt; [1] "/tmp/Rtmpb2aF6o/file810e4686d9e7.bib"
 #&gt; 
 #&gt; $nref_in
 #&gt; [1] 3
@@ -313,7 +348,7 @@ Read a bibliography file in one of the supported formats, convert it
 
 <span class='co'>## convert a biblatex file to bibentry</span>
 <span class='no'>rds</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".rds"</span>)
-<span class='no'>fn_biblatex</span></div><div class='output co'>#&gt; [1] "/tmp/RtmpREGFip/temp_libpath6c221656d415/rbibutils/bib/ex0.biblatex"</div><div class='input'><span class='no'>rds</span></div><div class='output co'>#&gt; [1] "/tmp/RtmpGkNhFR/file6c787a2f1e7a.rds"</div><div class='input'><span class='no'>be</span> <span class='kw'>&lt;-</span> <span class='fu'>bibConvert</span>(<span class='no'>fn_biblatex</span>, <span class='no'>rds</span>, <span class='st'>"biblatex"</span>, <span class='st'>"bibentry"</span>)
+<span class='no'>fn_biblatex</span></div><div class='output co'>#&gt; [1] "/tmp/RtmpNyRzGs/temp_libpath5cbe1687896/rbibutils/bib/ex0.biblatex"</div><div class='input'><span class='no'>rds</span></div><div class='output co'>#&gt; [1] "/tmp/Rtmpb2aF6o/file810e174fca28.rds"</div><div class='input'><span class='no'>be</span> <span class='kw'>&lt;-</span> <span class='fu'>bibConvert</span>(<span class='no'>fn_biblatex</span>, <span class='no'>rds</span>, <span class='st'>"biblatex"</span>, <span class='st'>"bibentry"</span>)
 <span class='no'>bea</span> <span class='kw'>&lt;-</span> <span class='fu'>bibConvert</span>(<span class='no'>fn_biblatex</span>, <span class='no'>rds</span>, <span class='st'>"biblatex"</span>) <span class='co'># same</span>
 <span class='fu'><a href='https://rdrr.io/r/base/readRDS.html'>readRDS</a></span>(<span class='no'>rds</span>)</div><div class='output co'>#&gt; Beach CM, Davidson R (1983). “Distribution-free statistical inference
 #&gt; with Lorenz curves and income shares.” _Review of Economic Studies_,
@@ -329,10 +364,10 @@ Read a bibliography file in one of the supported formats, convert it
 <span class='co'>## convert to R source file</span>
 <span class='no'>r</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".R"</span>)
 <span class='fu'>bibConvert</span>(<span class='no'>fn_biblatex</span>, <span class='no'>r</span>, <span class='st'>"biblatex"</span>)</div><div class='output co'>#&gt; $infile
-#&gt; [1] "/tmp/RtmpREGFip/temp_libpath6c221656d415/rbibutils/bib/ex0.biblatex"
+#&gt; [1] "/tmp/RtmpNyRzGs/temp_libpath5cbe1687896/rbibutils/bib/ex0.biblatex"
 #&gt; 
 #&gt; $outfile
-#&gt; [1] "/tmp/RtmpGkNhFR/file6c7816fea014.R"
+#&gt; [1] "/tmp/Rtmpb2aF6o/file810e5cfa01fb.R"
 #&gt; 
 #&gt; $nref_in
 #&gt; [1] 3
@@ -399,10 +434,10 @@ Read a bibliography file in one of the supported formats, convert it
 
 <span class='co'>## now take the bib file and convert it to UTF-8</span>
 <span class='fu'>bibConvert</span>(<span class='no'>bib</span>, <span class='no'>bib2</span>, <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"cp1251"</span>, <span class='st'>"utf8"</span>))</div><div class='output co'>#&gt; $infile
-#&gt; [1] "/tmp/RtmpGkNhFR/file6c787d2dd0da.bib"
+#&gt; [1] "/tmp/Rtmpb2aF6o/file810e4686d9e7.bib"
 #&gt; 
 #&gt; $outfile
-#&gt; [1] "/tmp/RtmpGkNhFR/file6c782bb9fbfd.bib"
+#&gt; [1] "/tmp/Rtmpb2aF6o/file810eb723927.bib"
 #&gt; 
 #&gt; $nref_in
 #&gt; [1] 2

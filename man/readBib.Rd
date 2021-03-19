@@ -4,22 +4,75 @@
 \title{Read and write bibtex files}
 \description{Read and write bibtex files.}
 \usage{
-readBib(file, encoding)
+readBib(file, encoding = NULL, \dots, direct = FALSE, 
+        texChars = c("keep", "convert", "export"))
 
 writeBib(object, con = stdout(), append = FALSE)
 }
 \arguments{
   \item{file}{name or path to the file, a character string.}
   \item{encoding}{the encoding of \code{file}, a character string.}
+  \item{direct}{
+    If \code{TRUE} parse 'file' directly to \code{bibentry}, otherwise
+    convert first to intermediate XML, then to \code{bibentry}.
+  }
+  \item{texChars}{
+    
+    What to do with characters represented by TeX commands  (for
+    example, accented Latin charaters? If \code{"export"},
+    export as TeX escapes when possible. If \code{"convert"}, convert
+    to the target encoding. If \code{"keep"}, output the characters as
+    they were in the input file, like \code{"export"}, but don't convert
+    normal characters to TeX escapes.
+  }
   \item{object}{a \code{bibentry} object.}
   \item{con}{filename (a character string) or a text connection}
   \item{append}{if \code{TRUE} append to the file.}
+  \item{...}{
+    Not used and throws error to avoid silently ignoring
+    unknown arguments.
+  }
 }
 \details{
 
   \code{readBib} is wrapper around \code{bibConvert} for import of
   bibtex files into bibentry objects.
+  
+  If \code{direct = FALSE} the bibtex file is converted first to XML
+  intermediate, then the XML file is converted to bibentry. The
+  advantage of this is that it gives a standardised representation of
+  the bibtex input. Fields that cannot be mapped to the intermediate
+  format are generally omitted. 
 
+  If \code{direct = TRUE} the input file is converted directly to
+  bibentry, without the XML intermediate step. This means that
+  non-standard fields in the bib entries are preserved in the bibentry
+  object.
+
+  Argument \code{texChars}, currently implemented only for the case
+  \code{direct = TRUE}, gives some control over the processing of TeX
+  sequences representing characters (such as accented Latin characters):
+  If it is \code{"keep"} (the default), such sequences are kept as in
+  the input. \code{"convert"} causes them to be converted to the
+  characters they represent. Finally, \code{"export"} characters as TeX
+  sequences, whenever possible.
+
+  The difference between \code{"keep"} and \code{"export"} is that
+  \code{"keep"} does not convert normal characters to TeX escapes, while
+  \code{"export"} does it if possible. For example, if the input file
+  contains the TeX sequence \code{"\\\\"o"} % "
+  representing the letter o-umlaut, \code{"keep"} and \code{"export"}
+  will keep it as TeX sequence, while \code{"convert"} will convert it
+  to the character o-umlaut in the output encoding (normally UTF-8).  On
+  the othe hand, if the input file contains the character o-umlaut, then
+  \code{"keep"} and \code{"convert"} will convert it to the output
+  encoding of o-umlaut, while \code{"export"} will export it as
+  \code{"\\\\"o"}. % " 
+
+  Note that \code{"convert"} converts also a large number of
+  mathematical symbols (such as \code{"\\alpha"}), which may or may not
+  be desirable. Also, some mathematical formulas may cause surprises.
+  
   \code{writeBib} writes a \code{bibentry} object to a bibtex file.
 
 }
@@ -53,14 +106,46 @@ writeBib(bibs, fn)
 ## see the contents of the file
 readLines(fn) # or: file.show(fn)
 
+## a dummy reference with accented characters
+## (in the file some are uft8, others are TeX escapes)
+bibacc <- system.file("bib/latin1accents_utf8.bib", package = "rbibutils")
+
+## export as UTF-8 characters
+## this will print as true characters in suitable locale:
+if(FALSE) {
+    be <- readBib(bibacc, direct = TRUE, texChars = "convert")
+    print(be, style = "R")
+    print(be, style = "bibtex")
+    ## compare to the input file:
+    readLines(bibacc)
+}
+
+be1 <- readBib(bibacc, direct = TRUE)
+be1a <- readBib(bibacc, direct = TRUE, texChars = "keep") # same
+be1
+print(be1, style = "R")
+print(be1, style = "bibtex")
+
+## export as TeX escapes, when possible
+be2 <- readBib(bibacc, direct = TRUE, texChars = "export") ## same
+be2
+print(be2, style = "R")
+print(be2, style = "bibtex")
+
+## "convert" converts to characters
+## a lot of TeX commands representing symbols
+be3 <- readBib(bibacc, direct = TRUE, texChars = "convert")
+## be3
+print(be3, style = "R")
+## print(be3, style = "bibtex")
+
+
 unlink(fn)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory (show via RShowDoc("KEYWORDS")):
 % \keyword{ ~kwd1 }
-% \keyword{ ~kwd2 }
 % Use only one keyword per line.
 % For non-standard keywords, use \concept instead of \keyword:
-% \concept{ ~cpt1 }
-% \concept{ ~cpt2 }
+\concept{bibtex}
 % Use only one concept per line.

@@ -1,5 +1,7 @@
 
 test_that("bibConvert works ok", {
+    expect_true(TRUE)
+    
     bibdir <- system.file("bib", package = "rbibutils")
 
     tmp_xml <- tempfile(fileext = ".xml")

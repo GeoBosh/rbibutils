@@ -1,7 +1,7 @@
 /*
- * bibentryout.c  (based on bibtexout.c)
+ * bibentrydirectout.c  (based on bibtexout.c)
  *
- * Copyright (c) Georgi N. Boshnakov 2020
+ * Copyright (c) Georgi N. Boshnakov 2021
  *
  * Program and source code released under the GPL version 2
  *
@@ -23,26 +23,26 @@
 #include "bibformats.h"
 
 /*****************************************************
- PUBLIC: int bibentryout_initparams()
+ PUBLIC: int bibentrydirectout_initparams()
 *****************************************************/
 
-static int  bibentryout_write( fields *in, FILE *fp, param *p, unsigned long refnum );
-static int  bibentryout_assemble( fields *in, fields *out, param *pm, unsigned long refnum );
+static int  bibentrydirectout_write( fields *in, FILE *fp, param *p, unsigned long refnum );
+static int  bibentrydirectout_assemble( fields *in, fields *out, param *pm, unsigned long refnum );
 
 
-void bibentryout_writeheader( FILE *outptr, param *pm )
+void bibentrydirectout_writeheader( FILE *outptr, param *pm )
 {
   fprintf( outptr, "c( #" );
 }
 
-void bibentryout_writefooter( FILE *outptr)
+void bibentrydirectout_writefooter( FILE *outptr)
 {
   fprintf( outptr, "\n)" );
 }
 
 
 int
-bibentryout_initparams( param *pm, const char *progname )
+bibentrydirectout_initparams( param *pm, const char *progname )
 {
 	pm->writeformat      = BIBL_BIBENTRYOUT;
 	pm->format_opts      = 0;
@@ -57,10 +57,10 @@ bibentryout_initparams( param *pm, const char *progname )
 	pm->addcount         = 0;
 	pm->singlerefperfile = 0;
 
-	pm->headerf   = bibentryout_writeheader; // generic_writeheader;
-	pm->footerf   = bibentryout_writefooter; // NULL;
-	pm->assemblef = bibentryout_assemble;
-	pm->writef    = bibentryout_write;
+	pm->headerf   = bibentrydirectout_writeheader; // generic_writeheader;
+	pm->footerf   = bibentrydirectout_writefooter; // NULL;
+	pm->assemblef = bibentrydirectout_assemble;
+	pm->writef    = bibentrydirectout_write;
 
 	if ( !pm->progname ) {
 		if ( !progname ) pm->progname = NULL;
@@ -74,7 +74,7 @@ bibentryout_initparams( param *pm, const char *progname )
 }
 
 /*****************************************************
- PUBLIC: int bibentryout_assemble()
+ PUBLIC: int bibentrydirectout_assemble()
 *****************************************************/
 
 enum {
@@ -98,7 +98,7 @@ enum {
 };
 
 static int
-bibentryout_type( fields *in, const char *progname, const char *filename, unsigned long refnum )
+bibentrydirectout_type( fields *in, const char *progname, const char *filename, unsigned long refnum )
 {
 	match_type genre_matches[] = {
 		{ "periodical",             TYPE_ARTICLE,       LEVEL_ANY  },
@@ -165,7 +165,7 @@ bibentryout_type( fields *in, const char *progname, const char *filename, unsign
 
 
 // Georgi
-//     TODO: consolidate with append_type
+//     TODO: consolidate with append_type, 
 static int
 is_TechReport_type( int type )
 {
@@ -374,7 +374,7 @@ out:
  * to 'family suffix, given given
  */
 void
-name_build_bibentry( str *s, const char *p )
+name_build_bibentry_direct( str *s, const char *p )
 {
 	const char *suffix, *stopat;
 	int nseps = 0, nch;
@@ -510,7 +510,7 @@ append_people( fields *in, char *tag, char *ctag, char *atag,
 			  // str_addchar( &allpeople, '}' );
 			} else {
 			  // name_build_withcomma( &oneperson, fields_value( in, i, FIELDS_CHRP ) );
-			  name_build_bibentry( &oneperson, fields_value( in, i, FIELDS_CHRP ) );
+			  name_build_bibentry_direct( &oneperson, fields_value( in, i, FIELDS_CHRP ) );
 				str_strcat( &allpeople, &oneperson );
 			}
 
@@ -903,17 +903,91 @@ append_howpublished( fields *in, fields *out, int *status )
 }
 
 static int
-bibentryout_assemble( fields *in, fields *out, param *pm, unsigned long refnum )
+bibentrydirectout_assemble( fields *in, fields *out, param *pm, unsigned long refnum )
 {
 	int type, status = BIBL_OK;
 
-	// Georgi; for testing
+	// // Georgi; for testing
 	// fields_report_stderr(in);
 
-	type = bibentryout_type( in, pm->progname, "", refnum );
+	// Determine type 
+	//   type = bibentrydirectout_type( in, pm->progname, "", refnum );
+	//
+	
+	int n, fstatus;
+	char *fld_val;
+	n = fields_find( in, "INTERNAL_TYPE", LEVEL_ANY );
 
-	append_type        ( type, out, &status );
-	append_citekey     ( in, out, pm->format_opts, &status );
+ // REprintf("\nassemble: INTERNAL_TYPE = %d\n", n);
+ // REprintf("\nassemble: FIELDS_NOTFOUND = %d\n", FIELDS_NOTFOUND);
+	
+	if ( n!=FIELDS_NOTFOUND ) {
+		fields_set_used( in, n );
+		fld_val = fields_value( in, n, FIELDS_CHRP );
+
+		// TODO: this is absolutely temporary
+		if ( !strcmp( fld_val, "Article" ) ) {
+		  type = 1;
+		}
+		else if ( !strcmp( fld_val, "Inbook" ) ) {         
+		  type = 2;
+		}
+		else if ( !strcmp( fld_val, "Proceedings" ) ) {    
+		  type = 3;
+		}
+		else if ( !strcmp( fld_val, "InProceedings" ) ) {  
+		  type = 4;
+		}
+		else if ( !strcmp( fld_val, "Book" ) ) {           
+		  type = 5;
+		}
+		else if ( !strcmp( fld_val, "PhdThesis" ) ) {      
+		  type = 6;
+		}
+		else if ( !strcmp( fld_val, "MastersThesis" ) ) {  
+		  type = 7;
+		}
+		else if ( !strcmp( fld_val, "MastersThesis" ) ) {  
+		  type = 8;
+		}
+		else if ( !strcmp( fld_val, "TechReport" ) ) {     
+		  type = 9;
+		}
+		else if ( !strcmp( fld_val, "Manual" ) ) {         
+		  type = 10;
+		}
+		else if ( !strcmp( fld_val, "Collection" ) ) {     
+		  type = 11;
+		}
+		else if ( !strcmp( fld_val, "InCollection" ) ) {   
+		  type = 12;
+		}
+		else if ( !strcmp( fld_val, "Unpublished" ) ) {    
+		  type = 13;
+		}
+		else if ( !strcmp( fld_val, "Electronic" ) ) {     
+		  type = 14;
+		}
+		else if ( !strcmp( fld_val, "Misc" ) ) {           
+		  type = 15;
+		}
+		else {
+		  type = 0; // unknown
+		}
+
+		// REprintf("kiki: fld_val=%s\n", fld_val);
+
+		fstatus = fields_add( out, "bibtype", fld_val, LEVEL_MAIN );
+		if ( fstatus!=FIELDS_OK ) status = BIBL_ERR_MEMERR;
+	}
+
+	
+	// append_type        ( type, out, &status );
+	append_simple        ( in, "REFNUM", "refnum", out, &status );
+
+	// append_citekey     ( in, out, pm->format_opts, &status );
+	append_simple      ( in, "REFNUM", "refnum", out, &status );
+	
 	append_people      ( in, "AUTHOR",     "AUTHOR:CORP",     "AUTHOR:ASIS",     "author", LEVEL_MAIN, out, pm->format_opts, pm->latexout, &status );
 	append_people      ( in, "EDITOR",     "EDITOR:CORP",     "EDITOR:ASIS",     "editor", LEVEL_ANY, out, pm->format_opts, pm->latexout, &status );
 	append_people      ( in, "TRANSLATOR", "TRANSLATOR:CORP", "TRANSLATOR:ASIS", "translator", LEVEL_ANY, out, pm->format_opts, pm->latexout, &status );
@@ -921,10 +995,7 @@ bibentryout_assemble( fields *in, fields *out, param *pm, unsigned long refnum )
 	append_date        ( in, out, &status );
 	append_simple      ( in, "EDITION",            "edition",   out, &status );
 
-	// Georgi TODO: it seems that bibutils import "institution" as "publisher"
-	if( is_TechReport_type(type))
-	  append_simple      ( in, "PUBLISHER",          "institution", out, &status );
-	else
+	  append_simple      ( in, "INSTITUTION",        "institution", out, &status );
 	  append_simple      ( in, "PUBLISHER",          "publisher", out, &status );
 
 
@@ -956,15 +1027,34 @@ bibentryout_assemble( fields *in, fields *out, param *pm, unsigned long refnum )
 
 	append_simple      ( in, "CHAPTER",           "chapter",  out, &status ); // Georgi
 
+
+	
+	int i, f_len;
+	char * fld_tag;
+	f_len = fields_num( in );
+	for ( i=0; i<f_len; ++i ) {
+	  if( !fields_used(in, i) ){
+	    fld_tag = fields_tag( in, i, FIELDS_CHRP );
+	    fld_val = fields_value( in, i, FIELDS_CHRP );
+
+	    // for(int i = 0; str[i]; i++){
+	    //   str[i] = tolower(str[i]);
+	    // }
+
+	    append_simple( in, fld_tag, fld_tag, out, &status );
+	  }
+	}
+
+	
 	return status;
 }
 
 /*****************************************************
- PUBLIC: int bibentryout_write()
+ PUBLIC: int bibentrydirectout_write()
 *****************************************************/
 
 static int
-bibentryout_write( fields *out, FILE *fp, param *pm, unsigned long refnum )
+bibentrydirectout_write( fields *out, FILE *fp, param *pm, unsigned long refnum )
 {
 	int i, j, len, nquotes, format_opts = pm->format_opts;
 	char *tag, *value, ch;

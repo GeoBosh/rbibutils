@@ -1,7 +1,14 @@
 readBibentry <- function(file){
+    ## TODO: fixed encoding for now, but:
+    ##   It is hardly worth the bother to consider other encodings.
+    ##   First, bibConvert can produce 'file' in UTF-8.
+    ##       Second, the argument 'encoding' of parse only asks it to mark the input with that
+    ##       encoding, it does not re-encode. The only other acceptable value is "latin1".
+    ##   Third, to allow other encodings 'file' in the call below, needs to be declared as a
+    ##       connection with from/to encodings for iconv().
     exprs <- parse(n = -1, file = file, srcfile = NULL, keep.source = FALSE,
-                   encoding = "UTF-8")    # TODO: fixed encoding for now
-
+                   encoding = "UTF-8")
+    
     if(length(exprs) == 1){
         res <- try(eval(exprs))
         if(!inherits(res, "try-error")) { # TODO: check that it is bibentry?

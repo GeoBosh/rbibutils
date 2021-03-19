@@ -44,7 +44,7 @@
   \pkg{bibtex} (Francois 2020). For bibliography management see package
   \pkg{RefManager} (McLean 2017). For citations in R documentation (Rd
   or roxygen2) see package \pkg{Rdpack} (Boshnakov 2020).
-  
+  %
   % The only external dependency is package \pkg{xml2}.
   % 
   % Up to version 1.4 of \pkg{rbibutils} conversion to \code{"bibentry"}
@@ -55,8 +55,82 @@
   % The legacy R code is still available and conversion between formats
   % not involving bibentry do not need it.  (import) so it could be made
   % \dQuote{suggested} if there is a strong use case for that.
-
+  %
 }
+\section{Supported input and output formats}{
+
+  Most formats are supported for both input and output, see the listings
+  below. A format supported for input can be converted to any of the
+  output formats.
+
+  The input is first converted to \emph{MODS XML intermediate}, the
+  latter is then converted to the requested output format.  Currently
+  the only exception to this is the conversion from \verb{bibentry} to
+  \verb{BibTeX}, for which \R provides a \verb{print} method.
+
+  \subsection{Input formats}{
+    \describe{
+      \item{bibentry}{
+
+	\verb{bibentry} is the native \R variant of BibTeX. It can be
+	input from an \R source file or from a binary \verb{rds}
+	file. The \verb{"rds"} format is a compressed binary format. The
+	\verb{rds} file should contain a \verb{bibentry} R object, saved
+	from R with \code{saveRDS}.  An R source file should contain one
+	or more bibentry instructions, see \code{\link{readBibentry}}
+	for details of the contents.
+
+      }
+      \item{BibTeX}{}
+      \item{BibLaTeX}{}
+      \item{COPAC format references}{
+        \verb{https://en.wikipedia.org/wiki/Copac}
+      }
+      \item{EndNote (Refer format)}{}
+      \item{EndNote XML}{}
+      \item{ISI web of science}{}
+      \item{Pubmed XML references}{}
+      \item{Pubmed/National Library of Medicine nbib format}{}
+      \item{RIS format}{}
+      \item{MODS XML intermediate}{}
+    }
+  
+  }
+
+  \subsection{Output formats}{
+    % Not supported (or not sure):
+    %   \item{COPAC format references}
+    %   \item{EndNote XML}           ??
+    %   \item{Pubmed XML references} ??
+    \describe{
+  
+      \item{ADS}{
+        Smithsonian Astrophysical Observatory (SAO), National
+        Aeronautics and Space Administration (NASA) Astrophyics Data System,
+        or ADS reference format.
+      }
+      \item{bibentry}{
+
+	A \verb{bibentry} object. Can be written to a file as a binary
+        (\verb{"rds"}) object or as \R source file, see
+        \code{\link{bibConvert}} and \code{\link{writeBib}} for details.
+
+      }
+      \item{BibTeX}{}
+      \item{BibLaTeX}{}
+      \item{EndNote (Refer format)}{}
+      \item{ISI web of science}{}
+      \item{MODS XML intermediate}{}
+      \item{Pubmed/National Library of Medicine nbib format}{}
+      \item{RIS format}{}
+  
+      \item{Word 2007 bibliography format}{}
+  
+    }
+  
+  }
+}
+
 
 \author{Georgi N. Boshnakov (R code and R port of bibutils),
   Chris Putnam (author of bibutils library)
@@ -79,19 +153,17 @@
 \references{
 
 Boshnakov GN (2020). “Rdpack: Update and Manipulate Rd Documentation
-Objects.” \doi{10.5281/zenodo.3925612} (URL:
-\url{https://doi.org/10.5281/zenodo.3925612}), R package version 1.0.0.
+Objects.” \doi{10.5281/zenodo.3925612}, R package version 1.0.0.
 
 Francois R. (2020). bibtex: Bibtex Parser. R package version
 0.4.2.2. \url{https://CRAN.R-project.org/package=bibtex}.
 
 McLean MW (2017). “RefManageR: Import and Manage BibTeX and BibLaTeX
 References in R.” _The Journal of Open Source Software_.
-\doi{10.21105/joss.00338} (URL: \url{https://doi.org/10.21105/joss.00338}).
+\doi{10.21105/joss.00338}.
 
 Putnam C. (2003--2020), Library \code{bibutils},
   \url{https://sourceforge.net/projects/bibutils/}.
-
 }
 
 \keyword{ package }
@@ -100,3 +172,33 @@ Putnam C. (2003--2020), Library \code{bibutils},
 }
 %\examples{
 %}
+
+
+% documentation for individual functions at
+%     https://sourceforge.net/p/bibutils/home/Bibutils/
+%
+% bib2xml 	convert BibTeX to MODS XML intermediate
+% biblatex2xml 	convert BibLaTeX to MODS XML intermediate
+% bibdiff 	compare two bibliographies after reading into the bibutils internal format
+% copac2xml 	convert COPAC format references to MODS XML intermediate
+% end2xml 	convert EndNote (Refer format) to MODS XML intermediate
+% endx2xml 	convert EndNote XML to MODS XML intermediate
+% isi2xml 	convert ISI web of science to MODS XML intermediate
+% med2xml 	convert Pubmed XML references to MODS XML intermediate
+% modsclean 	a MODS to MODS converter for testing puposes mostly
+% nbib2xml 	convert Pubmed/National Library of Medicine nbib format
+%                       to MODS XML intermedidate 
+% ris2xml 	convert RIS format to MODS XML intermediate
+% xml2ads 	convert MODS XML intermediate
+%                       into Smithsonian Astrophysical Observatory
+%                            (SAO)/National Aeronautics and Space Administration (NASA) 
+%                            Astrophyics Data System
+%                       or ADS reference format (converter submitted by Richard Mathar) 
+% xml2bib 	convert MODS XML intermediate into BibTeX
+% xml2biblatex 	convert MODS XML intermediate into BibLaTeX
+% xml2end 	convert MODS XML intermediate into format for EndNote
+% xml2isi 	convert MODS XML intermediate to ISI format
+% xml2nbib 	convert MODS XML intermediate
+%                       to Pubmed/National Library of Medicine nbib format
+% xml2ris 	convert MODS XML intermediate into RIS format
+% xml2wordbib 	convert MODS XML intermediate into Word 2007 bibliography format

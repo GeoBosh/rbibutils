@@ -1,6 +1,14 @@
 # rbibutils 2.0.1
 
-- minor tweaks in the documentation.
+- `readBib` gets argument `texChars` to control whether or not to convert TeX
+  sequences representing characters (such as accented Latin characters) to
+  normal characters in the output encoding. There is an option also to convert
+  charaters to the corresponding TeX sequences.
+
+- `readBib` can now convert bibtex files directly (i.e., without first
+  converting to XML intermediate) to bibentry R objects.
+
+- `readBib` now accepts encodings as for `bibConvert`. 
 
 
 # rbibutils 2.0 (CRAN)

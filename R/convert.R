@@ -81,27 +81,28 @@ bibConvert <- function(infile, outfile, informat, outformat, ..., tex, encoding,
     }
 
     if(!missing(tex)){
-        switch(tex,
-               no_latex = { # accents to letters
-                   argv_2xml <- c(argv_2xml, "-nl")
-                   argv_xml2 <- c(argv_xml2, "-nl")
-               },
-               uppercase = {
-                   argv_xml2 <- c(argv_xml2, "-U")
-               },
-               brackets = {
-                   argv_xml2 <- c(argv_xml2, "-b")
-               },
-               dash = {
-                   argv_xml2 <- c(argv_xml2, "-sd")
-               },
-               comma = {
-                   argv_xml2 <- c(argv_xml2, "-fc")
-               },
-               ## default
-               stop("unsupported 'tex' option")
-               )
-            
+        for(tex_op in tex){
+            switch(tex_op,
+                   no_latex = { # accents to letters
+                       argv_2xml <- c(argv_2xml, "-nl")
+                       argv_xml2 <- c(argv_xml2, "-nl")
+                   },
+                   uppercase = {
+                       argv_xml2 <- c(argv_xml2, "-U")
+                   },
+                   brackets = {
+                       argv_xml2 <- c(argv_xml2, "-b")
+                   },
+                   dash = {
+                       argv_xml2 <- c(argv_xml2, "-sd")
+                   },
+                   comma = {
+                       argv_xml2 <- c(argv_xml2, "-fc")
+                   },
+                   ## default
+                   stop("unsupported 'tex' option")
+                   )
+        }
     }
     
     if(!missing(options)){

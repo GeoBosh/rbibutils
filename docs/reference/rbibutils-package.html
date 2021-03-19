@@ -164,8 +164,9 @@
   format. <span class="pkg">rbibutils</span> can be used also as an alternative to package
   <span class="pkg">bibtex</span> (Francois 2020). For bibliography management see package
   <span class="pkg">RefManager</span> (McLean 2017). For citations in R documentation (Rd
-  or roxygen2) see package <span class="pkg">Rdpack</span> (Boshnakov 2020).</p>  
-<p><!-- % The only external dependency is package \pkg{xml2}. -->
+  or roxygen2) see package <span class="pkg">Rdpack</span> (Boshnakov 2020).
+  <!-- % -->
+  <!-- % The only external dependency is package \pkg{xml2}. -->
   <!-- %  -->
   <!-- % Up to version 1.4 of \pkg{rbibutils} conversion to \code{"bibentry"} -->
   <!-- % was done in \R using package \pkg{xml2}. From version 1.4.1 this -->
@@ -173,7 +174,70 @@
   <!-- % \pkg{xml2} is no longer needed. --></p>
 <p><!-- % The legacy R code is still available and conversion between formats -->
   <!-- % not involving bibentry do not need it.  (import) so it could be made -->
-  <!-- % \dQuote{suggested} if there is a strong use case for that. --></p>
+  <!-- % \dQuote{suggested} if there is a strong use case for that. -->
+  <!-- % --></p>
+    <h2 class="hasAnchor" id="supported-input-and-output-formats"><a class="anchor" href="#supported-input-and-output-formats"></a>Supported input and output formats</h2>
+
+    
+
+<p>Most formats are supported for both input and output, see the listings
+  below. A format supported for input can be converted to any of the
+  output formats.</p>
+<p>The input is first converted to <em>MODS XML intermediate</em>, the
+  latter is then converted to the requested output format.  Currently
+  the only exception to this is the conversion from <code>bibentry</code> to
+  <code>BibTeX</code>, for which <span style="R">R</span> provides a <code>print</code> method.</p>
+<p></p><h3>Input formats</h3>
+<p></p><dl'>
+      <dt>bibentry</dt><dd><p><code>bibentry</code> is the native <span style="R">R</span> variant of BibTeX. It can be
+	input from an <span style="R">R</span> source file or from a binary <code>rds</code>
+	file. The <code>"rds"</code> format is a compressed binary format. The
+	<code>rds</code> file should contain a <code>bibentry</code> R object, saved
+	from R with <code>saveRDS</code>.  An R source file should contain one
+	or more bibentry instructions, see <code><a href='readBibentry.html'>readBibentry</a></code>
+	for details of the contents.</p></dd>
+      <dt>BibTeX</dt><dd><p></p></dd>
+      <dt>BibLaTeX</dt><dd><p></p></dd>
+      <dt>COPAC format references</dt><dd><p><code>https://en.wikipedia.org/wiki/Copac</code></p></dd>
+      <dt>EndNote (Refer format)</dt><dd><p></p></dd>
+      <dt>EndNote XML</dt><dd><p></p></dd>
+      <dt>ISI web of science</dt><dd><p></p></dd>
+      <dt>Pubmed XML references</dt><dd><p></p></dd>
+      <dt>Pubmed/National Library of Medicine nbib format</dt><dd><p></p></dd>
+      <dt>RIS format</dt><dd><p></p></dd>
+      <dt>MODS XML intermediate</dt><dd><p></p></dd>
+    
+</dl>
+  
+<p></p>
+
+<p></p><h3>Output formats</h3>
+<p><!-- % Not supported (or not sure): -->
+    <!-- %   \item{COPAC format references} -->
+    <!-- %   \item{EndNote XML}           ?? -->
+    <!-- %   \item{Pubmed XML references} ?? --></p><dl'>
+  
+      <dt>ADS</dt><dd><p>Smithsonian Astrophysical Observatory (SAO), National
+        Aeronautics and Space Administration (NASA) Astrophyics Data System,
+        or ADS reference format.</p></dd>
+      <dt>bibentry</dt><dd><p>A <code>bibentry</code> object. Can be written to a file as a binary
+        (<code>"rds"</code>) object or as <span style="R">R</span> source file, see
+        <code><a href='bibConvert.html'>bibConvert</a></code> and <code><a href='readBib.html'>writeBib</a></code> for details.</p></dd>
+      <dt>BibTeX</dt><dd><p></p></dd>
+      <dt>BibLaTeX</dt><dd><p></p></dd>
+      <dt>EndNote (Refer format)</dt><dd><p></p></dd>
+      <dt>ISI web of science</dt><dd><p></p></dd>
+      <dt>MODS XML intermediate</dt><dd><p></p></dd>
+      <dt>Pubmed/National Library of Medicine nbib format</dt><dd><p></p></dd>
+      <dt>RIS format</dt><dd><p></p></dd>
+  
+      <dt>Word 2007 bibliography format</dt><dd><p></p></dd>
+  
+    
+</dl>
+  
+<p></p>
+
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
     

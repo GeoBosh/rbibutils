@@ -60,6 +60,7 @@ extern "C" {
 #define BIBL_FORMAT_BIBOUT_DROPKEY    (256)
 #define BIBL_FORMAT_MODSOUT_DROPKEY   (512)
 
+#define BIBL_RAW_WITHCLEAN       (2) // Georgi
 #define BIBL_RAW_WITHCHARCONVERT (4)
 #define BIBL_RAW_WITHMAKEREFID   (8)
 

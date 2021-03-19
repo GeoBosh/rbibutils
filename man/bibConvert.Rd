@@ -33,9 +33,9 @@ bibConvert(infile, outfile, informat, outformat, \dots, tex, encoding,
 
   Arguments \code{informat} and \code{outformat} can usually be omitted,
   since \code{bibConvert} infers them from the extensions of the names
-  of the input and output files.
+  of the input and output files, see section "File extensions" below.
   However, there is ambiguity for the extension \code{"bib"}, since it
-  is used for Bibtex and Biblatex entries. For this extension, the
+  is used for Bibtex and BibLaTeX entries. For this extension, the
   default for both, \code{informat} and \code{outformat}, is
   \code{"bibtex"}.
 
@@ -63,14 +63,18 @@ bibConvert(infile, outfile, informat, outformat, \dots, tex, encoding,
   % \code{source}'d, all bibentry objects created by it are collected and
   % merged into a single \code{bibentry} object.
 
-  Note that when the input format and output format are identical, the
+  Note that when the input format and output formats are identical, the
   conversion is not necessarilly a null operation (except for
-  \verb{xml}, and even that may change).  It should be remembered also
-  that there may be loss of information when converting from one format
-  to another.
+  \verb{xml}, and even that may change). For example, depending on the
+  arguments the character encoding may change. Also, input BibTeX files
+  may contain additional instructions, such as journal abbreviations,
+  which are expanded and incorporated in the references but not
+  exported.  It should be remembered also that there may be loss of
+  information when converting from one format to another.
 
-  For complete list of supported bibliography formats, see the
-  documentation of the original bibutils library.
+  For complete list of supported bibliography formats, see section
+  "Supported input and output formats" in \code{\link{rbibutils}} and
+  the documentation of the original bibutils library.
 
   Argument \code{encoding} is a character vector containing 2 elements,
   specifying the encoding of the input and output files.  If the
@@ -78,7 +82,7 @@ bibConvert(infile, outfile, informat, outformat, \dots, tex, encoding,
   default encodings are UTF-8 for input and output. A large number of
   familiar encodings are supported, e.g. \code{"latin1"} and
   \code{"cp1251"} (Windows Cyrillic). Some encodings have two or more
-  aliases and they are also accepted. If an unknown encodingis
+  aliases and they are also accepted. If an unknown encoding is
   requested, a list of all supported encodings will be printed.
 
   Argument \code{tex} is an unnamed character vector containing switches
@@ -100,7 +104,7 @@ bibConvert(infile, outfile, informat, outformat, \dots, tex, encoding,
   By default latex encodings for accented characters are converted to
   letters. This may be a problem if the output encoding is not UTF-8,
   since some characters created by this process may be invalid in that
-  encoding. For example, a Bibtex file which otherwise contain only
+  encoding. For example, a BibTeX file which otherwise contains only
   cyriilic and latin characters may have a few entries with authors
   containing latin accented characters represented using the TeX
   convention.  If those characters are not converted to Unicode letters,
@@ -127,6 +131,37 @@ bibConvert(infile, outfile, informat, outformat, \dots, tex, encoding,
 
   
 }
+
+\section{File extensions}{
+  
+  If an input or output format is not specified by arguments, it is
+  inferred, if possible, from the file extension. The table below
+  contains the file extension in the in the first column and the
+  corresponding default format in the second.
+
+  \tabular{ll}{%
+    ads      \tab ADS reference format \cr
+    bib      \tab BibTeX  \cr
+    bibtex   \tab BibTeX  \cr
+    biblatex \tab BibLaTeX  \cr
+    copac    \tab COPAC format references   \cr
+    end      \tab EndNote (Refer format)  \cr 
+    endx     \tab EndNote XML  \cr
+    isi      \tab ISI web of science  \cr  
+    med      \tab Pubmed XML references  \cr  
+    nbib     \tab Pubmed/National Library of Medicine nbib format  \cr  
+    ris      \tab RIS format  \cr
+    R        \tab R source file containing \code{bibentry} commands  \cr
+    r        \tab R source file containing \code{bibentry} commands  \cr
+    Rstyle   \tab R source file containing \code{bibentry} commands  \cr
+    rds      \tab bibentry object in a binary file created by \code{saveRDS()}   \cr
+    xml      \tab MODS XML intermediate  \cr
+    wordbib  \tab Word 2007 bibliography format  
+  }
+
+}
+
+
 \value{
   The function is used for the side effect of creating a file in the
   requested format. It returns a list, currently containing the
