@@ -177,7 +177,7 @@
 
 <p><code>readBib</code> is wrapper around <code>bibConvert</code> for import of
   bibtex files into bibentry objects.</p>  
-<p>If <code>direct = FALSE</code> the bibtex file is converted first to XML
+<p>If <code>direct = FALSE</code>, the bibtex file is converted first to XML
   intermediate, then the XML file is converted to bibentry. The
   advantage of this is that it gives a standardised representation of
   the bibtex input. Fields that cannot be mapped to the intermediate
@@ -191,22 +191,26 @@
   sequences representing characters (such as accented Latin characters):
   If it is <code>"keep"</code> (the default), such sequences are kept as in
   the input. <code>"convert"</code> causes them to be converted to the
-  characters they represent. Finally, <code>"export"</code> characters as TeX
-  sequences, whenever possible.</p>
+  characters they represent. Finally, <code>"export"</code> exports characters
+  as TeX sequences, whenever possible.</p>
 <p>The difference between <code>"keep"</code> and <code>"export"</code> is that
   <code>"keep"</code> does not convert normal characters to TeX escapes, while
   <code>"export"</code> does it if possible. For example, if the input file
-  contains the TeX sequence <code>"\\"o"} <!-- % " -->
-  representing the letter o-umlaut, \code{"keep"} and \code{"export"}
-  will keep it as TeX sequence, while \code{"convert"} will convert it
+  contains the TeX sequence <code>\"o</code> 
+  representing the letter o-umlaut, <code>"keep"</code> and <code>"export"</code>
+  will keep it as TeX sequence, while <code>"convert"</code> will convert it
   to the character o-umlaut in the output encoding (normally UTF-8).  On
   the othe hand, if the input file contains the character o-umlaut, then
-  \code{"keep"} and \code{"convert"} will convert it to the output
-  encoding of o-umlaut, while \code{"export"} will export it as
-  \code{"\\"o"</code>. <!-- % "  --></p>
+  <code>"keep"</code> and <code>"convert"</code> will convert it to the output
+  encoding of o-umlaut, while <code>"export"</code> will export it as
+  <code>\"o</code>.</p>
 <p>Note that <code>"convert"</code> converts also a large number of
-  mathematical symbols (such as <code>"\alpha"</code>), which may or may not
-  be desirable. Also, some mathematical formulas may cause surprises.</p>  
+  mathematical symbols (such as <code>"\alpha"</code>) to the target encoding
+  (UTF-8), which may or may not be desirable. Also, some mathematical
+  formulas may cause surprises.</p>
+<p>Currently, <code>texChars = "export"</code> does not process properly
+  mathematical formulas.</p>
+  
 <p><code>writeBib</code> writes a <code>bibentry</code> object to a bibtex file.</p>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
@@ -261,18 +265,38 @@
 
 <span class='co'>## export as UTF-8 characters</span>
 <span class='co'>## this will print as true characters in suitable locale:</span>
-<span class='kw'>if</span><span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
-    <span class='va'>be</span> <span class='op'>&lt;-</span> <span class='fu'>readBib</span><span class='op'>(</span><span class='va'>bibacc</span>, direct <span class='op'>=</span> <span class='cn'>TRUE</span>, texChars <span class='op'>=</span> <span class='st'>"convert"</span><span class='op'>)</span>
-    <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>be</span>, style <span class='op'>=</span> <span class='st'>"R"</span><span class='op'>)</span>
-    <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>be</span>, style <span class='op'>=</span> <span class='st'>"bibtex"</span><span class='op'>)</span>
-    <span class='co'>## compare to the input file:</span>
-    <span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span><span class='op'>(</span><span class='va'>bibacc</span><span class='op'>)</span>
-<span class='op'>}</span>
+<span class='va'>be</span> <span class='op'>&lt;-</span> <span class='fu'>readBib</span><span class='op'>(</span><span class='va'>bibacc</span>, direct <span class='op'>=</span> <span class='cn'>TRUE</span>, texChars <span class='op'>=</span> <span class='st'>"convert"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>be</span>, style <span class='op'>=</span> <span class='st'>"R"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; bibentry(bibtype = "Article",
+#&gt;          key = "test1",
+#&gt;          author = person(given = "Kàrè",
+#&gt;                          family = "Lêáé"),
+#&gt;          title = "Kàrè üä Lêáé",
+#&gt;          journal = "Latin-1 accents",
+#&gt;          year = "2020",
+#&gt;          note = "Having the similar title and author is helpful for debugging since authors are processed differently from other fields. Here is a formula: $\\tan(\u03b1)$, $\\sin(\u03b4)/\u03b4 \u0890 1$, $\\sqrt{x}$.")</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>be</span>, style <span class='op'>=</span> <span class='st'>"bibtex"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; @Article{test1,
+#&gt;   author = {Kàrè Lêáé},
+#&gt;   title = {Kàrè üä Lêáé},
+#&gt;   journal = {Latin-1 accents},
+#&gt;   year = {2020},
+#&gt;   note = {Having the similar title and author is helpful for debugging since authors are processed differently from other fields. Here is a formula: $\tan(α)$, $\sin(δ)/δ ࢐ 1$, $\sqrt{x}$.},
+#&gt; }</div><div class='input'><span class='co'>## compare to the input file:</span>
+<span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span><span class='op'>(</span><span class='va'>bibacc</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "   @ARTICLE{test1,"                                                                             
+#&gt; [2] "     AUTHOR = {Kàrè Lêáé},"                                                                     
+#&gt; [3] "     TITLE = {Kàrè \\\"u\\\"a Lêáé},"                                                           
+#&gt; [4] "     JOURNAL = {Latin-1 accents},"                                                              
+#&gt; [5] "     YEAR = {2020},"                                                                            
+#&gt; [6] "     NOTE = {Having the similar title and author is helpful for debugging since authors are"    
+#&gt; [7] "                  processed differently from other fields. Here is a formula: $\\tan(\\alpha)$,"
+#&gt; [8] "                  $\\sin(\\delta)/\\delta \\to 1$, $\\sqrt{x}$.}"                               
+#&gt; [9] "}"                                                                                              </div><div class='input'>
 
 <span class='va'>be1</span> <span class='op'>&lt;-</span> <span class='fu'>readBib</span><span class='op'>(</span><span class='va'>bibacc</span>, direct <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 <span class='va'>be1a</span> <span class='op'>&lt;-</span> <span class='fu'>readBib</span><span class='op'>(</span><span class='va'>bibacc</span>, direct <span class='op'>=</span> <span class='cn'>TRUE</span>, texChars <span class='op'>=</span> <span class='st'>"keep"</span><span class='op'>)</span> <span class='co'># same</span>
 <span class='va'>be1</span>
-</div><div class='output co'>#&gt; Lêáé K (2020). “Kàrè Lêáé üä.” _Latin-1 accents_. Having the similar
+</div><div class='output co'>#&gt; Lêáé K (2020). “Kàrè üä Lêáé.” _Latin-1 accents_. Having the similar
 #&gt; title and author is helpful for debugging since authors are processed
 #&gt; differently from other fields. Here is a formula: $\tan(\alpha)$,
 #&gt; $\sin(\delta)/\delta\to1$, $\sqrt{x}$.</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>be1</span>, style <span class='op'>=</span> <span class='st'>"R"</span><span class='op'>)</span>
@@ -280,13 +304,13 @@
 #&gt;          key = "test1",
 #&gt;          author = person(given = "Kàrè",
 #&gt;                          family = "Lêáé"),
-#&gt;          title = "Kàrè Lêáé \\\"u\\\"a",
+#&gt;          title = "Kàrè \\\"u\\\"a Lêáé",
 #&gt;          journal = "Latin-1 accents",
 #&gt;          year = "2020",
 #&gt;          note = "Having the similar title and author is helpful for debugging since authors are processed differently from other fields. Here is a formula: $\\tan(\\alpha)$, $\\sin(\\delta)/\\delta \\to 1$, $\\sqrt{x}$.")</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>be1</span>, style <span class='op'>=</span> <span class='st'>"bibtex"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; @Article{test1,
 #&gt;   author = {Kàrè Lêáé},
-#&gt;   title = {Kàrè Lêáé \"u\"a},
+#&gt;   title = {Kàrè \"u\"a Lêáé},
 #&gt;   journal = {Latin-1 accents},
 #&gt;   year = {2020},
 #&gt;   note = {Having the similar title and author is helpful for debugging since authors are processed differently from other fields. Here is a formula: $\tan(\alpha)$, $\sin(\delta)/\delta \to 1$, $\sqrt{x}$.},
@@ -294,7 +318,7 @@
 <span class='co'>## export as TeX escapes, when possible</span>
 <span class='va'>be2</span> <span class='op'>&lt;-</span> <span class='fu'>readBib</span><span class='op'>(</span><span class='va'>bibacc</span>, direct <span class='op'>=</span> <span class='cn'>TRUE</span>, texChars <span class='op'>=</span> <span class='st'>"export"</span><span class='op'>)</span> <span class='co'>## same</span>
 <span class='va'>be2</span>
-</div><div class='output co'>#&gt; Lêáé K (2020). “Kàrè Lêáé üä.” _Latin-1 accents_. Having the similar
+</div><div class='output co'>#&gt; Lêáé K (2020). “Kàrè üä Lêáé.” _Latin-1 accents_. Having the similar
 #&gt; title and author is helpful for debugging since authors are processed
 #&gt; differently from other fields. Here is a formula:
 #&gt; \$\backslashtan($\alpha$)\$, \$\backslashsin($\delta$)/$\delta$ $\to$
@@ -303,13 +327,13 @@
 #&gt;          key = "test1",
 #&gt;          author = person(given = "K{\\`a}r{\\`e}",
 #&gt;                          family = "L{\\^e}{\\'a}{\\'e}"),
-#&gt;          title = "K{\\`a}r{\\`e} L{\\^e}{\\'a}{\\'e} {\\\"u}{\\\"a}",
+#&gt;          title = "K{\\`a}r{\\`e} {\\\"u}{\\\"a} L{\\^e}{\\'a}{\\'e}",
 #&gt;          journal = "Latin-1 accents",
 #&gt;          year = "2020",
 #&gt;          note = "Having the similar title and author is helpful for debugging since authors are processed differently from other fields. Here is a formula: {\\$}{\\backslash}tan($\\alpha$){\\$}, {\\$}{\\backslash}sin($\\delta$)/$\\delta$ $\\to$ 1{\\$}, {\\$}{\\backslash}sqrt{\\{}x{\\}}{\\$}.")</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>be2</span>, style <span class='op'>=</span> <span class='st'>"bibtex"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; @Article{test1,
 #&gt;   author = {K{\`a}r{\`e} L{\^e}{\'a}{\'e}},
-#&gt;   title = {K{\`a}r{\`e} L{\^e}{\'a}{\'e} {\"u}{\"a}},
+#&gt;   title = {K{\`a}r{\`e} {\"u}{\"a} L{\^e}{\'a}{\'e}},
 #&gt;   journal = {Latin-1 accents},
 #&gt;   year = {2020},
 #&gt;   note = {Having the similar title and author is helpful for debugging since authors are processed differently from other fields. Here is a formula: {\$}{\backslash}tan($\alpha$){\$}, {\$}{\backslash}sin($\delta$)/$\delta$ $\to$ 1{\$}, {\$}{\backslash}sqrt{\{}x{\}}{\$}.},
@@ -323,7 +347,7 @@
 #&gt;          key = "test1",
 #&gt;          author = person(given = "Kàrè",
 #&gt;                          family = "Lêáé"),
-#&gt;          title = "Kàrè Lêáé üä",
+#&gt;          title = "Kàrè üä Lêáé",
 #&gt;          journal = "Latin-1 accents",
 #&gt;          year = "2020",
 #&gt;          note = "Having the similar title and author is helpful for debugging since authors are processed differently from other fields. Here is a formula: $\\tan(\u03b1)$, $\\sin(\u03b4)/\u03b4 \u0890 1$, $\\sqrt{x}$.")</div><div class='input'><span class='co'>## print(be3, style = "bibtex")</span>

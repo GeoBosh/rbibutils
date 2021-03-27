@@ -152,8 +152,10 @@
 <p><code><a href='readBib.html'>readBib</a></code> and <code><a href='readBib.html'>writeBib</a></code> import/export BiBTeX
   files.  <code><a href='readBibentry.html'>readBibentry</a></code> and <code><a href='readBibentry.html'>writeBibentry</a></code>
   import/export <span style="R">R</span> source files in which the references are represented
-  by <code><a href='https://rdrr.io/r/utils/bibentry.html'>bibentry()</a></code> calls. These functions are wrappers around
-  <code>bibConvert</code>.</p>
+  by <code><a href='https://rdrr.io/r/utils/bibentry.html'>bibentry()</a></code> calls. These functions were originally just
+  wrappers around <code>bibConvert</code>. <code><a href='readBib.html'>readBib</a></code> has acquired
+  additional features, including a direct import (without going through
+  <code>bibConvert</code>) from BiBTeX files.</p>
 <p>All encodings supported by the bibutils library are available for
   <code><a href='bibConvert.html'>bibConvert</a></code>.</p>
 <p>Further functionality may be provided in future releases, in

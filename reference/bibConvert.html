@@ -326,7 +326,7 @@ Read a bibliography file in one of the supported formats, convert it
 #&gt; [1] "/Users/runner/work/_temp/Library/rbibutils/bib/ex0.biblatex"
 #&gt; 
 #&gt; $outfile
-#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpKtEADS/filee5b794c5cfb.xml"
+#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpWR2T8F/filee223bc74a26.xml"
 #&gt; 
 #&gt; $nref_in
 #&gt; [1] 3
@@ -343,7 +343,7 @@ Read a bibliography file in one of the supported formats, convert it
 #&gt; [1] "/Users/runner/work/_temp/Library/rbibutils/bib/ex0.biblatex"
 #&gt; 
 #&gt; $outfile
-#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpKtEADS/filee5b46ca0f4.bib"
+#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpWR2T8F/filee2218d52373.bib"
 #&gt; 
 #&gt; $nref_in
 #&gt; [1] 3
@@ -356,7 +356,7 @@ Read a bibliography file in one of the supported formats, convert it
 <span class='va'>rds</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span><span class='op'>(</span>fileext <span class='op'>=</span> <span class='st'>".rds"</span><span class='op'>)</span>
 <span class='va'>fn_biblatex</span>
 </div><div class='output co'>#&gt; [1] "/Users/runner/work/_temp/Library/rbibutils/bib/ex0.biblatex"</div><div class='input'><span class='va'>rds</span>
-</div><div class='output co'>#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpKtEADS/filee5b4dfc30d2.rds"</div><div class='input'><span class='va'>be</span> <span class='op'>&lt;-</span> <span class='fu'>bibConvert</span><span class='op'>(</span><span class='va'>fn_biblatex</span>, <span class='va'>rds</span>, <span class='st'>"biblatex"</span>, <span class='st'>"bibentry"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpWR2T8F/filee224a74cd52.rds"</div><div class='input'><span class='va'>be</span> <span class='op'>&lt;-</span> <span class='fu'>bibConvert</span><span class='op'>(</span><span class='va'>fn_biblatex</span>, <span class='va'>rds</span>, <span class='st'>"biblatex"</span>, <span class='st'>"bibentry"</span><span class='op'>)</span>
 <span class='va'>bea</span> <span class='op'>&lt;-</span> <span class='fu'>bibConvert</span><span class='op'>(</span><span class='va'>fn_biblatex</span>, <span class='va'>rds</span>, <span class='st'>"biblatex"</span><span class='op'>)</span> <span class='co'># same</span>
 <span class='fu'><a href='https://rdrr.io/r/base/readRDS.html'>readRDS</a></span><span class='op'>(</span><span class='va'>rds</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Beach CM, Davidson R (1983). “Distribution-free statistical inference
@@ -377,7 +377,7 @@ Read a bibliography file in one of the supported formats, convert it
 #&gt; [1] "/Users/runner/work/_temp/Library/rbibutils/bib/ex0.biblatex"
 #&gt; 
 #&gt; $outfile
-#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpKtEADS/filee5b2abace6f.R"
+#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpWR2T8F/filee2264014e16.R"
 #&gt; 
 #&gt; $nref_in
 #&gt; [1] 3
@@ -397,7 +397,7 @@ Read a bibliography file in one of the supported formats, convert it
 #&gt; Lambert PJ (1993). _The distribution and redistribution of income. A
 #&gt; mathematical analysis_, 2 edition. Manchester University Press,
 #&gt; Manchester.
-#&gt; </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/file.show.html'>file.show</a></span><span class='op'>(</span><span class='va'>r</span><span class='op'>)</span>
+#&gt; </div><div class='input'><span class='co'>## file.show(r)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span><span class='op'>(</span><span class='va'>r</span><span class='op'>)</span>, sep <span class='op'>=</span> <span class='st'>"\n"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; bibentry(bibtype = "Article",
 #&gt;          key = "beachanddavidson1983",
@@ -446,10 +446,10 @@ Read a bibliography file in one of the supported formats, convert it
 <span class='co'>## now take the bib file and convert it to UTF-8</span>
 <span class='fu'>bibConvert</span><span class='op'>(</span><span class='va'>bib</span>, <span class='va'>bib2</span>, encoding <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"cp1251"</span>, <span class='st'>"utf8"</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $infile
-#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpKtEADS/filee5b46ca0f4.bib"
+#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpWR2T8F/filee2218d52373.bib"
 #&gt; 
 #&gt; $outfile
-#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpKtEADS/filee5b77baf570.bib"
+#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpWR2T8F/filee22510a5fc1.bib"
 #&gt; 
 #&gt; $nref_in
 #&gt; [1] 2
@@ -465,7 +465,7 @@ Read a bibliography file in one of the supported formats, convert it
 <span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span><span class='op'>(</span><span class='va'>bib</span><span class='op'>)</span>, sep <span class='op'>=</span> <span class='st'>"\n"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; @Article{test1,
 #&gt; author="L{\^e}{\'a}{\'e}, K{\`a}r{\`e}",
-#&gt; title="K{\`a}r{\`e} L{\^e}{\'a}{\'e} {\"u}{\"a}",
+#&gt; title="K{\`a}r{\`e} {\"u}{\"a} L{\^e}{\'a}{\'e}",
 #&gt; journal="Latin-1 accents",
 #&gt; year="2020",
 #&gt; note="Having the similar title and author is helpful for debugging since authors are processed differently from other fields. Here is a formula: {\$}{\backslash}tan($\alpha$){\$}, {\$}{\backslash}sin($\delta$)/$\delta$ $\to$ 1{\$}, {\$}{\backslash}sqrt{\{}x{\}}{\$}."
