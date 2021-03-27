@@ -1,5 +1,4 @@
 ^revdep$
-^.*\.rds$
 ^auto$
 .rsync_exclude
 .emacs\.desktop
