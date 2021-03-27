@@ -534,7 +534,8 @@ bibl_fixcharsetdata( fields *ref, param *p )
 		data = fields_value( ref, i, FIELDS_STRP_NOUSE );
 
 		// Georgi:
-		//REprintf("p->latexout: %d, p->charsetout: %d\n", p->latexout, p->charsetout );
+		// REprintf("p->latexin: %d, p->charsetin: %d\n", p->latexin, p->charsetin );
+		// REprintf("p->latexout: %d, p->charsetout: %d\n", p->latexout, p->charsetout );
 
 		if ( bibl_notexify( tag ) ) {
 			ok = str_convert( data,
@@ -851,7 +852,7 @@ bibl_read( bibl *b, FILE *fp, char *filename, param *p )
 	}
 
 	// if ( debug_set( &read_params ) ) {
-	// 	report_params( stderr, "bibl_read", &read_params );
+	//   report_params( stderr, "bibl_read", &read_params ); 
 	// }
 
 	bibl_init( &bin );
@@ -869,7 +870,7 @@ bibl_read( bibl *b, FILE *fp, char *filename, param *p )
   //   fields_report_stderr( bin.ref[i] );
   // }
 
-	if ( debug_set( &read_params ) ) {
+	if ( debug_set( &read_params ) ) { 
 		bibl_verbose( &bin, "raw_input", "for bibl_read" );
 	}
 

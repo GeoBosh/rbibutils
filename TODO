@@ -1,13 +1,13 @@
 - 2020-09-27
 
-  In bibtex import, mathematial formulas are exported without the enclosing dollars for
+  In bibtex import, mathematical formulas are exported without the enclosing dollars for
   entries coming before field AUTHORS. If field AUTHORS is the first in a reference item
   there is no problem.
 
-
-
-- 2020-06-27
-
-  If the first entry in the bibtex file starts from the first line it gets lost
-  when read in, eg bibConvert("./inst/bib/ex0.bibtex", "tmp.rds").
-
+  bibacc2 <- system.file("/bib/latin1accents_utf8a.bib", package = "rbibutils")
+  be0a <- readBib(bibacc2)
+  ## Error in .bibentry_check_bibentry1(rval) : 
+  ##   A bibentry of bibtype ‘Article’ has to specify the field: author
+  ## Warning message:
+  ## In readBibentry(outfile) : key 'test1'
+  ##       A bibentry of bibtype ‘Article’ has to specify the field: author

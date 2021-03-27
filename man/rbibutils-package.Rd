@@ -29,8 +29,10 @@
   \code{\link{readBib}} and \code{\link{writeBib}} import/export BiBTeX
   files.  \code{\link{readBibentry}} and \code{\link{writeBibentry}}
   import/export \R source files in which the references are represented
-  by \code{bibentry()} calls. These functions are wrappers around
-  \code{bibConvert}.
+  by \code{bibentry()} calls. These functions were originally just
+  wrappers around \code{bibConvert}. \code{\link{readBib}} has acquired
+  additional features, including a direct import (without going through
+  \code{bibConvert}) from BiBTeX files.
 
   All encodings supported by the bibutils library are available for
   \code{\link{bibConvert}}. 

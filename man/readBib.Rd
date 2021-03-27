@@ -38,11 +38,11 @@ writeBib(object, con = stdout(), append = FALSE)
   \code{readBib} is wrapper around \code{bibConvert} for import of
   bibtex files into bibentry objects.
   
-  If \code{direct = FALSE} the bibtex file is converted first to XML
+  If \code{direct = FALSE}, the bibtex file is converted first to XML
   intermediate, then the XML file is converted to bibentry. The
   advantage of this is that it gives a standardised representation of
   the bibtex input. Fields that cannot be mapped to the intermediate
-  format are generally omitted. 
+  format are generally omitted.
 
   If \code{direct = TRUE} the input file is converted directly to
   bibentry, without the XML intermediate step. This means that
@@ -54,24 +54,29 @@ writeBib(object, con = stdout(), append = FALSE)
   sequences representing characters (such as accented Latin characters):
   If it is \code{"keep"} (the default), such sequences are kept as in
   the input. \code{"convert"} causes them to be converted to the
-  characters they represent. Finally, \code{"export"} characters as TeX
-  sequences, whenever possible.
+  characters they represent. Finally, \code{"export"} exports characters
+  as TeX sequences, whenever possible.
 
   The difference between \code{"keep"} and \code{"export"} is that
   \code{"keep"} does not convert normal characters to TeX escapes, while
   \code{"export"} does it if possible. For example, if the input file
-  contains the TeX sequence \code{"\\\\"o"} % "
+  contains the TeX sequence \verb{\\"o} 
   representing the letter o-umlaut, \code{"keep"} and \code{"export"}
   will keep it as TeX sequence, while \code{"convert"} will convert it
   to the character o-umlaut in the output encoding (normally UTF-8).  On
   the othe hand, if the input file contains the character o-umlaut, then
   \code{"keep"} and \code{"convert"} will convert it to the output
   encoding of o-umlaut, while \code{"export"} will export it as
-  \code{"\\\\"o"}. % " 
+  \verb{\\"o}. 
 
   Note that \code{"convert"} converts also a large number of
-  mathematical symbols (such as \code{"\\alpha"}), which may or may not
-  be desirable. Also, some mathematical formulas may cause surprises.
+  mathematical symbols (such as \code{"\\alpha"}) to the target encoding
+  (UTF-8), which may or may not be desirable. Also, some mathematical
+  formulas may cause surprises.
+
+  Currently, \code{texChars = "export"} does not process properly
+  mathematical formulas.
+
   
   \code{writeBib} writes a \code{bibentry} object to a bibtex file.
 
@@ -85,9 +90,6 @@ writeBib(object, con = stdout(), append = FALSE)
 % %% ~put references to the literature/web site here ~
 % }
 \author{Georgi N. Boshnakov}
-% \note{
-%   This function is experimental and should be considered internal.
-% }
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 \seealso{
   \code{\link{readBibentry}} and \code{\link{writeBibentry}} for
@@ -112,13 +114,12 @@ bibacc <- system.file("bib/latin1accents_utf8.bib", package = "rbibutils")
 
 ## export as UTF-8 characters
 ## this will print as true characters in suitable locale:
-if(FALSE) {
-    be <- readBib(bibacc, direct = TRUE, texChars = "convert")
-    print(be, style = "R")
-    print(be, style = "bibtex")
-    ## compare to the input file:
-    readLines(bibacc)
-}
+be <- readBib(bibacc, direct = TRUE, texChars = "convert")
+print(be, style = "R")
+print(be, style = "bibtex")
+## compare to the input file:
+readLines(bibacc)
+
 
 be1 <- readBib(bibacc, direct = TRUE)
 be1a <- readBib(bibacc, direct = TRUE, texChars = "keep") # same

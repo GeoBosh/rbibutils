@@ -215,7 +215,7 @@ readRDS(rds)
 ## convert to R source file
 r <- tempfile(fileext = ".R")
 bibConvert(fn_biblatex, r, "biblatex")
-file.show(r)
+## file.show(r)
 cat(readLines(r), sep = "\n")
 
 fn_cyr_utf8 <- system.file("bib", "cyr_utf8.bib",  package = "rbibutils")

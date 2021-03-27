@@ -150,7 +150,7 @@ write_unicode( str *s, unsigned int ch, int charsetout, int latexout,
 	unsigned int c;
 
 	// Georgi
-	//REprintf("ch: %x, latexout: %d, utf8out: %d\n", ch, utf8out, charsetout);
+	// REprintf("(write_unicode) ch: %x, latexout: %d, utf8out: %d\n", ch, utf8out, charsetout);
 
 	
 	if ( latexout ) {

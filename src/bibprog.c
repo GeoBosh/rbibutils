@@ -40,7 +40,7 @@ bibprog( int argc, char *argv[], param *p, char *outfile[] )
 		} 
 	}
 	
-  // REprintf("Bh: before_bibl_write\n");
+  // REprintf("(bibprog) Bh: before_bibl_write\n");
   // // Georgi: for testing
   // for(long i = 0; i < b.n; ++i) {
   //   fields_report_stderr( b.ref[i] );

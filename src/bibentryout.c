@@ -902,6 +902,40 @@ append_howpublished( fields *in, fields *out, int *status )
 	}
 }
 
+// Georgi
+static void
+append_key( fields *in, char *intag, char *outtag, fields *out, int *status )
+{
+        int n, fstatus;
+        
+        char *tag, *value;
+        str data;
+        
+        str_init( &data );
+        
+        n = fields_find( in, intag, LEVEL_ANY );
+        if ( n!=FIELDS_NOTFOUND ) {
+            fields_set_used( in, n );
+            
+            value = fields_value( in, n, FIELDS_CHRP );
+	    str_strcatc( &data, "c(" );
+            str_strcatc( &data, "key = \"" );
+            str_strcatc( &data, value );
+            str_strcatc( &data, "\")" );
+                
+            // fstatus = fields_add( out, outtag, str_cstr( &data ), LEVEL_MAIN );
+            fstatus = fields_add( out, outtag, data.data, LEVEL_MAIN );
+            if ( fstatus!=FIELDS_OK ) {
+                *status = BIBL_ERR_MEMERR;
+                goto out;
+            }
+        }
+
+out:
+	str_free( &data );
+
+}
+
 static int
 bibentryout_assemble( fields *in, fields *out, param *pm, unsigned long refnum )
 {
@@ -955,6 +989,9 @@ bibentryout_assemble( fields *in, fields *out, param *pm, unsigned long refnum )
 	append_howpublished( in, out, &status );
 
 	append_simple      ( in, "CHAPTER",           "chapter",  out, &status ); // Georgi
+	// Georgi - some entries may have field 'key' (it is used by some bibtex styles)
+        //       other = c(key = "mykey")
+	append_key      ( in, "KEY",   "other"        ,  out, &status );
 
 	return status;
 }

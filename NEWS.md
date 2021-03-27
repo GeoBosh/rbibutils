@@ -8,7 +8,12 @@
 - `readBib` can now convert bibtex files directly (i.e., without first
   converting to XML intermediate) to bibentry R objects.
 
-- `readBib` now accepts encodings as for `bibConvert`. 
+- `readBib` now accepts encodings as for `bibConvert`.
+
+- `readBib` now processes field `key` in bibtex files. (This field is optional,
+  used by some bibtex styles for sorting.)
+
+- bug fixes and improvements.
 
 
 # rbibutils 2.0 (CRAN)

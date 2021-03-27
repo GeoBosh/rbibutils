@@ -748,13 +748,13 @@ bibtex_person_tokenize( fields *bibin, int m, param *pm, slist *tokens )
 	status = latex_tokenize( tokens, fields_value( bibin, m, FIELDS_STRP ) );
 	if ( status!=BIBL_OK ) return status;
 
-	
+
 	for ( i=0; i<tokens->n; ++i ) {
 
 		s = slist_str( tokens, i );
 
 		// Georgi: removing since changes latex characters to unicode
-		//         in names, see comments in bibtexin_cleanref() (in bibtexin.c
+		//         in names, see comments in bibtexin_cleanref() (in bibtexin.c)
 		//    TODO: check if this causes bad side effects, ideally correct
 		//
 		// Reinstating this, bad side effects
@@ -764,7 +764,8 @@ bibtex_person_tokenize( fields *bibin, int m, param *pm, slist *tokens )
 		// !!! Georgi: conversion is here!
 		// !!!
 		// REprintf("\ns before str_convert: %s\n", s->data);
-		  ok = str_convert( s, pm->charsetin,  1, pm->utf8in,  pm->xmlin,
+		// ok = str_convert( s, pm->charsetin,  1, pm->utf8in,  pm->xmlin,
+		  ok = str_convert( s, pm->charsetin,  pm->latexin, pm->utf8in,  pm->xmlin,
 				    // Georgi: change arg. latexout to 1
 				    // TODO: make it argument to this function?
 				    //       it should depend on --no-latex
@@ -831,7 +832,7 @@ bibtexdirectin_person( fields *bibin, int m, param *pm )
 {
 	int status, match = 0;
 	slist tokens;
-// REprintf("bibtexdirectin_person!\n");
+ // REprintf("\nbibtexdirectin_person!\n");
 
 	status = bibtex_matches_asis_or_corps( bibin, m, pm, &match );
 	if ( status!=BIBL_OK || match==1 ) return status;
@@ -841,6 +842,15 @@ bibtexdirectin_person( fields *bibin, int m, param *pm )
 	status = bibtex_person_tokenize( bibin, m, pm, &tokens );
 	if ( status!=BIBL_OK ) goto out;
 
+	// int nout = fields_num( bibin );
+	// int i;
+	// if(nout > 0) {
+	//   REprintf("nout = %d\n" , nout);
+	//   for(i = 0; i < nout; i++) {
+	//     REprintf("i = %d, value = %s\n", i, (bibin->value[i]).data);
+	//   }
+	// }
+	
 	status = bibtex_person_add_names( bibin, m, &tokens );
 	if ( status!=BIBL_OK ) goto out;
 
@@ -895,7 +905,7 @@ bibtexdirectin_cleanref( fields *bibin, param *pm )
 		// }
 		if ( is_name_tag( tag ) ) {
 			status = bibtexdirectin_person( bibin, i, pm );
-// REprintf("i = %d\n", i);
+// REprintf("\ni = %d, ", i);
 // REprintf("value = %s\n", (bibin->value[i]).data);
  
 			if ( status!=BIBL_OK ) goto out;

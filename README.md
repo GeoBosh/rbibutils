@@ -35,8 +35,8 @@ extentions. There is ambiguity however about `bib` files, which can be either
 Bibtex or Biblatex. Bibtex is assumed if the format is not specified.
 
 `readBib()` and `writeBib()` import/export BiBTeX files.  `readBibentry()` and
-`writeBibentry()` import/export `R` source files in which the references are represented by
-`bibentry()` calls. These functions are wrappers around `bibConvert`.
+`writeBibentry()` import/export `R` source files in which the references are
+represented by `bibentry()` calls.
 
 The default encoding is UTF-8 for both, input and output. All encodings handled
 by `bibutils` are supported. Besides UTF-8, these include `gb18030` (Chinese),
@@ -47,12 +47,47 @@ Cyrillic) and many others. Common alternative names are also accepted
 Bibentry objects can be input from an `R` source file or from an `rds` file. The
 `rds` file should contain a `bibentry` R object, saved from R with `saveRDS()`.
 The `rds` format is a compressed binary format`. Alternatively, an R source file
-containing one or more bibentry instructions and maybe other commands can be used.
-The R file is sourced and all bibentry objects created by it are collected. 
+containing one or more bibentry instructions and maybe other commands can be
+used.  The R file is sourced and all bibentry objects created by it are
+collected.
 
 
 
 # Examples:
+
+## readBib
+
+The examples in this section import the following file:
+
+    bibacc <- system.file("bib/latin1accents_utf8.bib", package = "rbibutils")
+
+Import the above bibtex file into a `bibentry` object. By default TeX escape
+sequences representing characters are kept as is:
+
+    be0 <- readBib(bibacc)
+    print(be0, style = "bibtex")
+
+As above, using the direct option:
+
+    be1 <- readBib(bibacc, direct = TRUE)
+    ## readBib(bibacc, direct = TRUE, texChars = "keep") # same
+    print(be1, style = "bibtex")
+
+
+Use the `"convert"` option to convert TeX sequences to true characters:
+
+    readBib(bibacc, direct = TRUE, texChars = "convert")
+
+Use the `"export"` option to convert other characters to ASCII TeX sequences,
+when possible (currently this option doesn't handle well mathematical
+expressions):
+
+    be2 <- readBib(bibacc, direct = TRUE, texChars = "export")
+    print(be2, style = "bibtex")
+  
+
+## bibConvert
+
 
 Convert Bibtex file `myfile.bib` to a `bibentry` object and save the latter to
 `"myfile.rds":

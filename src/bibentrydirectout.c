@@ -902,6 +902,40 @@ append_howpublished( fields *in, fields *out, int *status )
 	}
 }
 
+// Georgi
+static void
+append_key( fields *in, char *intag, char *outtag, fields *out, int *status )
+{
+        int n, fstatus;
+        
+        char *tag, *value;
+        str data;
+        
+        str_init( &data );
+        
+        n = fields_find( in, intag, LEVEL_ANY );
+        if ( n!=FIELDS_NOTFOUND ) {
+            fields_set_used( in, n );
+            
+            value = fields_value( in, n, FIELDS_CHRP );
+	    str_strcatc( &data, "c(" );
+            str_strcatc( &data, "key = \"" );
+            str_strcatc( &data, value );
+            str_strcatc( &data, "\")" );
+                
+            // fstatus = fields_add( out, outtag, str_cstr( &data ), LEVEL_MAIN );
+            fstatus = fields_add( out, outtag, data.data, LEVEL_MAIN );
+            if ( fstatus!=FIELDS_OK ) {
+                *status = BIBL_ERR_MEMERR;
+                goto out;
+            }
+        }
+
+out:
+	str_free( &data );
+
+}
+
 static int
 bibentrydirectout_assemble( fields *in, fields *out, param *pm, unsigned long refnum )
 {
@@ -1027,6 +1061,10 @@ bibentrydirectout_assemble( fields *in, fields *out, param *pm, unsigned long re
 
 	append_simple      ( in, "CHAPTER",           "chapter",  out, &status ); // Georgi
 
+	// Georgi - some entries may have field 'key' (it is used by some bibtex styles)
+        //       other = c(key = "mykey")
+	append_key      ( in, "KEY",   "other"        ,  out, &status );
+
 
 	
 	int i, f_len;
@@ -1058,7 +1096,7 @@ bibentrydirectout_write( fields *out, FILE *fp, param *pm, unsigned long refnum 
 {
 	int i, j, len, nquotes, format_opts = pm->format_opts;
 	char *tag, *value, ch;
-	int not_person; // Georgi
+	int not_person, not_other; // Georgi
 
 	fprintf( fp, ",\n\n" ); // Georgi
 	
@@ -1109,9 +1147,12 @@ bibentrydirectout_write( fields *out, FILE *fp, param *pm, unsigned long refnum 
 		// else fprintf( fp, "\"" );
 		not_person = strcmp( tag, "author" ) && strcmp( tag, "editor" ) 
 		  && strcmp( tag, "translator" );  // TODO: are there others?
-		  
-		if ( not_person ) fprintf( fp, "\"" );
+
+		//
+		not_other = strcmp( tag, "other" );
 		
+		if ( not_person && not_other ) fprintf( fp, "\"" );
+
 		len = strlen( value );
 		for ( i=0; i<len; ++i ) {
 			ch = value[i];
@@ -1126,14 +1167,20 @@ bibentrydirectout_write( fields *out, FILE *fp, param *pm, unsigned long refnum 
 			// 		nquotes++;
 			// 	}
 			// }
-			if ( ch == '\\' )      fprintf( fp, "%c%c", ch, ch );
-			else if ( ch == '\"' && not_person) fprintf( fp, "\\%c", ch );
+			
+			if ( ch == '\\' ) {
+			  fprintf( fp, "%c%c", ch, ch );
+			}
+			else if ( ch == '\"' &&
+				  ( (not_person && not_other) || (i>0 && value[i-1]=='\\') ))
+			  fprintf( fp, "\\%c", ch );
+			  
 			else		       fprintf( fp, "%c"  , ch );
 		}
 
 		// if ( format_opts & BIBL_FORMAT_BIBOUT_BRACKETS ) fprintf( fp, "}" );
 		// else fprintf( fp, "\"" );
-		if ( not_person )  fprintf( fp, "\"" );
+		if ( not_person && not_other )  fprintf( fp, "\"" );
 		
 	}
 
