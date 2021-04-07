@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rbibutils</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1</span>
       </span>
     </div>
 
@@ -114,16 +114,17 @@
       <small>Source: <a href='https://github.com/GeoBosh/rbibutils/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="rbibutils-201" class="section level1">
-<h1 class="page-header" data-toc-text="2.0.1">
-<a href="#rbibutils-201" class="anchor"></a>rbibutils 2.0.1<small> Unreleased </small>
+    <div id="rbibutils-21-cran" class="section level1">
+<h1 class="page-header" data-toc-text="2.1">
+<a href="#rbibutils-21-cran" class="anchor"></a>rbibutils 2.1 (CRAN)<small> 2021-04-06 </small>
 </h1>
 <ul>
+<li><p><code>readBib</code> can now convert bibtex files directly (i.e., without first converting to XML intermediate) to bibentry R objects. This can be requested by setting the new argument <code>direct</code> to <code>TRUE</code>.</p></li>
 <li><p><code>readBib</code> gets argument <code>texChars</code> to control whether or not to convert TeX sequences representing characters (such as accented Latin characters) to normal characters in the output encoding. There is an option also to convert charaters to the corresponding TeX sequences.</p></li>
-<li><p><code>readBib</code> can now convert bibtex files directly (i.e., without first converting to XML intermediate) to bibentry R objects.</p></li>
 <li><p><code>readBib</code> now accepts encodings as for <code>bibConvert</code>.</p></li>
 <li><p><code>readBib</code> now processes field <code>key</code> in bibtex files. (This field is optional, used by some bibtex styles for sorting.)</p></li>
 <li><p>bug fixes and improvements.</p></li>
+<li><p>removed field <code>LazyData</code> from DESCRIPTION as there is no data directory (and R-devel now flags it with a NOTE).</p></li>
 </ul>
 </div>
     <div id="rbibutils-20-cran" class="section level1">
