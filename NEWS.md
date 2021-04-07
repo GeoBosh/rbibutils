@@ -1,3 +1,8 @@
+# rbibutils 2.1.1
+
+- edit README.
+
+
 # rbibutils 2.1 (CRAN)
 
 - `readBib` can now convert bibtex files directly (i.e., without first

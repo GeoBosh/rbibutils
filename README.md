@@ -61,29 +61,39 @@ The examples in this section import the following file:
 
     bibacc <- system.file("bib/latin1accents_utf8.bib", package = "rbibutils")
 
+Note that some characters may not be displayed on some locales. Also, on Windows
+some characters may be "approximated" by other characters.
+
 Import the above bibtex file into a `bibentry` object. By default TeX escape
 sequences representing characters are kept as is:
 
     be0 <- readBib(bibacc)
+    be0
     print(be0, style = "bibtex")
 
 As above, using the direct option:
 
     be1 <- readBib(bibacc, direct = TRUE)
     ## readBib(bibacc, direct = TRUE, texChars = "keep") # same
+    be1
     print(be1, style = "bibtex")
 
 
 Use the `"convert"` option to convert TeX sequences to true characters:
 
-    readBib(bibacc, direct = TRUE, texChars = "convert")
+    be2 <- readBib(bibacc, direct = TRUE, texChars = "convert")
+    be2
+    print(be2, style = "R")
+
+(On Windows the Greek characters alpha and delta may be printed as 'a' and 'd'
+but internally they are alpha and delta.)
 
 Use the `"export"` option to convert other characters to ASCII TeX sequences,
 when possible (currently this option doesn't handle well mathematical
 expressions):
 
-    be2 <- readBib(bibacc, direct = TRUE, texChars = "export")
-    print(be2, style = "bibtex")
+    be3 <- readBib(bibacc, direct = TRUE, texChars = "export")
+    print(be3, style = "bibtex")
   
 
 ## bibConvert
