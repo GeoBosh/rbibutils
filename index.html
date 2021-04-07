@@ -36,7 +36,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">rbibutils</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
       </span>
     </div>
 
@@ -103,18 +103,24 @@
 <a href="#readbib" class="anchor"></a>readBib</h2>
 <p>The examples in this section import the following file:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>bibacc &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">"bib/latin1accents_utf8.bib"</span>, <span class="dt">package =</span> <span class="st">"rbibutils"</span>)</span></code></pre></div>
+<p>Note that some characters may not be displayed on some locales. Also, on Windows some characters may be “approximated” by other characters.</p>
 <p>Import the above bibtex file into a <code>bibentry</code> object. By default TeX escape sequences representing characters are kept as is:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>be0 &lt;-<span class="st"> </span><span class="kw">readBib</span>(bibacc)</span>
-<span id="cb4-2"><a href="#cb4-2"></a><span class="kw">print</span>(be0, <span class="dt">style =</span> <span class="st">"bibtex"</span>)</span></code></pre></div>
+<span id="cb4-2"><a href="#cb4-2"></a>be0</span>
+<span id="cb4-3"><a href="#cb4-3"></a><span class="kw">print</span>(be0, <span class="dt">style =</span> <span class="st">"bibtex"</span>)</span></code></pre></div>
 <p>As above, using the direct option:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>be1 &lt;-<span class="st"> </span><span class="kw">readBib</span>(bibacc, <span class="dt">direct =</span> <span class="ot">TRUE</span>)</span>
 <span id="cb5-2"><a href="#cb5-2"></a><span class="co">## readBib(bibacc, direct = TRUE, texChars = "keep") # same</span></span>
-<span id="cb5-3"><a href="#cb5-3"></a><span class="kw">print</span>(be1, <span class="dt">style =</span> <span class="st">"bibtex"</span>)</span></code></pre></div>
+<span id="cb5-3"><a href="#cb5-3"></a>be1</span>
+<span id="cb5-4"><a href="#cb5-4"></a><span class="kw">print</span>(be1, <span class="dt">style =</span> <span class="st">"bibtex"</span>)</span></code></pre></div>
 <p>Use the <code>"convert"</code> option to convert TeX sequences to true characters:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="kw">readBib</span>(bibacc, <span class="dt">direct =</span> <span class="ot">TRUE</span>, <span class="dt">texChars =</span> <span class="st">"convert"</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>be2 &lt;-<span class="st"> </span><span class="kw">readBib</span>(bibacc, <span class="dt">direct =</span> <span class="ot">TRUE</span>, <span class="dt">texChars =</span> <span class="st">"convert"</span>)</span>
+<span id="cb6-2"><a href="#cb6-2"></a>be2</span>
+<span id="cb6-3"><a href="#cb6-3"></a><span class="kw">print</span>(be2, <span class="dt">style =</span> <span class="st">"R"</span>)</span></code></pre></div>
+<p>(On Windows the Greek characters alpha and delta may be printed as ‘a’ and ‘d’ but internally they are alpha and delta.)</p>
 <p>Use the <code>"export"</code> option to convert other characters to ASCII TeX sequences, when possible (currently this option doesn’t handle well mathematical expressions):</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>be2 &lt;-<span class="st"> </span><span class="kw">readBib</span>(bibacc, <span class="dt">direct =</span> <span class="ot">TRUE</span>, <span class="dt">texChars =</span> <span class="st">"export"</span>)</span>
-<span id="cb7-2"><a href="#cb7-2"></a><span class="kw">print</span>(be2, <span class="dt">style =</span> <span class="st">"bibtex"</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>be3 &lt;-<span class="st"> </span><span class="kw">readBib</span>(bibacc, <span class="dt">direct =</span> <span class="ot">TRUE</span>, <span class="dt">texChars =</span> <span class="st">"export"</span>)</span>
+<span id="cb7-2"><a href="#cb7-2"></a><span class="kw">print</span>(be3, <span class="dt">style =</span> <span class="st">"bibtex"</span>)</span></code></pre></div>
 </div>
 <div id="bibconvert" class="section level2">
 <h2 class="hasAnchor">
