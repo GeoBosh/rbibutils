@@ -1,6 +1,6 @@
 # rbibutils 2.1.1
 
-- edit README.
+- now a warning is issued if package 'testthat' is not available for tests.
 
 
 # rbibutils 2.1 (CRAN)

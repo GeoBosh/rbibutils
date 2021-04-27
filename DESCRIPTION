@@ -2,11 +2,11 @@ Package: rbibutils
 Type: Package
 Title: Convert Between Bibliography Formats
 Version: 2.1.1
-Date: 2021-04-07
+Date: 2021-04-27
 Authors@R: c( person(given = c("Georgi", "N."), family = "Boshnakov", 
                      role = c("aut", "cre"), 	
                      email = "georgi.boshnakov@manchester.ac.uk",
-		     comment = "R port, modifications to bibutils' C code"
+		     comment = "R port, R code, modifications to bibutils' C code, conversion to Bibentry (R and C code)"
 		     ),
               person(given = "Chris", family = "Putman",
                      role = "aut",
@@ -18,12 +18,12 @@ Authors@R: c( person(given = c("Georgi", "N."), family = "Boshnakov",
                      role = "ctb",
 		     comment = "src/biblatexin.c, src/bltypes.c")
 		     )
-Description: Converts between a number of bibliography formats,
-    including 'BibTeX', 'BibLaTeX' and 'Bibentry'.  Includes a port of the
-    'bibutils' utilities by Chris Putnam
+Description: Read and write 'BibTeX' files. Convert between bibliography
+    formats, including 'BibTeX', 'BibLaTeX', EndNote, and 'Bibentry'.
+    Includes a port of the 'bibutils' utilities by Chris Putnam
     <https://sourceforge.net/projects/bibutils/>. Supports all
     bibliography formats and character encodings implemented in
-    'bibutils'. 
+    'bibutils'.
 License: GPL-2
 URL: https://geobosh.github.io/rbibutils/ (website), https://github.com/GeoBosh/rbibutils (devel)
 BugReports: https://github.com/GeoBosh/rbibutils/issues
