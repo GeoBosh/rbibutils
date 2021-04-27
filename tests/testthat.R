@@ -1,4 +1,4 @@
-if(require("testthat") {
+if(require("testthat")) {
     library(testthat)
     library(rbibutils)
     test_check("rbibutils")
