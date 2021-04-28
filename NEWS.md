@@ -1,4 +1,4 @@
-# rbibutils 2.1.1
+# rbibutils 2.1.1 (CRAN)
 
 - now a warning is issued if package 'testthat' is not available for tests.
 
