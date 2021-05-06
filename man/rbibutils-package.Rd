@@ -154,20 +154,28 @@
 
 \references{
 
-Boshnakov GN (2020). “Rdpack: Update and Manipulate Rd Documentation
-Objects.” \doi{10.5281/zenodo.3925612}, R package version 1.0.0.
+  % bibentry:all 
+Georgi
+N Boshnakov (2020).
+\dQuote{Rdpack: Update and Manipulate Rd Documentation Objects.}
+\doi{10.5281/zenodo.3925612}, R package version 2.0.0, \url{https://doi.org/10.5281/zenodo.3925612}.
 
-Francois R. (2020). bibtex: Bibtex Parser. R package version
-0.4.2.2. \url{https://CRAN.R-project.org/package=bibtex}.
+ Romain Francois (2014).
+\emph{bibtex: bibtex parser}.
+R package version 0.4.0.
 
-McLean MW (2017). “RefManageR: Import and Manage BibTeX and BibLaTeX
-References in R.” _The Journal of Open Source Software_.
-\doi{10.21105/joss.00338}.
+ Mathew
+William McLean (2017).
+\dQuote{RefManageR: Import and Manage BibTeX and BibLaTeX References in R.}
+\emph{The Journal of Open Source Software}.
+\doi{10.21105/joss.00338}, \url{https://doi.org/10.21105/joss.00338}.
 
-Putnam C. (2003--2020), Library \code{bibutils},
-  \url{https://sourceforge.net/projects/bibutils/}.
-}
+ Chris Putnam (2020).
+\dQuote{Library bibutils, version 6.10.}
+\url{https://sourceforge.net/projects/bibutils/}.
+% end:bibentry:all
 
+}  
 \keyword{ package }
 \seealso{
   \code{\link{bibConvert} for further details and examples}

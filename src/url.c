@@ -66,27 +66,27 @@ doi_to_url( fields *f, int n, char *urltag, str *url )
 void
 jstor_to_url( fields *f, int n, char *urltag, str *url )
 {
-	xxx_to_url( f, n, "http://www.jstor.org/stable", urltag, url, '/' );
+	xxx_to_url( f, n, "https://www.jstor.org/stable", urltag, url, '/' );
 }
 void
 pmid_to_url( fields *f, int n, char *urltag, str *url )
 {
-	xxx_to_url( f, n, "http://www.ncbi.nlm.nih.gov/pubmed", urltag, url, '/' );
+	xxx_to_url( f, n, "https://www.ncbi.nlm.nih.gov/pubmed", urltag, url, '/' );
 }
 void
 pmc_to_url( fields *f, int n, char *urltag, str *url )
 {
-	xxx_to_url( f, n, "http://www.ncbi.nlm.nih.gov/pmc/articles", urltag, url, '/' );
+	xxx_to_url( f, n, "https://www.ncbi.nlm.nih.gov/pmc/articles", urltag, url, '/' );
 }
 void
 arxiv_to_url( fields *f, int n, char *urltag, str *url )
 {
-	xxx_to_url( f, n, "http://arxiv.org/abs", urltag, url, '/' );
+	xxx_to_url( f, n, "https://arxiv.org/abs", urltag, url, '/' );
 }
 void
 mrnumber_to_url( fields *f, int n, char *urltag, str *url )
 {
-	xxx_to_url( f, n, "http://www.ams.org/mathscinet-getitem?mr=", urltag, url, '\0' );
+	xxx_to_url( f, n, "https://www.ams.org/mathscinet-getitem?mr=", urltag, url, '\0' );
 }
 
 /* Rules for the pattern:

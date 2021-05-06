@@ -1,6 +1,15 @@
+# rbibutils 2.1.2
+
+- export arXiv:XXX and similar as `https` (some were still exported as `http`).
+  Fixes GeoBosh/Rdpack#21, reported by Kisung You.
+
+- add quotes to EndNote in `DESCRIPTION`.
+
+
 # rbibutils 2.1.1 (CRAN)
 
-- now a warning is issued if package 'testthat' is not available for tests.
+- now a warning (rather than error) is issued if package 'testthat' is not
+  available for tests.
 
 
 # rbibutils 2.1 (CRAN)

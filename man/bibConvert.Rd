@@ -182,8 +182,13 @@ bibConvert(infile, outfile, informat, outformat, \dots, tex, encoding,
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 \references{
-  Chris Putnam, Library \code{bibutils},
-  \url{https://sourceforge.net/projects/bibutils/}.
+
+  % bibentry: bibutils6.10
+Chris Putnam (2020).
+\dQuote{Library bibutils, version 6.10.}
+\url{https://sourceforge.net/projects/bibutils/}.
+% end:bibentry:  bibutils6.10
+  
 }
 %\seealso{
 %%% ~~objects to See Also as \code{\link{help}}, ~~~
