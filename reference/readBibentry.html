@@ -205,7 +205,14 @@
 #&gt;            journal = "The Journal of Open Source Software",
 #&gt;            year = "2017",
 #&gt;            doi = "10.21105/joss.00338",
-#&gt;            url = "https://doi.org/10.21105/joss.00338"))</div><div class='input'>
+#&gt;            url = "https://doi.org/10.21105/joss.00338"),
+#&gt;   bibentry(bibtype = "Misc",
+#&gt;            key = "bibutils6.10",
+#&gt;            author = person(given = "Chris",
+#&gt;                            family = "Putnam"),
+#&gt;            title = "Library bibutils, version 6.10",
+#&gt;            year = "2020",
+#&gt;            url = "https://sourceforge.net/projects/bibutils/"))</div><div class='input'>
 <span class='fu'>writeBibentry</span><span class='op'>(</span><span class='va'>bibs</span>, file <span class='op'>=</span> <span class='va'>fn</span>, style <span class='op'>=</span> <span class='st'>"loose"</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span><span class='op'>(</span><span class='va'>fn</span><span class='op'>)</span>, sep <span class='op'>=</span> <span class='st'>"\n"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; bibentry(bibtype = "Manual",
@@ -235,6 +242,14 @@
 #&gt;          year = "2017",
 #&gt;          doi = "10.21105/joss.00338",
 #&gt;          url = "https://doi.org/10.21105/joss.00338")
+#&gt; 
+#&gt; bibentry(bibtype = "Misc",
+#&gt;          key = "bibutils6.10",
+#&gt;          author = person(given = "Chris",
+#&gt;                          family = "Putnam"),
+#&gt;          title = "Library bibutils, version 6.10",
+#&gt;          year = "2020",
+#&gt;          url = "https://sourceforge.net/projects/bibutils/")
 #&gt; </div><div class='input'>
 <span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span><span class='op'>(</span><span class='va'>fn</span><span class='op'>)</span>
 </div></pre>
