@@ -115,6 +115,7 @@ any2xml_main( int *argcin, char *argv[], char *outfile[], double *nref)
 	  wordin_initparams( &p, progname );
 	  ihelp = 20;
 	}else if(strcmp(progname, "ads2xml") == 0){
+	  error("import from ADS abstracts format not implemented");
 	  // adsin_initparams( &p, progname );
 	  ihelp = 22;
 	}else

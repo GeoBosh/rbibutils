@@ -158,7 +158,7 @@
 Georgi
 N Boshnakov (2020).
 \dQuote{Rdpack: Update and Manipulate Rd Documentation Objects.}
-\doi{10.5281/zenodo.3925612}, R package version 2.0.0, \url{https://doi.org/10.5281/zenodo.3925612}.
+\doi{10.5281/zenodo.3925612}, R package version 2.0.0.
 
  Romain Francois (2014).
 \emph{bibtex: bibtex parser}.
@@ -168,13 +168,13 @@ R package version 0.4.0.
 William McLean (2017).
 \dQuote{RefManageR: Import and Manage BibTeX and BibLaTeX References in R.}
 \emph{The Journal of Open Source Software}.
-\doi{10.21105/joss.00338}, \url{https://doi.org/10.21105/joss.00338}.
+\doi{10.21105/joss.00338}.
 
  Chris Putnam (2020).
 \dQuote{Library bibutils, version 6.10.}
 \url{https://sourceforge.net/projects/bibutils/}.
 % end:bibentry:all
-
+ 
 }  
 \keyword{ package }
 \seealso{

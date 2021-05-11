@@ -49,6 +49,19 @@ test_that("bibRead works ok", {
     identical(eaf_Grunert01$keywords , old_eaf_Grunert01$keywords )
     identical(eaf_Grunert01$key      , old_eaf_Grunert01$key      )
 
+    litprog280 <- readBib(system.file("bib/litprog280.bib", package = "rbibutils"),
+                          direct = TRUE)
+
+    ## non-syntactic field
+    expect_equal(litprog280$"issn-l", "0883-7252") 
+    
+    ## expanded abbreviation (in the bib file journal = j-J-APPL-ECONOMETRICS)
+    expect_equal(litprog280$journal, "Journal of Applied Econometrics")
+
+    ## string concatenation
+    expect_equal(litprog280$month, "jan--feb")
+
+    ## litprog <- readBib("/home/georgi/repos/private/rbibutils/data-raw/litprog_no_atpreamble.bib", direct = TRUE)
 })
 
 

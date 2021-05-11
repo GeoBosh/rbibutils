@@ -1,10 +1,18 @@
 # rbibutils 2.1.2
 
+- `readBib` with `direct = TRUE` now accepts non-syntactic field names,
+  e.g. containing `-`. (This is irrelevant when `direct = FALSE` since in that
+  case nonstandard fields are ignored and standard fields do not contain unusual
+  characters.)
+
 - export arXiv:XXX and similar as `https` (some were still exported as `http`).
   Fixes GeoBosh/Rdpack#21, reported by Kisung You.
 
 - add quotes to EndNote in `DESCRIPTION`.
 
+- unsuported conversions for some formats were accepted with unpredictable
+  results. Informative messages are printed now.
+  
 
 # rbibutils 2.1.1 (CRAN)
 

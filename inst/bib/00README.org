@@ -1,0 +1,1 @@
+=easyPubMedvig.xml=  is from the example in the vignette for R package easyPubMed.

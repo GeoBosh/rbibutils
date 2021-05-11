@@ -272,6 +272,30 @@ append_simple( fields *in, char *intag, char *outtag, fields *out, int *status )
 }
 
 static void
+append_simple_quoted_tag( fields *in, char *intag, char *outtag, fields *out, int *status )
+{
+	int n, fstatus;
+	str qtag;
+
+	str_init( &qtag);
+ 
+	n = fields_find( in, intag, LEVEL_ANY );
+	if ( n!=FIELDS_NOTFOUND ) {
+		fields_set_used( in, n );
+
+		str_strcatc( &qtag, "\"" );
+		str_strcatc( &qtag, outtag );
+		str_strcatc( &qtag, "\"" );
+		
+		fstatus = fields_add( out, qtag.data, fields_value( in, n, FIELDS_CHRP ), LEVEL_MAIN );
+		if ( fstatus!=FIELDS_OK ) *status = BIBL_ERR_MEMERR;
+	}
+
+	str_free( &qtag );
+
+}
+
+static void
 append_simpleall( fields *in, char *intag, char *outtag, fields *out, int *status )
 {
 	int i, fstatus;
@@ -1069,6 +1093,7 @@ bibentrydirectout_assemble( fields *in, fields *out, param *pm, unsigned long re
 	
 	int i, f_len;
 	char * fld_tag;
+
 	f_len = fields_num( in );
 	for ( i=0; i<f_len; ++i ) {
 	  if( !fields_used(in, i) ){
@@ -1079,7 +1104,7 @@ bibentrydirectout_assemble( fields *in, fields *out, param *pm, unsigned long re
 	    //   str[i] = tolower(str[i]);
 	    // }
 
-	    append_simple( in, fld_tag, fld_tag, out, &status );
+	    append_simple_quoted_tag( in, fld_tag, fld_tag, out, &status );
 	  }
 	}
 

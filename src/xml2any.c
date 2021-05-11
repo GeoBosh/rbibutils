@@ -370,21 +370,25 @@ xml2any_main( int *argc, char *argv[], char *outfile[], double *nref )
 	  biblatexout_initparams( &p, progname );
 	  // ihelp = 2;
 	}else if(strcmp(progname, "xml2copac") == 0){
+	  error("export to copac format not implemented");
 	  // copacout_initparams( &p, progname );
 	  // ihelp = 4;
 	}else if(strcmp(progname, "xml2ebi") == 0){
+	  error("export to EBI XML format not implemented");
 	  // ebiout_initparams( &p, progname );
 	  // ihelp = 6;
 	}else if(strcmp(progname, "xml2end") == 0){
 	  endout_initparams( &p, progname );
 	  // ihelp = 8;
 	}else if(strcmp(progname, "xml2endx") == 0){
+	  error("export to Endnote XML format not implemented");
 	  // endxout_initparams( &p, progname );
 	  // ihelp = 10;
 	}else if(strcmp(progname, "xml2isi") == 0){
 	  isiout_initparams( &p, progname );
 	  // ihelp = 12;
 	}else if(strcmp(progname, "xml2med") == 0){
+	  error("export to Medline XML format not implemented");
 	  // medout_initparams( &p, progname );
 	  // ihelp = 14;
 	}else if(strcmp(progname, "xml2nbib") == 0){
@@ -402,7 +406,7 @@ xml2any_main( int *argc, char *argv[], char *outfile[], double *nref )
 	}else if(strcmp(progname,  "xml2bibentry") == 0){
 	  bibentryout_initparams( &p, progname );
 	}else
-	  error("cannot deduce input format from name %s", progname);
+	  error("cannot deduce output format from name %s", progname);
 	
 	process_charsets( argc, argv, &p );
 
