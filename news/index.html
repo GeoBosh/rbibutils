@@ -119,8 +119,10 @@
 <a href="#rbibutils-212" class="anchor"></a>rbibutils 2.1.2<small> Unreleased </small>
 </h1>
 <ul>
+<li><p><code>readBib</code> with <code>direct = TRUE</code> now accepts non-syntactic field names, e.g. containing <code><a href="https://rdrr.io/r/base/Arithmetic.html">-</a></code>. (This is irrelevant when <code>direct = FALSE</code> since in that case nonstandard fields are ignored and standard fields do not contain unusual characters.)</p></li>
 <li><p>export arXiv:XXX and similar as <code>https</code> (some were still exported as <code>http</code>). Fixes GeoBosh/Rdpack<a href='https://github.com/GeoBosh/rbibutils/issues/21'>#21</a>, reported by Kisung You.</p></li>
 <li><p>add quotes to EndNote in <code>DESCRIPTION</code>.</p></li>
+<li><p>unsuported conversions for some formats were accepted with unpredictable results. Informative messages are printed now.</p></li>
 </ul>
 </div>
     <div id="rbibutils-211-cran" class="section level1">
