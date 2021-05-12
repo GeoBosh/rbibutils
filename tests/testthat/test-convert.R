@@ -1,12 +1,11 @@
 
 test_that("bibConvert works ok", {
-    expect_true(TRUE)
-    
     bibdir <- system.file("bib", package = "rbibutils")
 
     tmp_xml <- tempfile(fileext = ".xml")
     tmp_bib <- tempfile(fileext = ".bib")
     tmp_bib2 <- tempfile(fileext = ".bib")
+    tmp_bib3 <- tempfile(fileext = ".bib")
     tmp_bbl <- tempfile(fileext = ".bbl")
     tmp_bbl2 <- tempfile(fileext = ".bbl")
     tmp_rds <- tempfile(fileext = ".rds")
@@ -37,12 +36,21 @@ test_that("bibConvert works ok", {
     bibConvert(tmp_rds, tmp_bbl2, outformat = "biblatex")
 
     bibConvert(tmp_bib, tmp_ads)
+    
     bibConvert(tmp_bib, tmp_end)
-    bibConvert(tmp_bib, tmp_endx)
+    bibConvert(tmp_end, tmp_bib3, informat = "end")     
+
+    expect_error(bibConvert(tmp_bib, tmp_endx),
+                 "export to Endnote XML format not implemented")
+    expect_error(bibConvert(tmp_bib, tmp_endx, outformat = "endx"),
+                 "export to Endnote XML format not implemented")
+
     bibConvert(tmp_bib, tmp_isi)
     ## bibConvert(tmp_bib, tmp_nbib) - TODO: seqfaults!
     bibConvert(tmp_bib, tmp_ris)
+
     bibConvert(tmp_bib, tmp_wordbib, outformat = "word")
+    bibConvert(tmp_wordbib, tmp_bib3)
 
     expect_error(bibConvert(tmp_bib, tmp_copac), "export to copac format not implemented")
     expect_error(bibConvert(tmp_bib, tmp_ebi, outformat = "ebi"),
