@@ -38,11 +38,11 @@ test_that("bibConvert works ok", {
 
     ex0_xml <- file.path(bibdir, "ex0.xml")
     bibConvert(ex0_xml, tmp_bib)
-    expect_known_value(readLines(tmp_bib), "xml2bib.rds", update = FALSE)
+    expect_known_value(readLines(tmp_bib)[-1], "xml2bib.rds", update = FALSE)
 
     
     bibConvert(tmp_bib, tmp_ads)
-    expect_known_value(readLines(tmp_ads), "bib2ads.rds", update = FALSE)
+    expect_known_value(readLines(tmp_ads)[-1], "bib2ads.rds", update = FALSE)
     
     expect_error(bibConvert(tmp_ads, tmp_bib2),
                  "import from ADS abstracts format not implemented")
@@ -51,10 +51,10 @@ test_that("bibConvert works ok", {
 
     
     bibConvert(tmp_bib, tmp_bbl, outformat = "biblatex")
-    expect_known_value(readLines(tmp_bbl), "bib2biblatex.rds", update = FALSE)
+    expect_known_value(readLines(tmp_bbl)[-1], "bib2biblatex.rds", update = FALSE)
 
     bibConvert(tmp_bbl, tmp_bib2, informat = "biblatex")
-    expect_known_value(readLines(tmp_bib2), "biblatex2bib.rds", update = FALSE)
+    expect_known_value(readLines(tmp_bib2)[-1], "biblatex2bib.rds", update = FALSE)
 
     
     ## TODO: need copac file to test for input from copac
@@ -69,7 +69,7 @@ test_that("bibConvert works ok", {
     
     bibConvert(tmp_bib, tmp_end)
     bibConvert(tmp_bib, tmp_end, outformat = "end")
-    expect_known_value(readLines(tmp_end), "bib2end.rds", update = FALSE)
+    expect_known_value(readLines(tmp_end)[-1], "bib2end.rds", update = FALSE)
 
     bibConvert(tmp_end, tmp_bib3)     
     bibConvert(tmp_end, tmp_bib2, informat = "end")
@@ -88,21 +88,21 @@ test_that("bibConvert works ok", {
                  "export to Endnote XML format not implemented")
     expect_message(bibConvert(endx_in, tmp_bib3), "no references to output")
     bibConvert(endx_in, tmp_bib3, informat = "endx")
-    expect_known_value(readLines(tmp_bib3), "end2bib.rds", update = FALSE)
+    expect_known_value(readLines(tmp_bib3)[-1], "end2bib.rds", update = FALSE)
 
     
     bibConvert(tmp_bib, tmp_isi)
-    expect_known_value(readLines(tmp_isi), "bib2isi.rds", update = FALSE)
+    expect_known_value(readLines(tmp_isi)[-1], "bib2isi.rds", update = FALSE)
 
     bibConvert(tmp_isi, tmp_bib2)
-    expect_known_value(readLines(tmp_bib2), "isi2bib.rds", update = FALSE)
+    expect_known_value(readLines(tmp_bib2)[-1], "isi2bib.rds", update = FALSE)
 
     
     expect_error(bibConvert(tmp_bib, tmp_med),
                  "export to Medline XML format not implemented")
     bibConvert(med_in, tmp_bib, informat = "med")
     bibConvert(med_in, tmp_bib, informat = "med", outformat = "biblatex")
-    expect_known_value(readLines(tmp_bib), "med2bib.rds", update = FALSE)
+    expect_known_value(readLines(tmp_bib)[-1], "med2bib.rds", update = FALSE)
 
     
     ## bibConvert(tmp_bib, tmp_nbib)   # TODO: segfaults!
@@ -111,38 +111,38 @@ test_that("bibConvert works ok", {
 
     
     bibConvert(tmp_bib, tmp_ris)
-    expect_known_value(readLines(tmp_ris), "bib2ris.rds", update = FALSE)
+    expect_known_value(readLines(tmp_ris)[-1], "bib2ris.rds", update = FALSE)
 
     bibConvert(tmp_ris, tmp_bib)
-    expect_known_value(readLines(tmp_bib), "ris2bib.rds", update = FALSE)
+    expect_known_value(readLines(tmp_bib)[-1], "ris2bib.rds", update = FALSE)
 
     
     bibConvert(tmp_bib, tmp_xml)
-    expect_known_value(readLines(tmp_xml), "bib2xml2.rds", update = FALSE)
+    expect_known_value(readLines(tmp_xml)[-1], "bib2xml2.rds", update = FALSE)
 
     bibConvert(tmp_bib, tmp_rds)
-    expect_known_value(readRDS(tmp_rds), "bib2rds.rds", update = FALSE)
+    expect_known_value(readRDS(tmp_rds)[-1], "bib2rds.rds", update = FALSE)
 
     bib2R <- bibConvert(tmp_bib, tmp_R)
     expect_known_value(bib2R$bib, "bib2R.rds", update = FALSE)
 
     
     bibConvert(tmp_rds, tmp_xml)  # rds to MODS XML intermediate
-    expect_known_value(readLines(tmp_xml), "rds2xml.rds", update = FALSE)
+    expect_known_value(readLines(tmp_xml)[-1], "rds2xml.rds", update = FALSE)
 
     bibConvert(tmp_rds, tmp_bbl2, outformat = "biblatex")
-    expect_known_value(readLines(tmp_bbl2), "rds2bbl2.rds", update = FALSE)
+    expect_known_value(readLines(tmp_bbl2)[-1], "rds2bbl2.rds", update = FALSE)
 
     
     bibConvert(tmp_bib, tmp_wordbib)
     bibConvert(tmp_bib, tmp_wordbib, outformat = "wordbib")
-    expect_known_value(readLines(tmp_wordbib), "bib2wordbib.rds", update = FALSE)
+    expect_known_value(readLines(tmp_wordbib)[-1], "bib2wordbib.rds", update = FALSE)
 
     ## TODO: this currently misses the authors! Don't know if the culprit is
     ##       the above conversion to wordbib.
     bibConvert(tmp_wordbib, tmp_bib3)
     bibConvert(tmp_wordbib, tmp_bib3, informat = "wordbib")
-    expect_known_value(readLines(tmp_bib3), "wordbib2bib.rds", update = FALSE)
+    expect_known_value(readLines(tmp_bib3)[-1], "wordbib2bib.rds", update = FALSE)
 
     ## accept also 'word' since, due to a mixup, the C code was accepting that
     bibConvert(tmp_bib, tmp_wordbib, outformat = "word")
