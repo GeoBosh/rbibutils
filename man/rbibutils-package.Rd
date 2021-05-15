@@ -66,71 +66,41 @@
   output formats.
 
   The input is first converted to \emph{MODS XML intermediate}, the
-  latter is then converted to the requested output format.  Currently
-  the only exception to this is the conversion from \verb{bibentry} to
-  \verb{BibTeX}, for which \R provides a \verb{print} method.
+  latter is then converted to the requested output format.
+  In \pkg{rbibutils} there are currently two exceptions to this rule.
+  First, the conversion from bibtex to bibentry offers the option to
+  bypass the conversion to \emph{MODS XML intermediate} and parse
+  directly the bibtex file, see \code{\link{readBib}} for details.
+  Second, the conversion from \verb{bibentry} to \verb{BibTeX} just uses
+  a \verb{print} method provided by \R.
 
-  \subsection{Input formats}{
-    \describe{
-      \item{bibentry}{
+  In the table below column Abbreviation shows the abbreviation for
+  arguments \code{informat} and \code{outformat}, column FileExt gives
+  the default file extension for that format, column Input (Output)
+  contains TRUE if the format is supported for input (output) and FALSE
+  otherwise. Column Description gives basic description of the format.
 
-	\verb{bibentry} is the native \R variant of BibTeX. It can be
-	input from an \R source file or from a binary \verb{rds}
-	file. The \verb{"rds"} format is a compressed binary format. The
-	\verb{rds} file should contain a \verb{bibentry} R object, saved
-	from R with \code{saveRDS}.  An R source file should contain one
-	or more bibentry instructions, see \code{\link{readBibentry}}
-	for details of the contents.
-
-      }
-      \item{BibTeX}{}
-      \item{BibLaTeX}{}
-      \item{COPAC format references}{
-        \verb{https://en.wikipedia.org/wiki/Copac}
-      }
-      \item{EndNote (Refer format)}{}
-      \item{EndNote XML}{}
-      \item{ISI web of science}{}
-      \item{Pubmed XML references}{}
-      \item{Pubmed/National Library of Medicine nbib format}{}
-      \item{RIS format}{}
-      \item{MODS XML intermediate}{}
-    }
+\Sexpr[stage=build,results=rd]{paste("\\\\tabular{lllll}{", paste0(paste("\\\\strong{", colnames(rbibutils::rbibutils_formats), "}", collapse = " \\\\tab ")), "\\\\cr ", paste(rbibutils::rbibutils_formats[ , 1], rbibutils::rbibutils_formats[ , 2], rbibutils::rbibutils_formats[ , 3], rbibutils::rbibutils_formats[ , 4], rbibutils::rbibutils_formats[ , 5], sep = " \\\\tab ", collapse = "\\\\cr "), "\n}")}
   
-  }
+  \verb{bibentry} is the native \R variant of BibTeX.  It can be input
+  directly from an \R source file or from a binary \verb{rds} file. The
+  \verb{"rds"} format is a compressed binary format. The \verb{rds} file
+  should contain a \verb{bibentry} R object, saved from R with
+  \code{saveRDS}.  An R source file should contain one or more bibentry
+  instructions, see \code{\link{readBibentry}} for details of the
+  contents.
 
-  \subsection{Output formats}{
-    % Not supported (or not sure):
-    %   \item{COPAC format references}
-    %   \item{EndNote XML}           ??
-    %   \item{Pubmed XML references} ??
-    \describe{
-  
-      \item{ADS}{
-        Smithsonian Astrophysical Observatory (SAO), National
-        Aeronautics and Space Administration (NASA) Astrophyics Data System,
-        or ADS reference format.
-      }
-      \item{bibentry}{
+  A \verb{bibentry} object can be written to a file as a binary
+  (\verb{"rds"}) object or as an \R source file, see
+  \code{\link{bibConvert}} and \code{\link{writeBib}} for details.
 
-	A \verb{bibentry} object. Can be written to a file as a binary
-        (\verb{"rds"}) object or as \R source file, see
-        \code{\link{bibConvert}} and \code{\link{writeBib}} for details.
+  
+  ADS is the reference format of the Smithsonian Astrophysical
+  Observatory (SAO) and National Aeronautics and Space Administration
+  (NASA) Astrophyics Data System.
 
-      }
-      \item{BibTeX}{}
-      \item{BibLaTeX}{}
-      \item{EndNote (Refer format)}{}
-      \item{ISI web of science}{}
-      \item{MODS XML intermediate}{}
-      \item{Pubmed/National Library of Medicine nbib format}{}
-      \item{RIS format}{}
+  For COPAC, see \verb{https://en.wikipedia.org/wiki/Copac}.
   
-      \item{Word 2007 bibliography format}{}
-  
-    }
-  
-  }
 }
 
 
@@ -150,6 +120,11 @@
   and libraries can also be generated out-of-the-box from the
   \code{bibutils} disribution (on Windows under MSYS).
 
+ \pkg{rbibutils} adds conversions to/from \R's bibentry format and
+ direct conversion from bibtex, which preserves non-standard fields from
+ the bibtex source. There is also improved support for mathematical
+ expressions in bibtex files.
+
 }
 
 \references{
@@ -159,6 +134,10 @@ Georgi
 N Boshnakov (2020).
 \dQuote{Rdpack: Update and Manipulate Rd Documentation Objects.}
 \doi{10.5281/zenodo.3925612}, R package version 2.0.0.
+
+ Damiano Fantini (2019).
+\dQuote{easyPubMed: Search and Retrieve Scientific Publication Records from PubMed.}
+R package version 2.13, \url{https://CRAN.R-project.org/package=easyPubMed}.
 
  Romain Francois (2014).
 \emph{bibtex: bibtex parser}.

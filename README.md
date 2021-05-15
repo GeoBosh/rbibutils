@@ -4,8 +4,9 @@
 [![R build status](https://github.com/GeoBosh/rbibutils/workflows/R-CMD-check/badge.svg)](https://github.com/GeoBosh/rbibutils/actions)
 [![codecov](https://codecov.io/gh/GeoBosh/rbibutils/branch/master/graph/badge.svg?token=SNUE0KC0TX)](https://codecov.io/gh/GeoBosh/rbibutils)
 
-Convert bibliography files between various formats, including BibTeX, BibLaTeX
-and Bibentry. Includes an R port of the `bibutils` utilities.
+Read and write 'BibTeX' files. Convert bibliography files between various
+formats, including BibTeX, BibLaTeX, EndNotes and Bibentry. Includes an R port
+of the `bibutils` utilities.
 
 
 # Installing rbibutils
@@ -23,20 +24,22 @@ You can also install the [development version](https://github.com/GeoBosh/rbibut
 
 # Overview
 
-Convert bibliography files between various formats.  All formats supported by
-the `bibutils` utilities are available.  In addition, conversion from and to
-`bibentry`, the R native representation based on Bibtex, is supported.
-
-The main function is `bibConvert()`. It takes an input bibliography file in one
-of the supported formats, converts its contents to another format, and writes
-the result to a file. All formats, except for `rds` (see below) are plain text
-files. `bibConvert()` tries to infer the input/output formats from the file
-extentions. There is ambiguity however about `bib` files, which can be either
-Bibtex or Biblatex. Bibtex is assumed if the format is not specified.
+Read and write 'BibTeX' files. Convert bibliography files between various
+formats.  All formats supported by the `bibutils` utilities are available.  In
+addition, conversion from and to `bibentry`, the R native representation based
+on Bibtex, is supported.
 
 `readBib()` and `writeBib()` import/export BiBTeX files.  `readBibentry()` and
 `writeBibentry()` import/export `R` source files in which the references are
 represented by `bibentry()` calls.
+
+`bibConvert()` an input bibliography file in one of the supported formats,
+converts its contents to another format, and writes the result to a file. All
+formats, except for `rds` (see below) are plain text files. `bibConvert()` tries
+to infer the input/output formats from the file extentions. There is ambiguity
+however about `bib` files, which can be either Bibtex or Biblatex. Bibtex is
+assumed if the format is not specified. also, the `xml` extension is shared by
+XML-based formats. Its default is 'XML MODS intermediate' format.
 
 The default encoding is UTF-8 for both, input and output. All encodings handled
 by `bibutils` are supported. Besides UTF-8, these include `gb18030` (Chinese),

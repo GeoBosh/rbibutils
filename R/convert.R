@@ -4,8 +4,11 @@ bibConvert <- function(infile, outfile, informat, outformat, ..., tex, encoding,
     if(missing(informat)){
         ext <- tools::file_ext(infile)
         informat <- switch(ext,
-                           xml      = "xml",
-                           
+                           xml      = {
+                               message("\n assuming input format is MOD XML intermmediate.\n")
+                               "xml"
+                           },
+
                            bib      = "bibtex",
                            bibtex   = "bibtex",
                            biblatex = "biblatex",
@@ -23,6 +26,8 @@ bibConvert <- function(infile, outfile, informat, outformat, ..., tex, encoding,
                            r        = "r",
                            rds      = "bibentry",
 
+                           ads      = "ads",
+                           
                            ## default
                            stop("Can't infer input format, please use arg. informat")
                            )
@@ -155,6 +160,10 @@ bibConvert <- function(infile, outfile, informat, outformat, ..., tex, encoding,
     n_2xml <- as.double(0) # for the number of references (double
     n_xml2 <- as.double(0) 
 
+    ## earlier versions accepted "word" (in the "C" code)
+    if(informat == "word")
+        informat <- "wordbib"
+    
     wrk <- switch(informat,
                   xml      = {
                       wrk_in <- list(xmlfile)
@@ -259,11 +268,20 @@ bibConvert <- function(infile, outfile, informat, outformat, ..., tex, encoding,
            {
                ## default
                    # stop("outformat ", outformat, " not supported by bibConvert yet")
+
+               ## earlier versions accepted "word" (in the "C" code)
+               if(outformat == "word")
+                   outformat <- "wordbib"
+               
                prg <- paste0("xml2", outformat)
                argv_xml2[1] <- prg
                wrk_out <- .C(C_xml2any_main, argc_xml2, argv_xml2, outfile, nref_out = n_xml2)
            }
            )
+
+    if(is.numeric(wrk_out$nref_out) && wrk_out$nref_out == 0)
+        message("\nno references to output.\n",
+                "if this is wrong, consider using argument 'informat'.\n")
     
     wrk <- list("infile" = infile, "outfile" = outfile,
                 nref_in = wrk_in$nref_in,

@@ -2,6 +2,20 @@
 test_that("bibConvert works ok", {
     bibdir <- system.file("bib", package = "rbibutils")
 
+    ## file is from
+    ##    https://gist.github.com/low-decarie/3831049#file-endnote-xml
+    ## downloaded on 2021-05-14
+    ##
+    ## This doesn't work under devtools since pkgload::system.file
+    ## adds 'inst' again: 
+    ##     endx_in <- system.file(bibdir, "endnote.xml", package = "rbibutils")
+    ##
+    ## file.path here is more logical anyway
+    endx_in <- file.path(bibdir, "endnote.xml")
+    med_in  <- file.path(bibdir, "easyPubMedvig.xml")
+    bibacc  <- file.path(bibdir, "latin1accents_utf8.bib")
+    end_in  <- file.path(bibdir, "Putnam1992.end")
+    
     tmp_xml <- tempfile(fileext = ".xml")
     tmp_bib <- tempfile(fileext = ".bib")
     tmp_bib2 <- tempfile(fileext = ".bib")
@@ -24,59 +38,118 @@ test_that("bibConvert works ok", {
 
     ex0_xml <- file.path(bibdir, "ex0.xml")
     bibConvert(ex0_xml, tmp_bib)
+    expect_known_value(readLines(tmp_bib), "xml2bib.rds", update = FALSE)
 
-    bibConvert(tmp_bib, tmp_xml)
-    bibConvert(tmp_bib, tmp_rds)
-    bibConvert(tmp_bib, tmp_R)
-    bibConvert(tmp_bib, tmp_bbl, outformat = "biblatex")
     
-    bibConvert(tmp_bbl, tmp_bib2, informat = "biblatex")
-
-    bibConvert(tmp_rds, tmp_xml)
-    bibConvert(tmp_rds, tmp_bbl2, outformat = "biblatex")
-
     bibConvert(tmp_bib, tmp_ads)
+    expect_known_value(readLines(tmp_ads), "bib2ads.rds", update = FALSE)
     
-    bibConvert(tmp_bib, tmp_end)
-    bibConvert(tmp_end, tmp_bib3, informat = "end")     
+    expect_error(bibConvert(tmp_ads, tmp_bib2),
+                 "import from ADS abstracts format not implemented")
+    expect_error(bibConvert(tmp_ads, tmp_bib2, informat = "ads"),
+                 "import from ADS abstracts format not implemented")
 
-    expect_error(bibConvert(tmp_bib, tmp_endx),
-                 "export to Endnote XML format not implemented")
-    expect_error(bibConvert(tmp_bib, tmp_endx, outformat = "endx"),
-                 "export to Endnote XML format not implemented")
+    
+    bibConvert(tmp_bib, tmp_bbl, outformat = "biblatex")
+    expect_known_value(readLines(tmp_bbl), "bib2biblatex.rds", update = FALSE)
 
-    bibConvert(tmp_bib, tmp_isi)
-    ## bibConvert(tmp_bib, tmp_nbib) - TODO: seqfaults!
-    bibConvert(tmp_bib, tmp_ris)
+    bibConvert(tmp_bbl, tmp_bib2, informat = "biblatex")
+    expect_known_value(readLines(tmp_bib2), "biblatex2bib.rds", update = FALSE)
 
-    bibConvert(tmp_bib, tmp_wordbib, outformat = "word")
-    bibConvert(tmp_wordbib, tmp_bib3)
+    
+    ## TODO: need copac file to test for input from copac
+    expect_error(bibConvert(tmp_bib, tmp_copac),
+                 "export to copac format not implemented")
 
-    expect_error(bibConvert(tmp_bib, tmp_copac), "export to copac format not implemented")
+    
     expect_error(bibConvert(tmp_bib, tmp_ebi, outformat = "ebi"),
                  "export to EBI XML format not implemented")
-    expect_error(bibConvert(tmp_bib, tmp_med), "export to Medline XML format not implemented")
+    ## TODO: need EBI file to test for input from EBI
 
+    
+    bibConvert(tmp_bib, tmp_end)
+    bibConvert(tmp_bib, tmp_end, outformat = "end")
+    expect_known_value(readLines(tmp_end), "bib2end.rds", update = FALSE)
+
+    bibConvert(tmp_end, tmp_bib3)     
+    bibConvert(tmp_end, tmp_bib2, informat = "end")
+    expect_known_value(readLines(tmp_bib2), "end2bib1.rds", update = FALSE)
+    
+    bibConvert(end_in, tmp_bib3)     
+    expect_known_value(readLines(tmp_bib3), "end2bib2.rds", update = FALSE)
+    
+
+    expect_error(bibConvert(tmp_bib3, tmp_endx),
+                 "export to Endnote XML format not implemented")
+    expect_error(bibConvert(tmp_bib3, tmp_endx, outformat = "endx"),
+                 "export to Endnote XML format not implemented")
+    expect_message(bibConvert(endx_in, tmp_bib3), "no references to output")
+    bibConvert(endx_in, tmp_bib3, informat = "endx")
+    expect_known_value(readLines(tmp_bib3), "end2bib.rds", update = FALSE)
+
+    
+    bibConvert(tmp_bib, tmp_isi)
+    expect_known_value(readLines(tmp_isi), "bib2isi.rds", update = FALSE)
+
+    bibConvert(tmp_isi, tmp_bib2)
+    expect_known_value(readLines(tmp_bib2), "isi2bib.rds", update = FALSE)
+
+    
+    expect_error(bibConvert(tmp_bib, tmp_med),
+                 "export to Medline XML format not implemented")
+    bibConvert(med_in, tmp_bib, informat = "med")
+    bibConvert(med_in, tmp_bib, informat = "med", outformat = "biblatex")
+    expect_known_value(readLines(tmp_bib), "med2bib.rds", update = FALSE)
+
+    
+    ## bibConvert(tmp_bib, tmp_nbib)   # TODO: segfaults!
+    ## bibConvert(tmp_nbib, tmp_bib2)  # TODO: need nbib file for import!
+    ## expect_known_value(readLines(tmp_bib2), "nbib2bib.rds", update = FALSE)
+
+    
+    bibConvert(tmp_bib, tmp_ris)
+    expect_known_value(readLines(tmp_ris), "bib2ris.rds", update = FALSE)
+
+    bibConvert(tmp_ris, tmp_bib)
+    expect_known_value(readLines(tmp_bib), "ris2bib.rds", update = FALSE)
+
+    
+    bibConvert(tmp_bib, tmp_xml)
+    expect_known_value(readLines(tmp_xml), "bib2xml2.rds", update = FALSE)
+
+    bibConvert(tmp_bib, tmp_rds)
+    expect_known_value(readRDS(tmp_rds), "bib2rds.rds", update = FALSE)
+
+    bib2R <- bibConvert(tmp_bib, tmp_R)
+    expect_known_value(bib2R$bib, "bib2R.rds", update = FALSE)
+
+    
+    bibConvert(tmp_rds, tmp_xml)  # rds to MODS XML intermediate
+    expect_known_value(readLines(tmp_xml), "rds2xml.rds", update = FALSE)
+
+    bibConvert(tmp_rds, tmp_bbl2, outformat = "biblatex")
+    expect_known_value(readLines(tmp_bbl2), "rds2bbl2.rds", update = FALSE)
+
+    
+    bibConvert(tmp_bib, tmp_wordbib)
+    bibConvert(tmp_bib, tmp_wordbib, outformat = "wordbib")
+    expect_known_value(readLines(tmp_wordbib), "bib2wordbib.rds", update = FALSE)
+
+    ## TODO: this currently misses the authors! Don't know if the culprit is
+    ##       the above conversion to wordbib.
+    bibConvert(tmp_wordbib, tmp_bib3)
+    bibConvert(tmp_wordbib, tmp_bib3, informat = "wordbib")
+    expect_known_value(readLines(tmp_bib3), "wordbib2bib.rds", update = FALSE)
+
+    ## accept also 'word' since, due to a mixup, the C code was accepting that
+    bibConvert(tmp_bib, tmp_wordbib, outformat = "word")
+    bibConvert(tmp_wordbib, tmp_bib3, informat = "word")
     
 
     cyr_utf8 <- file.path(bibdir, "cyr_utf8.bib")
     bibConvert(cyr_utf8, tmp_bib, options = c(o = "cp1251"))
     bibConvert(tmp_bib, tmp_xml, options = c(i = "cp1251"))
     
-    bibacc <- system.file("bib/latin1accents_utf8.bib", package = "rbibutils")
-
     bibConvert(bibacc, tempfile(fileext = "bib"), outformat = "biblatex")
-
     
-    expect_error(bibConvert(tmp_ads, tmp_bib, informat = "ads"))
-    
-    bibConvert(tmp_end, tmp_bib)
-    bibConvert(tmp_endx, tmp_bib)
-    bibConvert(tmp_isi, tmp_bib)
-    bibConvert(tmp_nbib, tmp_bib)
-    bibConvert(tmp_ris, tmp_bib)
-    bibConvert(system.file("bib/easyPubMedvig.xml", package = "rbibutils"), tmp_bib,
-               informat = "med")
-    bibConvert(system.file("bib/easyPubMedvig.xml", package = "rbibutils"), tmp_bib,
-               informat = "med", outformat = "biblatex")
 })

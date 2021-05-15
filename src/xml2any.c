@@ -397,7 +397,7 @@ xml2any_main( int *argc, char *argv[], char *outfile[], double *nref )
 	}else if(strcmp(progname, "xml2ris") == 0){
 	  risout_initparams( &p, progname );
 	  // ihelp = 18;
-	}else if(strcmp(progname, "xml2word") == 0){
+	}else if(strcmp(progname, "xml2wordbib") == 0){
 	  wordout_initparams( &p, progname );
 	  // ihelp = 20;
 	}else if(strcmp(progname, "xml2ads") == 0){

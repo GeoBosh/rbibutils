@@ -6,7 +6,7 @@ Date: 2021-05-06
 Authors@R: c( person(given = c("Georgi", "N."), family = "Boshnakov", 
                      role = c("aut", "cre"), 	
                      email = "georgi.boshnakov@manchester.ac.uk",
-		     comment = "R port, R code, modifications to bibutils' C code, conversion to Bibentry (R and C code)"
+		     comment = "R port, R code, new C code and modifications to bibutils' C code, conversion to Bibentry (R and C code)"
 		     ),
               person(given = "Chris", family = "Putman",
                      role = "aut",

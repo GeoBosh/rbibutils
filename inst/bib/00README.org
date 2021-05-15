@@ -1,1 +1,3 @@
 =easyPubMedvig.xml=  is from the example in the vignette for R package easyPubMed.
+
+=Putnam1992.end= is /Example 1 Example refer format file/ from the man page of bibutils.

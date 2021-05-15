@@ -12,5 +12,6 @@ export(
     readBib,
     writeBib,
     readBibentry,
-    writeBibentry
-    )
+    writeBibentry,
+    rbibutils_formats
+)

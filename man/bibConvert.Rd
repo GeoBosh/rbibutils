@@ -14,15 +14,19 @@ bibConvert(infile, outfile, informat, outformat, \dots, tex, encoding,
 \arguments{
   \item{infile}{input file, a character string.}
   \item{outfile}{output file, a character string.}
-  \item{informat}{input format, a character string, see Details.}
-  \item{outformat}{output format, a character string, see Details.}
+  \item{informat}{
+    input format, a character string, see sections \dQuote{Supported
+    formats} and \dQuote{Details}.
+  }
+  \item{outformat}{
+    output format, a character string, see sections \dQuote{Supported
+    formats} and \dQuote{Details}.
+  }
   \item{...}{not used.}
   \item{tex}{TeX specific options, see Details, a character vector.}
   \item{encoding}{
-
     \code{character(2)}, a length two vector specifying input and output
     encodings. Default to both is \code{"utf8"}, see Details.
-
   }
   \item{options}{
     mainly for debugging: additional options for the converters, see
@@ -72,9 +76,9 @@ bibConvert(infile, outfile, informat, outformat, \dots, tex, encoding,
   exported.  It should be remembered also that there may be loss of
   information when converting from one format to another.
 
-  For complete list of supported bibliography formats, see section
-  "Supported input and output formats" in \code{\link{rbibutils}} and
-  the documentation of the original bibutils library.
+  For a complete list of supported bibliography formats, see section
+  \dQuote{Supported formats} below. The documentation of the original
+  bibutils library (Putnam 2020) gives further details.
 
   Argument \code{encoding} is a character vector containing 2 elements,
   specifying the encoding of the input and output files.  If the
@@ -132,32 +136,43 @@ bibConvert(infile, outfile, informat, outformat, \dots, tex, encoding,
   
 }
 
-\section{File extensions}{
+\section{Supported formats}{
   
   If an input or output format is not specified by arguments, it is
-  inferred, if possible, from the file extension. The table below
-  contains the file extension in the in the first column and the
-  corresponding default format in the second.
+  inferred, if possible, from the file extension.
 
-  \tabular{ll}{%
-    ads      \tab ADS reference format \cr
-    bib      \tab BibTeX  \cr
-    bibtex   \tab BibTeX  \cr
-    biblatex \tab BibLaTeX  \cr
-    copac    \tab COPAC format references   \cr
-    end      \tab EndNote (Refer format)  \cr 
-    endx     \tab EndNote XML  \cr
-    isi      \tab ISI web of science  \cr  
-    med      \tab Pubmed XML references  \cr  
-    nbib     \tab Pubmed/National Library of Medicine nbib format  \cr  
-    ris      \tab RIS format  \cr
-    R        \tab R source file containing \code{bibentry} commands  \cr
-    r        \tab R source file containing \code{bibentry} commands  \cr
-    Rstyle   \tab R source file containing \code{bibentry} commands  \cr
-    rds      \tab bibentry object in a binary file created by \code{saveRDS()}   \cr
-    xml      \tab MODS XML intermediate  \cr
-    wordbib  \tab Word 2007 bibliography format  
-  }
+  In the table below column Abbreviation shows the abbreviation for
+  arguments \code{informat} and \code{outformat}, column FileExt gives
+  the default file extension for that format, column Input (Output)
+  contains TRUE if the format is supported for input (output) and FALSE
+  otherwise. Column Description gives basic description of the format.
+
+  % \tabular{ll}{%
+  %   ads      \tab ADS reference format \cr
+  %   bib      \tab BibTeX  \cr
+  %   bibtex   \tab BibTeX  \cr
+  %   biblatex \tab BibLaTeX  \cr
+  %   copac    \tab COPAC format references   \cr
+  %   ebi                                   \cr
+  %   end      \tab EndNote (Refer format)  \cr 
+  %   endx     \tab EndNote XML  \cr
+  %   isi      \tab ISI web of science  \cr  
+  %   med      \tab Pubmed XML references  \cr  
+  %   nbib     \tab Pubmed/National Library of Medicine nbib format  \cr  
+  %   ris      \tab RIS format  \cr
+  %   R        \tab R source file containing \code{bibentry} commands  \cr
+  %   r        \tab R source file containing \code{bibentry} commands  \cr
+  %   Rstyle   \tab R source file containing \code{bibentry} commands  \cr
+  %   rds      \tab bibentry object in a binary file created by \code{saveRDS()}   \cr
+  %   xml      \tab MODS XML intermediate  \cr
+  %   wordbib  \tab Word 2007 bibliography format  
+  % }
+
+\Sexpr[stage=build,results=rd]{paste("\\\\tabular{lllll}{", paste0(paste("\\\\strong{", colnames(rbibutils::rbibutils_formats), "}", collapse = " \\\\tab ")), "\\\\cr ", paste(rbibutils::rbibutils_formats[ , 1], rbibutils::rbibutils_formats[ , 2], rbibutils::rbibutils_formats[ , 3], rbibutils::rbibutils_formats[ , 4], rbibutils::rbibutils_formats[ , 5], sep = " \\\\tab ", collapse = "\\\\cr "), "\n}")}
+
+  The file \code{"easyPubMedvig.xml"} used in the examples for Pubmed
+  XML (\code{"med"}) was obtained using code from the vignette in
+  package \pkg{easyPubMed} (Fantini 2019).
 
 }
 
@@ -182,6 +197,12 @@ bibConvert(infile, outfile, informat, outformat, \dots, tex, encoding,
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 \references{
+
+  % bibentry: Rpackage:easyPubMed
+Damiano Fantini (2019).
+\dQuote{easyPubMed: Search and Retrieve Scientific Publication Records from PubMed.}
+R package version 2.13, \url{https://CRAN.R-project.org/package=easyPubMed}.
+% end:bibentry:  Rpackage:easyPubMed
 
   % bibentry: bibutils6.10
 Chris Putnam (2020).
