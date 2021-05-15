@@ -186,60 +186,52 @@
   below. A format supported for input can be converted to any of the
   output formats.</p>
 <p>The input is first converted to <em>MODS XML intermediate</em>, the
-  latter is then converted to the requested output format.  Currently
-  the only exception to this is the conversion from <code>bibentry</code> to
-  <code>BibTeX</code>, for which <span style="R">R</span> provides a <code>print</code> method.</p>
-<p></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Input formats</h3>
-<p></p><dl>
-      <dt>bibentry</dt><dd><p><code>bibentry</code> is the native <span style="R">R</span> variant of BibTeX. It can be
-	input from an <span style="R">R</span> source file or from a binary <code>rds</code>
-	file. The <code>"rds"</code> format is a compressed binary format. The
-	<code>rds</code> file should contain a <code>bibentry</code> R object, saved
-	from R with <code>saveRDS</code>.  An R source file should contain one
-	or more bibentry instructions, see <code><a href='readBibentry.html'>readBibentry</a></code>
-	for details of the contents.</p></dd>
-      <dt>BibTeX</dt><dd><p></p></dd>
-      <dt>BibLaTeX</dt><dd><p></p></dd>
-      <dt>COPAC format references</dt><dd><p><code>https://en.wikipedia.org/wiki/Copac</code></p></dd>
-      <dt>EndNote (Refer format)</dt><dd><p></p></dd>
-      <dt>EndNote XML</dt><dd><p></p></dd>
-      <dt>ISI web of science</dt><dd><p></p></dd>
-      <dt>Pubmed XML references</dt><dd><p></p></dd>
-      <dt>Pubmed/National Library of Medicine nbib format</dt><dd><p></p></dd>
-      <dt>RIS format</dt><dd><p></p></dd>
-      <dt>MODS XML intermediate</dt><dd><p></p></dd>
-    
-</dl>
+  latter is then converted to the requested output format.
+  In <span class="pkg">rbibutils</span> there are currently two exceptions to this rule.
+  First, the conversion from bibtex to bibentry offers the option to
+  bypass the conversion to <em>MODS XML intermediate</em> and parse
+  directly the bibtex file, see <code><a href='readBib.html'>readBib</a></code> for details.
+  Second, the conversion from <code>bibentry</code> to <code>BibTeX</code> just uses
+  a <code>print</code> method provided by <span style="R">R</span>.</p>
+<p>In the table below column Abbreviation shows the abbreviation for
+  arguments <code>informat</code> and <code>outformat</code>, column FileExt gives
+  the default file extension for that format, column Input (Output)
+  contains TRUE if the format is supported for input (output) and FALSE
+  otherwise. Column Description gives basic description of the format.</p>
+<p><table class='table'>
+<tr><td><strong> Abbreviation </strong></td><td><strong> FileExt </strong></td><td><strong> Input </strong></td><td><strong> Output </strong></td><td><strong> Description </strong></td></tr>
+<tr><td>ads</td><td>ads</td><td>FALSE</td><td>TRUE</td><td>ADS reference format</td></tr>
+<tr><td>bib</td><td>bib</td><td>TRUE</td><td>TRUE</td><td>BibTeX</td></tr>
+<tr><td>bibtex</td><td>bibtex</td><td>TRUE</td><td>TRUE</td><td>BibTeX</td></tr>
+<tr><td>biblatex</td><td>biblatex</td><td>TRUE</td><td>TRUE</td><td>BibLaTeX</td></tr>
+<tr><td>copac</td><td>copac</td><td>TRUE</td><td>FALSE</td><td>COPAC format references</td></tr>
+<tr><td>ebi</td><td>ebi</td><td>TRUE</td><td>FALSE</td><td>EBI XML</td></tr>
+<tr><td>end</td><td>end</td><td>TRUE</td><td>TRUE</td><td>EndNote (Refer format)</td></tr>
+<tr><td>endx</td><td>endx</td><td>TRUE</td><td>FALSE</td><td>EndNote XML</td></tr>
+<tr><td>isi</td><td>isi</td><td>TRUE</td><td>TRUE</td><td>ISI web of science</td></tr>
+<tr><td>med</td><td>med</td><td>TRUE</td><td>FALSE</td><td>Pubmed XML references</td></tr>
+<tr><td>nbib</td><td>nbib</td><td>TRUE</td><td>TRUE</td><td>Pubmed/National Library of Medicine nbib format</td></tr>
+<tr><td>ris</td><td>ris</td><td>TRUE</td><td>TRUE</td><td>RIS format</td></tr>
+<tr><td>R, r, Rstyle</td><td>R</td><td>TRUE</td><td>TRUE</td><td>R source file containing bibentry commands</td></tr>
+<tr><td>rds</td><td>rds</td><td>TRUE</td><td>TRUE</td><td>bibentry object in a binary file created by saveRDS()</td></tr>
+<tr><td>xml</td><td>xml</td><td>TRUE</td><td>TRUE</td><td>MODS XML intermediate</td></tr>
+<tr><td>wordbib</td><td>wordbib</td><td>TRUE</td><td>TRUE</td><td>Word 2007 bibliography format</td></tr>
+</table></p>  
+<p><code>bibentry</code> is the native <span style="R">R</span> variant of BibTeX.  It can be input
+  directly from an <span style="R">R</span> source file or from a binary <code>rds</code> file. The
+  <code>"rds"</code> format is a compressed binary format. The <code>rds</code> file
+  should contain a <code>bibentry</code> R object, saved from R with
+  <code>saveRDS</code>.  An R source file should contain one or more bibentry
+  instructions, see <code><a href='readBibentry.html'>readBibentry</a></code> for details of the
+  contents.</p>
+<p>A <code>bibentry</code> object can be written to a file as a binary
+  (<code>"rds"</code>) object or as an <span style="R">R</span> source file, see
+  <code><a href='bibConvert.html'>bibConvert</a></code> and <code><a href='readBib.html'>writeBib</a></code> for details.</p>
   
-<p></p>
-
-<p></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Output formats</h3>
-<p><!-- % Not supported (or not sure): -->
-    <!-- %   \item{COPAC format references} -->
-    <!-- %   \item{EndNote XML}           ?? -->
-    <!-- %   \item{Pubmed XML references} ?? --></p><dl>
-  
-      <dt>ADS</dt><dd><p>Smithsonian Astrophysical Observatory (SAO), National
-        Aeronautics and Space Administration (NASA) Astrophyics Data System,
-        or ADS reference format.</p></dd>
-      <dt>bibentry</dt><dd><p>A <code>bibentry</code> object. Can be written to a file as a binary
-        (<code>"rds"</code>) object or as <span style="R">R</span> source file, see
-        <code><a href='bibConvert.html'>bibConvert</a></code> and <code><a href='readBib.html'>writeBib</a></code> for details.</p></dd>
-      <dt>BibTeX</dt><dd><p></p></dd>
-      <dt>BibLaTeX</dt><dd><p></p></dd>
-      <dt>EndNote (Refer format)</dt><dd><p></p></dd>
-      <dt>ISI web of science</dt><dd><p></p></dd>
-      <dt>MODS XML intermediate</dt><dd><p></p></dd>
-      <dt>Pubmed/National Library of Medicine nbib format</dt><dd><p></p></dd>
-      <dt>RIS format</dt><dd><p></p></dd>
-  
-      <dt>Word 2007 bibliography format</dt><dd><p></p></dd>
-  
-    
-</dl>
-  
-<p></p>
-
+<p>ADS is the reference format of the Smithsonian Astrophysical
+  Observatory (SAO) and National Aeronautics and Space Administration
+  (NASA) Astrophyics Data System.</p>
+<p>For COPAC, see <code>https://en.wikipedia.org/wiki/Copac</code>.</p>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
     <p>Georgi N. Boshnakov (R code and R port of bibutils),
@@ -254,6 +246,10 @@
   distributions but seem not easily available for Windows. Executable
   and libraries can also be generated out-of-the-box from the
   <code>bibutils</code> disribution (on Windows under MSYS).</p>
+<p><span class="pkg">rbibutils</span> adds conversions to/from <span style="R">R</span>'s bibentry format and
+ direct conversion from bibtex, which preserves non-standard fields from
+ the bibtex source. There is also improved support for mathematical
+ expressions in bibtex files.</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     
@@ -264,6 +260,9 @@ N Boshnakov (2020).
 &#8220;Rdpack: Update and Manipulate Rd Documentation Objects.&#8221;
 doi: <a href='https://doi.org/10.5281/zenodo.3925612'>10.5281/zenodo.3925612</a>
 , R package version 2.0.0.</p>
+<p>Damiano Fantini (2019).
+&#8220;easyPubMed: Search and Retrieve Scientific Publication Records from PubMed.&#8221;
+R package version 2.13, <a href='https://CRAN.R-project.org/package=easyPubMed'>https://CRAN.R-project.org/package=easyPubMed</a>.</p>
 <p>Romain Francois (2014).
 <em>bibtex: bibtex parser</em>.
 R package version 0.4.0.</p>

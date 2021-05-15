@@ -142,11 +142,13 @@ Read a bibliography file in one of the supported formats, convert it
     </tr>
     <tr>
       <th>informat</th>
-      <td><p>input format, a character string, see Details.</p></td>
+      <td><p>input format, a character string, see sections &#8220;Supported
+    formats&#8221; and &#8220;Details&#8221;.</p></td>
     </tr>
     <tr>
       <th>outformat</th>
-      <td><p>output format, a character string, see Details.</p></td>
+      <td><p>output format, a character string, see sections &#8220;Supported
+    formats&#8221; and &#8220;Details&#8221;.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -158,11 +160,8 @@ Read a bibliography file in one of the supported formats, convert it
     </tr>
     <tr>
       <th>encoding</th>
-      <td>
-
-<p><code><a href='https://rdrr.io/r/base/character.html'>character(2)</a></code>, a length two vector specifying input and output
-    encodings. Default to both is <code>"utf8"</code>, see Details.</p>
-<p></p></td>
+      <td><p><code><a href='https://rdrr.io/r/base/character.html'>character(2)</a></code>, a length two vector specifying input and output
+    encodings. Default to both is <code>"utf8"</code>, see Details.</p></td>
     </tr>
     <tr>
       <th>options</th>
@@ -211,9 +210,9 @@ Read a bibliography file in one of the supported formats, convert it
   which are expanded and incorporated in the references but not
   exported.  It should be remembered also that there may be loss of
   information when converting from one format to another.</p>
-<p>For complete list of supported bibliography formats, see section
-  "Supported input and output formats" in <code><a href='rbibutils-package.html'>rbibutils</a></code> and
-  the documentation of the original bibutils library.</p>
+<p>For a complete list of supported bibliography formats, see section
+  &#8220;Supported formats&#8221; below. The documentation of the original
+  bibutils library (Putnam 2020) gives further details.</p>
 <p>Argument <code>encoding</code> is a character vector containing 2 elements,
   specifying the encoding of the input and output files.  If the
   encodings are the same, a length one vector can be supplied. The
@@ -263,37 +262,59 @@ Read a bibliography file in one of the supported formats, convert it
 
   
 
-    <h2 class="hasAnchor" id="file-extensions"><a class="anchor" href="#file-extensions"></a>File extensions</h2>
+    <h2 class="hasAnchor" id="supported-formats"><a class="anchor" href="#supported-formats"></a>Supported formats</h2>
 
     
   
 <p>If an input or output format is not specified by arguments, it is
-  inferred, if possible, from the file extension. The table below
-  contains the file extension in the in the first column and the
-  corresponding default format in the second.</p>
-<p></p><table class='table'>
-<tr><td><!-- % -->
-    ads</td><td>ADS reference format</td></tr>
-<tr><td>bib</td><td>BibTeX</td></tr>
-<tr><td>bibtex</td><td>BibTeX</td></tr>
-<tr><td>biblatex</td><td>BibLaTeX</td></tr>
-<tr><td>copac</td><td>COPAC format references</td></tr>
-<tr><td>end</td><td>EndNote (Refer format)</td></tr>
-<tr><td>endx</td><td>EndNote XML</td></tr>
-<tr><td>isi</td><td>ISI web of science</td></tr>
-<tr><td>med</td><td>Pubmed XML references</td></tr>
-<tr><td>nbib</td><td>Pubmed/National Library of Medicine nbib format</td></tr>
-<tr><td>ris</td><td>RIS format</td></tr>
-<tr><td>R</td><td>R source file containing <code>bibentry</code> commands</td></tr>
-<tr><td>r</td><td>R source file containing <code>bibentry</code> commands</td></tr>
-<tr><td>Rstyle</td><td>R source file containing <code>bibentry</code> commands</td></tr>
-<tr><td>rds</td><td>bibentry object in a binary file created by <code><a href='https://rdrr.io/r/base/readRDS.html'>saveRDS()</a></code></td></tr>
-<tr><td>xml</td><td>MODS XML intermediate</td></tr>
-<tr><td>wordbib</td><td>Word 2007 bibliography format</td></tr>
-</table>
-
-
-
+  inferred, if possible, from the file extension.</p>
+<p>In the table below column Abbreviation shows the abbreviation for
+  arguments <code>informat</code> and <code>outformat</code>, column FileExt gives
+  the default file extension for that format, column Input (Output)
+  contains TRUE if the format is supported for input (output) and FALSE
+  otherwise. Column Description gives basic description of the format.</p>
+<p><!-- % \tabular{ll}{% -->
+  <!-- %   ads      \tab ADS reference format \cr -->
+  <!-- %   bib      \tab BibTeX  \cr -->
+  <!-- %   bibtex   \tab BibTeX  \cr -->
+  <!-- %   biblatex \tab BibLaTeX  \cr -->
+  <!-- %   copac    \tab COPAC format references   \cr -->
+  <!-- %   ebi                                   \cr -->
+  <!-- %   end      \tab EndNote (Refer format)  \cr  -->
+  <!-- %   endx     \tab EndNote XML  \cr -->
+  <!-- %   isi      \tab ISI web of science  \cr   -->
+  <!-- %   med      \tab Pubmed XML references  \cr   -->
+  <!-- %   nbib     \tab Pubmed/National Library of Medicine nbib format  \cr   -->
+  <!-- %   ris      \tab RIS format  \cr -->
+  <!-- %   R        \tab R source file containing \code{bibentry} commands  \cr -->
+  <!-- %   r        \tab R source file containing \code{bibentry} commands  \cr -->
+  <!-- %   Rstyle   \tab R source file containing \code{bibentry} commands  \cr -->
+  <!-- %   rds      \tab bibentry object in a binary file created by \code{saveRDS()}   \cr -->
+  <!-- %   xml      \tab MODS XML intermediate  \cr -->
+  <!-- %   wordbib  \tab Word 2007 bibliography format   -->
+  <!-- % } --></p>
+<p><table class='table'>
+<tr><td><strong> Abbreviation </strong></td><td><strong> FileExt </strong></td><td><strong> Input </strong></td><td><strong> Output </strong></td><td><strong> Description </strong></td></tr>
+<tr><td>ads</td><td>ads</td><td>FALSE</td><td>TRUE</td><td>ADS reference format</td></tr>
+<tr><td>bib</td><td>bib</td><td>TRUE</td><td>TRUE</td><td>BibTeX</td></tr>
+<tr><td>bibtex</td><td>bibtex</td><td>TRUE</td><td>TRUE</td><td>BibTeX</td></tr>
+<tr><td>biblatex</td><td>biblatex</td><td>TRUE</td><td>TRUE</td><td>BibLaTeX</td></tr>
+<tr><td>copac</td><td>copac</td><td>TRUE</td><td>FALSE</td><td>COPAC format references</td></tr>
+<tr><td>ebi</td><td>ebi</td><td>TRUE</td><td>FALSE</td><td>EBI XML</td></tr>
+<tr><td>end</td><td>end</td><td>TRUE</td><td>TRUE</td><td>EndNote (Refer format)</td></tr>
+<tr><td>endx</td><td>endx</td><td>TRUE</td><td>FALSE</td><td>EndNote XML</td></tr>
+<tr><td>isi</td><td>isi</td><td>TRUE</td><td>TRUE</td><td>ISI web of science</td></tr>
+<tr><td>med</td><td>med</td><td>TRUE</td><td>FALSE</td><td>Pubmed XML references</td></tr>
+<tr><td>nbib</td><td>nbib</td><td>TRUE</td><td>TRUE</td><td>Pubmed/National Library of Medicine nbib format</td></tr>
+<tr><td>ris</td><td>ris</td><td>TRUE</td><td>TRUE</td><td>RIS format</td></tr>
+<tr><td>R, r, Rstyle</td><td>R</td><td>TRUE</td><td>TRUE</td><td>R source file containing bibentry commands</td></tr>
+<tr><td>rds</td><td>rds</td><td>TRUE</td><td>TRUE</td><td>bibentry object in a binary file created by saveRDS()</td></tr>
+<tr><td>xml</td><td>xml</td><td>TRUE</td><td>TRUE</td><td>MODS XML intermediate</td></tr>
+<tr><td>wordbib</td><td>wordbib</td><td>TRUE</td><td>TRUE</td><td>Word 2007 bibliography format</td></tr>
+</table></p>
+<p>The file <code>"easyPubMedvig.xml"</code> used in the examples for Pubmed
+  XML (<code>"med"</code>) was obtained using code from the vignette in
+  package <span class="pkg">easyPubMed</span> (Fantini 2019).</p>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>The function is used for the side effect of creating a file in the
@@ -313,6 +334,11 @@ Read a bibliography file in one of the supported formats, convert it
 
     
 
+<p><!-- % bibentry: Rpackage:easyPubMed -->
+Damiano Fantini (2019).
+&#8220;easyPubMed: Search and Retrieve Scientific Publication Records from PubMed.&#8221;
+R package version 2.13, <a href='https://CRAN.R-project.org/package=easyPubMed'>https://CRAN.R-project.org/package=easyPubMed</a>.
+<!-- % end:bibentry:  Rpackage:easyPubMed --></p>
 <p><!-- % bibentry: bibutils6.10 -->
 Chris Putnam (2020).
 &#8220;Library bibutils, version 6.10.&#8221;
@@ -331,7 +357,7 @@ Chris Putnam (2020).
 #&gt; [1] "/Users/runner/work/_temp/Library/rbibutils/bib/ex0.biblatex"
 #&gt; 
 #&gt; $outfile
-#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpZZCunC/file81b6807af64.xml"
+#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpnEnq1I/file81e29a9efc.xml"
 #&gt; 
 #&gt; $nref_in
 #&gt; [1] 3
@@ -348,7 +374,7 @@ Chris Putnam (2020).
 #&gt; [1] "/Users/runner/work/_temp/Library/rbibutils/bib/ex0.biblatex"
 #&gt; 
 #&gt; $outfile
-#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpZZCunC/file81b508c0397.bib"
+#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpnEnq1I/file81e753bb3b9.bib"
 #&gt; 
 #&gt; $nref_in
 #&gt; [1] 3
@@ -361,7 +387,7 @@ Chris Putnam (2020).
 <span class='va'>rds</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span><span class='op'>(</span>fileext <span class='op'>=</span> <span class='st'>".rds"</span><span class='op'>)</span>
 <span class='va'>fn_biblatex</span>
 </div><div class='output co'>#&gt; [1] "/Users/runner/work/_temp/Library/rbibutils/bib/ex0.biblatex"</div><div class='input'><span class='va'>rds</span>
-</div><div class='output co'>#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpZZCunC/file81b46e616a2.rds"</div><div class='input'><span class='va'>be</span> <span class='op'>&lt;-</span> <span class='fu'>bibConvert</span><span class='op'>(</span><span class='va'>fn_biblatex</span>, <span class='va'>rds</span>, <span class='st'>"biblatex"</span>, <span class='st'>"bibentry"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpnEnq1I/file81e2e2fa446.rds"</div><div class='input'><span class='va'>be</span> <span class='op'>&lt;-</span> <span class='fu'>bibConvert</span><span class='op'>(</span><span class='va'>fn_biblatex</span>, <span class='va'>rds</span>, <span class='st'>"biblatex"</span>, <span class='st'>"bibentry"</span><span class='op'>)</span>
 <span class='va'>bea</span> <span class='op'>&lt;-</span> <span class='fu'>bibConvert</span><span class='op'>(</span><span class='va'>fn_biblatex</span>, <span class='va'>rds</span>, <span class='st'>"biblatex"</span><span class='op'>)</span> <span class='co'># same</span>
 <span class='fu'><a href='https://rdrr.io/r/base/readRDS.html'>readRDS</a></span><span class='op'>(</span><span class='va'>rds</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Beach CM, Davidson R (1983). “Distribution-free statistical inference
@@ -382,7 +408,7 @@ Chris Putnam (2020).
 #&gt; [1] "/Users/runner/work/_temp/Library/rbibutils/bib/ex0.biblatex"
 #&gt; 
 #&gt; $outfile
-#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpZZCunC/file81b4a219b1e.R"
+#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpnEnq1I/file81e16041aaa.R"
 #&gt; 
 #&gt; $nref_in
 #&gt; [1] 3
@@ -451,10 +477,10 @@ Chris Putnam (2020).
 <span class='co'>## now take the bib file and convert it to UTF-8</span>
 <span class='fu'>bibConvert</span><span class='op'>(</span><span class='va'>bib</span>, <span class='va'>bib2</span>, encoding <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"cp1251"</span>, <span class='st'>"utf8"</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $infile
-#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpZZCunC/file81b508c0397.bib"
+#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpnEnq1I/file81e753bb3b9.bib"
 #&gt; 
 #&gt; $outfile
-#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpZZCunC/file81b183fd7d1.bib"
+#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpnEnq1I/file81e229472d0.bib"
 #&gt; 
 #&gt; $nref_in
 #&gt; [1] 2
@@ -488,7 +514,7 @@ Chris Putnam (2020).
 #&gt; [1] "/Users/runner/work/_temp/Library/rbibutils/bib/easyPubMedvig.xml"
 #&gt; 
 #&gt; $outfile
-#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpZZCunC/file81b508c0397.bib"
+#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpnEnq1I/file81e753bb3b9.bib"
 #&gt; 
 #&gt; $nref_in
 #&gt; [1] 6
@@ -501,7 +527,7 @@ Chris Putnam (2020).
 #&gt; [1] "/Users/runner/work/_temp/Library/rbibutils/bib/easyPubMedvig.xml"
 #&gt; 
 #&gt; $outfile
-#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpZZCunC/file81b46e616a2.rds"
+#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpnEnq1I/file81e2e2fa446.rds"
 #&gt; 
 #&gt; $nref_in
 #&gt; [1] 6

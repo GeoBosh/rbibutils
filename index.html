@@ -76,7 +76,7 @@
   <div class="contents col-md-9">
 
 
-<p>Convert bibliography files between various formats, including BibTeX, BibLaTeX and Bibentry. Includes an R port of the <code>bibutils</code> utilities.</p>
+<p>Read and write ‘BibTeX’ files. Convert bibliography files between various formats, including BibTeX, BibLaTeX, EndNotes and Bibentry. Includes an R port of the <code>bibutils</code> utilities.</p>
 <div id="installing-rbibutils" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#installing-rbibutils" class="anchor"></a>Installing rbibutils</h1></div>
@@ -89,9 +89,9 @@
 <div id="overview" class="section level1">
 <h1 class="hasAnchor">
 <a href="#overview" class="anchor"></a>Overview</h1>
-<p>Convert bibliography files between various formats. All formats supported by the <code>bibutils</code> utilities are available. In addition, conversion from and to <code>bibentry</code>, the R native representation based on Bibtex, is supported.</p>
-<p>The main function is <code><a href="reference/bibConvert.html">bibConvert()</a></code>. It takes an input bibliography file in one of the supported formats, converts its contents to another format, and writes the result to a file. All formats, except for <code>rds</code> (see below) are plain text files. <code><a href="reference/bibConvert.html">bibConvert()</a></code> tries to infer the input/output formats from the file extentions. There is ambiguity however about <code>bib</code> files, which can be either Bibtex or Biblatex. Bibtex is assumed if the format is not specified.</p>
+<p>Read and write ‘BibTeX’ files. Convert bibliography files between various formats. All formats supported by the <code>bibutils</code> utilities are available. In addition, conversion from and to <code>bibentry</code>, the R native representation based on Bibtex, is supported.</p>
 <p><code><a href="reference/readBib.html">readBib()</a></code> and <code><a href="reference/readBib.html">writeBib()</a></code> import/export BiBTeX files. <code><a href="reference/readBibentry.html">readBibentry()</a></code> and <code><a href="reference/readBibentry.html">writeBibentry()</a></code> import/export <code>R</code> source files in which the references are represented by <code><a href="https://rdrr.io/r/utils/bibentry.html">bibentry()</a></code> calls.</p>
+<p><code><a href="reference/bibConvert.html">bibConvert()</a></code> an input bibliography file in one of the supported formats, converts its contents to another format, and writes the result to a file. All formats, except for <code>rds</code> (see below) are plain text files. <code><a href="reference/bibConvert.html">bibConvert()</a></code> tries to infer the input/output formats from the file extentions. There is ambiguity however about <code>bib</code> files, which can be either Bibtex or Biblatex. Bibtex is assumed if the format is not specified. also, the <code>xml</code> extension is shared by XML-based formats. Its default is ‘XML MODS intermediate’ format.</p>
 <p>The default encoding is UTF-8 for both, input and output. All encodings handled by <code>bibutils</code> are supported. Besides UTF-8, these include <code>gb18030</code> (Chinese), ISO encodings such as <code>iso8859_1</code>, Windows code pages (e.g. <code>cp1251</code> for Windows Cyrillic) and many others. Common alternative names are also accepted (e.g. <code>latin1</code>).</p>
 <p>Bibentry objects can be input from an <code>R</code> source file or from an <code>rds</code> file. The <code>rds</code> file should contain a <code>bibentry</code> R object, saved from R with <code><a href="https://rdrr.io/r/base/readRDS.html">saveRDS()</a></code>. The <code>rds</code> format is a compressed binary format`. Alternatively, an R source file containing one or more bibentry instructions and maybe other commands can be used. The R file is sourced and all bibentry objects created by it are collected.</p>
 </div>
@@ -168,7 +168,7 @@
 <div class="developers">
 <h2>Developers</h2>
 <ul class="list-unstyled">
-<li>Georgi N. Boshnakov <br><small class="roles"> Author, maintainer </small>  <br><small>(R port, R code, modifications to bibutils' C code, conversion to Bibentry (R and C code))</small>
+<li>Georgi N. Boshnakov <br><small class="roles"> Author, maintainer </small>  <br><small>(R port, R code, new C code and modifications to bibutils' C code, conversion to Bibentry (R and C code))</small>
 </li>
 <li>Chris Putman <br><small class="roles"> Author </small>  <br><small>(src/*, author of the bibutils libraries, https://sourceforge.net/projects/bibutils/)</small>
 </li>

@@ -212,7 +212,15 @@
 #&gt;                            family = "Putnam"),
 #&gt;            title = "Library bibutils, version 6.10",
 #&gt;            year = "2020",
-#&gt;            url = "https://sourceforge.net/projects/bibutils/"))</div><div class='input'>
+#&gt;            url = "https://sourceforge.net/projects/bibutils/"),
+#&gt;   bibentry(bibtype = "Misc",
+#&gt;            key = "Rpackage:easyPubMed",
+#&gt;            author = person(given = "Damiano",
+#&gt;                            family = "Fantini"),
+#&gt;            title = "easyPubMed: Search and Retrieve Scientific Publication Records from PubMed",
+#&gt;            year = "2019",
+#&gt;            note = "R package version 2.13",
+#&gt;            url = "https://CRAN.R-project.org/package=easyPubMed"))</div><div class='input'>
 <span class='fu'>writeBibentry</span><span class='op'>(</span><span class='va'>bibs</span>, file <span class='op'>=</span> <span class='va'>fn</span>, style <span class='op'>=</span> <span class='st'>"loose"</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span><span class='op'>(</span><span class='va'>fn</span><span class='op'>)</span>, sep <span class='op'>=</span> <span class='st'>"\n"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; bibentry(bibtype = "Manual",
@@ -250,6 +258,15 @@
 #&gt;          title = "Library bibutils, version 6.10",
 #&gt;          year = "2020",
 #&gt;          url = "https://sourceforge.net/projects/bibutils/")
+#&gt; 
+#&gt; bibentry(bibtype = "Misc",
+#&gt;          key = "Rpackage:easyPubMed",
+#&gt;          author = person(given = "Damiano",
+#&gt;                          family = "Fantini"),
+#&gt;          title = "easyPubMed: Search and Retrieve Scientific Publication Records from PubMed",
+#&gt;          year = "2019",
+#&gt;          note = "R package version 2.13",
+#&gt;          url = "https://CRAN.R-project.org/package=easyPubMed")
 #&gt; </div><div class='input'>
 <span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span><span class='op'>(</span><span class='va'>fn</span><span class='op'>)</span>
 </div></pre>
