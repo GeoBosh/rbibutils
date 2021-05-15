@@ -5,7 +5,7 @@ bibConvert <- function(infile, outfile, informat, outformat, ..., tex, encoding,
         ext <- tools::file_ext(infile)
         informat <- switch(ext,
                            xml      = {
-                               message("\n assuming input format is MOD XML intermmediate.\n")
+                               message("\n assuming input format is MOD XML intermediate.\n")
                                "xml"
                            },
 
@@ -138,6 +138,7 @@ bibConvert <- function(infile, outfile, informat, outformat, ..., tex, encoding,
                    ## as = {argv_2xml <- c(argv_2xml, "-as", options[j])},
                    nt = {argv_2xml <- c(argv_2xml, "-nt")},
                    verbose = {argv_2xml <- c(argv_2xml, "--verbose")},
+                   nb = {argv_xml2 <- c(argv_xml2, "-nb")},
                    debug = {
                        argv_2xml <- c(argv_2xml, "--debug")
                        argv_xml2 <- c(argv_xml2, "--debug")
