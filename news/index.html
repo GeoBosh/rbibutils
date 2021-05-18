@@ -120,9 +120,13 @@
 </h1>
 <ul>
 <li><p><code>readBib</code> with <code>direct = TRUE</code> now accepts non-syntactic field names, e.g. containing <code><a href="https://rdrr.io/r/base/Arithmetic.html">-</a></code>. (This is irrelevant when <code>direct = FALSE</code> since in that case nonstandard fields are ignored and standard fields do not contain unusual characters.)</p></li>
+<li><p>new convenience function <code>charToBib</code> takes input from a character vector rather than a file. By default it assumes that the input is in <code>bibtex</code> format and despatches to <code>readBib</code>. If an input format is specified it calls <code>bibConvert</code>.</p></li>
+<li><p>now references with missing cite keys in bibtex input are accepted (previously such references were dropped). Dummy cite keys are inserted.</p></li>
+<li><p>now <code>@preamble</code> entry in bibtex is ignored silently. Previously it was also dropped but with a message about unrecognised type, which was confusing.</p></li>
 <li><p>export arXiv:XXX and similar as <code>https</code> (some were still exported as <code>http</code>). Fixes GeoBosh/Rdpack<a href='https://github.com/GeoBosh/rbibutils/issues/21'>#21</a>, reported by Kisung You.</p></li>
-<li><p>add quotes to EndNote in <code>DESCRIPTION</code>.</p></li>
 <li><p>unsuported conversions for some formats were accepted with unpredictable results. Informative messages are printed now.</p></li>
+<li><p>improved handling of byte order marks (BOM) for utf8 output. This was causing problems to tests on Windows since on Linux BOMs are not emitted (I haven’t figured what causes the difference - the code is not OS dependent).</p></li>
+<li><p>added quotes to EndNote in <code>DESCRIPTION</code>.</p></li>
 </ul>
 </div>
     <div id="rbibutils-211-cran" class="section level1">

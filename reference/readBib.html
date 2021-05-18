@@ -121,9 +121,11 @@
     </div>
 
     <pre class="usage"><span class='fu'>readBib</span><span class='op'>(</span><span class='va'>file</span>, encoding <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span>, direct <span class='op'>=</span> <span class='cn'>FALSE</span>, 
-        texChars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"keep"</span>, <span class='st'>"convert"</span>, <span class='st'>"export"</span><span class='op'>)</span><span class='op'>)</span>
+        texChars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"keep"</span>, <span class='st'>"convert"</span>, <span class='st'>"export"</span><span class='op'>)</span>, <span class='va'>key</span><span class='op'>)</span>
 
-<span class='fu'>writeBib</span><span class='op'>(</span><span class='va'>object</span>, con <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/showConnections.html'>stdout</a></span><span class='op'>(</span><span class='op'>)</span>, append <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
+<span class='fu'>writeBib</span><span class='op'>(</span><span class='va'>object</span>, con <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/showConnections.html'>stdout</a></span><span class='op'>(</span><span class='op'>)</span>, append <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+
+<span class='fu'>charToBib</span><span class='op'>(</span><span class='va'>text</span>, <span class='va'>informat</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -165,9 +167,30 @@
       <td><p>if <code>TRUE</code> append to the file.</p></td>
     </tr>
     <tr>
+      <th>text</th>
+      <td><p>a character vector.</p></td>
+    </tr>
+    <tr>
+      <th>informat</th>
+      <td><p>the input format, defaults to <code>"bibtex"</code>.</p></td>
+    </tr>
+    <tr>
+      <th>key</th>
+      <td>
+
+<p>a character vectors of key(s) to use for entries without cite keys.
+    Should have the same number of elements as the number of such entries.</p>    
+<p></p></td>
+    </tr>
+    <tr>
       <th>...</th>
-      <td><p>Not used and throws error to avoid silently ignoring
-    unknown arguments.</p></td>
+      <td>
+    
+<p>for <code>charTobib</code>, arguments to be passed on to <code>readBib</code> or
+    <code>bibConvert</code>, see Details.
+    Not used by <code>readBib</code> and <code>writeBib</code> (which throw error to
+    avoid silently ignoring unknown arguments).</p>
+<p></p></td>
     </tr>
     </table>
 
@@ -212,6 +235,12 @@
   mathematical formulas.</p>
   
 <p><code>writeBib</code> writes a <code>bibentry</code> object to a bibtex file.</p>
+<p><code>charTobib</code> is a convenience function for reading or converting
+  bibliography information, accepting the input from a
+  character vector rather than a file. If <code>informat</code> is missing it calls
+  <code>readBib</code>, otherwise <code>bibConvert</code>. In both cases
+  the remaining arguments are passed on and should be suitable for the
+  called function.</p>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>for <code>readBib</code>, a <code>bibentry</code> object</p>
@@ -244,7 +273,7 @@
 #&gt;  [7] ""                                                                                       
 #&gt;  [8] "@Misc{Rpackage:Rdpack,"                                                                 
 #&gt;  [9] "  author = {Georgi N Boshnakov},"                                                       
-#&gt; [10] "  title = {{Rdpack}: Update and Manipulate Rd Documentation Objects},"                  
+#&gt; [10] "  title = {{\\{}Rdpack{\\}}: Update and Manipulate Rd Documentation Objects},"          
 #&gt; [11] "  year = {2020},"                                                                       
 #&gt; [12] "  note = {R package version 2.0.0},"                                                    
 #&gt; [13] "  doi = {10.5281/zenodo.3925612},"                                                      
@@ -367,6 +396,43 @@
 #&gt;          year = "2020",
 #&gt;          note = "Having the similar title and author is helpful for debugging since authors are processed differently from other fields. Here is a formula: $\\tan(α)$, $\\sin(δ)/δ \u0890 1$, $\\sqrt{x}$.")</div><div class='input'><span class='co'>## print(be3, style = "bibtex")</span>
 
+<span class='co'>## charToBib</span>
+<span class='co'>##</span>
+<span class='co'>## get a bibtex reference for R</span>
+<span class='va'>Rcore</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/format.html'>format</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/utils/citation.html'>citation</a></span><span class='op'>(</span><span class='op'>)</span>, style <span class='op'>=</span> <span class='st'>"bibtex"</span><span class='op'>)</span>
+<span class='co'>## add a citation key</span>
+<span class='va'>Rcore</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/grep.html'>sub</a></span><span class='op'>(</span><span class='st'>"@Manual{"</span>, <span class='st'>"@Manual{Rcore"</span>, <span class='va'>Rcore</span>, fixed <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='va'>Rcore</span>, sep <span class='op'>=</span> <span class='st'>"\n"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; @Manual{Rcore,
+#&gt;   title = {R: A Language and Environment for Statistical Computing},
+#&gt;   author = {{R Core Team}},
+#&gt;   organization = {R Foundation for Statistical Computing},
+#&gt;   address = {Vienna, Austria},
+#&gt;   year = {2021},
+#&gt;   url = {https://www.R-project.org/},
+#&gt; }</div><div class='input'><span class='va'>beRcore</span> <span class='op'>&lt;-</span> <span class='fu'>charToBib</span><span class='op'>(</span><span class='va'>Rcore</span><span class='op'>)</span>
+<span class='va'>beRcore</span>
+</div><div class='output co'>#&gt; R Core Team (2021). _R: A Language and Environment for Statistical
+#&gt; Computing_. &lt;URL: https://www.R-project.org/&gt;.</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span><span class='op'>(</span><span class='va'>beRcore</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "bibentry"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>beRcore</span>, style <span class='op'>=</span> <span class='st'>"R"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; bibentry(bibtype = "Manual",
+#&gt;          key = "Rcore",
+#&gt;          author = person(family = "R Core Team"),
+#&gt;          title = "R: A Language and Environment for Statistical Computing",
+#&gt;          year = "2021",
+#&gt;          publisher = "R Foundation for Statistical Computing",
+#&gt;          address = "Vienna, Austria",
+#&gt;          url = "https://www.R-project.org/")</div><div class='input'>
+<span class='co'>## bibtex entries generated by citation() don't have cite keys.</span>
+<span class='co'>## this sets the key to 'Rcore'</span>
+<span class='va'>beRcore</span> <span class='op'>&lt;-</span> <span class='fu'>charToBib</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/utils/toLatex.html'>toBibtex</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/utils/citation.html'>citation</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>, key <span class='op'>=</span> <span class='st'>"Rcore"</span><span class='op'>)</span>
+<span class='va'>beRcore</span><span class='op'>$</span><span class='va'>key</span> <span class='op'>==</span> <span class='st'>"Rcore"</span>  <span class='co'># TRUE</span>
+</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='co'>## this sets two keys</span>
+<span class='va'>bemore</span> <span class='op'>&lt;-</span> <span class='fu'>charToBib</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/utils/toLatex.html'>toBibtex</a></span><span class='op'>(</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/utils/citation.html'>citation</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/utils/citation.html'>citation</a></span><span class='op'>(</span><span class='st'>"rbibutils"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>,
+    key <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Rcore"</span>, <span class='st'>"Rpackage:rbibutils"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/all.equal.html'>all.equal</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>bemore</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Rcore"</span>, <span class='st'>"Rpackage:rbibutils"</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 
 <span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span><span class='op'>(</span><span class='va'>fn</span><span class='op'>)</span>
 </div></pre>
