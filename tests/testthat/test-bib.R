@@ -49,6 +49,7 @@ test_that("bibRead works ok", {
     identical(eaf_Grunert01$keywords , old_eaf_Grunert01$keywords )
     identical(eaf_Grunert01$key      , old_eaf_Grunert01$key      )
 
+    readBib(system.file("bib/litprog280.bib", package = "rbibutils"))
     litprog280 <- readBib(system.file("bib/litprog280.bib", package = "rbibutils"),
                           direct = TRUE)
 

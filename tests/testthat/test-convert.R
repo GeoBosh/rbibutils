@@ -15,6 +15,7 @@ test_that("bibConvert works ok", {
     med_in  <- file.path(bibdir, "easyPubMedvig.xml")
     bibacc  <- file.path(bibdir, "latin1accents_utf8.bib")
     end_in  <- file.path(bibdir, "Putnam1992.end")
+    litprog280_bib <- file.path(bibdir, "litprog280.bib")
     
     tmp_xml <- tempfile(fileext = ".xml")
     tmp_bib <- tempfile(fileext = ".bib")
@@ -147,7 +148,100 @@ test_that("bibConvert works ok", {
     ## accept also 'word' since, due to a mixup, the C code was accepting that
     bibConvert(tmp_bib, tmp_wordbib, outformat = "word")
     bibConvert(tmp_wordbib, tmp_bib3, informat = "word")
+
+    ## #########################
+    ## -h and -v currently print to standard error and continue
+
+    ## Without the assignment to tmp2 inside capture.output(..., type = "message")
+    ## the results are printed by devtools::test() and friends.
+
+    ## -h
+    a <- capture.output(tmp2 <- bibConvert(ex0_xml, tmp_bib, options = c(h = "")), type = "message")
+    expect_match(a, "usage: xml2bib xml_file > bibtex_file", all = FALSE)
+
+    a <- capture.output(tmp2 <- bibConvert(ex0_xml, tmp_bib2, outformat = "biblatex", options = c(h = "")), type = "message")
+    expect_match(a, "usage: xml2biblatex xml_file > biblatex_file", all = FALSE)
+
+    a <- capture.output(tmp2 <- bibConvert(ex0_xml, tmp_ads, options = c(h = "")), type = "message")
+    expect_match(a, "usage: xml2ads xml_file > adsabs_file", all = FALSE)
+
+      # a <- capture.output(tmp2 <- bibConvert(ex0_xml, tmp_copac, options = c(h = "")), type = "message")
+      # a <- capture.output(tmp2 <- bibConvert(ex0_xml, tmp_ebi, options = c(h = "")), type = "message")
+    a <- capture.output(tmp2 <- bibConvert(ex0_xml, tmp_end, options = c(h = "")), type = "message")
+    expect_match(a, "usage: xml2end xml_file > endnote_file", all = FALSE)
+
+      # a <- capture.output(tmp2 <- bibConvert(ex0_xml, tmp_endx, options = c(h = "")), type = "message")
+    a <- capture.output(tmp2 <- bibConvert(ex0_xml, tmp_isi, options = c(h = "")), type = "message")
+    expect_match(a, "usage: xml2isi xml_file > isi_file", all = FALSE)
+
+      # a <- capture.output(tmp2 <- bibConvert(ex0_xml, tmp_med, options = c(h = "")), type = "message")
+    #a <- capture.output(tmp2 <- bibConvert(ex0_xml, tmp_nbib, options = c(h = "")), type = "message")
+    #expect_match(a, "", all = FALSE)
+
+    a <- capture.output(tmp2 <- bibConvert(ex0_xml, tmp_ris, options = c(h = "")), type = "message")
+    expect_match(a, "usage: xml2ris xml_file > ris_file", all = FALSE)
+
+    a <- capture.output(tmp2 <- bibConvert(ex0_xml, tmp_wordbib, options = c(h = "")), type = "message")
+    expect_match(a, "usage: xml2wordbib xml_file > word_file", all = FALSE)
+
+
+    a <- capture.output(tmp2 <- bibConvert(tmp_bib,  tmp_xml, options = c(h = "")), type = "message")
+    expect_match(a, "usage: bib2xml bibtex_file > xml_file", all = FALSE)
+
+    a <- capture.output(tmp2 <- bibConvert(tmp_bib2,    tmp_xml, informat = "biblatex", options = c(h = "")), type = "message")
+    expect_match(a, "usage: biblatex2xml bibtex_file > xml_file", all = FALSE)
+
+    a <- capture.output(tmp2 <- bibConvert(tmp_end,     tmp_xml, options = c(h = "")), type = "message")
+    expect_match(a, "usage: end2xml endnote_file > xml_file", all = FALSE)
+
+      # a <- capture.output(tmp2 <- bibConvert(tmp_ads,     tmp_xml, options = c(h = "")), type = "message")
+    a <- capture.output(tmp2 <- bibConvert(tmp_copac,   tmp_xml, options = c(h = "")), type = "message")
+    expect_match(a, "usage: copac2xml copac_file > xml_file", all = FALSE)
+
+      # a <- capture.output(tmp2 <- bibConvert(tmp_ebi,     tmp_xml, options = c(h = "")), type = "message")
+    a <- capture.output(tmp2 <- bibConvert(tmp_end,     tmp_xml, options = c(h = "")), type = "message")
+    expect_match(a, "usage: end2xml endnote_file > xml_file", all = FALSE)
+
+    a <- capture.output(tmp2 <- bibConvert(tmp_endx,    tmp_xml, options = c(h = "")), type = "message")
+    expect_match(a, "usage: endx2xml endnotexml_file > xml_file", all = FALSE)
+
+    a <- capture.output(tmp2 <- bibConvert(tmp_isi,     tmp_xml, options = c(h = "")), type = "message")
+    expect_match(a, "usage: isi2xml isi_file > xml_file", all = FALSE)
+
+    a <- capture.output(tmp2 <- bibConvert(tmp_med,     tmp_xml, options = c(h = "")), type = "message")
+    expect_match(a, "usage: med2xml medline_file > xml_file", all = FALSE)
+
+    a <- capture.output(tmp2 <- bibConvert(tmp_nbib,    tmp_xml, options = c(h = "")), type = "message")
+    expect_match(a, "usage: nbib2xml nbib_file > xml_file", all = FALSE)
+
+    a <- capture.output(tmp2 <- bibConvert(tmp_ris,     tmp_xml, options = c(h = "")), type = "message")
+    expect_match(a, "ris_file can be replaced with file list or omitted to use as a filter", all = FALSE)
+
+    a <- capture.output(tmp2 <- bibConvert(tmp_wordbib, tmp_xml, options = c(h = "")), type = "message")
+    expect_match(a, "usage: wordbib2xml word2007bib_file > xml_file", all = FALSE)
+
+
+    ## -v
+    a <- capture.output(tmp2 <- bibConvert(ex0_xml, tmp_bib, options = c(v = "")), type = "message")
+    expect_match(a, ".*xml2bib, bibutils suite version", all = FALSE)
+
+    a <- capture.output(tmp2 <- bibConvert(tmp_bib,  tmp_xml, options = c(v = "")), type = "message")
+    expect_match(a, "bib2xml, bibutils suite version", all = FALSE)
+
     
+    ## --debug
+    a <- capture.output(tmp2 <- bibConvert(ex0_xml, tmp_bib, options = c(debug = "")), type = "message")
+    expect_match(a, "-------------------params start ", all = FALSE)
+
+    a <- capture.output(tmp2 <- bibConvert(tmp_bib, tmp_xml, options = c(verbose = "")), type = "message")
+    expect_match(a, "# NUM   level = LEVEL   'TAG' = 'VALUE'", all = FALSE)
+
+
+    ## --verbose
+    a <- capture.output(tmp2 <- bibConvert(litprog280_bib, tmp_xml, options = c(verbose = "")), type = "message")
+    expect_match(a, "bib2xml: Cannot find tag 'ISSN-L'", all = FALSE)  # Note: there are other unknown tags
+    
+    ## #########################
 
     cyr_utf8 <- file.path(bibdir, "cyr_utf8.bib")
     bibConvert(cyr_utf8, tmp_bib, options = c(o = "cp1251"))

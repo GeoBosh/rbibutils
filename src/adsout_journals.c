@@ -6,7 +6,7 @@
  * | awk '{Rprintf "\"%s\",\n",$0 }' | sort -n -k2 
  *
  */
-static const char *journals[] = {
+const char *journals[] = {
 "A&AA. Astronomy and Astrophysics Abstracts Heidelberg",
 "AAABS Asociacion Argentina de Astronomia La Plata Argentina Book Series",
 "AAAN. Astronomische Abhandlungen als Erganzungshefte zu den Astronomische Nachrichten",
@@ -4431,4 +4431,4 @@ static const char *journals[] = {
 "TDM.. 2D Materials",
 "TDR.. 3D Research",
 };
-static const int njournals = sizeof( journals ) / sizeof( journals[0] );
+const int njournals = sizeof( journals ) / sizeof( journals[0] );

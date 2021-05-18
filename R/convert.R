@@ -91,7 +91,9 @@ bibConvert <- function(infile, outfile, informat, outformat, ..., tex, encoding,
             switch(tex_op,
                    no_latex = { # accents to letters
                        argv_2xml <- c(argv_2xml, "-nl")
-                       argv_xml2 <- c(argv_xml2, "-nl")
+                       ## TODO: this is relevant for xml2xxx only when xxx is a latex related format
+                       ##       for now inserting a line in the C code to ignore it without warning
+                       argv_xml2 <- c(argv_xml2, "-nl") 
                    },
                    uppercase = {
                        argv_xml2 <- c(argv_xml2, "-U")
@@ -122,8 +124,14 @@ bibConvert <- function(infile, outfile, informat, outformat, ..., tex, encoding,
                        ## print(argv_xml2)
                    },
                    oxml = {argv_2xml <- c(argv_2xml, "-o", options[j])},
-                   h = {argv_2xml <- c(argv_2xml, "-h")},
-                   v = {argv_2xml <- c(argv_2xml, "-v")},
+                   h = {
+                       argv_2xml <- c(argv_2xml, "-h")
+                       argv_xml2 <- c(argv_xml2, "-h")
+                   },
+                   v = {
+                       argv_2xml <- c(argv_2xml, "-v")
+                       argv_xml2 <- c(argv_xml2, "-v")
+                   },
                    a = {argv_2xml <- c(argv_2xml, "-a")},
                    s = {argv_2xml <- c(argv_2xml, "-s")},
                    u = {argv_2xml <- c(argv_2xml, "-u")},
@@ -132,13 +140,24 @@ bibConvert <- function(infile, outfile, informat, outformat, ..., tex, encoding,
                    x = {argv_2xml <- c(argv_2xml, "-x")},
                    nl = {
                        argv_2xml <- c(argv_2xml, "-nl")
-                       argv_xml2 <- c(argv_xml2, "-nl")},
+                       argv_xml2 <- c(argv_xml2, "-nl")
+                   },
                    d = { argv_2xml <- c(argv_2xml, "-d") },
                    c = {argv_2xml <- c(argv_2xml, "-c", options[j])},
                    ## as = {argv_2xml <- c(argv_2xml, "-as", options[j])},
                    nt = {argv_2xml <- c(argv_2xml, "-nt")},
-                   verbose = {argv_2xml <- c(argv_2xml, "--verbose")},
-                   nb = {argv_xml2 <- c(argv_xml2, "-nb")},
+                   verbose = {
+                       argv_2xml <- c(argv_2xml, "--verbose")
+                       argv_xml2 <- c(argv_xml2, "--verbose")
+                   },
+                   nb = {
+                       ## TODO: However, switch or no switch, on linux the BOM is not added.
+                       ##       But BOM is inserted on windows without the switch.
+                       ## Currently I have no idea why linux is special in this respect.
+                       argv_xml2 <- c(argv_xml2, "-nb")
+                       ## for 2xml the switch in bibutils is -un
+                       argv_2xml <- c(argv_2xml, "-un")
+                   },
                    debug = {
                        argv_2xml <- c(argv_2xml, "--debug")
                        argv_xml2 <- c(argv_xml2, "--debug")

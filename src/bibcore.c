@@ -23,71 +23,73 @@
 #define debug_set( p ) ( (p)->verbose > 1 )
 #define verbose_set( p ) ( (p)->verbose )
 
+// Georgi was: report_params( FILE *fp, const char *f, param *p )
+//     removed argument fp and hardcoded printing to stderr
 static void
-report_params( FILE *fp, const char *f, param *p )
+report_params( const char *f, param *p )
 {
-	fflush( NULL );
+        // fflush( NULL );
 
-	fprintf( fp, "-------------------params start for %s\n", f );
-	fprintf( fp, "\tprogname='%s'\n\n", p->progname );
+	REprintf( "-------------------params start for %s\n", f );
+	REprintf( "\tprogname='%s'\n\n", p->progname );
 
-	fprintf( fp, "\treadformat=%d", p->readformat );
+	REprintf( "\treadformat=%d", p->readformat );
 	switch ( p->readformat ) {
-		case BIBL_INTERNALIN:   fprintf( fp, " (BIBL_INTERNALIN)\n" );   break;
-		case BIBL_MODSIN:       fprintf( fp, " (BIBL_MODSIN)\n" );       break;
-		case BIBL_BIBTEXIN:     fprintf( fp, " (BIBL_BIBTEXIN)\n" );     break;
-		case BIBL_RISIN:        fprintf( fp, " (BIBL_RISIN)\n" );        break;
-		case BIBL_ENDNOTEIN:    fprintf( fp, " (BIBL_ENDNOTEIN)\n" );    break;
-		case BIBL_COPACIN:      fprintf( fp, " (BIBL_COPACIN)\n" );      break;
-		case BIBL_ISIIN:        fprintf( fp, " (BIBL_ISIIN)\n" );        break;
-		case BIBL_MEDLINEIN:    fprintf( fp, " (BIBL_MEDLINEIN)\n" );    break;
-		case BIBL_ENDNOTEXMLIN: fprintf( fp, " (BIBL_ENDNOTEXMLIN)\n" ); break;
-		case BIBL_BIBLATEXIN:   fprintf( fp, " (BIBL_BIBLATEXIN)\n" );   break;
-		case BIBL_EBIIN:        fprintf( fp, " (BIBL_EBIIN)\n" );        break;
-		case BIBL_WORDIN:       fprintf( fp, " (BIBL_WORDIN)\n" );       break;
-		case BIBL_NBIBIN:       fprintf( fp, " (BIBL_NBIBIN)\n" );       break;
-		default:                fprintf( fp, " (Illegal value)\n" );     break;
+		case BIBL_INTERNALIN:   REprintf( " (BIBL_INTERNALIN)\n" );   break;
+		case BIBL_MODSIN:       REprintf( " (BIBL_MODSIN)\n" );       break;
+		case BIBL_BIBTEXIN:     REprintf( " (BIBL_BIBTEXIN)\n" );     break;
+		case BIBL_RISIN:        REprintf( " (BIBL_RISIN)\n" );        break;
+		case BIBL_ENDNOTEIN:    REprintf( " (BIBL_ENDNOTEIN)\n" );    break;
+		case BIBL_COPACIN:      REprintf( " (BIBL_COPACIN)\n" );      break;
+		case BIBL_ISIIN:        REprintf( " (BIBL_ISIIN)\n" );        break;
+		case BIBL_MEDLINEIN:    REprintf( " (BIBL_MEDLINEIN)\n" );    break;
+		case BIBL_ENDNOTEXMLIN: REprintf( " (BIBL_ENDNOTEXMLIN)\n" ); break;
+		case BIBL_BIBLATEXIN:   REprintf( " (BIBL_BIBLATEXIN)\n" );   break;
+		case BIBL_EBIIN:        REprintf( " (BIBL_EBIIN)\n" );        break;
+		case BIBL_WORDIN:       REprintf( " (BIBL_WORDIN)\n" );       break;
+		case BIBL_NBIBIN:       REprintf( " (BIBL_NBIBIN)\n" );       break;
+		default:                REprintf( " (Illegal value)\n" );     break;
 	}
-	fprintf( fp, "\tcharsetin=%d\n", p->charsetin );
-	fprintf( fp, "\tcharsetin_src=%d", p->charsetin_src );
+	REprintf( "\tcharsetin=%d\n", p->charsetin );
+	REprintf( "\tcharsetin_src=%d", p->charsetin_src );
 	switch ( p->charsetin_src ) {
-		case BIBL_SRC_DEFAULT:  fprintf( fp, " (BIBL_SRC_DEFAULT)\n" ); break;
-		case BIBL_SRC_FILE:     fprintf( fp, " (BIBL_SRC_FILE)\n" );    break;
-		case BIBL_SRC_USER:     fprintf( fp, " (BIBL_SRC_USER)\n" );    break;
-		default:                fprintf( fp, " (Illegal value)\n" );    break;
+		case BIBL_SRC_DEFAULT:  REprintf( " (BIBL_SRC_DEFAULT)\n" ); break;
+		case BIBL_SRC_FILE:     REprintf( " (BIBL_SRC_FILE)\n" );    break;
+		case BIBL_SRC_USER:     REprintf( " (BIBL_SRC_USER)\n" );    break;
+		default:                REprintf( " (Illegal value)\n" );    break;
 	}
-	fprintf( fp, "\tutf8in=%d\n", p->utf8in );
-	fprintf( fp, "\tlatexin=%d\n", p->latexin );
-	fprintf( fp, "\txmlin=%d\n\n", p->xmlin );
+	REprintf( "\tutf8in=%d\n", p->utf8in );
+	REprintf( "\tlatexin=%d\n", p->latexin );
+	REprintf( "\txmlin=%d\n\n", p->xmlin );
 
-	fprintf( fp, "\twriteformat=%d", p->writeformat );
+	REprintf( "\twriteformat=%d", p->writeformat );
 	switch ( p->writeformat ) {
-		case BIBL_INTERNALOUT:  fprintf( fp, " (BIBL_INTERNALOUT)\n" );  break;
-		case BIBL_ADSABSOUT:    fprintf( fp, " (BIBL_ADSABSOUT)\n" );    break;
-		case BIBL_BIBTEXOUT:    fprintf( fp, " (BIBL_BIBTEXOUT)\n" );    break;
-		case BIBL_ENDNOTEOUT:   fprintf( fp, " (BIBL_ENDNOTEOUT)\n" );   break;
-		case BIBL_ISIOUT:       fprintf( fp, " (BIBL_ISIOUT)\n" );       break;
-		case BIBL_MODSOUT:      fprintf( fp, " (BIBL_MODSOUT)\n" );      break;
-		case BIBL_NBIBOUT:      fprintf( fp, " (BIBL_NBIBOUT)\n" );      break;
-		case BIBL_RISOUT:       fprintf( fp, " (BIBL_RISOUT)\n" );       break;
-		case BIBL_WORD2007OUT:  fprintf( fp, " (BIBL_WORD2007OUT)\n" );  break;
-		default:                fprintf( fp, " (Illegal value)\n");      break;
+		case BIBL_INTERNALOUT:  REprintf( " (BIBL_INTERNALOUT)\n" );  break;
+		case BIBL_ADSABSOUT:    REprintf( " (BIBL_ADSABSOUT)\n" );    break;
+		case BIBL_BIBTEXOUT:    REprintf( " (BIBL_BIBTEXOUT)\n" );    break;
+		case BIBL_ENDNOTEOUT:   REprintf( " (BIBL_ENDNOTEOUT)\n" );   break;
+		case BIBL_ISIOUT:       REprintf( " (BIBL_ISIOUT)\n" );       break;
+		case BIBL_MODSOUT:      REprintf( " (BIBL_MODSOUT)\n" );      break;
+		case BIBL_NBIBOUT:      REprintf( " (BIBL_NBIBOUT)\n" );      break;
+		case BIBL_RISOUT:       REprintf( " (BIBL_RISOUT)\n" );       break;
+		case BIBL_WORD2007OUT:  REprintf( " (BIBL_WORD2007OUT)\n" );  break;
+		default:                REprintf( " (Illegal value)\n");      break;
 	}
-	fprintf( fp, "\tcharsetout=%d\n", p->charsetout );
-	fprintf( fp, "\tcharsetout_src=%d", p->charsetout_src );
+	REprintf( "\tcharsetout=%d\n", p->charsetout );
+	REprintf( "\tcharsetout_src=%d", p->charsetout_src );
 	switch ( p->charsetout_src ) {
-		case BIBL_SRC_DEFAULT:  fprintf( fp, " (BIBL_SRC_DEFAULT)\n" ); break;
-		case BIBL_SRC_FILE:     fprintf( fp, " (BIBL_SRC_FILE)\n" );    break;
-		case BIBL_SRC_USER:     fprintf( fp, " (BIBL_SRC_USER)\n" );    break;
-		default:                fprintf( fp, " (Illegal value)\n" );    break;
+		case BIBL_SRC_DEFAULT:  REprintf( " (BIBL_SRC_DEFAULT)\n" ); break;
+		case BIBL_SRC_FILE:     REprintf( " (BIBL_SRC_FILE)\n" );    break;
+		case BIBL_SRC_USER:     REprintf( " (BIBL_SRC_USER)\n" );    break;
+		default:                REprintf( " (Illegal value)\n" );    break;
 	}
-	fprintf( fp, "\tutf8out=%d\n", p->utf8out );
-	fprintf( fp, "\tutf8bom=%d\n", p->utf8bom );
-	fprintf( fp, "\tlatexout=%d\n", p->latexout );
-	fprintf( fp, "\txmlout=%d\n", p->xmlout );
-	fprintf( fp, "-------------------params end for %s\n", f );
+	REprintf( "\tutf8out=%d\n", p->utf8out );
+	REprintf( "\tutf8bom=%d\n", p->utf8bom );
+	REprintf( "\tlatexout=%d\n", p->latexout );
+	REprintf( "\txmlout=%d\n", p->xmlout );
+	REprintf( "-------------------params end for %s\n", f );
 
-	fflush( fp );
+	// fflush( fp );
 }
 
 /* bibl_duplicateparams()
@@ -841,30 +843,30 @@ bibl_read( bibl *b, FILE *fp, char *filename, param *p )
 	if ( !p )  return BIBL_ERR_BADINPUT;
 
 	if ( bibl_illegalinmode( p->readformat ) ) {
-	  // if ( debug_set( p ) ) report_params( stderr, "bibl_read", p );
+	  if ( debug_set( p ) ) report_params( "bibl_read", p );
 		return BIBL_ERR_BADINPUT;
 	}
 
 	status = bibl_setreadparams( &read_params, p );
 	if ( status!=BIBL_OK ) {
-	  // if ( debug_set( p ) ) report_params( stderr, "bibl_read", p );
+	  if ( debug_set( p ) ) report_params( "bibl_read", p );
 		return status;
 	}
 
-	// if ( debug_set( &read_params ) ) {
-	//   report_params( stderr, "bibl_read", &read_params ); 
-	// }
+	if ( debug_set( &read_params ) ) {
+	  report_params( "bibl_read", &read_params ); 
+	}
 
 	bibl_init( &bin );
 
 	status = read_refs( fp, &bin, filename, &read_params );
 	if ( status!=BIBL_OK ) {
-	  // if ( debug_set( &read_params ) ) report_params( stderr, "bibl_read", &read_params );
+	  if ( debug_set( &read_params ) ) report_params( "bibl_read", &read_params );
 		bibl_freeparams( &read_params );
 		return status;
 	}
 
-  // // Georgi: for testing
+  // Georgi: for testing
   // REprintf("Bh: (after(read_refs)\n");
   // for(long i = 0; i < bin.n; ++i) {
   //   fields_report_stderr( bin.ref[i] );
@@ -1012,15 +1014,15 @@ bibl_writefp( FILE *fp, bibl *b, param *p )
 
 	fields_init( &out );
 
-	// if ( debug_set( p ) && p->assemblef ) {
-	// 	REprintf( "-------------------assemblef start for bibl_write\n");
-	// }
+	if ( debug_set( p ) && p->assemblef ) {
+	 	REprintf( "-------------------assemblef start for bibl_write\n");
+	}
 
 	if ( p->headerf ) p->headerf( fp, p );
 	for ( i=0; i<b->n; ++i ) {
-
 		if ( p->assemblef ) {
 			fields_free( &out );
+			// Georgi TODO: it seems that xml2nbib crashes here:
 			status = p->assemblef( b->ref[i], &out, p, i );
 			if ( status!=BIBL_OK ) break;
 			if ( debug_set( p ) ) bibl_verbose_reference( &out, "", i+1 );
@@ -1033,9 +1035,9 @@ bibl_writefp( FILE *fp, bibl *b, param *p )
 
 	}
 
-	// if ( debug_set( p ) && p->assemblef ) {
-	// 	REprintf( "-------------------assemblef end for bibl_write\n");
-	// }
+	if ( debug_set( p ) && p->assemblef ) {
+	 	REprintf( "-------------------assemblef end for bibl_write\n");
+	}
 
 	if ( p->footerf ) p->footerf( fp );
 	return status;
@@ -1056,8 +1058,8 @@ bibl_write( bibl *b, FILE *fp, param *p )
 	if ( status!=BIBL_OK ) return status;
 
 	if ( debug_set( p ) ) {
-	  // report_params( stderr, "bibl_write", &lp );
-		fflush( fp ); // fflush( stdout );
+	  report_params( "bibl_write", &lp );
+	  // fflush( fp ); // fflush( stdout );
 	}
 
 	if ( debug_set( p ) ) bibl_verbose( b, "raw_input", "for bibl_write" );

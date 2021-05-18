@@ -246,21 +246,24 @@ process_args( int *argc, char *argv[], param *p, const char *progname[] )
 {
   void (*help)( char *progname );
   
-	if(strcmp(*progname, "xml2bib") == 0  || strcmp(*progname, "xml2biblatex") ){
-	  if(strcmp(*progname, "xml2bib") == 0)
-	    help = helpAll[0];
-	  else
-	    help = helpAll[1];
+	if(strcmp(*progname, "xml2bib") == 0  || strcmp(*progname, "xml2biblatex") == 0){
 	  int i, j, subtract;
 	  i = 1;
 	  while ( i<*argc ) {
 	  	subtract = 0;
 	  	if ( args_match( argv[i], "-h", "--help" ) ) {
-	  		help( p->progname );
-	  		error("\n"); // exit( EXIT_SUCCESS );
+		  	if(strcmp(*progname, "xml2bib") == 0)
+		  	  help = helpAll[0];
+		  	else
+		  	  help = helpAll[1];
+		  
+		        help( p->progname );
+	  		// error("\n"); // exit( EXIT_SUCCESS );
+	  		subtract = 1;
 	  	} else if ( args_match( argv[i], "-v", "--version" ) ) {
 	  		args_tellversion( p->progname );
-	  		error("\n"); // exit( EXIT_SUCCESS );
+	  		// error("\n"); // exit( EXIT_SUCCESS );
+	  		subtract = 1;
 	  	} else if ( args_match( argv[i], "-fc", "--finalcomma" ) ) {
 	  		p->format_opts |= BIBL_FORMAT_BIBOUT_FINALCOMMA;
 	  		subtract = 1;
@@ -306,7 +309,7 @@ process_args( int *argc, char *argv[], param *p, const char *progname[] )
 	  			argv[j-subtract] = argv[j];
 	  		*argc -= subtract;
 	  	} else {
-	  		if ( argv[i][0]=='-' ) REprintf("Warning did not recognize potential command-line option %s\n", argv[i] );
+	  		if ( argv[i][0]=='-' ) REprintf("(xml2any.c:312) Warning did not recognize potential command-line option %s\n", argv[i] );
 	  		i++;
 	  	}
 	  }
@@ -317,8 +320,23 @@ process_args( int *argc, char *argv[], param *p, const char *progname[] )
 	  while ( i<*argc ) {
 	  	subtract = 0;
 	  	if ( args_match( argv[i], "-h", "--help" ) ) {
-	  		help_xml2end( p->progname );
-	  		error("\n"); // exit( EXIT_SUCCESS );
+		  	if(strcmp(*progname, "xml2ads") == 0)
+			  help_xml2ads( p->progname );
+		  	else if(strcmp(*progname, "xml2end") == 0)
+			  help_xml2end( p->progname );
+		  	else if(strcmp(*progname, "xml2isi") == 0)
+			  help_xml2isi( p->progname );
+		  	else if(strcmp(*progname, "xml2nbib") == 0)
+			  help_xml2nbib( p->progname );
+		  	else if(strcmp(*progname, "xml2ris") == 0)
+			  help_xml2ris( p->progname );
+		  	else if(strcmp(*progname, "xml2wordbib") == 0)
+			  help_xml2wordbib( p->progname );
+		  	else
+		  	  error("currently help for %s is not available", p->progname);
+		  
+	  		// error("\n"); // exit( EXIT_SUCCESS );
+	  		subtract = 1;
 	  	} else if ( args_match( argv[i], "-v", "--version" ) ) {
 	  		args_tellversion( p->progname );
 	  		error("\n"); // exit( EXIT_SUCCESS );
@@ -334,13 +352,16 @@ process_args( int *argc, char *argv[], param *p, const char *progname[] )
 	  	} else if ( args_match( argv[i], "--debug", "" ) ) {
 	  		p->verbose = 3;
 	  		subtract = 1;
+	  	} else if ( args_match( argv[i], "-nl", "--no-latex" ) ) {
+		        // not relevant here, just ignore (TODO: maybe the calling R code should take care of this)
+	  		subtract = 1;
 	  	}
 	  	if ( subtract ) {
 	  		for ( j=i+subtract; j<*argc; ++j )
 	  			argv[j-subtract] = argv[j];
 	  		*argc -= subtract;
 	  	} else {
-	  		if ( argv[i][0]=='-' ) REprintf( "Warning: Did not recognize potential command-line argument %s\n", argv[i] );
+	  		if ( argv[i][0]=='-' ) REprintf( "(xml2any.c:361) Warning: Did not recognize potential command-line argument %s\n", argv[i] );
 	  		i++;
 	  	}
 	  }

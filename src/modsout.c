@@ -1091,9 +1091,8 @@ modsout_report_unused_tags( fields *f, param *p, unsigned long numrefs )
 		nunused++;
 	}
 	if ( nunused ) {
-		// TODO: here end below make this print conditional; removing for now
-                // if ( p->progname ) REprintf( "%s: ", p->progname );
-		//   REprintf( "Reference %lu has unused tags.\n", numrefs+1 );
+                if ( p->progname ) REprintf( "%s: ", p->progname );
+		  REprintf( "Reference %lu has unused tags.\n", numrefs+1 );
 		/* Find author from level 0 */
 		nwritten = 0;
 		for ( i=0; i<n; ++i ) {
@@ -1101,9 +1100,9 @@ modsout_report_unused_tags( fields *f, param *p, unsigned long numrefs )
 			tag = fields_tag( f, i, FIELDS_CHRP_NOUSE );
 			if ( strcasecmp( tag, "AUTHOR" ) && strcasecmp( tag, "AUTHOR:ASIS" ) && strcasecmp( tag, "AUTHOR:CORP" ) ) continue;
 			value = fields_value( f, i, FIELDS_CHRP_NOUSE );
-      		    // TODO: here end below make this print conditional; removing for now
-			// if ( nwritten==0 ) REprintf( "\tAuthor(s) (level=0):\n" );
-			// REprintf( "\t\t'%s'\n", value );
+      		    // TODO: here and below make this print conditional; removing for now
+			if ( nwritten==0 ) REprintf( "\tAuthor(s) (level=0):\n" );
+			REprintf( "\t\t'%s'\n", value );
 			nwritten++;
 		}
 		nwritten = 0;
@@ -1112,8 +1111,8 @@ modsout_report_unused_tags( fields *f, param *p, unsigned long numrefs )
 			tag = fields_tag( f, i, FIELDS_CHRP_NOUSE );
 			if ( strcasecmp( tag, "DATE:YEAR" ) && strcasecmp( tag, "PARTDATE:YEAR" ) ) continue;
 			value = fields_value( f, i, FIELDS_CHRP_NOUSE );
-			// if ( nwritten==0 ) REprintf( "\tYear(s) (level=0):\n" );
-			// REprintf( "\t\t'%s'\n", value );
+			if ( nwritten==0 ) REprintf( "\tYear(s) (level=0):\n" );
+			REprintf( "\t\t'%s'\n", value );
 			nwritten++;
 		}
 		nwritten = 0;
@@ -1122,19 +1121,19 @@ modsout_report_unused_tags( fields *f, param *p, unsigned long numrefs )
 			tag = fields_tag( f, i, FIELDS_CHRP_NOUSE );
 			if ( strncasecmp( tag, "TITLE", 5 ) ) continue;
 			value = fields_value( f, i, FIELDS_CHRP_NOUSE );
-			// if ( nwritten==0 ) REprintf( "\tTitle(s) (level=0):\n" );
-			// REprintf( "\t\t'%s'\n", value );
+			if ( nwritten==0 ) REprintf( "\tTitle(s) (level=0):\n" );
+			REprintf( "\t\t'%s'\n", value );
 			nwritten++;
 		}
 	
-		// REprintf( "\tUnused tags:\n" );
+		REprintf( "\tUnused tags:\n" );
 		for ( i=0; i<n; ++i ) {
 			if ( fields_used( f, i ) ) continue;
 			tag   = fields_tag(   f, i, FIELDS_CHRP_NOUSE );
 			value = fields_value( f, i, FIELDS_CHRP_NOUSE );
 			level = fields_level( f, i );
-			// REprintf( "\t\ttag: '%s' value: '%s' level: %d\n",
-                        //				tag, value, level );
+			REprintf( "\t\ttag: '%s' value: '%s' level: %d\n",
+                        				tag, value, level );
 		}
 	}
 }
@@ -1148,7 +1147,8 @@ modsout_write( fields *f, FILE *outptr, param *p, unsigned long numrefs )
 
 	output_head( f, outptr, dropkey, numrefs );
 	output_citeparts( f, outptr, 0, max );
-	modsout_report_unused_tags( f, p, numrefs );
+	if( p->verbose )  // Georgi
+ 	  modsout_report_unused_tags( f, p, numrefs );
 
 	fprintf( outptr, "</mods>\n" );
 	fflush( outptr );

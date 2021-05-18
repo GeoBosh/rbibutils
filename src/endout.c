@@ -113,54 +113,54 @@ enum {
 	TYPE_UNPUBLISHED,                 /* Unpublished Work */
 };
 
-static void
-write_type( FILE *fp, int type )
-{
-	switch( type ) {
-	case TYPE_UNKNOWN:           fprintf( fp, "TYPE_UNKNOWN" );            break;
-	case TYPE_GENERIC:           fprintf( fp, "TYPE_GENERIC" );            break;
-	case TYPE_ARTWORK:           fprintf( fp, "TYPE_ARTWORK" );            break;
-	case TYPE_AUDIOVISUAL:       fprintf( fp, "TYPE_AUDIOVISUAL" );        break;
-	case TYPE_BILL:              fprintf( fp, "TYPE_BILL" );               break;
-	case TYPE_BOOK:              fprintf( fp, "TYPE_BOOK" );               break;
-	case TYPE_INBOOK:            fprintf( fp, "TYPE_INBOOK" );             break;
-	case TYPE_CASE:              fprintf( fp, "TYPE_CASE" );               break;
-	case TYPE_CHARTTABLE:        fprintf( fp, "TYPE_CHARITABLE" );         break;
-	case TYPE_CLASSICALWORK:     fprintf( fp, "TYPE_CLASSICALWORK" );      break;
-	case TYPE_PROGRAM:           fprintf( fp, "TYPE_PROGRAM" );            break;
-	case TYPE_INPROCEEDINGS:     fprintf( fp, "TYPE_INPROCEEDINGS" );      break;
-	case TYPE_PROCEEDINGS:       fprintf( fp, "TYPE_PROCEEDINGS" );        break;
-	case TYPE_EDITEDBOOK:        fprintf( fp, "TYPE_EDITEDBOOK" );         break;
-	case TYPE_EQUATION:          fprintf( fp, "TYPE_EQUATION" );           break;
-	case TYPE_ELECTRONICARTICLE: fprintf( fp, "TYPE_ELECTRONICARTICLE" );  break;
-	case TYPE_ELECTRONICBOOK:    fprintf( fp, "TYPE_ELECTRONICBOOK" );     break;
-	case TYPE_ELECTRONIC:        fprintf( fp, "TYPE_ELECTRONIC" );         break;
-	case TYPE_FIGURE:            fprintf( fp, "TYPE_FIGURE" );             break;
-	case TYPE_FILMBROADCAST:     fprintf( fp, "TYPE_FILMBROADCAST" );      break;
-	case TYPE_GOVERNMENT:        fprintf( fp, "TYPE_GOVERNMENT" );         break;
-	case TYPE_HEARING:           fprintf( fp, "TYPE_HEARING" );            break;
-	case TYPE_ARTICLE:           fprintf( fp, "TYPE_ARTICLE" );            break;
-	case TYPE_LEGALRULE:         fprintf( fp, "TYPE_LEGALRULE" );          break;
-	case TYPE_MAGARTICLE:        fprintf( fp, "TYPE_MAGARTICLE" );         break;
-	case TYPE_MANUSCRIPT:        fprintf( fp, "TYPE_MANUSCRIPT" );         break;
-	case TYPE_MAP:               fprintf( fp, "TYPE_MAP" );                break;
-	case TYPE_NEWSARTICLE:       fprintf( fp, "TYPE_NEWSARTICLE" );        break;
-	case TYPE_ONLINEDATABASE:    fprintf( fp, "TYPE_ONLINEDATABASE" );     break;
-	case TYPE_ONLINEMULTIMEDIA:  fprintf( fp, "TYPE_ONLINEMULTIMEDIA" );   break;
-	case TYPE_PATENT:            fprintf( fp, "TYPE_PATENT" );             break;
-	case TYPE_COMMUNICATION:     fprintf( fp, "TYPE_COMMUNICATION" );      break;
-	case TYPE_REPORT:            fprintf( fp, "TYPE_REPORT" );             break;
-	case TYPE_STATUTE:           fprintf( fp, "TYPE_STATUTE" );            break;
-	case TYPE_THESIS:            fprintf( fp, "TYPE_THESIS" );             break;
-	case TYPE_MASTERSTHESIS:     fprintf( fp, "TYPE_MASTERSTHESIS" );      break;
-	case TYPE_PHDTHESIS:         fprintf( fp, "TYPE_PHDTHESIS" );          break;
-	case TYPE_DIPLOMATHESIS:     fprintf( fp, "TYPE_DIPLOMATHESIS" );      break;
-	case TYPE_DOCTORALTHESIS:    fprintf( fp, "TYPE_DOCTORALTHESIS" );     break;
-	case TYPE_HABILITATIONTHESIS:fprintf( fp, "TYPE_HABILITATIONTHESIS" ); break;
-	case TYPE_UNPUBLISHED:       fprintf( fp, "TYPE_UNPUBLISHED" );        break;
-	default:                     fprintf( fp, "Error - type not in enum" );break;
-	}
-}
+// static void
+// write_type( FILE *fp, int type )
+// {
+// 	switch( type ) {
+// 	case TYPE_UNKNOWN:           fprintf( fp, "TYPE_UNKNOWN" );            break;
+// 	case TYPE_GENERIC:           fprintf( fp, "TYPE_GENERIC" );            break;
+// 	case TYPE_ARTWORK:           fprintf( fp, "TYPE_ARTWORK" );            break;
+// 	case TYPE_AUDIOVISUAL:       fprintf( fp, "TYPE_AUDIOVISUAL" );        break;
+// 	case TYPE_BILL:              fprintf( fp, "TYPE_BILL" );               break;
+// 	case TYPE_BOOK:              fprintf( fp, "TYPE_BOOK" );               break;
+// 	case TYPE_INBOOK:            fprintf( fp, "TYPE_INBOOK" );             break;
+// 	case TYPE_CASE:              fprintf( fp, "TYPE_CASE" );               break;
+// 	case TYPE_CHARTTABLE:        fprintf( fp, "TYPE_CHARITABLE" );         break;
+// 	case TYPE_CLASSICALWORK:     fprintf( fp, "TYPE_CLASSICALWORK" );      break;
+// 	case TYPE_PROGRAM:           fprintf( fp, "TYPE_PROGRAM" );            break;
+// 	case TYPE_INPROCEEDINGS:     fprintf( fp, "TYPE_INPROCEEDINGS" );      break;
+// 	case TYPE_PROCEEDINGS:       fprintf( fp, "TYPE_PROCEEDINGS" );        break;
+// 	case TYPE_EDITEDBOOK:        fprintf( fp, "TYPE_EDITEDBOOK" );         break;
+// 	case TYPE_EQUATION:          fprintf( fp, "TYPE_EQUATION" );           break;
+// 	case TYPE_ELECTRONICARTICLE: fprintf( fp, "TYPE_ELECTRONICARTICLE" );  break;
+// 	case TYPE_ELECTRONICBOOK:    fprintf( fp, "TYPE_ELECTRONICBOOK" );     break;
+// 	case TYPE_ELECTRONIC:        fprintf( fp, "TYPE_ELECTRONIC" );         break;
+// 	case TYPE_FIGURE:            fprintf( fp, "TYPE_FIGURE" );             break;
+// 	case TYPE_FILMBROADCAST:     fprintf( fp, "TYPE_FILMBROADCAST" );      break;
+// 	case TYPE_GOVERNMENT:        fprintf( fp, "TYPE_GOVERNMENT" );         break;
+// 	case TYPE_HEARING:           fprintf( fp, "TYPE_HEARING" );            break;
+// 	case TYPE_ARTICLE:           fprintf( fp, "TYPE_ARTICLE" );            break;
+// 	case TYPE_LEGALRULE:         fprintf( fp, "TYPE_LEGALRULE" );          break;
+// 	case TYPE_MAGARTICLE:        fprintf( fp, "TYPE_MAGARTICLE" );         break;
+// 	case TYPE_MANUSCRIPT:        fprintf( fp, "TYPE_MANUSCRIPT" );         break;
+// 	case TYPE_MAP:               fprintf( fp, "TYPE_MAP" );                break;
+// 	case TYPE_NEWSARTICLE:       fprintf( fp, "TYPE_NEWSARTICLE" );        break;
+// 	case TYPE_ONLINEDATABASE:    fprintf( fp, "TYPE_ONLINEDATABASE" );     break;
+// 	case TYPE_ONLINEMULTIMEDIA:  fprintf( fp, "TYPE_ONLINEMULTIMEDIA" );   break;
+// 	case TYPE_PATENT:            fprintf( fp, "TYPE_PATENT" );             break;
+// 	case TYPE_COMMUNICATION:     fprintf( fp, "TYPE_COMMUNICATION" );      break;
+// 	case TYPE_REPORT:            fprintf( fp, "TYPE_REPORT" );             break;
+// 	case TYPE_STATUTE:           fprintf( fp, "TYPE_STATUTE" );            break;
+// 	case TYPE_THESIS:            fprintf( fp, "TYPE_THESIS" );             break;
+// 	case TYPE_MASTERSTHESIS:     fprintf( fp, "TYPE_MASTERSTHESIS" );      break;
+// 	case TYPE_PHDTHESIS:         fprintf( fp, "TYPE_PHDTHESIS" );          break;
+// 	case TYPE_DIPLOMATHESIS:     fprintf( fp, "TYPE_DIPLOMATHESIS" );      break;
+// 	case TYPE_DOCTORALTHESIS:    fprintf( fp, "TYPE_DOCTORALTHESIS" );     break;
+// 	case TYPE_HABILITATIONTHESIS:fprintf( fp, "TYPE_HABILITATIONTHESIS" ); break;
+// 	case TYPE_UNPUBLISHED:       fprintf( fp, "TYPE_UNPUBLISHED" );        break;
+// 	default:                     fprintf( fp, "Error - type not in enum" );break;
+// 	}
+// }
 
 // Georgi: lazy duplicate of above for stderr
 static void

@@ -174,43 +174,43 @@ static int type_uses_journal[ NUM_TYPES ] = {
 	
 };
 
-static void
-write_type( FILE *fp, int type )
-{
-	const char *typenames[ NUM_TYPES ] = {
-		[ TYPE_UNKNOWN            ] = "TYPE_UNKNOWN",
-		[ TYPE_STD                ] = "TYPE_STD",
-		[ TYPE_ABSTRACT           ] = "TYPE_ABSTRACT",
-		[ TYPE_ARTICLE            ] = "TYPE_ARTICLE",
-		[ TYPE_BOOK               ] = "TYPE_BOOK",
-		[ TYPE_CASE               ] = "TYPE_CASE",
-		[ TYPE_INBOOK             ] = "TYPE_INBOOK",
-		[ TYPE_CONF               ] = "TYPE_CONF",
-		[ TYPE_ELEC               ] = "TYPE_ELEC",
-		[ TYPE_HEAR               ] = "TYPE_HEAR",
-		[ TYPE_MAGARTICLE         ] = "TYPE_MAGARTICLE",
-		[ TYPE_NEWSPAPER          ] = "TYPE_NEWSPAPER",
-		[ TYPE_MPCT               ] = "TYPE_MPCT",
-		[ TYPE_PAMPHLET           ] = "TYPE_PAMPHLET",
-		[ TYPE_PATENT             ] = "TYPE_PATENT",
-		[ TYPE_PCOMM              ] = "TYPE_PCOMM",
-		[ TYPE_PROGRAM            ] = "TYPE_PROGRAM",
-		[ TYPE_REPORT             ] = "TYPE_REPORT",
-		[ TYPE_STATUTE            ] = "TYPE_STATUTE",
-		[ TYPE_THESIS             ] = "TYPE_THESIS",
-		[ TYPE_LICENTIATETHESIS   ] = "TYPE_LICENTIATETHESIS",
-		[ TYPE_MASTERSTHESIS      ] = "TYPE_MASTERSTHESIS",
-		[ TYPE_PHDTHESIS          ] = "TYPE_PHDTHESIS",
-		[ TYPE_DIPLOMATHESIS      ] = "TYPE_DIPLOMATHESIS",
-		[ TYPE_DOCTORALTHESIS     ] = "TYPE_DOCTORALTHESIS",
-		[ TYPE_HABILITATIONTHESIS ] = "TYPE_HABILITATIONTHESIS",
-		[ TYPE_MAP                ] = "TYPE_MAP",
-		[ TYPE_UNPUBLISHED        ] = "TYPE_UNPUBLISHED",
-	};
-
-	if ( type < 0 || type >= NUM_TYPES ) fprintf( fp, "Error - type not in enum" );
-	else fprintf( fp, "%s", typenames[ type ] );
-}
+// static void
+// write_type( FILE *fp, int type )
+// {
+// 	const char *typenames[ NUM_TYPES ] = {
+// 		[ TYPE_UNKNOWN            ] = "TYPE_UNKNOWN",
+// 		[ TYPE_STD                ] = "TYPE_STD",
+// 		[ TYPE_ABSTRACT           ] = "TYPE_ABSTRACT",
+// 		[ TYPE_ARTICLE            ] = "TYPE_ARTICLE",
+// 		[ TYPE_BOOK               ] = "TYPE_BOOK",
+// 		[ TYPE_CASE               ] = "TYPE_CASE",
+// 		[ TYPE_INBOOK             ] = "TYPE_INBOOK",
+// 		[ TYPE_CONF               ] = "TYPE_CONF",
+// 		[ TYPE_ELEC               ] = "TYPE_ELEC",
+// 		[ TYPE_HEAR               ] = "TYPE_HEAR",
+// 		[ TYPE_MAGARTICLE         ] = "TYPE_MAGARTICLE",
+// 		[ TYPE_NEWSPAPER          ] = "TYPE_NEWSPAPER",
+// 		[ TYPE_MPCT               ] = "TYPE_MPCT",
+// 		[ TYPE_PAMPHLET           ] = "TYPE_PAMPHLET",
+// 		[ TYPE_PATENT             ] = "TYPE_PATENT",
+// 		[ TYPE_PCOMM              ] = "TYPE_PCOMM",
+// 		[ TYPE_PROGRAM            ] = "TYPE_PROGRAM",
+// 		[ TYPE_REPORT             ] = "TYPE_REPORT",
+// 		[ TYPE_STATUTE            ] = "TYPE_STATUTE",
+// 		[ TYPE_THESIS             ] = "TYPE_THESIS",
+// 		[ TYPE_LICENTIATETHESIS   ] = "TYPE_LICENTIATETHESIS",
+// 		[ TYPE_MASTERSTHESIS      ] = "TYPE_MASTERSTHESIS",
+// 		[ TYPE_PHDTHESIS          ] = "TYPE_PHDTHESIS",
+// 		[ TYPE_DIPLOMATHESIS      ] = "TYPE_DIPLOMATHESIS",
+// 		[ TYPE_DOCTORALTHESIS     ] = "TYPE_DOCTORALTHESIS",
+// 		[ TYPE_HABILITATIONTHESIS ] = "TYPE_HABILITATIONTHESIS",
+// 		[ TYPE_MAP                ] = "TYPE_MAP",
+// 		[ TYPE_UNPUBLISHED        ] = "TYPE_UNPUBLISHED",
+// 	};
+// 
+// 	if ( type < 0 || type >= NUM_TYPES ) fprintf( fp, "Error - type not in enum" );
+// 	else fprintf( fp, "%s", typenames[ type ] );
+// }
 
 // Georgi: lazy duplicate of above for stderr
 static void

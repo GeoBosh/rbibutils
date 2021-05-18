@@ -1,5 +1,5 @@
 readBib <- function(file, encoding = NULL, ..., direct = FALSE,
-                    texChars = c("keep", "convert", "export")){
+                    texChars = c("keep", "convert", "export"), key){
 
     if(is.null(encoding))
         encoding <- c("utf8", "utf8")  # would default input 'native' be better?
@@ -20,26 +20,39 @@ readBib <- function(file, encoding = NULL, ..., direct = FALSE,
 
         be <- bibConvert(file, bib, "bibtex",
                          "bibentry", encoding = encoding, tex = "no_latex")
-        return(be$bib)
+        res <- be$bib
+    }else{ ## direct is TRUE below
+        texChars <- match.arg(texChars)
+        switch(texChars,
+               convert = {
+                   tex <- "no_latex"
+               },
+               keep = {
+                   ## this will need separate no_latex option for infile and outfile.
+                   #stop(" 'texChars = keep' not implemented yet")
+                   tex <- c("keep_tex_chars", "no_latex")
+               },
+               ## export
+               ## default
+               tex <- NULL
+               )
+        
+        res <- bibtexImport(file, encoding = encoding, tex = tex)
     }
 
-    ## direct is TRUE below
-    texChars <- match.arg(texChars)
-    switch(texChars,
-           convert = {
-               tex <- "no_latex"
-           },
-           keep = {
-               ## this will need separate no_latex option for infile and outfile.
-               #stop(" 'texChars = keep' not implemented yet")
-               tex <- c("keep_tex_chars", "no_latex")
-           },
-           ## export
-           ## default
-           tex <- NULL
-           )
+    if(!missing(key)){
+        ind <- which(grepl("dummyid", names(res)))
+        if(length(ind) > 0  &&  length(ind) != length(key)){
+            stop("length of 'key' is not equal to the number of keyless entries")
+        }else if(length(ind) > 0){
+            for(i in 1:length(ind))
+                res[ind[i]]$key <-  key[i]
+            ## TODO: it seems necessary to do also this. Investigate for a simpler approach.
+            names(res)[ind] <- key
+        }
+    }
     
-    bibtexImport(file, encoding = encoding, tex = tex)
+    res
 }
 
 writeBib <- function(object, con = stdout(), append = FALSE){
@@ -59,17 +72,13 @@ writeBib <- function(object, con = stdout(), append = FALSE){
     invisible(object)
 }
 
-
-## readBib_legacy <- function(file, encoding){
-##     rds <- tempfile(fileext = ".rds")
-##     on.exit(unlink(rds))
-## 
-##     if(encoding == "UTF-8")
-##         encoding = "utf8"
-##     
-##     be <- bibConvert(file, rds, "bibtex",
-##             "bibentry", encoding = c(encoding, "utf8"), tex = "no_latex")
-##     res <- readRDS(rds)
-## 
-##     res
-## }
+charToBib <- function(text, informat, ...) {
+    fn <- tempfile()
+    writeLines(text, fn)
+    on.exit(unlink(fn))
+    
+    if(missing(informat))
+        readBib(fn, ...)
+    else
+        bibConvert(fn, informat = informat, ...)
+}

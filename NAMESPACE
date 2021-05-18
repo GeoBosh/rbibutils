@@ -13,5 +13,6 @@ export(
     writeBib,
     readBibentry,
     writeBibentry,
+    charToBib,
     rbibutils_formats
 )

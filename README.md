@@ -5,7 +5,7 @@
 [![codecov](https://codecov.io/gh/GeoBosh/rbibutils/branch/master/graph/badge.svg?token=SNUE0KC0TX)](https://codecov.io/gh/GeoBosh/rbibutils)
 
 Read and write 'BibTeX' files. Convert bibliography files between various
-formats, including BibTeX, BibLaTeX, EndNotes and Bibentry. Includes an R port
+formats, including BibTeX, BibLaTeX, EndNote and Bibentry. Includes an R port
 of the `bibutils` utilities.
 
 
@@ -32,6 +32,9 @@ on Bibtex, is supported.
 `readBib()` and `writeBib()` import/export BiBTeX files.  `readBibentry()` and
 `writeBibentry()` import/export `R` source files in which the references are
 represented by `bibentry()` calls.
+
+The convenience function `charToBib()` takes input from a character vector,
+rather than a file. It calls `readBib()` or `bibConvert()`.
 
 `bibConvert()` an input bibliography file in one of the supported formats,
 converts its contents to another format, and writes the result to a file. All

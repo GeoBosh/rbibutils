@@ -71,10 +71,12 @@ tomods_processargs( int *argc, char *argv[], param *p,
 		subtract = 0;
 		if ( args_match( argv[i], "-h", "--help" ) ) {
 			args_tomods_help( p->progname, help1, help2 );
-			error("\n"); // error( EXIT_SUCCESS );
+			// error("\n"); // error( EXIT_SUCCESS );
+			subtract = 1;
 		} else if ( args_match( argv[i], "-v", "--version" ) ) {
 			args_tellversion( p->progname );
-			error("\n"); // error( EXIT_SUCCESS );
+			// error("\n"); // error( EXIT_SUCCESS );
+			subtract = 1;
 		} else if ( args_match( argv[i], "-a", "--add-refcount" ) ) {
 			p->addcount = 1;
 			subtract = 1;
@@ -149,7 +151,7 @@ tomods_processargs( int *argc, char *argv[], param *p,
 			}
 			*argc -= subtract;
 		} else {
-			if ( argv[i][0]=='-' ) REprintf( "Warning: Did not recognize potential command-line argument %s\n", argv[i] );
+			if ( argv[i][0]=='-' ) REprintf( "(todmod.c) Warning: Did not recognize potential command-line argument %s\n", argv[i] );
 			i++;
 		}
 	}

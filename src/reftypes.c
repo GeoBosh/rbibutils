@@ -21,7 +21,6 @@ get_reftype( const char *p, long refnum, char *progname, variants *all, int nall
 	int i;
 
 	p = skip_ws( p );
-
 	*is_default = 0;
 
 	for ( i=0; i<nall; ++i ) {

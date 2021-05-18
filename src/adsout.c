@@ -3,7 +3,7 @@
  *
  * Copyright (c) Richard Mathar 2007-2020
  * Copyright (c) Chris Putnam 2007-2020
- * Copyright (c) Georgi N. Boshnakov 2020
+ * Copyright (c) Georgi N. Boshnakov 2020-2021
  *
  * Program and source code released under the GPL version 2
  *
@@ -23,6 +23,16 @@
 #include "type.h"
 #include "url.h"
 #include "bibformats.h"
+
+// Georgi: removed the include declaration for adsout_journals.c further below
+//         also, removed the 'static' keyword for juornals and njournals in adsout_journals.c
+
+//   reason: adsout_journals.c was compiled to .o with the standard Makefile leading to
+//   unnecessary duplication and an warning about unused variable 'njournals' (which is used
+//   below but not in adsout_journals.c).
+//
+extern const char *journals[];
+extern const int njournals;
 
 /*****************************************************
  PUBLIC: int adsout_initparams()
@@ -332,7 +342,8 @@ append_date( fields *in, char *adstag, int level, fields *out, int *status )
 	}
 }
 
-#include "adsout_journals.c"
+// Georgi: now declared as extern towards  the top of this file 
+// #include "adsout_journals.c"
 
 static void
 output_4digit_value( char *pos, long long n )

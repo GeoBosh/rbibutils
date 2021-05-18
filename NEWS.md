@@ -5,14 +5,29 @@
   case nonstandard fields are ignored and standard fields do not contain unusual
   characters.)
 
+- new convenience function `charToBib` takes input from a character vector
+  rather than a file. By default it assumes that the input is in `bibtex` format
+  and despatches to `readBib`. If an input format is specified it calls
+  `bibConvert`.
+
+- now references with missing cite keys in bibtex input are accepted (previously
+  such references were dropped). Dummy cite keys are inserted.
+
+- now `@preamble` entry in bibtex is ignored silently. Previously it was also
+  dropped but with a message about unrecognised type, which was confusing.
+
 - export arXiv:XXX and similar as `https` (some were still exported as `http`).
   Fixes GeoBosh/Rdpack#21, reported by Kisung You.
 
-- add quotes to EndNote in `DESCRIPTION`.
-
 - unsuported conversions for some formats were accepted with unpredictable
   results. Informative messages are printed now.
+
+- improved handling of byte order marks (BOM) for utf8 output. This was causing
+  problems to tests on Windows since on Linux BOMs are not emitted (I haven't
+  figured what causes the difference - the code is not OS dependent).
   
+- added quotes to EndNote in `DESCRIPTION`.
+
 
 # rbibutils 2.1.1 (CRAN)
 
