@@ -121,7 +121,7 @@
     </div>
 
     <pre class="usage"><span class='fu'>readBib</span><span class='op'>(</span><span class='va'>file</span>, encoding <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span>, direct <span class='op'>=</span> <span class='cn'>FALSE</span>, 
-        texChars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"keep"</span>, <span class='st'>"convert"</span>, <span class='st'>"export"</span><span class='op'>)</span>, <span class='va'>key</span><span class='op'>)</span>
+        texChars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"keep"</span>, <span class='st'>"convert"</span>, <span class='st'>"export"</span><span class='op'>)</span>, macros <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>key</span><span class='op'>)</span>
 
 <span class='fu'>writeBib</span><span class='op'>(</span><span class='va'>object</span>, con <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/showConnections.html'>stdout</a></span><span class='op'>(</span><span class='op'>)</span>, append <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 
@@ -153,6 +153,14 @@
     to the target encoding. If <code>"keep"</code>, output the characters as
     they were in the input file, like <code>"export"</code>, but don't convert
     normal characters to TeX escapes.</p></td>
+    </tr>
+    <tr>
+      <th>macros</th>
+      <td>
+
+<p>additional bib files, usually containing bibtex macros, such as
+    journal abbreviations.</p>
+<p></p></td>
     </tr>
     <tr>
       <th>object</th>
@@ -241,6 +249,10 @@
   <code>readBib</code>, otherwise <code>bibConvert</code>. In both cases
   the remaining arguments are passed on and should be suitable for the
   called function.</p>
+<p>The files specified by argument <code>macros</code> are read in before those
+  in <code>file</code>. Currently this is implemented by concatenating the
+  files in the order they appear in <code><a href='https://rdrr.io/r/base/c.html'>c(macros, file)</a></code>. It is ok for
+  <code>macros</code> to be <code><a href='https://rdrr.io/r/base/character.html'>character(0)</a></code>.</p>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>for <code>readBib</code>, a <code>bibentry</code> object</p>
@@ -433,6 +445,31 @@
     key <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Rcore"</span>, <span class='st'>"Rpackage:rbibutils"</span><span class='op'>)</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/all.equal.html'>all.equal</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>bemore</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Rcore"</span>, <span class='st'>"Rpackage:rbibutils"</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+
+<span class='co'>## a large example with several files - needs internet access;</span>
+<span class='co'>## it is better to clone repository https://github.com/iridia-ulb/references</span>
+<span class='co'>## and work on local files</span>
+<span class='co'>##</span>
+<span class='co'>## iridia_mac &lt;- c("abbrev.bib", "authors.bib", "journals.bib", "crossref.bib")</span>
+<span class='co'>## iridia_biblio &lt;- "biblio.bib"</span>
+<span class='co'>## </span>
+<span class='co'>## iridia_raw_url &lt;- "https://raw.githubusercontent.com/iridia-ulb/references/master"</span>
+<span class='co'>## iridia_mac_url &lt;- file.path(iridia_raw_url, iridia_mac)</span>
+<span class='co'>## iridia_biblio_url &lt;- file.path(iridia_raw_url, iridia_biblio)</span>
+<span class='co'>## </span>
+<span class='co'>## bibdir &lt;- tempdir()</span>
+<span class='co'>## iridia_mac_loc &lt;- file.path(bibdir, iridia_mac)</span>
+<span class='co'>## iridia_biblio_loc &lt;- file.path(bibdir, iridia_biblio)</span>
+<span class='co'>## </span>
+<span class='co'>## ## download the files to bibdir</span>
+<span class='co'>## sapply(c(iridia_biblio_url, iridia_mac_url),</span>
+<span class='co'>##        function(x) download.file(x, file.path(bibdir, basename(x))))</span>
+<span class='co'>## </span>
+<span class='co'>## iridia &lt;- readBib(iridia_biblio_loc, direct = TRUE, macros = iridia_mac_loc)</span>
+<span class='co'>## iridia[1]</span>
+<span class='co'>## print(iridia[1], style = "R")</span>
+<span class='co'>## toBibtex(iridia[1])  # or: print(iridia[1], style = "bibtex")</span>
+<span class='co'>## length(iridia)  # 2576 at the time of writing</span>
 
 <span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span><span class='op'>(</span><span class='va'>fn</span><span class='op'>)</span>
 </div></pre>

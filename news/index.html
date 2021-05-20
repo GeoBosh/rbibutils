@@ -120,6 +120,8 @@
 </h1>
 <ul>
 <li><p><code>readBib</code> with <code>direct = TRUE</code> now accepts non-syntactic field names, e.g. containing <code><a href="https://rdrr.io/r/base/Arithmetic.html">-</a></code>. (This is irrelevant when <code>direct = FALSE</code> since in that case nonstandard fields are ignored and standard fields do not contain unusual characters.)</p></li>
+<li><p><code>readBib</code> gets new argument, <code>macros</code>, for specification of file(s) containg Bibtex macros (such as abbreviations for names of journals). These files are read in before file(s) specified by <code>file</code>.</p></li>
+<li><p>structures for bibtex macros, such as <code>@string</code> were not cleared and were accumulating from multiple invocations of conversions from bibtex and biblatex. Now fixed.</p></li>
 <li><p>new convenience function <code>charToBib</code> takes input from a character vector rather than a file. By default it assumes that the input is in <code>bibtex</code> format and despatches to <code>readBib</code>. If an input format is specified it calls <code>bibConvert</code>.</p></li>
 <li><p>now references with missing cite keys in bibtex input are accepted (previously such references were dropped). Dummy cite keys are inserted.</p></li>
 <li><p>now <code>@preamble</code> entry in bibtex is ignored silently. Previously it was also dropped but with a message about unrecognised type, which was confusing.</p></li>
