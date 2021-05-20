@@ -6,7 +6,7 @@
 \description{Read and write bibtex files.}
 \usage{
 readBib(file, encoding = NULL, \dots, direct = FALSE, 
-        texChars = c("keep", "convert", "export"), key)
+        texChars = c("keep", "convert", "export"), macros = NULL, key)
 
 writeBib(object, con = stdout(), append = FALSE)
 
@@ -27,6 +27,12 @@ charToBib(text, informat, \dots)
     to the target encoding. If \code{"keep"}, output the characters as
     they were in the input file, like \code{"export"}, but don't convert
     normal characters to TeX escapes.
+  }
+  \item{macros}{
+
+    additional bib files, usually containing bibtex macros, such as
+    journal abbreviations.
+
   }
   \item{object}{a \code{bibentry} object.}
   \item{con}{filename (a character string) or a text connection}
@@ -105,6 +111,11 @@ charToBib(text, informat, \dots)
   \code{readBib}, otherwise \code{bibConvert}. In both cases
   the remaining arguments are passed on and should be suitable for the
   called function.
+
+  The files specified by argument \code{macros} are read in before those
+  in \code{file}. Currently this is implemented by concatenating the
+  files in the order they appear in \code{c(macros, file)}. It is ok for
+  \code{macros} to be \code{character(0)}.
   
 }
 \value{
@@ -188,6 +199,31 @@ bemore <- charToBib(toBibtex( c(citation(), citation("rbibutils"))),
     key = c("Rcore", "Rpackage:rbibutils"))
 all.equal(names(bemore), c("Rcore", "Rpackage:rbibutils"))
 
+
+## a large example with several files - needs internet access;
+## it is better to clone repository https://github.com/iridia-ulb/references
+## and work on local files
+##
+## iridia_mac <- c("abbrev.bib", "authors.bib", "journals.bib", "crossref.bib")
+## iridia_biblio <- "biblio.bib"
+## 
+## iridia_raw_url <- "https://raw.githubusercontent.com/iridia-ulb/references/master"
+## iridia_mac_url <- file.path(iridia_raw_url, iridia_mac)
+## iridia_biblio_url <- file.path(iridia_raw_url, iridia_biblio)
+## 
+## bibdir <- tempdir()
+## iridia_mac_loc <- file.path(bibdir, iridia_mac)
+## iridia_biblio_loc <- file.path(bibdir, iridia_biblio)
+## 
+## ## download the files to bibdir
+## sapply(c(iridia_biblio_url, iridia_mac_url),
+##        function(x) download.file(x, file.path(bibdir, basename(x))))
+## 
+## iridia <- readBib(iridia_biblio_loc, direct = TRUE, macros = iridia_mac_loc)
+## iridia[1]
+## print(iridia[1], style = "R")
+## toBibtex(iridia[1])  # or: print(iridia[1], style = "bibtex")
+## length(iridia)  # 2576 at the time of writing
 
 unlink(fn)
 }

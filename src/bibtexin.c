@@ -67,6 +67,11 @@ bibtexin_initparams( param *pm, const char *progname )
 	slist_init( &(pm->asis) );
 	slist_init( &(pm->corps) );
 
+ 	// TODO: these probably should be made parameters, as the others above;
+	//       note that 'find' and 'replace' work in tandem, so both need to be cleared.
+	slist_free( &find );
+	slist_free( &replace );
+
 	if ( !progname ) pm->progname = NULL;
 	else {
 		pm->progname = strdup( progname );

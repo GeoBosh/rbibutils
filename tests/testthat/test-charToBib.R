@@ -1,4 +1,5 @@
 test_that("charToBib works ok", {
+    bibdir <- system.file("bib", package = "rbibutils")
 
     ## Rcore <- format(citation(), style = "bibtex")
     ## ## add a citation key
@@ -46,5 +47,26 @@ test_that("charToBib works ok", {
     bemore <- charToBib(toBibtex( c(citation(), citation("rbibutils"))),
                         key = c("Rcore", "Rpackage:rbibutils"))
     expect_equal(names(bemore), c("Rcore", "Rpackage:rbibutils"))
+
+    fn  <- file.path(bibdir, "litprog280no_macros.bib")
+    mac <- file.path(bibdir, "litprog280macros_only.bib")
+
+    withmac <- readBib(fn, direct = TRUE, macros = mac)
+    womac <- readBib(fn, direct = TRUE)
+    expect_equal(withmac["Racine:2012:RPI"]$key, "Racine:2012:RPI")  # keys are equal
+    expect_equal(  womac["Racine:2012:RPI"]$key, "Racine:2012:RPI")
+    ## withmac expands the @STRING for journal, otherwise not
+    expect_equal(withmac["Racine:2012:RPI"]$journal, "Journal of Applied Econometrics" )
+    expect_equal(  womac["Racine:2012:RPI"]$journal, "j-J-APPL-ECONOMETRICS" )
+
+    charbib <- readLines(file.path(bibdir, "Rcore_with_abbr.bib"))
+    withmac2 <- charToBib(charbib, direct = TRUE, macros = file.path(bibdir, "urlR.bib"))
+    womac2 <- charToBib(charbib, direct = TRUE)
+    expect_equal(withmac2["Rcore"]$key, "Rcore")  # keys are equal
+    expect_equal(  womac2["Rcore"]$key, "Rcore")
+    ## withmac expands the @STRING for journal, otherwise not
+    expect_equal(withmac2["Rcore"]$url,  "https://www.R-project.org/" )
+    expect_equal(  womac2["Rcore"]$url, "urlR" )  # not expanded
     
 })
+

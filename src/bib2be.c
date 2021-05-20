@@ -160,7 +160,7 @@ bib2be_main( int *argcin, char *argv[], char *outfile[], double *nref)
 	// REprintf( "processed %g references.\n", *nref );
 
   // TODO: why is this commented out?
-  //	bibl_freeparams( &p );
+  	bibl_freeparams( &p );
 	
 	*argcin = argc;
 	// return EXIT_SUCCESS;

@@ -5,6 +5,14 @@
   case nonstandard fields are ignored and standard fields do not contain unusual
   characters.)
 
+- `readBib` gets new argument, `macros`, for specification of file(s) containg
+  Bibtex macros (such as abbreviations for names of journals). These files are
+  read in before file(s) specified by `file`.
+
+- structures for bibtex macros, such as `@string` were not cleared and were
+  accumulating from multiple invocations of conversions from bibtex and
+  biblatex. Now fixed.
+
 - new convenience function `charToBib` takes input from a character vector
   rather than a file. By default it assumes that the input is in `bibtex` format
   and despatches to `readBib`. If an input format is specified it calls

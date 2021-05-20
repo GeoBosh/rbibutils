@@ -1,5 +1,5 @@
 readBib <- function(file, encoding = NULL, ..., direct = FALSE,
-                    texChars = c("keep", "convert", "export"), key){
+                    texChars = c("keep", "convert", "export"), macros = NULL, key){
 
     if(is.null(encoding))
         encoding <- c("utf8", "utf8")  # would default input 'native' be better?
@@ -9,7 +9,15 @@ readBib <- function(file, encoding = NULL, ..., direct = FALSE,
             encoding <- c(encoding, "utf8")
     }
 
-    
+    if(!is.null(macros)){
+        fn <- tempfile(fileext = ".bib")
+        for(s in c(macros, file))
+            if(!file.append(fn, s))
+                stop("could not copy file ", s)
+                
+        file <- fn
+    }
+#browser()    
     if(!direct){
         ## to make sure that the old behaviour before adding arguments is kept.
         ##     TODO: relax and coordinate with direct = TRUE later
