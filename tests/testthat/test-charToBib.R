@@ -1,5 +1,4 @@
 test_that("charToBib works ok", {
-    bibdir <- system.file("bib", package = "rbibutils")
 
     ## Rcore <- format(citation(), style = "bibtex")
     ## ## add a citation key
@@ -48,6 +47,7 @@ test_that("charToBib works ok", {
                         key = c("Rcore", "Rpackage:rbibutils"))
     expect_equal(names(bemore), c("Rcore", "Rpackage:rbibutils"))
 
+    bibdir <- system.file("bib", package = "rbibutils")
     fn  <- file.path(bibdir, "litprog280no_macros.bib")
     mac <- file.path(bibdir, "litprog280macros_only.bib")
 
