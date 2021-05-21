@@ -11,20 +11,22 @@ readBib <- function(file, encoding = NULL, ..., direct = FALSE,
 
     if(!is.null(macros)){
         fn <- tempfile(fileext = ".bib")
-            # for(s in c(macros, file))
-            #     if(!file.append(fn, s))
-            #         stop("could not copy file ", s)
+                                        # TODO: changing this to try to fix a strange error on Windows,
+                                        #       though it turns out that
+                                        #       bib/litprog280macros_only.bib is not there during 'R CMD check'
+                                        # for(s in c(macros, file))
+                                        #     if(!file.append(fn, s))
+                                        #         stop("could not copy file ", s)
         files <- c(macros, file)
-        
         if(!file.copy(files[1], fn, overwrite = TRUE))
             stop("could not copy file ", files[1], " to destination")
         for(s in files[-1])
             if(!file.append(fn, s))
                 stop("could not copy file ", s)
-                
+        
         file <- fn
     }
-#browser()    
+    
     if(!direct){
         ## to make sure that the old behaviour before adding arguments is kept.
         ##     TODO: relax and coordinate with direct = TRUE later

@@ -1,5 +1,7 @@
+^TODO.org
 ^revdep$
 ^auto$
+/auto/
 .rsync_exclude
 .emacs\.desktop
 .emacs\.desktop\.lock
