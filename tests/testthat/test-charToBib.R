@@ -49,11 +49,11 @@ test_that("charToBib works ok", {
 
     
     bibdir <- system.file("bib", package = "rbibutils")
-    fn  <- file.path(bibdir, "litprog280no_macros.bib")
+    fn2  <- file.path(bibdir, "litprog280no_macros.bib")
     mac <- file.path(bibdir, "litprog280macros_only.bib")
 
-    withmac <- readBib(fn, direct = TRUE, macros = mac)
-    womac <- readBib(fn, direct = TRUE)
+    withmac <- readBib(fn2, direct = TRUE, macros = mac)
+    womac <- readBib(fn2, direct = TRUE)
     expect_equal(withmac["Racine:2012:RPI"]$key, "Racine:2012:RPI")  # keys are equal
     expect_equal(  womac["Racine:2012:RPI"]$key, "Racine:2012:RPI")
     ## withmac expands the @STRING for journal, otherwise not

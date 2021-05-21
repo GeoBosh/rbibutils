@@ -1,18 +1,6 @@
 if(require("testthat")) {
     library(testthat)
     library(rbibutils)
-
-    ## temporary for the Windows check problem:
-    bibdir <- system.file("bib", package = "rbibutils")
-    fn  <- file.path(bibdir, "litprog280no_macros.bib")
-    if(!file.exists(fn))
-        warning("before testcheck: file ", fn, " doesn't exist!")
-    
     test_check("rbibutils")
-
-    if(!file.exists(fn))
-        warning("after testcheck: file ", fn, " doesn't exist!")
-    
 } else
     warning("package 'testthat' required for the tests in 'rbibutils'")
-
