@@ -6,9 +6,9 @@ if(require("testthat")) {
     bibdir <- system.file("bib", package = "rbibutils")
     fn  <- file.path(bibdir, "litprog280no_macros.bib")
     if(!file.exists(fn))
-        warning("file ", fn, "doesn't exist!")
+        warning("file ", fn, " doesn't exist!")
     
     test_check("rbibutils")
 } else
-    warning("package 'testthat' required for 'rbibutils\'' tests")
+    warning("package 'testthat' required for the tests in 'rbibutils'")
 
