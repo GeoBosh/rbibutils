@@ -47,6 +47,7 @@ test_that("charToBib works ok", {
                         key = c("Rcore", "Rpackage:rbibutils"))
     expect_equal(names(bemore), c("Rcore", "Rpackage:rbibutils"))
 
+    
     bibdir <- system.file("bib", package = "rbibutils")
     fn  <- file.path(bibdir, "litprog280no_macros.bib")
     mac <- file.path(bibdir, "litprog280macros_only.bib")
@@ -67,6 +68,6 @@ test_that("charToBib works ok", {
     ## withmac expands the @STRING for journal, otherwise not
     expect_equal(withmac2["Rcore"]$url,  "https://www.R-project.org/" )
     expect_equal(  womac2["Rcore"]$url, "urlR" )  # not expanded
-    
+
 })
 
