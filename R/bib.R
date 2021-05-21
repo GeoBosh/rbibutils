@@ -19,7 +19,7 @@ readBib <- function(file, encoding = NULL, ..., direct = FALSE,
                                         #         stop("could not copy file ", s)
         files <- c(macros, file)
         if(!file.copy(files[1], fn, overwrite = TRUE))
-            stop("could not copy file ", files[1], " to destination")
+            stop("could not copy file ", files[1], "\nto destination")
         for(s in files[-1])
             if(!file.append(fn, s))
                 stop("could not copy file ", s)
