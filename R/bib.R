@@ -11,7 +11,14 @@ readBib <- function(file, encoding = NULL, ..., direct = FALSE,
 
     if(!is.null(macros)){
         fn <- tempfile(fileext = ".bib")
-        for(s in c(macros, file))
+            # for(s in c(macros, file))
+            #     if(!file.append(fn, s))
+            #         stop("could not copy file ", s)
+        files <- c(macros, file)
+        
+        if(!file.copy(files[1], fn, overwrite = TRUE))
+            stop("could not copy file ", files[1], " to destination")
+        for(s in files[-1])
             if(!file.append(fn, s))
                 stop("could not copy file ", s)
                 
@@ -85,8 +92,9 @@ charToBib <- function(text, informat, ...) {
     writeLines(text, fn)
     on.exit(unlink(fn))
     
-    if(missing(informat))
-        readBib(fn, ...)
-    else
-        bibConvert(fn, informat = informat, ...)
+    res <- if(missing(informat))
+               readBib(fn, ...)
+           else
+               bibConvert(fn, informat = informat, ...)
+    res
 }
