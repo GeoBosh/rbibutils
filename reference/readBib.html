@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rbibutils</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.4</span>
       </span>
     </div>
 
@@ -121,7 +121,8 @@
     </div>
 
     <pre class="usage"><span class='fu'>readBib</span><span class='op'>(</span><span class='va'>file</span>, encoding <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span>, direct <span class='op'>=</span> <span class='cn'>FALSE</span>, 
-        texChars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"keep"</span>, <span class='st'>"convert"</span>, <span class='st'>"export"</span><span class='op'>)</span>, macros <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>key</span><span class='op'>)</span>
+        texChars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"keep"</span>, <span class='st'>"convert"</span>, <span class='st'>"export"</span><span class='op'>)</span>, macros <span class='op'>=</span> <span class='cn'>NULL</span>, 
+        extra <span class='op'>=</span> <span class='cn'>FALSE</span>, <span class='va'>key</span><span class='op'>)</span>
 
 <span class='fu'>writeBib</span><span class='op'>(</span><span class='va'>object</span>, con <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/showConnections.html'>stdout</a></span><span class='op'>(</span><span class='op'>)</span>, append <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 
@@ -199,6 +200,10 @@
     Not used by <code>readBib</code> and <code>writeBib</code> (which throw error to
     avoid silently ignoring unknown arguments).</p>
 <p></p></td>
+    </tr>
+    <tr>
+      <th>extra</th>
+      <td><p>if <code>TRUE</code>, allow non-standard bibtex types.</p></td>
     </tr>
     </table>
 
