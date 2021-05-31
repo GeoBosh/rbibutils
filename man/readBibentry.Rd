@@ -4,13 +4,14 @@
 \title{Read and write bibentry files}
 \description{Read and write bibentry files.}
 \usage{
-readBibentry(file)
+readBibentry(file, extra = FALSE)
 
 writeBibentry(be, file, style = c("Rstyle", "loose"))
 }
 \arguments{
   \item{be}{a bibentry object.}
   \item{file}{filename, a character string.}
+  \item{extra}{if \code{TRUE} allow non-standard bibtex types.}
   \item{style}{
     if \code{"Rstyle"} (default), wrap in \code{c()}, otherwise don't
     wrap and don't put commas between the entries, see Details section.

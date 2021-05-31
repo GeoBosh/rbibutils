@@ -1,8 +1,8 @@
 Package: rbibutils
 Type: Package
 Title: Read 'Bibtex' Files and Convert Between Bibliography Formats
-Version: 2.1.2
-Date: 2021-05-20
+Version: 2.1.4
+Date: 2021-05-31
 Authors@R: c( person(given = c("Georgi", "N."), family = "Boshnakov", 
                      role = c("aut", "cre"), 	
                      email = "georgi.boshnakov@manchester.ac.uk",
@@ -18,8 +18,8 @@ Authors@R: c( person(given = c("Georgi", "N."), family = "Boshnakov",
                      role = "ctb",
 		     comment = "src/biblatexin.c, src/bltypes.c")
 		     )
-Description: Read and write 'BibTeX' files. Convert between bibliography
-    formats, including 'BibTeX', 'BibLaTeX', 'EndNote', and 'Bibentry'.
+Description: Read and write 'Bibtex' files. Convert between bibliography
+    formats, including 'Bibtex', 'Biblatex', 'Endnote', and 'Bibentry'.
     Includes a port of the 'bibutils' utilities by Chris Putnam
     <https://sourceforge.net/projects/bibutils/>. Supports all
     bibliography formats and character encodings implemented in

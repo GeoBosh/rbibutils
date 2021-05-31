@@ -1029,13 +1029,23 @@ bibentrydirectout_assemble( fields *in, fields *out, param *pm, unsigned long re
 		else if ( !strcmp( fld_val, "Misc" ) ) {           
 		  type = 15;
 		}
+		// TODO: temporary!!
+		else if ( !strcmp( fld_val, "online" ) ) {     // patch!!      
+		  type = 15;
+		}
 		else {
 		  type = 0; // unknown
 		}
 
 		// REprintf("kiki: fld_val=%s\n", fld_val);
+		//  REprintf("type = %d\n\n", type);
+		
+		if ( strcmp( fld_val, "online" ) )
+		  fstatus = fields_add( out, "bibtype", fld_val, LEVEL_MAIN );
+		else
+		  // this is temporary patch!
+		  fstatus = fields_add( out, "bibtype", "Misc", LEVEL_MAIN );
 
-		fstatus = fields_add( out, "bibtype", fld_val, LEVEL_MAIN );
 		if ( fstatus!=FIELDS_OK ) status = BIBL_ERR_MEMERR;
 	}
 

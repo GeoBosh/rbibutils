@@ -213,6 +213,11 @@ process_bibtexid( const char *p, str *id )
 	  str_strcpyc( id, dummy_id2 );
 	}
 
+	str_trimstartingws(id);
+	str_trimendingws(id);
+	
+	// REprintf("id = %s, this should not be on new line\n", id->data);
+ 
 	str_free( &tmp );
 	return skip_ws( p );
 }
@@ -758,10 +763,15 @@ bibtex_person_tokenize( fields *bibin, int m, param *pm, slist *tokens )
 	int i, ok, status;
 	str *s;
 
-// REprintf("person!\n");
+	
 	status = latex_tokenize( tokens, fields_value( bibin, m, FIELDS_STRP ) );
 	if ( status!=BIBL_OK ) return status;
 
+// REprintf("\nbibtex_person_tokenize: person!\n");
+//  REprintf("number of tokens: %d\n", tokens->n);
+// 		for ( i=0; i<tokens->n; ++i )
+// 			REprintf( "%s\n", slist_cstr( tokens, i ) );
+// REprintf("\nbibtex_person_tokenize: person! --------------\n");
 
 	for ( i=0; i<tokens->n; ++i ) {
 
@@ -790,6 +800,12 @@ bibtex_person_tokenize( fields *bibin, int m, param *pm, slist *tokens )
 
 	}
 
+// REprintf("\nbibtex_person_tokenize: person!\n");
+//  REprintf("number of tokens: %d\n", tokens->n);
+// 		for ( i=0; i<tokens->n; ++i )
+// 			REprintf( "%s\n", slist_cstr( tokens, i ) );
+// REprintf("\nbibtex_person_tokenize: person! --------------\n");
+	
 	return BIBL_OK;
 }
 
@@ -804,7 +820,7 @@ bibtex_person_add_names( fields *bibin, int m, slist *tokens )
 	int begin, end, ok, n, etal;
 
 	etal = name_findetal( tokens );
-// REprintf("person_add_names!\n");
+	// REprintf("person_add_names!\n");
 
 	begin = 0;
 	n = tokens->n - etal;
@@ -837,6 +853,8 @@ bibtex_person_add_names( fields *bibin, int m, slist *tokens )
 		if ( !ok ) return BIBL_ERR_MEMERR;
 	}
 
+	// REprintf("person_add_names!(end)\n");
+ 
 	return BIBL_OK;
 }
 
@@ -859,7 +877,7 @@ bibtexdirectin_person( fields *bibin, int m, param *pm )
 	// int nout = fields_num( bibin );
 	// int i;
 	// if(nout > 0) {
-	//   REprintf("nout = %d\n" , nout);
+	//   REprintf("bibtexdirectin_person: nout = %d\n" , nout);
 	//   for(i = 0; i < nout; i++) {
 	//     REprintf("i = %d, value = %s\n", i, (bibin->value[i]).data);
 	//   }
@@ -868,6 +886,13 @@ bibtexdirectin_person( fields *bibin, int m, param *pm )
 	status = bibtex_person_add_names( bibin, m, &tokens );
 	if ( status!=BIBL_OK ) goto out;
 
+	// nout = fields_num( bibin );
+	// if(nout > 0) {
+	//   REprintf("bibtexdirectin_person (end): nout = %d\n" , nout);
+	//   for(i = 0; i < nout; i++) {
+	//     REprintf("i = %d, value = %s\n", i, (bibin->value[i]).data);
+	//   }
+	// }
 out:
 	slist_free( &tokens );
 	return status;
@@ -884,9 +909,8 @@ bibtexdirectin_cleanref( fields *bibin, param *pm )
 	intlist_init( &toremove );
 
 	n = fields_num( bibin );
-// REprintf("n = %d\n", n);
 
-	  // REprintf("n = %d\n" , n);
+	  // REprintf("\nbibtexdirectin_cleanref (start): n = %d\n" , n);
 	  // for(i = 0; i < n; i++) {
 	  //   REprintf("i = %d, value = %s\n", i, (bibin->value[i]).data);
 	  // }
@@ -896,7 +920,7 @@ bibtexdirectin_cleanref( fields *bibin, param *pm )
 	for ( i=0; i<n; ++i ) {
 
 		tag = fields_tag( bibin, i, FIELDS_STRP_NOUSE );
-// REprintf("\ntag = %s\n", tag->data);
+		// REprintf("\nbibtexdirectin_cleanref: tag = %s", tag->data);
 		if ( is_url_tag( tag ) ) continue; /* protect url from parsing */
 
 		/* Georgi:  protecting names, otherwise havoc ensues if the input is 
@@ -919,8 +943,11 @@ bibtexdirectin_cleanref( fields *bibin, param *pm )
 		// }
 		if ( is_name_tag( tag ) ) {
 			status = bibtexdirectin_person( bibin, i, pm );
-// REprintf("\ni = %d, ", i);
+						
+// REprintf("\tbefore: i = %d, ", i);
 // REprintf("value = %s\n", (bibin->value[i]).data);
+// REprintf("\tafter:  newpos = %d, ", fields_num( bibin ) - 1);
+// REprintf("value = %s\n", (bibin->value[fields_num( bibin ) - 1]).data);
  
 			if ( status!=BIBL_OK ) goto out;
 
@@ -947,9 +974,9 @@ bibtexdirectin_cleanref( fields *bibin, param *pm )
 	}
 
 
-	// int nout = fields_num( bibin );
+	int nout = fields_num( bibin );
 	// if(nout > n) {
-	//   REprintf("nout = %d\n" , nout);
+	//   REprintf("\nbibtexdirectin_cleanref (2): nout = %d\n" , nout);
 	//   for(i = 0; i < nout; i++) {
 	//     REprintf("i = %d, value = %s\n", i, (bibin->value[i]).data);
 	//   }
@@ -970,7 +997,7 @@ out:
 	
 	// nout = fields_num( bibin );
 	// if(nout > n) {
-	//   REprintf("nout = %d\n" , nout);
+	//   REprintf("\nbibtexdirectin_cleanref (end): nout = %d\n" , nout);
 	//   for(i = 0; i < nout; i++) {
 	//     REprintf("i = %d, value = %s\n", i, (bibin->value[i]).data);
 	//   }
@@ -1078,3 +1105,7 @@ bibtexdirectin_typef( fields *bibin, const char *filename, int nrefs, param *p )
 
 	return get_reftype( typename, nrefs, p->progname, p->all, p->nall, refname, &is_default, REFTYPE_CHATTY );
 }
+
+
+
+

@@ -160,6 +160,8 @@ bibentryout_type( fields *in, const char *progname, const char *filename, unsign
 			type = TYPE_MISC;
 		}
 	}
+
+	// REprintf("type = %d\n\n", type);
 	return type;
 }
 

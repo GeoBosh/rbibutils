@@ -1,4 +1,4 @@
-bibtexImport <- function(infile, ..., tex = NULL, encoding = NULL, options){
+bibtexImport <- function(infile, ..., tex = NULL, encoding = NULL, options, extra = FALSE){
     ## informat is always "bibtex"
     stopifnot(length(list(...)) == 0) # no ... arguments allowed
 
@@ -88,7 +88,7 @@ bibtexImport <- function(infile, ..., tex = NULL, encoding = NULL, options){
     argv_2be[1] <- prg
     wrk_out <- .C(C_bib2be_main, as.integer(argc_2be), argv_2be, outfile, nref_in = n_2be)
 
-    bibe <- readBibentry(outfile)
+    bibe <- readBibentry(outfile, extra = extra)
 
     bibe
 }

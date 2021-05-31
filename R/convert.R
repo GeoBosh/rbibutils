@@ -205,6 +205,7 @@ bibConvert <- function(infile, outfile, informat, outformat, ..., tex, encoding,
                   nbib     = ,
                   ris      = ,
                   wordbib  = {
+#print("Hello!")                      
                       prg <- paste0(informat, "2xml")
                       argv_2xml[1] <- prg
                       wrk_in <- .C(C_any2xml_main, argc_2xml, argv_2xml, xmlfile, nref_in = n_2xml)

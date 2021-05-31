@@ -6,7 +6,8 @@
 \description{Read and write bibtex files.}
 \usage{
 readBib(file, encoding = NULL, \dots, direct = FALSE, 
-        texChars = c("keep", "convert", "export"), macros = NULL, key)
+        texChars = c("keep", "convert", "export"), macros = NULL, 
+        extra = FALSE, key)
 
 writeBib(object, con = stdout(), append = FALSE)
 
@@ -57,6 +58,7 @@ charToBib(text, informat, \dots)
     avoid silently ignoring unknown arguments).
 
   }
+  \item{extra}{if \code{TRUE}, allow non-standard bibtex types.}
 }
 \details{
 

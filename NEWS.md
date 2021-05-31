@@ -1,22 +1,33 @@
 # rbibutils 2.1.2
 
+- new convenience function `charToBib` takes input from a character vector
+  rather than a file. By default it assumes that the input is in `bibtex` format
+  and despatches to `readBib`. If an input format is specified it calls
+  `bibConvert`.
+
+- new S3 class `bibentryExtra`, inheriting from `bibentry`, provides support for
+  non-standard types (potentially arbitrary) of bibtex entries. Suitable methods
+  are defined for printing, converting and manipulating (e.g., subsetting and
+  assignment) `bibentryExtra` objects. The initial implementation is incomplete
+  and under development.
+
+- `readBib()` gets a new argument `extra`. If it is set to `TRUE` and
+  non-standard types of entries are encountered in the input bibtex file, then
+  the class of the result is set to `bibentryExtra`. See also the note about
+  `bibentryExtra`.
+
+- `readBib` gets new argument, `macros`, for specification of file(s) containing
+  Bibtex macros (such as abbreviations for names of journals). These files are
+  read in before file(s) specified by `file`.
+
 - `readBib` with `direct = TRUE` now accepts non-syntactic field names,
   e.g. containing `-`. (This is irrelevant when `direct = FALSE` since in that
   case nonstandard fields are ignored and standard fields do not contain unusual
   characters.)
 
-- `readBib` gets new argument, `macros`, for specification of file(s) containg
-  Bibtex macros (such as abbreviations for names of journals). These files are
-  read in before file(s) specified by `file`.
-
-- structures for bibtex macros, such as `@string` were not cleared and were
-  accumulating from multiple invocations of conversions from bibtex and
-  biblatex. Now fixed.
-
-- new convenience function `charToBib` takes input from a character vector
-  rather than a file. By default it assumes that the input is in `bibtex` format
-  and despatches to `readBib`. If an input format is specified it calls
-  `bibConvert`.
+- internal structures for bibtex macros, such as `@string` were not cleared at
+  the end of calls and were accumulating from multiple invocations of
+  conversions from bibtex and biblatex. Now fixed.
 
 - now references with missing cite keys in bibtex input are accepted (previously
   such references were dropped). Dummy cite keys are inserted.
@@ -31,10 +42,12 @@
   results. Informative messages are printed now.
 
 - improved handling of byte order marks (BOM) for utf8 output. This was causing
-  problems to tests on Windows since on Linux BOMs are not emitted (I haven't
-  figured what causes the difference - the code is not OS dependent).
-  
-- added quotes to EndNote in `DESCRIPTION`.
+  problems to tests of this package on Windows since on Linux BOMs are not
+  emitted (I haven't figured what causes the difference - the code is not OS
+  dependent).
+
+- improved handling of corner cases in bibtex input, especially for `readBib`
+  with `direct = TRUE`.
 
 
 # rbibutils 2.1.1 (CRAN)

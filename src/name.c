@@ -11,6 +11,9 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
+
+#include <R.h>
+
 #include "utf8.h"
 #include "unicode.h"
 #include "is_ws.h"
@@ -194,6 +197,25 @@ add_given_split( str *name, str *s )
 			str_strcatc( name, utf8s );
 		}
 	}
+		// Georgi - handle latex combinations like \'E ; TODO: need more universal solution here
+		//    TODO: Maybe names specifically can always be converted to the unicode
+		//    equivalents before calling this (or somewhere further up the line.
+	// char *slashacute = "\\|'|";
+
+	if(str_strstrc(name, "\\")) { // crude patch; TODO: solve somewhere upstream!
+	  while(str_strstrc(name, "\\|'|")){
+	    str_findreplace(name, "\\|'|", "\\'");
+	  }
+
+	  if(str_strstrc(name, "\\'\\i")){               // patch for \'\i => \'{i}
+	    str_findreplace(name, "\\'\\i", "\\'{i}");   
+	  }
+
+	  while((str_strstrc(name, "\\|"))){ // why is this? it shouldn't happen
+	    str_findreplace(name, "\\|", "|");        // TODO: this probably will hide errors
+	  }
+	}
+	
 	return 1;
 }
 
@@ -221,6 +243,10 @@ name_multielement_nocomma( intlist *given, intlist *family, slist *tokens, int b
 	int family_start, family_end;
 	int i, n;
 
+// 	REprintf("name_multielement_nocomma:\n");
+// for ( i=0; i<tokens->n; ++i )
+//   REprintf("\t%s\n", slist_cstr( tokens, i ) );
+	
 	/* ...family name(s) */
 	family_start = family_end = end - 1;
 	if ( family_start == suffixpos ) family_start = family_end = end - 2;
@@ -290,6 +316,8 @@ name_mutlielement_build( str *name, intlist *given, intlist *family, slist *toke
 		if ( i ) str_addchar( name, ' '  );
 		str_strcat( name, s );
 		case_family |= unicode_utf8_classify_str( s );
+		// REprintf("name_mutlielement_build: unicode_utf8_classify_str: name = %s, case_family = %d\n",
+		// 	 s->data, case_family);
 	}
 
 	/* ...check given name case */
@@ -297,22 +325,107 @@ name_mutlielement_build( str *name, intlist *given, intlist *family, slist *toke
 		m = intlist_get( given, i );
 		s = slist_str( tokens, m );
 		case_given |= unicode_utf8_classify_str( s );
+		// REprintf("name_mutlielement_build: unicode_utf8_classify_str: name = %s, case_given = %d\n",
+		// 	 s->data, case_given);
 	}
 
 	if ( ( ( case_family & UNICODE_MIXEDCASE ) == UNICODE_MIXEDCASE ) &&
 	     ( ( case_given  & UNICODE_MIXEDCASE ) == UNICODE_UPPER ) ) {
 		should_split = 1;
 	}
-
+	// REprintf("\tshould_split = %d\n", should_split);
+	
 	for ( i=0; i<given->n; ++i ) {
 		m = intlist_get( given, i );
 		s = slist_str( tokens, m );
+		// REprintf("\t(name_mutlielement_build) before: given[i] i = %d, %s,",
+		// 	 i, s->data);	       
+		// REprintf(" should_split = %d\n",
+		// 	 should_split);
 		if ( !should_split ) {
 			str_addchar( name, '|' );
 			str_strcat( name, s );
 		} else add_given_split( name, s );
-	}
+	}    
 
+		// path TODO: fix properly
+		const char *pastslash;
+		char ch;
+		str *mys = str_new();
+		
+		if(str_strstrc(name, "\\")) { // crude patch; TODO: solve somewhere upstream!
+		  str_initstr(mys, name);
+		  str_init(name);
+
+  // REprintf("before: %s\n", mys->data);
+		  
+		  pastslash = str_cattodelim(name, mys->data, "\\", 1);
+		  while( *pastslash  ) {
+		    // TODO: can pastslash be NULL?
+		    if(pastslash  && *pastslash) {
+		      if(pastslash[1]) { 
+			str_strcatc(name, "{\\");
+			
+			ch = *pastslash;
+			switch(ch) {
+			case 'O':
+			case 'o':
+			  str_addchar( name, *pastslash );
+			  pastslash++;
+			  break;
+			case 'H':
+			case 'c':
+			case 'k':
+			case 'l':
+			case 'b':
+			case 'd':
+			case 'r':
+			case 'u':
+			case 't':
+			case 'v':
+			  str_addchar( name, *pastslash );
+			  pastslash++;
+			  if(*pastslash == ' ') // is this allowed in TeX? anyway, people use
+			    pastslash++;        // it
+			  str_strcatc(name, "{");
+			  str_addchar( name, *pastslash );
+			  str_addchar( name, '}' );
+			  pastslash++;
+			  
+	  // REprintf("after:  %s\n", name->data);
+			  break;
+			case '\'':
+			  str_addchar( name, *pastslash );
+			  pastslash++;
+			  if(*pastslash == '\\') // TODO: fix properly
+			    pastslash++; // just skip '\' for now, so \'\i => \'i
+			  str_addchar( name, *pastslash );
+			  pastslash++;
+			  
+			  break;
+			default: 
+			  str_addchar( name, *pastslash );
+			  str_addchar( name, *(pastslash + 1));
+			  pastslash+=2;
+			}
+			
+			str_addchar( name, '}' );
+		      }
+		      
+		      // REprintf("afterend:  %s\n", name->data);
+		  
+		    } else {
+		      // just copy the backslash, but this almost certainly should not happen
+		      str_strcatc(name, "\\");
+		    }
+		
+		    pastslash = str_cattodelim(name, pastslash, "\\", 1);
+		  }
+		}
+ 
+
+	// REprintf("\t(name_mutlielement_build) after:  name = %s\n", name->data);
+	
 	return 1;
 }
 
@@ -323,13 +436,19 @@ name_construct_multi( str *outname, slist *tokens, int begin, int end )
 	intlist given, family;
 	str *s;
 
+// 	REprintf("name_construct_multi (begin): number of tokens: %d, begin: %d, end: %d\n", tokens->n, begin, end);
+//  for ( i=begin; i<end; ++i )
+//    REprintf( "%s\n", slist_cstr( tokens, i ) );
+//  REprintf( "\n" );
+   
 	intlist_init( &family );
 	intlist_init( &given );
 
 	str_empty( outname );
 
 	suffix = has_suffix( tokens, begin, end, &suffixpos );
-
+	// REprintf( "suffix: %d\n", suffixpos );
+		  
 	for ( i=begin; i<end && comma==-1; i++ ) {
 		if ( i==suffixpos ) continue;
 		s = slist_str( tokens, i );
@@ -358,6 +477,8 @@ name_construct_multi( str *outname, slist *tokens, int begin, int end )
 	intlist_free( &given );
 	intlist_free( &family );
 
+	//	REprintf("\nname_construct_multi (end): outname: %s\n", outname->data);
+	
 	return 1;
 }
 

@@ -866,11 +866,11 @@ bibl_read( bibl *b, FILE *fp, char *filename, param *p )
 		return status;
 	}
 
-  // Georgi: for testing
-  // REprintf("Bh: (after(read_refs)\n");
-  // for(long i = 0; i < bin.n; ++i) {
-  //   fields_report_stderr( bin.ref[i] );
-  // }
+	// Georgi: for testing
+//   REprintf("bibl_read: (after(read_refs)\n");
+//   for(long i = 0; i < bin.n; ++i) {
+//     fields_report_stderr( bin.ref[i] );
+//   }
 
 	if ( debug_set( &read_params ) ) { 
 		bibl_verbose( &bin, "raw_input", "for bibl_read" );
@@ -882,11 +882,11 @@ bibl_read( bibl *b, FILE *fp, char *filename, param *p )
 		if ( debug_set( &read_params ) ) bibl_verbose( &bin, "post_clean_refs", "for bibl_read" );
 	}
 	
-  // REprintf("Bh: (after(clean_refs)\n");
-  // // Georgi: for testing
-  // for(long i = 0; i < bin.n; ++i) {
-  //   fields_report_stderr( bin.ref[i] );
-  // }
+//   REprintf("bibl_read: (after(clean_refs)\n");
+//   // Georgi: for testing
+//   for(long i = 0; i < bin.n; ++i) {
+//     fields_report_stderr( bin.ref[i] );
+//   }
 
 
 	if ( ( !read_params.output_raw ) || ( read_params.output_raw & BIBL_RAW_WITHCHARCONVERT ) ) {
@@ -895,11 +895,11 @@ bibl_read( bibl *b, FILE *fp, char *filename, param *p )
 		if ( debug_set( &read_params ) ) bibl_verbose( &bin, "post_fixcharsets", "for bibl_read" );
 	}
 
-  // REprintf("Bh: (after(bibl_fixcharsets)\n");
-  // // Georgi: for testing
-  // for(long i = 0; i < bin.n; ++i) {
-  //   fields_report_stderr( bin.ref[i] );
-  // }
+//   REprintf("bibl_read: (after(bibl_fixcharsets)\n");
+//   // Georgi: for testing
+//   for(long i = 0; i < bin.n; ++i) {
+//     fields_report_stderr( bin.ref[i] );
+//   }
 
 	if ( !read_params.output_raw ) {
 		status = convert_refs( &bin, filename, b, &read_params );
@@ -923,11 +923,11 @@ bibl_read( bibl *b, FILE *fp, char *filename, param *p )
 		if ( debug_set( &read_params ) ) bibl_verbose( &bin, "post_uniqueify_citekeys", "for bibl_read" );
 	}
 
-  // REprintf("\nBh: at end of bibl_read\n");
-  // // Georgi: for testing
-  // for(long i = 0; i < b->n; ++i) {
-  //   fields_report_stderr( b->ref[i] );
-  // }
+//   REprintf("\nbibl_read: at end of bibl_read\n");
+//   // Georgi: for testing
+//   for(long i = 0; i < b->n; ++i) {
+//     fields_report_stderr( b->ref[i] );
+//   }
 
 out:
 	bibl_free( &bin );
