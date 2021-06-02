@@ -163,7 +163,6 @@ enum {
 // 	return type;
 // }
 
-
 // Georgi
 //     TODO: consolidate with append_type, 
 // static int
@@ -189,7 +188,6 @@ enum {
 // 	
 // 	return( !strcmp(typenames[ type ], "TechReport") );
 // }
-
 
 // static void
 // append_type( int type, fields *out, int *status )
@@ -649,13 +647,13 @@ append_titles( fields *in, int type, fields *out, int format_opts, int *status )
 		*status = append_title( in, "series", 1, out, format_opts );
 		if ( *status!=BIBL_OK ) return;
 		*status = append_title( in, "series", 2, out, format_opts );
+		if ( *status!=BIBL_OK ) return;
 
 		// // (2020-12-27) added by Georgi
 		// // TODO: not sure about this it always sets booktitle same as title.
 		// //      Logical but iridia uses booktitle for abbreviated title
 		// //      this looks like iridia convention; COMMENTING OUT
 		// //
-		// if ( *status!=BIBL_OK ) return;
 		// *status = append_title( in, "booktitle", LEVEL_ANY, out, format_opts );
 
 		break;
@@ -971,6 +969,8 @@ bibentrydirectout_assemble( fields *in, fields *out, param *pm, unsigned long re
 	// Determine type 
 	//   type = bibentrydirectout_type( in, pm->progname, "", refnum );
 	//
+	// Georgi: the chunk below replaces the above call (type = ...)
+	//         TODO: needs further work
 	
 	int n, fstatus;
 	char *fld_val;
@@ -1037,7 +1037,7 @@ bibentrydirectout_assemble( fields *in, fields *out, param *pm, unsigned long re
 		  type = 0; // unknown
 		}
 
-		// REprintf("kiki: fld_val=%s\n", fld_val);
+		// REprintf("(bibentrydirectout_assemble): fld_val=%s\n", fld_val);
 		//  REprintf("type = %d\n\n", type);
 		
 		if ( strcmp( fld_val, "online" ) )
@@ -1045,10 +1045,13 @@ bibentrydirectout_assemble( fields *in, fields *out, param *pm, unsigned long re
 		else
 		  // this is temporary patch!
 		  fstatus = fields_add( out, "bibtype", "Misc", LEVEL_MAIN );
-
-		if ( fstatus!=FIELDS_OK ) status = BIBL_ERR_MEMERR;
+	} else{
+	  type = 15; // default to Misc; TODO: issue a message?
+	  fstatus = fields_add( out, "bibtype", "Misc", LEVEL_MAIN );
 	}
+	if ( fstatus!=FIELDS_OK ) status = BIBL_ERR_MEMERR;
 
+	// Georgi: end of 'determine type' (the above also outputs it, so the line below is commented out
 	
 	// append_type        ( type, out, &status );
 	append_simple        ( in, "REFNUM", "refnum", out, &status );

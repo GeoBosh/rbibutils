@@ -974,7 +974,7 @@ bibtexdirectin_cleanref( fields *bibin, param *pm )
 	}
 
 
-	int nout = fields_num( bibin );
+	// int nout = fields_num( bibin );
 	// if(nout > n) {
 	//   REprintf("\nbibtexdirectin_cleanref (2): nout = %d\n" , nout);
 	//   for(i = 0; i < nout; i++) {
