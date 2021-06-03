@@ -232,16 +232,26 @@ print.bibentryExtra <- function(x, style = "text", .bibstyle = "JSSextra", ...){
 `[[.bibentryExtra` <- function(x, i, j, drop = TRUE){
 
     ## TODO: make this method similar to `[[<-.bibentryExtra` (using a list, instead of 'j') ?
-    
-    mdrop <- missing(drop)
-    Narg <- nargs() - !mdrop
-    j.omitted <- Narg >= 3  && missing(j)
 
     ## if(!length(x)) return(x)
+    
+    Narg <- nargs() - !missing(drop)
+    j.omitted   <- Narg >= 3  && missing(j)
+    j.has.value <- !missing(j)
 
     if(missing(j) && !j.omitted){
-        x <- NextMethod()
-        return(x)
+        if(is.list(i)){
+            ## this is for symmetry with `[[<-` which cant' have argument j
+            if(length(i) == 2){
+                j.has.value <- TRUE
+                j <- i[[2]]
+                i <- i[[1]]
+            }else
+                stop("if 'i' is a list it should have length 2")
+        }else{
+            x <- NextMethod()
+            return(x)
+        }
     }
 
     if(length(i) != 1)
@@ -250,7 +260,7 @@ print.bibentryExtra <- function(x, style = "text", .bibstyle = "JSSextra", ...){
     res <- unclass(x)
     res <- res[[i]]
 
-    if(!missing(j)){
+    if(j.has.value){
         if(!is.character(j))
             stop("j mist be character or omitted")
         chind <- intersect(j, names(res))   # !all(j %in% names(res))
@@ -264,7 +274,7 @@ print.bibentryExtra <- function(x, style = "text", .bibstyle = "JSSextra", ...){
     }
 
     if(drop && length(res) == 1)
-        structure(res[[1]], names = names(res))
+        structure(res[[1]], names = names(res)) # trying to keep the name
     else
         res
 }
@@ -286,9 +296,19 @@ function(x, i, j, drop = TRUE)
     res <- unclass(x)
     if(missing(i))
         i <- seq_along(res)
+    else if(is.character(i) && is.null(names(x))){
+        names(res) <- sapply(x$key, function(y) if(is.null(y)) "" else y)
+    }
     res <- res[i]
 
     if(!missing(j)){
+        ## (:TODO:) TO CONSIDER:
+        ##
+        ## The result (bibentryExtra object) may be missing complsory fields.
+        ## Note that interactively printing the result will show informative messages.
+        ##
+        ## Should this be allowed? -- it enables incrementally building reference(s) and keeps the key and bibtype.
+        ##  
         if(!is.character(j))
             stop("j mist be character or omitted")
         for(ind in seq_along(res)){
@@ -416,15 +436,21 @@ format.bibentryExtra <- function (x, style = "text", .bibstyle = NULL, ...){
 #browser()        
         res[[i]] <- wrk
         
-    }else if(is.list(i)){   ## value shoulbe a list of named fields
+    }else if(is.list(i)){   # value should be a list of named fields in this case or a
+                            # character vector of the same length as i[[2]]
         stopifnot(length(i) == 2)
         target_fields <- i[[2]]
         i <- i[[1]]
         
         if(is.character(target_fields)) {
             fields <- names(value)
-            if(length(fields) == 0)
-                stop("'value' should be inheriting from bibentry or be a named list")
+            if(length(fields) == 0){
+                if(length(target_fields) == length(value) && target_fields != "*"){
+                    names(value) <- target_fields
+                    fields <- target_fields
+                }else
+                    stop("unsuitable 'i' and/or 'value'")
+            }
             if(length(target_fields) == 1  && target_fields == "*") {
                 ## add all fiedls from 'value'
                 for(field in fields){
@@ -436,11 +462,11 @@ format.bibentryExtra <- function (x, style = "text", .bibstyle = NULL, ...){
                     res[[i]][[field]] <- value[[field]] 
                 }
             }
-        #}else{     :TODO:
-        #    ???
+        }else{
+            stop("argument 'target_fields should be a character vector")
         }
     }else{
-        stop("when 'value' is a list, 'i' should be a list of length 2")
+        stop("incompatible arguments: 'value' and 'i'")
     }
     
     class(res) <- cl

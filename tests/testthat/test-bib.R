@@ -230,7 +230,7 @@ test_that("bibRead works ok", {
     ## subset as list
     expect_error(brefExtra[[1:2, "title"]],
                  "length of i should be 1 when j is not missing or omitted")
-    brefExtra[[1, "title"]]
+    expect_equal(brefExtra[[1, "title"]], brefExtra[[list(1, "title")]])
     brefExtra[[1, "title", drop = FALSE]]
     brefExtra[[1, c("title", "author")]]
 
@@ -239,7 +239,7 @@ test_that("bibRead works ok", {
     brefExtra[1, "title", drop = FALSE]
     brefExtra[1, c("title", "author")]
     brefExtra_ta <- brefExtra[1:2, c("title", "author")]
-
+    tt <- brefExtra["boot-book", "title"]
     
     b1 <- brefExtra
 
