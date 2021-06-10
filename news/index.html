@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rbibutils</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.2.1</span>
       </span>
     </div>
 
@@ -116,10 +116,10 @@
 
     <div id="rbibutils-22" class="section level1">
 <h1 class="page-header" data-toc-text="2.2">
-<a href="#rbibutils-22" class="anchor"></a>rbibutils 2.2<small> Unreleased </small>
+<a href="#rbibutils-22" class="anchor"></a>rbibutils 2.2<small> 2021-06-10 </small>
 </h1>
 <ul>
-<li><p>new convenience function <code>charToBib</code> takes input from a character vector rather than a file. By default it assumes that the input is in <code>bibtex</code> format and despatches to <code>readBib</code>. If an input format is specified it calls <code>bibConvert</code>.</p></li>
+<li><p>new convenience function <code>charToBib</code> takes input from a character vector rather than a file. By default it assumes that the input is in <code>bibtex</code> format and dispatches to <code>readBib</code>. If an input format is specified it calls <code>bibConvert</code>.</p></li>
 <li><p>new S3 class <code>bibentryExtra</code>, inheriting from <code>bibentry</code>, provides support for non-standard types (potentially arbitrary) of bibtex entries. Suitable methods are defined for printing, converting and manipulating (e.g., subsetting and assignment) <code>bibentryExtra</code> objects. The initial implementation is incomplete and under development.</p></li>
 <li><p><code><a href="../reference/readBib.html">readBib()</a></code> gets a new argument <code>extra</code>. If it is set to <code>TRUE</code> and non-standard types of entries are encountered in the input bibtex file, then the class of the result is set to <code>bibentryExtra</code>. See also the note about <code>bibentryExtra</code>.</p></li>
 <li><p><code>readBib</code> gets new argument, <code>macros</code>, for specification of file(s) containing Bibtex macros (such as abbreviations for names of journals). These files are read in before file(s) specified by <code>file</code>.</p></li>
