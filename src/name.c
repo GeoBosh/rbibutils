@@ -199,7 +199,7 @@ add_given_split( str *name, str *s )
 	}
 		// Georgi - handle latex combinations like \'E ; TODO: need more universal solution here
 		//    TODO: Maybe names specifically can always be converted to the unicode
-		//    equivalents before calling this (or somewhere further up the line.
+		//    equivalents before calling this (or somewhere further up the line).
 	// char *slashacute = "\\|'|";
 
 	if(str_strstrc(name, "\\")) { // crude patch; TODO: solve somewhere upstream!
@@ -353,7 +353,7 @@ name_mutlielement_build( str *name, intlist *given, intlist *family, slist *toke
 		char ch;
 		str *mys = str_new();
 		
-		if(str_strstrc(name, "\\")) { // crude patch; TODO: solve somewhere upstream!
+		if(str_strstrc(name, "\\")) { // crude patch; TODO: fix somewhere upstream!
 		  str_initstr(mys, name);
 		  str_init(name);
 
@@ -363,7 +363,7 @@ name_mutlielement_build( str *name, intlist *given, intlist *family, slist *toke
 		  while( *pastslash  ) {
 		    // TODO: can pastslash be NULL?
 		    if(pastslash  && *pastslash) {
-		      if(pastslash[1]) { 
+		      if(pastslash[1]) { // the following char is not NULL
 			str_strcatc(name, "{\\");
 			
 			ch = *pastslash;
@@ -397,7 +397,9 @@ name_mutlielement_build( str *name, intlist *given, intlist *family, slist *toke
 			case '\'':
 			  str_addchar( name, *pastslash );
 			  pastslash++;
-			  if(*pastslash == '\\') // TODO: fix properly
+			  // pastslash[1] checks that the following char is not NULL
+			  //                                                (it is probably an error if it is)
+			  if(*pastslash == '\\' && pastslash[1]) // TODO: fix properly
 			    pastslash++; // just skip '\' for now, so \'\i => \'i
 			  str_addchar( name, *pastslash );
 			  pastslash++;

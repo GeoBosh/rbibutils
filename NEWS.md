@@ -2,7 +2,7 @@
 
 - new convenience function `charToBib` takes input from a character vector
   rather than a file. By default it assumes that the input is in `bibtex` format
-  and despatches to `readBib`. If an input format is specified it calls
+  and dispatches to `readBib`. If an input format is specified it calls
   `bibConvert`.
 
 - new S3 class `bibentryExtra`, inheriting from `bibentry`, provides support for
