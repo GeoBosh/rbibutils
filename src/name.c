@@ -335,6 +335,7 @@ name_mutlielement_build( str *name, intlist *given, intlist *family, slist *toke
 	}
 	// REprintf("\tshould_split = %d\n", should_split);
 	
+	str *mys = str_new();
 	for ( i=0; i<given->n; ++i ) {
 		m = intlist_get( given, i );
 		s = slist_str( tokens, m );
@@ -348,14 +349,14 @@ name_mutlielement_build( str *name, intlist *given, intlist *family, slist *toke
 		} else add_given_split( name, s );
 	}    
 
-		// path TODO: fix properly
+		// patch TODO: fix properly
 		const char *pastslash;
 		char ch;
-		str *mys = str_new();
 		
 		if(str_strstrc(name, "\\")) { // crude patch; TODO: fix somewhere upstream!
+		  str_free(mys);
 		  str_initstr(mys, name);
-		  str_init(name);
+		  str_free(name);  // str_init(name);
 
   // REprintf("before: %s\n", mys->data);
 		  
@@ -427,7 +428,8 @@ name_mutlielement_build( str *name, intlist *given, intlist *family, slist *toke
  
 
 	// REprintf("\t(name_mutlielement_build) after:  name = %s\n", name->data);
-	
+		
+		str_delete(mys);
 	return 1;
 }
 

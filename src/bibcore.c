@@ -1040,6 +1040,11 @@ bibl_writefp( FILE *fp, bibl *b, param *p )
 	}
 
 	if ( p->footerf ) p->footerf( fp );
+
+	// Georgi: the above loop doesn't free the last reference
+	//         (fields_free is safe even if it is just initialised, which is the case here
+	fields_free( &out );
+	
 	return status;
 }
 

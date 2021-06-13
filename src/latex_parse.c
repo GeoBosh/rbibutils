@@ -169,10 +169,13 @@ build_latex_graph( str *in, latex_node **start )
 {
 	unsigned long offset = 0;
 	int mathmode = 0;
-	latex_node *n;
-
-	n = latex_node_new();
-	if ( !n ) return BIBL_ERR_MEMERR;
+	// latex_node *n;
+	// 
+	// // Georgi: I don't understand this - n is not used and not freed
+	// //         Is this a leftover or just a check that there is space for a node?
+	// //     Commenting out. TODO: this is dangerous if I am missing something!!!
+	// n = latex_node_new();
+	// if ( !n ) return BIBL_ERR_MEMERR;
 	
 	return build_latex_graph_r( in, &offset, &mathmode, 0, start );
 }
@@ -322,6 +325,24 @@ write_latex_graph( latex_node *n )
 }
 #endif
 
+// Georgi: new functions - recursively free memory for nodes;
+static void latex_edge_delete_recursively( latex_edge *e ); // declaration
+
+static void
+latex_node_delete_recursively( latex_node *n )
+{
+  if( n->next_edge ) latex_edge_delete_recursively(n->next_edge);
+  if( n->down_node ) latex_node_delete_recursively( n->down_node );
+  free( n );
+}
+static void
+latex_edge_delete_recursively( latex_edge *e )
+{
+  if( e->next_node ) latex_node_delete_recursively( e->next_node );
+  latex_edge_delete(e);
+}
+
+
 int
 latex_parse( str *in, str *out )
 {
@@ -331,15 +352,19 @@ latex_parse( str *in, str *out )
 	str_empty( out );
 	if ( str_is_empty( in ) ) return BIBL_OK;
 
+	// Georgi: the code below was not clearing n, leading to memory leaks
 	status = build_latex_graph( in, &n );
-	if ( status!=BIBL_OK ) return status;
+	if ( status!=BIBL_OK ) goto out;
 
 	status = string_from_latex_graph( n, out );
-	if ( status!=BIBL_OK ) return status;
+	if ( status!=BIBL_OK ) goto out;
 
 	str_trimendingws( out );
 
-	return BIBL_OK;
+ out:
+	// Georgi: TODO: this assumes that the strings have been copied to out
+	latex_node_delete_recursively( n );
+	return status;
 }
 
 int

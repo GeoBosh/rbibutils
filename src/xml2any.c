@@ -391,10 +391,12 @@ xml2any_main( int *argc, char *argv[], char *outfile[], double *nref )
 	  biblatexout_initparams( &p, progname );
 	  // ihelp = 2;
 	}else if(strcmp(progname, "xml2copac") == 0){
+	  bibl_freeparams( &p );
 	  error("export to copac format not implemented");
 	  // copacout_initparams( &p, progname );
 	  // ihelp = 4;
 	}else if(strcmp(progname, "xml2ebi") == 0){
+	  bibl_freeparams( &p );
 	  error("export to EBI XML format not implemented");
 	  // ebiout_initparams( &p, progname );
 	  // ihelp = 6;
@@ -402,6 +404,7 @@ xml2any_main( int *argc, char *argv[], char *outfile[], double *nref )
 	  endout_initparams( &p, progname );
 	  // ihelp = 8;
 	}else if(strcmp(progname, "xml2endx") == 0){
+	  bibl_freeparams( &p );
 	  error("export to Endnote XML format not implemented");
 	  // endxout_initparams( &p, progname );
 	  // ihelp = 10;
@@ -409,6 +412,7 @@ xml2any_main( int *argc, char *argv[], char *outfile[], double *nref )
 	  isiout_initparams( &p, progname );
 	  // ihelp = 12;
 	}else if(strcmp(progname, "xml2med") == 0){
+	  bibl_freeparams( &p );
 	  error("export to Medline XML format not implemented");
 	  // medout_initparams( &p, progname );
 	  // ihelp = 14;
@@ -426,8 +430,10 @@ xml2any_main( int *argc, char *argv[], char *outfile[], double *nref )
 	  // ihelp = 22;
 	}else if(strcmp(progname,  "xml2bibentry") == 0){
 	  bibentryout_initparams( &p, progname );
-	}else
+	}else {
+	  bibl_freeparams( &p );
 	  error("cannot deduce output format from name %s", progname);
+	}
 	
 	process_charsets( argc, argv, &p );
 

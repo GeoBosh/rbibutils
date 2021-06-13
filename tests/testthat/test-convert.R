@@ -61,8 +61,8 @@ test_that("bibConvert works ok", {
     ## TODO: need copac file to test for input from copac
     expect_error(bibConvert(tmp_bib, tmp_copac),
                  "export to copac format not implemented")
-
-    
+ 
+     
     expect_error(bibConvert(tmp_bib, tmp_ebi, outformat = "ebi"),
                  "export to EBI XML format not implemented")
     ## TODO: need EBI file to test for input from EBI
@@ -87,9 +87,9 @@ test_that("bibConvert works ok", {
                  "export to Endnote XML format not implemented")
     expect_error(bibConvert(tmp_bib3, tmp_endx, outformat = "endx"),
                  "export to Endnote XML format not implemented")
-    expect_message(bibConvert(endx_in, tmp_bib3), "no references to output")
-    bibConvert(endx_in, tmp_bib3, informat = "endx", options = c(nb = ""))
-    expect_known_value(readLines(tmp_bib3), "end2bib.rds", update = FALSE)
+##     expect_message(bibConvert(endx_in, tmp_bib3), "no references to output")
+##     bibConvert(endx_in, tmp_bib3, informat = "endx", options = c(nb = ""))
+##     expect_known_value(readLines(tmp_bib3), "end2bib.rds", update = FALSE)
 
     
     bibConvert(tmp_bib, tmp_isi, options = c(nb = ""))
@@ -101,11 +101,12 @@ test_that("bibConvert works ok", {
     
     expect_error(bibConvert(tmp_bib, tmp_med),
                  "export to Medline XML format not implemented")
-    bibConvert(med_in, tmp_bib, informat = "med")
-    bibConvert(med_in, tmp_bib, informat = "med", outformat = "biblatex", options = c(nb = ""))
-    expect_known_value(readLines(tmp_bib), "med2bib.rds", update = FALSE)
+##     bibConvert(med_in, tmp_bib, informat = "med")
+##     bibConvert(med_in, tmp_bib, informat = "med", outformat = "biblatex", options = c(nb = ""))
+##     expect_known_value(readLines(tmp_bib), "med2bib.rds", update = FALSE)
 
-    
+    tmp_bib <- file.path(bibdir, "bib_from_medin.bib")
+   
     ## bibConvert(tmp_bib, tmp_nbib)   # TODO: segfaults!
     ## bibConvert(tmp_nbib, tmp_bib2)  # TODO: need nbib file for import!
     ## expect_known_value(readLines(tmp_bib2), "nbib2bib.rds", update = FALSE)
