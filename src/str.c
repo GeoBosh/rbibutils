@@ -217,10 +217,43 @@ str_initalloc( str *s, unsigned long minsize )
 	unsigned long size = str_initlen;
 	assert( s );
 	if ( minsize > str_initlen ) size = minsize;
-	s->data = (char *) malloc( sizeof( *(s->data) ) * size );
+	// 2021-06-16 was: s->data = (char *) malloc( sizeof( *(s->data) ) * size );
+	//     changing to calloc() to avoid this kind of error from valgrind:
+        //      > bibConvert(fn_med, bib, informat = "med")
+        //      ==16041== Conditional jump or move depends on uninitialised value(s)
+        //      ==16041==    at 0x10CCF2A3: xml_processtag (xml.c:174)
+        //      ==16041==    by 0x10CCF69E: xml_parse (xml.c:241)
+        //      ==16041==    by 0x10CD1838: xml_getencoding (xml_encoding.c:72)
+        //      ==16041==    by 0x10CB120F: medin_readf (medin.c:103)
+        //      ==16041==    by 0x10C8ACF2: read_refs (bibcore.c:471)
+        //      ==16041==    by 0x10C8BE0E: bibl_read (bibcore.c:862)
+        //      ==16041==    by 0x10C98B64: bibprog (bibprog.c:36)
+        //      ==16041==    by 0x10C889EC: any2xml_main (any2xml.c:127)
+        //      ==16041==    by 0x494E7AD: do_dotCode (dotcode.c:1811)
+        //      ==16041==    by 0x499F92F: bcEval (eval.c:7115)
+        //      ==16041==    by 0x498B056: Rf_eval (eval.c:727)
+        //      ==16041==    by 0x498DDC5: R_execClosure (eval.c:1897)
+        //      ==16041==  Uninitialised value was created by a heap allocation
+        //      ==16041==    at 0x483B7F3: malloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+        //      ==16041==    by 0x10CC6770: str_initalloc (str.c:226)
+        //      ==16041==    by 0x10CC721F: str_strcpy_ensurespace (str.c:513)
+        //      ==16041==    by 0x10CC7277: str_strcpy_internal (str.c:523)
+        //      ==16041==    by 0x10CC73BF: str_segcpy (str.c:579)
+        //      ==16041==    by 0x10CD1805: xml_getencoding (xml_encoding.c:70)
+        //      ==16041==    by 0x10CB120F: medin_readf (medin.c:103)
+        //      ==16041==    by 0x10C8ACF2: read_refs (bibcore.c:471)
+        //      ==16041==    by 0x10C8BE0E: bibl_read (bibcore.c:862)
+        //      ==16041==    by 0x10C98B64: bibprog (bibprog.c:36)
+        //      ==16041==    by 0x10C889EC: any2xml_main (any2xml.c:127)
+        //      ==16041==    by 0x494E7AD: do_dotCode (dotcode.c:1811)
+	//
+	// TODO: 
+	//    The data is not really left uninitialised and there may be a better way to let the compiler know.
+	//
+	s->data = (char *) calloc( size, sizeof( *(s->data) ) );
 	if ( !s->data ) {
-		REprintf("Error.  Cannot allocate memory in str_initalloc, requested %lu characters.\n", size );
-		error("\n"); // error( EXIT_FAILURE );
+	  error("Error.  Cannot allocate memory in str_initalloc, requested %lu characters.\n\n", size );
+	  // error("\n"); // error( EXIT_FAILURE );
 	}
 	s->data[0]='\0';
 	s->dim=size;

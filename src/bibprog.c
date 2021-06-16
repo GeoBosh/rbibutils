@@ -48,6 +48,7 @@ bibprog( int argc, char *argv[], param *p, char *outfile[] )
   
         bibl_write( &b, fout, p );
         fflush( fout );
+        fclose( fout );
 
 	// // Georgi - now the value is returned to the caller
 	// if( p->progname ) REprintf( "%s: ", p->progname );

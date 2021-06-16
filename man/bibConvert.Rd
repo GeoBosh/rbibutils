@@ -267,12 +267,12 @@ c <- bibConvert(fn_latin1_utf8, bib , encoding = c("utf8", "latin1"), tex = "no_
 ## this will show properly in Latin-1 locale (or suitable text editor):
 ##cat(readLines(bib), sep = "\n")
 
-#### ## a Pubmed file
-#### fn_med <- system.file("bib/easyPubMedvig.xml", package = "rbibutils")
-#### ## convert a Pubmed file to bibtex:
-#### bibConvert(fn_med, bib, informat = "med")
-#### ## convert a Pubmed file to rds and import:
-#### bibConvert(fn_med, rds, informat = "med")
+## a Pubmed file
+fn_med <- system.file("bib/easyPubMedvig.xml", package = "rbibutils")
+## convert a Pubmed file to bibtex:
+bibConvert(fn_med, bib, informat = "med")
+## convert a Pubmed file to rds and import:
+bibConvert(fn_med, rds, informat = "med")
 
 
 unlink(c(modl, bib, bib2, r, rds))

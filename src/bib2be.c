@@ -22,7 +22,7 @@
 #include "args.h"
 
 extern int bibtexdirectin_initparams( param *pm, const char *progname );
-
+extern void bibdirectin_more_cleanf();
 
 char *helpBE[] = {
 		 /* bib2be */
@@ -159,8 +159,9 @@ bib2be_main( int *argcin, char *argv[], char *outfile[], double *nref)
 	// if( p.progname ) REprintf( "%s: ", p.progname );
 	// REprintf( "processed %g references.\n", *nref );
 
-  // TODO: why is this commented out?
   	bibl_freeparams( &p );
+
+	bibdirectin_more_cleanf();
 	
 	*argcin = argc;
 	// return EXIT_SUCCESS;
