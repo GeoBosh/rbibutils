@@ -357,7 +357,7 @@ Chris Putnam (2020).
 #&gt; [1] "/Users/runner/work/_temp/Library/rbibutils/bib/ex0.biblatex"
 #&gt; 
 #&gt; $outfile
-#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpPdkRH8/file908244839f3.xml"
+#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpYXLyYo/file7f61c6737b6.xml"
 #&gt; 
 #&gt; $nref_in
 #&gt; [1] 3
@@ -374,7 +374,7 @@ Chris Putnam (2020).
 #&gt; [1] "/Users/runner/work/_temp/Library/rbibutils/bib/ex0.biblatex"
 #&gt; 
 #&gt; $outfile
-#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpPdkRH8/file9081d49321.bib"
+#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpYXLyYo/file7f63c7a9c4b.bib"
 #&gt; 
 #&gt; $nref_in
 #&gt; [1] 3
@@ -387,7 +387,7 @@ Chris Putnam (2020).
 <span class='va'>rds</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span><span class='op'>(</span>fileext <span class='op'>=</span> <span class='st'>".rds"</span><span class='op'>)</span>
 <span class='va'>fn_biblatex</span>
 </div><div class='output co'>#&gt; [1] "/Users/runner/work/_temp/Library/rbibutils/bib/ex0.biblatex"</div><div class='input'><span class='va'>rds</span>
-</div><div class='output co'>#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpPdkRH8/file9086e03f1b4.rds"</div><div class='input'><span class='va'>be</span> <span class='op'>&lt;-</span> <span class='fu'>bibConvert</span><span class='op'>(</span><span class='va'>fn_biblatex</span>, <span class='va'>rds</span>, <span class='st'>"biblatex"</span>, <span class='st'>"bibentry"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpYXLyYo/file7f62c409dc2.rds"</div><div class='input'><span class='va'>be</span> <span class='op'>&lt;-</span> <span class='fu'>bibConvert</span><span class='op'>(</span><span class='va'>fn_biblatex</span>, <span class='va'>rds</span>, <span class='st'>"biblatex"</span>, <span class='st'>"bibentry"</span><span class='op'>)</span>
 <span class='va'>bea</span> <span class='op'>&lt;-</span> <span class='fu'>bibConvert</span><span class='op'>(</span><span class='va'>fn_biblatex</span>, <span class='va'>rds</span>, <span class='st'>"biblatex"</span><span class='op'>)</span> <span class='co'># same</span>
 <span class='fu'><a href='https://rdrr.io/r/base/readRDS.html'>readRDS</a></span><span class='op'>(</span><span class='va'>rds</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Beach CM, Davidson R (1983). “Distribution-free statistical inference
@@ -408,7 +408,7 @@ Chris Putnam (2020).
 #&gt; [1] "/Users/runner/work/_temp/Library/rbibutils/bib/ex0.biblatex"
 #&gt; 
 #&gt; $outfile
-#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpPdkRH8/file908441ca6a2.R"
+#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpYXLyYo/file7f6163cf189.R"
 #&gt; 
 #&gt; $nref_in
 #&gt; [1] 3
@@ -477,10 +477,10 @@ Chris Putnam (2020).
 <span class='co'>## now take the bib file and convert it to UTF-8</span>
 <span class='fu'>bibConvert</span><span class='op'>(</span><span class='va'>bib</span>, <span class='va'>bib2</span>, encoding <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"cp1251"</span>, <span class='st'>"utf8"</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $infile
-#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpPdkRH8/file9081d49321.bib"
+#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpYXLyYo/file7f63c7a9c4b.bib"
 #&gt; 
 #&gt; $outfile
-#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpPdkRH8/file9082b075c77.bib"
+#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpYXLyYo/file7f615ab1ef2.bib"
 #&gt; 
 #&gt; $nref_in
 #&gt; [1] 2
@@ -506,13 +506,84 @@ Chris Putnam (2020).
 <span class='co'>## this will show properly in Latin-1 locale (or suitable text editor):</span>
 <span class='co'>##cat(readLines(bib), sep = "\n")</span>
 
-<span class='co'>#### ## a Pubmed file</span>
-<span class='co'>#### fn_med &lt;- system.file("bib/easyPubMedvig.xml", package = "rbibutils")</span>
-<span class='co'>#### ## convert a Pubmed file to bibtex:</span>
-<span class='co'>#### bibConvert(fn_med, bib, informat = "med")</span>
-<span class='co'>#### ## convert a Pubmed file to rds and import:</span>
-<span class='co'>#### bibConvert(fn_med, rds, informat = "med")</span>
-
+<span class='co'>## a Pubmed file</span>
+<span class='va'>fn_med</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"bib/easyPubMedvig.xml"</span>, package <span class='op'>=</span> <span class='st'>"rbibutils"</span><span class='op'>)</span>
+<span class='co'>## convert a Pubmed file to bibtex:</span>
+<span class='fu'>bibConvert</span><span class='op'>(</span><span class='va'>fn_med</span>, <span class='va'>bib</span>, informat <span class='op'>=</span> <span class='st'>"med"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; $infile
+#&gt; [1] "/Users/runner/work/_temp/Library/rbibutils/bib/easyPubMedvig.xml"
+#&gt; 
+#&gt; $outfile
+#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpYXLyYo/file7f63c7a9c4b.bib"
+#&gt; 
+#&gt; $nref_in
+#&gt; [1] 6
+#&gt; 
+#&gt; $nref_out
+#&gt; [1] 6
+#&gt; </div><div class='input'><span class='co'>## convert a Pubmed file to rds and import:</span>
+<span class='fu'>bibConvert</span><span class='op'>(</span><span class='va'>fn_med</span>, <span class='va'>rds</span>, informat <span class='op'>=</span> <span class='st'>"med"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; $infile
+#&gt; [1] "/Users/runner/work/_temp/Library/rbibutils/bib/easyPubMedvig.xml"
+#&gt; 
+#&gt; $outfile
+#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpYXLyYo/file7f62c409dc2.rds"
+#&gt; 
+#&gt; $nref_in
+#&gt; [1] 6
+#&gt; 
+#&gt; $nref_out
+#&gt; [1] 6
+#&gt; 
+#&gt; $bib
+#&gt; Fantini D, Seiler R, Meeks JJ (2019 ). “Molecular footprints of
+#&gt; muscle-invasive bladder cancer in smoking and nonsmoking patients.  .”
+#&gt; _Urologic oncology _, *37 *(11 ), 818-825 . ISSN 1873-2496 , doi:
+#&gt; 10.1016/j.urolonc.2018.09.017 (URL:
+#&gt; https://doi.org/10.1016/j.urolonc.2018.09.017 ), &lt;URL:
+#&gt; https://doi.org/10.1016/j.urolonc.2018.09.017&gt;.
+#&gt; 
+#&gt; Fantini D, Meeks JJ (2019 ). “Genomic classification and risk
+#&gt; stratification of bladder cancer.  .” _World journal of urology _, *37
+#&gt; *(9 ), 1751-1757 . ISSN 1433-8726 , doi: 10.1007/s00345-018-2558-2
+#&gt; (URL: https://doi.org/10.1007/s00345-018-2558-2 ), &lt;URL:
+#&gt; https://doi.org/10.1007/s00345-018-2558-2&gt;.
+#&gt; 
+#&gt; Fantini D, Meeks JJ (2018 ). “The BBN model: a mouse bladder cancer
+#&gt; model featuring basal-subtype gene expression and MLL3/MLL4 genetic
+#&gt; disruption.  .” _Oncoscience _, *5 *(5-6 ), 172-173 . ISSN 2331-4737 ,
+#&gt; doi: 10.18632/oncoscience.439 (URL:
+#&gt; https://doi.org/10.18632/oncoscience.439 ), &lt;URL:
+#&gt; https://doi.org/10.18632/oncoscience.439&gt;.
+#&gt; 
+#&gt; Wang L, Zhao Z, Ozark PA, Fantini D, Marshall SA, Rendleman EJ,
+#&gt; Cozzolino KA, Louis N, He X, Morgan MA, Takahashi Y, Collings CK, Smith
+#&gt; ER, Ntziachristos P, Savas JN, Zou L, Hashizume R, Meeks JJ,
+#&gt; Shilatifard A (2018 ). “Resetting the epigenetic balance of Polycomb
+#&gt; and COMPASS function at enhancers for cancer therapy.  .” _Nature
+#&gt; medicine _, *24 *(6 ), 758-769 . ISSN 1546-170X , doi:
+#&gt; 10.1038/s41591-018-0034-6 (URL:
+#&gt; https://doi.org/10.1038/s41591-018-0034-6 ), &lt;URL:
+#&gt; https://doi.org/10.1038/s41591-018-0034-6&gt;.
+#&gt; 
+#&gt; Glaser AP, Fantini D, Wang Y, Yu Y, Rimar KJ, Podojil JR, Miller SD,
+#&gt; Meeks JJ (2018 ). “APOBEC-mediated mutagenesis in urothelial carcinoma
+#&gt; is associated with improved survival, mutations in DNA damage response
+#&gt; genes, and immune response.  .” _Oncotarget _, *9 *(4 ), 4537-4548 .
+#&gt; ISSN 1949-2553 , doi: 10.18632/oncotarget.23344 (URL:
+#&gt; https://doi.org/10.18632/oncotarget.23344 ), &lt;URL:
+#&gt; https://doi.org/10.18632/oncotarget.23344&gt;.
+#&gt; 
+#&gt; Fantini D, Glaser AP, Rimar KJ, Wang Y, Schipma M, Varghese N,
+#&gt; Rademaker A, Behdad A, Yellapa A, Yu Y, Sze CC, Wang L, Zhao Z,
+#&gt; Crawford SE, Hu D, Licht JD, Collings CK, Bartom E, Theodorescu D,
+#&gt; Shilatifard A, Meeks JJ (2018 ). “A Carcinogen-induced mouse model
+#&gt; recapitulates the molecular alterations of human muscle invasive
+#&gt; bladder cancer.  .” _Oncogene _, *37 *(14 ), 1911-1925 . ISSN 1476-5594
+#&gt; , doi: 10.1038/s41388-017-0099-6 (URL:
+#&gt; https://doi.org/10.1038/s41388-017-0099-6 ), &lt;URL:
+#&gt; https://doi.org/10.1038/s41388-017-0099-6&gt;.
+#&gt; </div><div class='input'>
 
 <span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>modl</span>, <span class='va'>bib</span>, <span class='va'>bib2</span>, <span class='va'>r</span>, <span class='va'>rds</span><span class='op'>)</span><span class='op'>)</span>
 </div></pre>
