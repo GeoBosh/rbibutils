@@ -1,3 +1,8 @@
+# rbibutils 2.2.1 (CRAN)
+
+- fixed problems revealed by valgrind.
+
+
 # rbibutils 2.2 (CRAN)
 
 - new convenience function `charToBib` takes input from a character vector
