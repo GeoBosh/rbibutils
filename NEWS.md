@@ -1,3 +1,15 @@
+# rbibutils 2.2.2
+
+- import of `Pubmed XML` was sometimes giving a handful of references for files
+  with tens or hundreds of them. Now fixed, see issue #4, reported by Rafael
+  Santamaría).
+
+  (The function reading the file was implicitly assuming that the end of each
+  reference is on a line by itself and was silently ignoring text on the same
+  line after the end of reference tag. Reference files from online databases
+  often have no new lines at all, except for the XML header.)
+
+
 # rbibutils 2.2.1 (CRAN)
 
 - fixed problems revealed by valgrind.

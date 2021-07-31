@@ -98,7 +98,33 @@ medin_readf( FILE *fp, char *buf, int bufsize, int *bufpos, str *line, str *refe
 	char *startptr = NULL, *endptr;
 	int haveref = 0, inref = 0, file_charset = CHARSET_UNKNOWN, m, type = -1;
 	str_init( &tmp );
-	while ( !haveref && str_fget( fp, buf, bufsize, bufpos, line ) ) {
+	// while ( !haveref && str_fget( fp, buf, bufsize, bufpos, line ) ) {
+	// 	if ( line->data ) {
+	// 		m = xml_getencoding( line );
+	// 		if ( m!=CHARSET_UNKNOWN ) file_charset = m;
+	// 	}
+	// 	if ( line->data ) {
+	// 		startptr = medin_findstartwrapper( line->data, &type );
+	// 	}
+	// 	if ( startptr || inref ) {
+	// 		if ( inref ) str_strcat( &tmp, line );
+	// 		else {
+	// 			str_strcatc( &tmp, startptr );
+	// 			inref = 1;
+	// 		}
+	// 		endptr = medin_findendwrapper( str_cstr( &tmp ), type );
+	// 		if ( endptr ) {
+	// 			str_segcpy( reference, str_cstr( &tmp ), endptr );
+	// 			haveref = 1;
+	// 		}
+	// 	}
+	// }
+
+	// Georgi: bugfix: issue #4
+	//
+	//         The above code doesn't work properly if the end of a reference is not on a
+	//         line by itself (it drops all text on the line after the end of the reference).
+	do {
 		if ( line->data ) {
 			m = xml_getencoding( line );
 			if ( m!=CHARSET_UNKNOWN ) file_charset = m;
@@ -112,13 +138,16 @@ medin_readf( FILE *fp, char *buf, int bufsize, int *bufpos, str *line, str *refe
 				str_strcatc( &tmp, startptr );
 				inref = 1;
 			}
+			str_empty( line );  // Georgi
 			endptr = medin_findendwrapper( str_cstr( &tmp ), type );
 			if ( endptr ) {
 				str_segcpy( reference, str_cstr( &tmp ), endptr );
+				str_strcpyc( line, endptr ); // Georgi: leave unprocessed stuff in line
 				haveref = 1;
 			}
 		}
-	}
+	} while ( !haveref && str_fget( fp, buf, bufsize, bufpos, line ) ) ;
+	
 	str_free( &tmp );
 	*fcharset = file_charset;
 	return haveref;

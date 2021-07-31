@@ -13,6 +13,7 @@ test_that("bibConvert works ok", {
     ## file.path here is more logical anyway
     endx_in <- file.path(bibdir, "endnote.xml")
     med_in  <- file.path(bibdir, "easyPubMedvig.xml")
+    med_in_no_new_lines <- file.path(bibdir, "easyPubMedvig_no_new_lines.xml")
     bibacc  <- file.path(bibdir, "latin1accents_utf8.bib")
     end_in  <- file.path(bibdir, "Putnam1992.end")
     litprog280_bib <- file.path(bibdir, "litprog280.bib")
@@ -106,6 +107,16 @@ test_that("bibConvert works ok", {
     bibConvert(med_in, tmp_bib, informat = "med", outformat = "biblatex", options = c(nb = ""))
     expect_known_value(readLines(tmp_bib), "med2bib.rds", update = FALSE)
 
+    ## issue #4
+    tmp_meda <- tempfile()
+    tmp_medb <- tempfile()
+    bibConvert(infile = med_in,              outfile = tmp_meda, informat = "med", outformat = "bib")
+    bibConvert(infile = med_in_no_new_lines, outfile = tmp_medb, informat = "med", outformat = "bib")
+    expect_identical(readLines(tmp_meda), readLines(tmp_medb))
+    unlink(tmp_meda)
+    unlink(tmp_medb)
+    
+    
     ## this assignment was used when the above lines were commented out during memory leak tests.
     ##   (but it causes check error on Windows due to BOM)
     ## tmp_bib <- file.path(bibdir, "bib_from_medin.bib")
