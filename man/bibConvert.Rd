@@ -186,6 +186,12 @@ bibConvert(infile, outfile, informat, outformat, \dots, tex, encoding,
   \item{outfile}{name of the output file,}
   \item{nref_in}{number of references read from the input file,}
   \item{nref_out}{number of references written to the output file.}
+
+  Normally, \code{nref_in} and \code{nref_out} are the same. If some
+  references were imported successfully but failed on export,
+  \code{nref_out} may be smaller than \code{nref_in}. In such cases
+  informative messages are printed during processing. (If this happens
+  silently, it is probably a bug and please create an issue on Github.)
   
 }
 \author{Georgi N. Boshnakov}

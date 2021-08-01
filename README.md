@@ -5,8 +5,8 @@
 [![codecov](https://codecov.io/gh/GeoBosh/rbibutils/branch/master/graph/badge.svg?token=SNUE0KC0TX)](https://codecov.io/gh/GeoBosh/rbibutils)
 
 Read and write 'BibTeX' files. Convert bibliography files between various
-formats, including BibTeX, BibLaTeX, EndNote and Bibentry. Includes an R port
-of the `bibutils` utilities.
+formats, including BibTeX, BibLaTeX, PubMed, EndNote and Bibentry. Includes an R
+port of the `bibutils` utilities.
 
 
 # Installing rbibutils
@@ -24,10 +24,10 @@ You can also install the [development version](https://github.com/GeoBosh/rbibut
 
 # Overview
 
-Read and write 'BibTeX' files. Convert bibliography files between various
-formats.  All formats supported by the `bibutils` utilities are available.  In
-addition, conversion from and to `bibentry`, the R native representation based
-on Bibtex, is supported.
+Import and export 'BibTeX' files. Convert bibliography files between various
+formats.  All formats supported by the `bibutils` utilities are available, see
+`bibConvert()` for a complete list.  In addition, conversion from and to
+`bibentry`, the R native representation based on Bibtex, is supported.
 
 `readBib()` and `writeBib()` import/export BiBTeX files.  `readBibentry()` and
 `writeBibentry()` import/export `R` source files in which the references are
@@ -36,12 +36,12 @@ represented by `bibentry()` calls.
 The convenience function `charToBib()` takes input from a character vector,
 rather than a file. It calls `readBib()` or `bibConvert()`.
 
-`bibConvert()` an input bibliography file in one of the supported formats,
+`bibConvert()` takes an input bibliography file in one of the supported formats,
 converts its contents to another format, and writes the result to a file. All
 formats, except for `rds` (see below) are plain text files. `bibConvert()` tries
 to infer the input/output formats from the file extentions. There is ambiguity
 however about `bib` files, which can be either Bibtex or Biblatex. Bibtex is
-assumed if the format is not specified. also, the `xml` extension is shared by
+assumed if the format is not specified. Also, the `xml` extension is shared by
 XML-based formats. Its default is 'XML MODS intermediate' format.
 
 The default encoding is UTF-8 for both, input and output. All encodings handled
@@ -123,6 +123,7 @@ Convert Bibtex file `myfile.bib` to Bibentry and save as `rds` or `R`:
 
 Read back the above files and/or convert them to other formats:
 
+    readLines("myfile.R")
     file.show("myfile.R")
     readRDS("myfile.rds")
     bibConvert("myfile.rds", "myfile.bib")
@@ -133,3 +134,12 @@ Assuming `myfile.bib` is a Biblatex file, convert it to Bibtex and save to  `bib
 
     bibConvert("myfile.bib", "bibtex.bib", "biblatex", "bibtex")
     bibConvert("myfile.bib", "bibtex.bib", "biblatex")
+
+
+Assuming "myfile.med" is a PubMed file, convert it to Bibtex:
+
+    bibConvert(infile = "myfile.med", outfile = "bibtex.bib", informat = "med", outformat = "bib")
+    bibConvert(infile = "myfile.med", outfile = "bibtex.bib", informat = "med") # same
+
+
+See `bibConvert()` for further examples and their results.
