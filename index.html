@@ -36,7 +36,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">rbibutils</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.2.3</span>
       </span>
     </div>
 
@@ -76,7 +76,7 @@
   <div class="contents col-md-9">
 
 
-<p>Read and write ‘BibTeX’ files. Convert bibliography files between various formats, including BibTeX, BibLaTeX, EndNote and Bibentry. Includes an R port of the <code>bibutils</code> utilities.</p>
+<p>Read and write ‘BibTeX’ files. Convert bibliography files between various formats, including BibTeX, BibLaTeX, PubMed, EndNote and Bibentry. Includes an R port of the <code>bibutils</code> utilities.</p>
 <div id="installing-rbibutils" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#installing-rbibutils" class="anchor"></a>Installing rbibutils</h1></div>
@@ -89,10 +89,10 @@
 <div id="overview" class="section level1">
 <h1 class="hasAnchor">
 <a href="#overview" class="anchor"></a>Overview</h1>
-<p>Read and write ‘BibTeX’ files. Convert bibliography files between various formats. All formats supported by the <code>bibutils</code> utilities are available. In addition, conversion from and to <code>bibentry</code>, the R native representation based on Bibtex, is supported.</p>
+<p>Import and export ‘BibTeX’ files. Convert bibliography files between various formats. All formats supported by the <code>bibutils</code> utilities are available, see <code><a href="reference/bibConvert.html">bibConvert()</a></code> for a complete list. In addition, conversion from and to <code>bibentry</code>, the R native representation based on Bibtex, is supported.</p>
 <p><code><a href="reference/readBib.html">readBib()</a></code> and <code><a href="reference/readBib.html">writeBib()</a></code> import/export BiBTeX files. <code><a href="reference/readBibentry.html">readBibentry()</a></code> and <code><a href="reference/readBibentry.html">writeBibentry()</a></code> import/export <code>R</code> source files in which the references are represented by <code><a href="https://rdrr.io/r/utils/bibentry.html">bibentry()</a></code> calls.</p>
 <p>The convenience function <code><a href="reference/readBib.html">charToBib()</a></code> takes input from a character vector, rather than a file. It calls <code><a href="reference/readBib.html">readBib()</a></code> or <code><a href="reference/bibConvert.html">bibConvert()</a></code>.</p>
-<p><code><a href="reference/bibConvert.html">bibConvert()</a></code> an input bibliography file in one of the supported formats, converts its contents to another format, and writes the result to a file. All formats, except for <code>rds</code> (see below) are plain text files. <code><a href="reference/bibConvert.html">bibConvert()</a></code> tries to infer the input/output formats from the file extentions. There is ambiguity however about <code>bib</code> files, which can be either Bibtex or Biblatex. Bibtex is assumed if the format is not specified. also, the <code>xml</code> extension is shared by XML-based formats. Its default is ‘XML MODS intermediate’ format.</p>
+<p><code><a href="reference/bibConvert.html">bibConvert()</a></code> takes an input bibliography file in one of the supported formats, converts its contents to another format, and writes the result to a file. All formats, except for <code>rds</code> (see below) are plain text files. <code><a href="reference/bibConvert.html">bibConvert()</a></code> tries to infer the input/output formats from the file extentions. There is ambiguity however about <code>bib</code> files, which can be either Bibtex or Biblatex. Bibtex is assumed if the format is not specified. Also, the <code>xml</code> extension is shared by XML-based formats. Its default is ‘XML MODS intermediate’ format.</p>
 <p>The default encoding is UTF-8 for both, input and output. All encodings handled by <code>bibutils</code> are supported. Besides UTF-8, these include <code>gb18030</code> (Chinese), ISO encodings such as <code>iso8859_1</code>, Windows code pages (e.g. <code>cp1251</code> for Windows Cyrillic) and many others. Common alternative names are also accepted (e.g. <code>latin1</code>).</p>
 <p>Bibentry objects can be input from an <code>R</code> source file or from an <code>rds</code> file. The <code>rds</code> file should contain a <code>bibentry</code> R object, saved from R with <code><a href="https://rdrr.io/r/base/readRDS.html">saveRDS()</a></code>. The <code>rds</code> format is a compressed binary format`. Alternatively, an R source file containing one or more bibentry instructions and maybe other commands can be used. The R file is sourced and all bibentry objects created by it are collected.</p>
 </div>
@@ -136,13 +136,18 @@
 <div class="sourceCode" id="cb10"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="kw">bibConvert</span>(<span class="st">"myfile.bib"</span>, <span class="st">"myfile.rds"</span>)</span>
 <span id="cb10-2"><a href="#cb10-2"></a><span class="kw">bibConvert</span>(<span class="st">"myfile.bib"</span>, <span class="st">"myfile.R"</span>)</span></code></pre></div>
 <p>Read back the above files and/or convert them to other formats:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="kw">file.show</span>(<span class="st">"myfile.R"</span>)</span>
-<span id="cb11-2"><a href="#cb11-2"></a><span class="kw">readRDS</span>(<span class="st">"myfile.rds"</span>)</span>
-<span id="cb11-3"><a href="#cb11-3"></a><span class="kw">bibConvert</span>(<span class="st">"myfile.rds"</span>, <span class="st">"myfile.bib"</span>)</span>
-<span id="cb11-4"><a href="#cb11-4"></a><span class="kw">bibConvert</span>(<span class="st">"myfile.R"</span>, <span class="st">"myfile.bib"</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="kw">readLines</span>(<span class="st">"myfile.R"</span>)</span>
+<span id="cb11-2"><a href="#cb11-2"></a><span class="kw">file.show</span>(<span class="st">"myfile.R"</span>)</span>
+<span id="cb11-3"><a href="#cb11-3"></a><span class="kw">readRDS</span>(<span class="st">"myfile.rds"</span>)</span>
+<span id="cb11-4"><a href="#cb11-4"></a><span class="kw">bibConvert</span>(<span class="st">"myfile.rds"</span>, <span class="st">"myfile.bib"</span>)</span>
+<span id="cb11-5"><a href="#cb11-5"></a><span class="kw">bibConvert</span>(<span class="st">"myfile.R"</span>, <span class="st">"myfile.bib"</span>)</span></code></pre></div>
 <p>Assuming <code>myfile.bib</code> is a Biblatex file, convert it to Bibtex and save to <code>bibtex.bib</code>:</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="kw">bibConvert</span>(<span class="st">"myfile.bib"</span>, <span class="st">"bibtex.bib"</span>, <span class="st">"biblatex"</span>, <span class="st">"bibtex"</span>)</span>
 <span id="cb12-2"><a href="#cb12-2"></a><span class="kw">bibConvert</span>(<span class="st">"myfile.bib"</span>, <span class="st">"bibtex.bib"</span>, <span class="st">"biblatex"</span>)</span></code></pre></div>
+<p>Assuming “myfile.med” is a PubMed file, convert it to Bibtex:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="kw">bibConvert</span>(<span class="dt">infile =</span> <span class="st">"myfile.med"</span>, <span class="dt">outfile =</span> <span class="st">"bibtex.bib"</span>, <span class="dt">informat =</span> <span class="st">"med"</span>, <span class="dt">outformat =</span> <span class="st">"bib"</span>)</span>
+<span id="cb13-2"><a href="#cb13-2"></a><span class="kw">bibConvert</span>(<span class="dt">infile =</span> <span class="st">"myfile.med"</span>, <span class="dt">outfile =</span> <span class="st">"bibtex.bib"</span>, <span class="dt">informat =</span> <span class="st">"med"</span>) <span class="co"># same</span></span></code></pre></div>
+<p>See <code><a href="reference/bibConvert.html">bibConvert()</a></code> for further examples and their results.</p>
 </div>
 </div>
 
