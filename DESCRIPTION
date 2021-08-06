@@ -32,3 +32,4 @@ Imports: utils, tools
 Suggests: testthat
 Encoding: UTF-8
 NeedsCompilation: yes
+Config/Needs/memcheck: devtools, rcmdcheck
