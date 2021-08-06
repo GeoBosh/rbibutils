@@ -363,7 +363,7 @@ Chris Putnam (2020).
 #&gt; [1] "/Users/runner/work/_temp/Library/rbibutils/bib/ex0.biblatex"
 #&gt; 
 #&gt; $outfile
-#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpnMyQPv/file17db5f8255a5.xml"
+#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpPTNc5P/file7e157d8e473.xml"
 #&gt; 
 #&gt; $nref_in
 #&gt; [1] 3
@@ -380,7 +380,7 @@ Chris Putnam (2020).
 #&gt; [1] "/Users/runner/work/_temp/Library/rbibutils/bib/ex0.biblatex"
 #&gt; 
 #&gt; $outfile
-#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpnMyQPv/file17db65c4f49f.bib"
+#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpPTNc5P/file7e1607e6713.bib"
 #&gt; 
 #&gt; $nref_in
 #&gt; [1] 3
@@ -393,7 +393,7 @@ Chris Putnam (2020).
 <span class='va'>rds</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span><span class='op'>(</span>fileext <span class='op'>=</span> <span class='st'>".rds"</span><span class='op'>)</span>
 <span class='va'>fn_biblatex</span>
 </div><div class='output co'>#&gt; [1] "/Users/runner/work/_temp/Library/rbibutils/bib/ex0.biblatex"</div><div class='input'><span class='va'>rds</span>
-</div><div class='output co'>#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpnMyQPv/file17db62dcef41.rds"</div><div class='input'><span class='va'>be</span> <span class='op'>&lt;-</span> <span class='fu'>bibConvert</span><span class='op'>(</span><span class='va'>fn_biblatex</span>, <span class='va'>rds</span>, <span class='st'>"biblatex"</span>, <span class='st'>"bibentry"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpPTNc5P/file7e14fe4676e.rds"</div><div class='input'><span class='va'>be</span> <span class='op'>&lt;-</span> <span class='fu'>bibConvert</span><span class='op'>(</span><span class='va'>fn_biblatex</span>, <span class='va'>rds</span>, <span class='st'>"biblatex"</span>, <span class='st'>"bibentry"</span><span class='op'>)</span>
 <span class='va'>bea</span> <span class='op'>&lt;-</span> <span class='fu'>bibConvert</span><span class='op'>(</span><span class='va'>fn_biblatex</span>, <span class='va'>rds</span>, <span class='st'>"biblatex"</span><span class='op'>)</span> <span class='co'># same</span>
 <span class='fu'><a href='https://rdrr.io/r/base/readRDS.html'>readRDS</a></span><span class='op'>(</span><span class='va'>rds</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Beach CM, Davidson R (1983). “Distribution-free statistical inference
@@ -414,7 +414,7 @@ Chris Putnam (2020).
 #&gt; [1] "/Users/runner/work/_temp/Library/rbibutils/bib/ex0.biblatex"
 #&gt; 
 #&gt; $outfile
-#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpnMyQPv/file17db79e10339.R"
+#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpPTNc5P/file7e17be3e77f.R"
 #&gt; 
 #&gt; $nref_in
 #&gt; [1] 3
@@ -483,10 +483,10 @@ Chris Putnam (2020).
 <span class='co'>## now take the bib file and convert it to UTF-8</span>
 <span class='fu'>bibConvert</span><span class='op'>(</span><span class='va'>bib</span>, <span class='va'>bib2</span>, encoding <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"cp1251"</span>, <span class='st'>"utf8"</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $infile
-#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpnMyQPv/file17db65c4f49f.bib"
+#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpPTNc5P/file7e1607e6713.bib"
 #&gt; 
 #&gt; $outfile
-#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpnMyQPv/file17db659826eb.bib"
+#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpPTNc5P/file7e1aa141e3.bib"
 #&gt; 
 #&gt; $nref_in
 #&gt; [1] 2
@@ -520,7 +520,7 @@ Chris Putnam (2020).
 #&gt; [1] "/Users/runner/work/_temp/Library/rbibutils/bib/easyPubMedvig.xml"
 #&gt; 
 #&gt; $outfile
-#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpnMyQPv/file17db65c4f49f.bib"
+#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpPTNc5P/file7e1607e6713.bib"
 #&gt; 
 #&gt; $nref_in
 #&gt; [1] 6
@@ -533,7 +533,7 @@ Chris Putnam (2020).
 #&gt; [1] "/Users/runner/work/_temp/Library/rbibutils/bib/easyPubMedvig.xml"
 #&gt; 
 #&gt; $outfile
-#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpnMyQPv/file17db62dcef41.rds"
+#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpPTNc5P/file7e14fe4676e.rds"
 #&gt; 
 #&gt; $nref_in
 #&gt; [1] 6
