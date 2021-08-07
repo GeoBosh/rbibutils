@@ -1,3 +1,5 @@
+^src/.*\.diff
+^memcheck$
 ^TODO.org
 ^revdep$
 ^auto$

@@ -1,7 +1,7 @@
 # rbibutils 2.2.3 (CRAN)
 
 - fixed memory issues from valgrind in v2.2.2 with patch supplied by Bill
-  Dunlap. (The bug had been introduced in Github commit 20efd6 on 4 Jul 2020.
+  Dunlap. (The bug had been introduced in Github commit 20efd6 on 4 Jul 2020.)
 
 
 # rbibutils 2.2.2 (CRAN)
