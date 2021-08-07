@@ -251,7 +251,7 @@ str_initalloc( str *s, unsigned long minsize )
        //    The data is not really left uninitialised and there may be a better way to let the compiler know.
         // WWD: fixing str_strcpy_internal takes care of memory misuse.
        //
-       // s->data = (char *) calloc( size, sizeof( *(s->data) ) );
+s->data = (char *) calloc( size, sizeof( *(s->data) ) );
        if ( !s->data ) {
          error("Error.  Cannot allocate memory in str_initalloc, requested %lu characters.\n\n", size );
          // error("\n"); // error( EXIT_FAILURE );
@@ -554,7 +554,6 @@ str_strcpy_internal( str *s, const char *p, unsigned long n )
        //   strcpy cannot be used here since at least one of the calls below
        //   passes a non-NULL terminated 'p'
        // strncpy( s->data, p, n + 1); // WWD: ???
-s->data[n] = '\0';
        strncpy( s->data, p, n );
        s->data[n] = '\0';
        s->len = n;
