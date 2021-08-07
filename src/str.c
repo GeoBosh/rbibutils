@@ -214,11 +214,11 @@ str_mergestrs( str *s, ... )
 static void 
 str_initalloc( str *s, unsigned long minsize )
 {
-	unsigned long size = str_initlen;
-	assert( s );
-	if ( minsize > str_initlen ) size = minsize;
-	// 2021-06-16 was: s->data = (char *) malloc( sizeof( *(s->data) ) * size );
-	//     changing to calloc() to avoid this kind of error from valgrind:
+       unsigned long size = str_initlen;
+       assert( s );
+       if ( minsize > str_initlen ) size = minsize;
+       s->data = (char *) malloc( sizeof( *(s->data) ) * size );
+       //     tried changing to calloc() to avoid this kind of error from valgrind:
         //      > bibConvert(fn_med, bib, informat = "med")
         //      ==16041== Conditional jump or move depends on uninitialised value(s)
         //      ==16041==    at 0x10CCF2A3: xml_processtag (xml.c:174)
@@ -246,14 +246,15 @@ str_initalloc( str *s, unsigned long minsize )
         //      ==16041==    by 0x10C98B64: bibprog (bibprog.c:36)
         //      ==16041==    by 0x10C889EC: any2xml_main (any2xml.c:127)
         //      ==16041==    by 0x494E7AD: do_dotCode (dotcode.c:1811)
-	//
-	// TODO: 
-	//    The data is not really left uninitialised and there may be a better way to let the compiler know.
-	//
-	s->data = (char *) calloc( size, sizeof( *(s->data) ) );
-	if ( !s->data ) {
-	  error("Error.  Cannot allocate memory in str_initalloc, requested %lu characters.\n\n", size );
-	  // error("\n"); // error( EXIT_FAILURE );
+       //
+       // TODO:
+       //    The data is not really left uninitialised and there may be a better way to let the compiler know.
+        // WWD: fixing str_strcpy_internal takes care of memory misuse.
+       //
+       // s->data = (char *) calloc( size, sizeof( *(s->data) ) );
+       if ( !s->data ) {
+         error("Error.  Cannot allocate memory in str_initalloc, requested %lu characters.\n\n", size );
+         // error("\n"); // error( EXIT_FAILURE );
 	}
 	s->data[0]='\0';
 	s->dim=size;
@@ -549,15 +550,14 @@ str_strcpy_internal( str *s, const char *p, unsigned long n )
 	return_if_memerr( s );
 
 	str_strcpy_ensurespace( s, n );
-	// Georgi: this fixes the warning about truncation in strncpy
-	//   strcpy cannot be used here since at least one of the calls below
-	//   passes a non-NULL terminated 'p'
-	strncpy( s->data, p, n + 1);
-	// strncpy( s->data, p, n );
-	// s->data[n] = '\0';
-	s->len = n;
+       // Georgi: this fixes the warning about truncation in strncpy
+       //   strcpy cannot be used here since at least one of the calls below
+       //   passes a non-NULL terminated 'p'
+       // strncpy( s->data, p, n + 1); // WWD: ???
+       strncpy( s->data, p, n );
+       s->data[n] = '\0';
+       s->len = n;
 }
-
 void
 str_strcpy( str *s, str *from )
 {
