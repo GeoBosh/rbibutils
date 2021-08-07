@@ -554,6 +554,7 @@ str_strcpy_internal( str *s, const char *p, unsigned long n )
        //   strcpy cannot be used here since at least one of the calls below
        //   passes a non-NULL terminated 'p'
        // strncpy( s->data, p, n + 1); // WWD: ???
+s->data[n] = '\0';
        strncpy( s->data, p, n );
        s->data[n] = '\0';
        s->len = n;
