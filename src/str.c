@@ -251,7 +251,7 @@ str_initalloc( str *s, unsigned long minsize )
        //    The data is not really left uninitialised and there may be a better way to let the compiler know.
         // WWD: fixing str_strcpy_internal takes care of memory misuse.
        //
-s->data = (char *) calloc( size, sizeof( *(s->data) ) );
+       // s->data = (char *) calloc( size, sizeof( *(s->data) ) );
        if ( !s->data ) {
          error("Error.  Cannot allocate memory in str_initalloc, requested %lu characters.\n\n", size );
          // error("\n"); // error( EXIT_FAILURE );
@@ -553,10 +553,43 @@ str_strcpy_internal( str *s, const char *p, unsigned long n )
        // Georgi: this fixes the warning about truncation in strncpy
        //   strcpy cannot be used here since at least one of the calls below
        //   passes a non-NULL terminated 'p'
+       //
        // strncpy( s->data, p, n + 1); // WWD: ???
-       strncpy( s->data, p, n );
+       //
+       // n + 1 above since strncpy( s->data, p, n ); triggers a compiler complaint on
+       // Windows (R devel, release, oldrel; but not on R 3.3):
+       //   str.c:557:8: warning: 'strncpy' output truncated before terminating nul
+       //	         copying as many bytes from a string as its length
+       //                [-Wstringop-truncation]
+       // Don't know why the warning is on Windows only, especially as the compiler
+       // doesn't complain about assigning to s->data[n] but copying n + 1 bytes seems
+       // harmless (the last byte would be either null or the next byte in the source
+       // string, in both cases immediately overwitten). I see two possible problems
+       // with this:
+       //     1) in principle, p may be pointing to a non-null terminated chunk
+       //        of memory, in which case the chunk may not have n+1 byte allocated
+       //        (which would explain the 1 byte unallocated memory  error in v2.2.2).
+       //     2) p[n-1] may be 0, the terminating byte of the string. This is clearly
+       //        not the intention (assignments s->data[n] = '\0'; s->len = n;) but 
+       //        may be due to upstream error(s). In this case there is no guarantee
+       //        that the (n+1)th byte is allocated and/or initialised.
+       //
+       // Both can explain the 1 byte unallocated memory error in v2.2.2.
+
+       // Switching to memcpy() to fix the warning about truncation in strncpy.
+       //
+       // memcpy() is not completely equivalent to strncpy(), since the latter
+       // handles the case when p points to a shorter string. But as far as I can
+       // see, the callers of str_strcpy_internal really require n bytes to be copied
+       // and the assignment s->len = n; assumes that the copied string does not
+       // contain null bytes.
+       //
+       // strncpy( s->data, p, n);
+       memcpy( s->data, p, n);
        s->data[n] = '\0';
        s->len = n;
+       // if(strlen(s->data) != n)
+       //     error("\n\tinconsistency!\n");
 }
 void
 str_strcpy( str *s, str *from )
