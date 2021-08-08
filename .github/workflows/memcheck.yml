@@ -16,7 +16,7 @@ jobs:
   mem-check:
     runs-on: ubuntu-20.04
 
-    name: valgrind, ubuntu-20.04, R release
+    name: valgrind, ubuntu-20.04, R devel
 
     env:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
