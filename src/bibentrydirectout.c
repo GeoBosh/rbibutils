@@ -403,6 +403,8 @@ name_build_bibentry_direct( str *s, const char *p )
 
 	str_empty( s );
 
+REprintf( "\n(name_build_bibentry_direct input) %s \n ", p );
+ 
 	suffix = strstr( p, "||" );
 	if ( suffix ) stopat = suffix;
 	else stopat = strchr( p, '\0' );
@@ -470,7 +472,7 @@ name_build_bibentry_direct( str *s, const char *p )
 
 	 str_strcatc( s, ")"); // closes person( ... )
 
-
+REprintf( "\n(name_build_bibentry_direct ouput) %s \n ", s->data );
 
 
 

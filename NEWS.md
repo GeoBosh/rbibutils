@@ -1,3 +1,19 @@
+# rbibutils 2.2.3.9000
+
+- fixed the handling of accents over `i` in authors' names when the LaTeX
+  escapes are not converted to real characters (there were no problems when
+  converted to UTF-8).
+
+  - `\i` in authors' names was messing up the following character (issue#5).
+
+  - stopped converting `\'\i'` to `\'i`. They are equivalent but there is no
+    reason to do this. Also, at the time of writing R's `tools::latexToUtf8`
+    converts the former but not the latter, while Biber seems to convert the
+    latter but not the former, see
+    https://bugs.r-project.org/show_bug.cgi?id=18208 . So, users of the bib file
+    may have specific reasons to use one or the other.
+    
+
 # rbibutils 2.2.3 (CRAN)
 
 - fixed memory issues from valgrind in v2.2.2 thanks to patch supplied by Bill
@@ -75,6 +91,9 @@
 
 - now a warning (rather than error) is issued if package 'testthat' is not
   available for tests.
+
+- `readBib` now has a default for the encoding, so it would usually be called
+   just with one argument (the filename).
 
 
 # rbibutils 2.1 (CRAN)
