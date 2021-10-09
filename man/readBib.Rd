@@ -147,6 +147,16 @@ writeBib(bibs, fn)
 ## see the contents of the file
 readLines(fn) # or: file.show(fn)
 
+## import a bib file containing Chineese characters encoded with UTF-8:
+ch_bib <- readBib(system.file("bib/xeCJK_utf8.bib", package = "rbibutils"))
+ch_bib
+print(ch_bib, style = "R")
+
+## import a bib file encoded with the official Chineese encoding:
+ch_bib2 <- readBib(system.file("bib/xeCJK_gb18030.bib", package = "rbibutils"),
+                   encoding = "gb18030")
+
+
 ## a dummy reference with accented characters
 ## (in the file some are uft8, others are TeX escapes)
 bibacc <- system.file("bib/latin1accents_utf8.bib", package = "rbibutils")

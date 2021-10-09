@@ -278,7 +278,18 @@ test_that("bibRead works ok", {
 
     expect_output(print(b1, style = "latex"))
 
-
+    
+    xeCJK_utf8    <- system.file("bib", "xeCJK_utf8.bib", package = "rbibutils")
+    xeCJK_gb18030 <- system.file("bib", "xeCJK_gb18030.bib", package = "rbibutils")
+    fn_gb18030 <- tempfile(fileext = ".bib")
+    on.exit(unlink(fn_gb18030))
+    
+    ## TODO: the encoding for authors is not handled correctly ('title' is fine)
+    bibConvert(xeCJK_utf8, fn_gb18030, encoding = c("utf8", "gb18030"))
+    
+    obj1 <- readBib(xeCJK_gb18030, encoding = "gb18030")
+    obj2 <- readBib(xeCJK_utf8)
+    ## expect_equal(obj1, obj2) # see above TODO for the reason to comment out this line
 })
 
 

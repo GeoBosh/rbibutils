@@ -273,6 +273,21 @@ c <- bibConvert(fn_latin1_utf8, bib , encoding = c("utf8", "latin1"), tex = "no_
 ## this will show properly in Latin-1 locale (or suitable text editor):
 ##cat(readLines(bib), sep = "\n")
 
+## gb18030 example (Chinese)
+##
+## prepare some filenames for the examples below:
+xeCJK_utf8    <- system.file("bib/xeCJK_utf8.bib", package = "rbibutils")
+xeCJK_gb18030 <- system.file("bib/xeCJK_gb18030.bib", package = "rbibutils")
+fn_gb18030 <- tempfile(fileext = ".bib")
+fn_rds <- tempfile(fileext = ".rds")
+
+## input bib file utf8, output bib file gb18030:
+bibConvert(xeCJK_utf8, fn_gb18030, encoding = c("utf8", "gb18030"))
+
+## input bib file utf8, output file rds (and the rds object is returned
+bibConvert(xeCJK_utf8, fn_rds)
+
+
 ## a Pubmed file
 fn_med <- system.file("bib/easyPubMedvig.xml", package = "rbibutils")
 ## convert a Pubmed file to bibtex:
@@ -280,8 +295,8 @@ bibConvert(fn_med, bib, informat = "med")
 ## convert a Pubmed file to rds and import:
 bibConvert(fn_med, rds, informat = "med")
 
-
 unlink(c(modl, bib, bib2, r, rds))
+unlink(c(fn_gb18030, fn_rds))
 }
 \keyword{documentation}
 % use one of  RShowDoc("KEYWORDS")
