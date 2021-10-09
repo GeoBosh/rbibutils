@@ -114,6 +114,20 @@
       <small>Source: <a href='https://github.com/GeoBosh/rbibutils/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="rbibutils-2239000" class="section level1">
+<h1 class="page-header" data-toc-text="2.2.3.9000">
+<a href="#rbibutils-2239000" class="anchor"></a>rbibutils 2.2.3.9000<small> Unreleased </small>
+</h1>
+<ul>
+<li>
+<p>fixed the handling of accents over <code>i</code> in authors’ names when the LaTeX escapes are not converted to real characters (there were no problems when converted to UTF-8).</p>
+<ul>
+<li><p><code>\i</code> in authors’ names was messing up the following character (issue<a href='https://github.com/GeoBosh/rbibutils/issues/5'>#5</a>).</p></li>
+<li><p>stopped converting <code>\'\i'</code> to <code>\'i</code>. They are equivalent but there is no reason to do this. Also, at the time of writing R’s <code><a href="https://rdrr.io/r/tools/parseLatex.html">tools::latexToUtf8</a></code> converts the former but not the latter, while Biber seems to convert the latter but not the former, see <a href="https://bugs.r-project.org/show_bug.cgi?id=18208" class="uri">https://bugs.r-project.org/show_bug.cgi?id=18208</a> . So, users of the bib file may have specific reasons to use one or the other.</p></li>
+</ul>
+</li>
+</ul>
+</div>
     <div id="rbibutils-223-cran" class="section level1">
 <h1 class="page-header" data-toc-text="2.2.3">
 <a href="#rbibutils-223-cran" class="anchor"></a>rbibutils 2.2.3 (CRAN)<small> 2021-08-09 </small>
@@ -162,7 +176,8 @@
 <a href="#rbibutils-211-cran" class="anchor"></a>rbibutils 2.1.1 (CRAN)<small> 2021-04-28 </small>
 </h1>
 <ul>
-<li>now a warning (rather than error) is issued if package ‘testthat’ is not available for tests.</li>
+<li><p>now a warning (rather than error) is issued if package ‘testthat’ is not available for tests.</p></li>
+<li><p><code>readBib</code> now has a default for the encoding, so it would usually be called just with one argument (the filename).</p></li>
 </ul>
 </div>
     <div id="rbibutils-21-cran" class="section level1">
