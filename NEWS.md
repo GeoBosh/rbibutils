@@ -1,8 +1,9 @@
 # rbibutils 2.2.3.9000
 
-- fixed the handling of accents over `i` in authors' names when the LaTeX
+# fixed the handling of accents over `i` in authors' names when the LaTeX
   escapes are not converted to real characters (there were no problems when
-  converted to UTF-8).
+  converted to UTF-8). Reported by Manuel López-Ibáñez with examples (issue #5,
+  #6, #7).
 
   - `\i` in authors' names was messing up the following character (issue#5).
 
@@ -12,6 +13,9 @@
     latter but not the former, see
     https://bugs.r-project.org/show_bug.cgi?id=18208 . So, users of the bib file
     may have specific reasons to use one or the other.
+
+# names consisting of just one part, family, were missing processing of escaped
+  characters (issue #5).
     
 
 # rbibutils 2.2.3 (CRAN)

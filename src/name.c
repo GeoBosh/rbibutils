@@ -318,8 +318,7 @@ name_mutlielement_build( str *name, intlist *given, intlist *family, slist *toke
 		if ( i ) str_addchar( name, ' '  );
 		str_strcat( name, s );
 		case_family |= unicode_utf8_classify_str( s );
-REprintf("name_mutlielement_build: unicode_utf8_classify_str: current_name = %s, case_family = %d\n",
- 	 s->data, case_family);
+		// REprintf("name_mutlielement_build: unicode_utf8_classify_str: current_name = %s, case_family = %d\n", s->data, case_family);
 	}
 
 	/* ...check given name case */
@@ -327,122 +326,218 @@ REprintf("name_mutlielement_build: unicode_utf8_classify_str: current_name = %s,
 		m = intlist_get( given, i );
 		s = slist_str( tokens, m );
 		case_given |= unicode_utf8_classify_str( s );
-REprintf("name_mutlielement_build: unicode_utf8_classify_str: given_name = %s, case_given = %d\n",
-         s->data, case_given);
+		// REprintf("name_mutlielement_build: unicode_utf8_classify_str: given_name = %s, case_given = %d\n", s->data, case_given);
 	}
 
 	if ( ( ( case_family & UNICODE_MIXEDCASE ) == UNICODE_MIXEDCASE ) &&
 	     ( ( case_given  & UNICODE_MIXEDCASE ) == UNICODE_UPPER ) ) {
 		should_split = 1;
 	}
-REprintf("\tshould_split = %d\n", should_split);
+	// REprintf("\tshould_split = %d\n", should_split);
 	
 	str *mys = str_new();
 	for ( i=0; i<given->n; ++i ) {
 		m = intlist_get( given, i );
 		s = slist_str( tokens, m );
-REprintf("\t(name_mutlielement_build) before: given[i] i = %d, %s,", i, s->data);	       
-REprintf(" should_split = %d\n", should_split);
+		// REprintf("\t(name_mutlielement_build) before: given[i] i = %d, %s,", i, s->data);
+		// REprintf(" should_split = %d\n", should_split);
 		if ( !should_split ) {
 			str_addchar( name, '|' );
 			str_strcat( name, s );
 		} else add_given_split( name, s );
 	}    
 
-		// patch TODO: fix properly
-		const char *pastslash;
-		char ch;
+	// patch TODO: fix properly
+	const char *pastslash;
+	char ch;
 		
-		if(str_strstrc(name, "\\")) { // crude patch; TODO: fix somewhere upstream!
-		  str_free(mys);
-		  str_initstr(mys, name);
-		  str_free(name);  // str_init(name);
-
-  REprintf("(name_mutlielement_build) before: %s\n", mys->data);
+	if(str_strstrc(name, "\\")) { // crude patch; TODO: fix somewhere upstream!
+	  str_free(mys);
+	  str_initstr(mys, name);
+	  str_free(name);  // str_init(name);
+	  
+	  // REprintf("(name_mutlielement_build) before: %s\n", mys->data);
 		  
-		  pastslash = str_cattodelim(name, mys->data, "\\", 1);
-		  while( *pastslash  ) {
-		    // Here we are after a backslash
-		    // TODO: can pastslash be NULL?
-		    if(pastslash  && *pastslash) {
-		      if(pastslash[1]) { // the following char is not NULL
-			str_strcatc(name, "{\\");
-			
-			ch = *pastslash;
-			switch(ch) {
-			case 'O':
-			case 'o':
-			  str_addchar( name, *pastslash );
-			  pastslash++;
-			  break;
-			case 'H':
-			case 'c':
-			case 'k':
-			case 'l':
-			case 'b':
-			case 'd':
-			case 'r':
-			case 'u':
-			case 't':
-			case 'v':
-			  str_addchar( name, *pastslash );
-			  pastslash++;
-			  if(*pastslash == ' ') // is this allowed in TeX? anyway, people use
-			    pastslash++;        // it
-			  str_strcatc(name, "{");
-			  str_addchar( name, *pastslash );
-			  str_addchar( name, '}' );
-			  pastslash++;
-	  REprintf("(name_mutlielement_build) nafter:  %s\n", name->data);
-			  break;
-			  
-			case 'i':   // new 2021-10-08, see issues #5-7
-			  str_addchar( name, *pastslash );
-			  pastslash++;
-			  break;
-			  
-			case '\'':
-			  str_addchar( name, *pastslash ); // emit the '
-			  pastslash++;
-			  // pastslash[1] checks that the following char is not NULL
-			  //                                            (it is probably an error if it is)
-			  if(*pastslash == '\\' && pastslash[1]) {
-			    // Georgi (2021-10-09): issues #5-7
-			    //     Don't change  \'\i  to  \'i
-			    //         pastslash++; // just skip '\' for now, so \'\i => \'i
-			    str_addchar( name, *pastslash );       // emit the backslash
-			    pastslash++;
-			  } 
-			  str_addchar( name, *pastslash );
-			  pastslash++;
-			  
-			  break;
-			default: 
-			  str_addchar( name, *pastslash );
-			  str_addchar( name, *(pastslash + 1));
-			  pastslash+=2;
-			}
-			
-			str_addchar( name, '}' );
-		      }
-		      
-          REprintf("(name_mutlielement_build) after if clause:  %s\n", name->data);
-		  
-		    } else {
-		      // just copy the backslash, but this almost certainly should not happen
-		      str_strcatc(name, "\\");
-		    }
+	  pastslash = str_cattodelim(name, mys->data, "\\", 1);
+	  while( *pastslash  ) {
+	    // Here we are after a backslash
+	    // TODO: can pastslash be NULL?
+	    if(pastslash  && *pastslash) {
+	      if(pastslash[1]) { // the following char is not NULL
+		str_strcatc(name, "{\\");
 		
-		    pastslash = str_cattodelim(name, pastslash, "\\", 1);
-		  }
+		ch = *pastslash;
+		switch(ch) {
+		case 'O':
+		case 'o':
+		  str_addchar( name, *pastslash );
+		  pastslash++;
+		  break;
+		case 'H':
+		case 'c':
+		case 'k':
+		case 'l':
+		case 'b':
+		case 'd':
+		case 'r':
+		case 'u':
+		case 't':
+		case 'v':
+		  str_addchar( name, *pastslash );
+		  pastslash++;
+		  if(*pastslash == ' ') // is this allowed in TeX? anyway, people use
+		    pastslash++;        // it
+		  str_strcatc(name, "{");
+		  str_addchar( name, *pastslash );
+		  str_addchar( name, '}' );
+		  pastslash++;
+		  // REprintf("(name_mutlielement_build) nafter:  %s\n", name->data);
+		  break;
+			  
+		case 'i':   // new 2021-10-08, see issues #5-7
+		  str_addchar( name, *pastslash );
+		  pastslash++;
+		  break;
+		  
+		case '\'':
+		  str_addchar( name, *pastslash ); // emit the '
+		  pastslash++;
+		  // pastslash[1] checks that the following char is not NULL
+		  //                                            (it is probably an error if it is)
+		  if(*pastslash == '\\' && pastslash[1]) {
+		    // Georgi (2021-10-09): issues #5-7
+		    //     Don't change  \'\i  to  \'i
+		    //         pastslash++; // just skip '\' for now, so \'\i => \'i
+		    str_addchar( name, *pastslash );       // emit the backslash
+		    pastslash++;
+		  } 
+		  str_addchar( name, *pastslash );
+		  pastslash++;
+		  
+		  break;
+		default: 
+		  str_addchar( name, *pastslash );
+		  str_addchar( name, *(pastslash + 1));
+		  pastslash+=2;
 		}
- 
-
-	REprintf("\t(name_mutlielement_build) after:  name = %s\n", name->data);
 		
-		str_delete(mys);
+		str_addchar( name, '}' );
+	      }
+		      
+	      // REprintf("(name_mutlielement_build) after if clause:  %s\n", name->data);
+		  
+	    } else {
+	      // just copy the backslash, but this almost certainly should not happen
+	      str_strcatc(name, "\\");
+	    }
+		
+	    pastslash = str_cattodelim(name, pastslash, "\\", 1);
+	  }
+	}
+ 
+	// REprintf("\t(name_mutlielement_build) after:  name = %s\n", name->data);
+		
+	str_delete(mys);
 	return 1;
 }
+
+
+static void
+name_fix_latex_escapes( str *name ) {
+	// deals with issue #5 (the part ,
+        // (based on name_mutlielement_build) TODO: change name_mutlielement_build to call to this function?
+	const char *pastslash;
+	char ch;
+	str *mys = str_new();
+		
+	if(str_strstrc(name, "\\")) {
+	  str_initstr(mys, name);
+	  str_free(name);  // str_init(name);
+	  
+	  // REprintf("(name_fix_latex_escapes) before: %s\n", mys->data);
+		  
+	  pastslash = str_cattodelim(name, mys->data, "\\", 1);
+	  while( *pastslash  ) {
+	    // Here we are after a backslash
+	    // TODO: can pastslash be NULL?
+	    if(pastslash  && *pastslash) {
+	      if(pastslash[1]) { // the following char is not NULL
+		str_strcatc(name, "{\\");
+		
+		ch = *pastslash;
+		switch(ch) {
+		case 'O':
+		case 'o':
+		  str_addchar( name, *pastslash );
+		  pastslash++;
+		  break;
+		case 'H':
+		case 'c':
+		case 'k':
+		case 'l':
+		case 'b':
+		case 'd':
+		case 'r':
+		case 'u':
+		case 't':
+		case 'v':
+		  str_addchar( name, *pastslash );
+		  pastslash++;
+		  if(*pastslash == ' ') // is this allowed in TeX? anyway, people use
+		    pastslash++;        // it
+		  str_strcatc(name, "{");
+		  str_addchar( name, *pastslash );
+		  str_addchar( name, '}' );
+		  pastslash++;
+		  // REprintf("(name_fix_latex_escapes) nafter:  %s\n", name->data);
+		  break;
+			  
+		case 'i':   // new 2021-10-08, see issues #5-7
+		  str_addchar( name, *pastslash );
+		  pastslash++;
+		  break;
+		  
+		case '\'':
+		  str_addchar( name, *pastslash ); // emit the '
+		  pastslash++;
+		  // pastslash[1] checks that the following char is not NULL
+		  //                                            (it is probably an error if it is)
+		  if(*pastslash == '\\' && pastslash[1]) {
+		    // Georgi (2021-10-09): issues #5-7
+		    //     Don't change  \'\i  to  \'i
+		    //         pastslash++; // just skip '\' for now, so \'\i => \'i
+		    str_addchar( name, *pastslash );       // emit the backslash
+		    pastslash++;
+		  } 
+		  str_addchar( name, *pastslash );
+		  pastslash++;
+		  
+		  break;
+		default: 
+		  str_addchar( name, *pastslash );
+		  str_addchar( name, *(pastslash + 1));
+		  pastslash+=2;
+		}
+		
+		str_addchar( name, '}' );
+	      }
+		      
+	      // REprintf("(name_fix_latex_escapes) after if clause:  %s\n", name->data);
+		  
+	    } else {
+	      // just copy the backslash, but this almost certainly should not happen
+	      str_strcatc(name, "\\");
+	    }
+		
+	    pastslash = str_cattodelim(name, pastslash, "\\", 1);
+	  }
+	}
+ 
+	// REprintf("\t(name_fix_latex_escapes) after:  name = %s\n", name->data);
+		
+	str_delete(mys);
+}
+
 
 static int
 name_construct_multi( str *outname, slist *tokens, int begin, int end )
@@ -451,18 +546,17 @@ name_construct_multi( str *outname, slist *tokens, int begin, int end )
 	intlist given, family;
 	str *s;
 
- 	REprintf("name_construct_multi (begin): number of tokens: %d, begin: %d, end: %d\n", tokens->n, begin, end);
-  for ( i=begin; i<end; ++i )
-    REprintf( "%s\n", slist_cstr( tokens, i ) );
-  REprintf( "\n" );
-   
+ 	// REprintf("name_construct_multi (begin): number of tokens: %d, begin: %d, end: %d\n", tokens->n, begin, end);
+	// for ( i=begin; i<end; ++i ) REprintf( "%s\n", slist_cstr( tokens, i ) );
+	// REprintf( "\n" );
+	
 	intlist_init( &family );
 	intlist_init( &given );
 
 	str_empty( outname );
-
+	
 	suffix = has_suffix( tokens, begin, end, &suffixpos );
-REprintf( "suffix: %d\n", suffixpos );
+	// REprintf( "suffix: %d\n", suffixpos );
 		  
 	for ( i=begin; i<end && comma==-1; i++ ) {
 		if ( i==suffixpos ) continue;
@@ -492,7 +586,7 @@ REprintf( "suffix: %d\n", suffixpos );
 	intlist_free( &given );
 	intlist_free( &family );
 
-REprintf("\nname_construct_multi (end): outname: %s\n", outname->data);
+// REprintf("\nname_construct_multi (end): outname: %s\n", outname->data);
 	
 	return 1;
 }
@@ -525,18 +619,28 @@ name_addmultielement( fields *info, const char *tag, slist *tokens, int begin, i
 int
 name_addsingleelement( fields *info, const char *tag, const char *name, int level, int asiscorp )
 {
+        // Georgi (2021-10-10): modified
 	int status, ok = 1;
 	str outtag;
+	str outname; // Georgi
 
 	str_init( &outtag );
-
+	// REprintf("\n(name_addsingleelement) input tag: %s\n", tag);
+	// REprintf("(name_addsingleelement) input tag: %s\n", name);
 	str_strcpyc( &outtag, tag );
 	if ( asiscorp == NAME_ASIS ) str_strcatc( &outtag, ":ASIS" );
 	else if ( asiscorp == NAME_CORP ) str_strcatc( &outtag, ":CORP" );
 
-	status = fields_add_can_dup( info, outtag.data, name, level );
+	// Georgi (2021-10-10) new: issue #5; need to potentially process accents like \'e
+	//              (compare to name_addmultielement)
+	str_init( &outname );
+	str_strcpyc( &outname, name);
+	name_fix_latex_escapes( &outname );	
+	
+	status = fields_add_can_dup( info, outtag.data, str_cstr( &outname ), level );
 	if ( status!=FIELDS_OK ) ok = 0;
 
+	str_free( &outname );
 	str_free( &outtag );
 	return ok;
 }

@@ -290,10 +290,17 @@ test_that("bibRead works ok", {
     obj1 <- readBib(xeCJK_gb18030, encoding = "gb18030")
     obj2 <- readBib(xeCJK_utf8)
     ## expect_equal(obj1, obj2) # see above TODO for the reason to comment out this line
+
+
+    ## issue 5
+    issue_5 <- system.file("bib", "issue_5.bib", package = "rbibutils")
+
+    test_5 <- rbibutils::readBib(issue_5, direct = TRUE)
+    expect_known_value(test_5, "issue_5a.rds", FALSE)
+
+    test5_extra <- bibentryExtra(test_5)
+    expect_identical(test5_extra[["x", "author"]]$family, test5_extra[["y", "author"]]$family)
+    
+    expect_known_value(rbibutils::readBib(issue_5, direct=TRUE, encoding = "UTF-8", texChars = "convert"),
+                       "issue_5_utf8.rds", FALSE)
 })
-
-
-
-
-
-

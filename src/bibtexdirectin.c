@@ -798,7 +798,7 @@ bibtex_person_tokenize( fields *bibin, int m, param *pm, slist *tokens )
 
 		// !!! Georgi: conversion is here!
 		// !!!
-		REprintf("\ns before str_convert: %s\n", s->data);
+		// REprintf("\ns before str_convert: %s\n", s->data);
 		// ok = str_convert( s, pm->charsetin,  1, pm->utf8in,  pm->xmlin,
 		  ok = str_convert( s, pm->charsetin,  pm->latexin, pm->utf8in,  pm->xmlin,
 				    // Georgi: change arg. latexout to 1
@@ -806,7 +806,7 @@ bibtex_person_tokenize( fields *bibin, int m, param *pm, slist *tokens )
 				    //       it should depend on --no-latex
 				    // v1.3 - restoring latexout to 0
 				    pm->charsetout, 0, pm->utf8out, pm->xmlout );
-		  REprintf("s after str_convert: %s\n", s->data);
+		  // REprintf("s after str_convert: %s\n", s->data);
 		if ( !ok ) return BIBL_ERR_MEMERR;
 
 	}
