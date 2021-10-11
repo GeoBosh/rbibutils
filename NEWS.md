@@ -1,6 +1,6 @@
-# rbibutils 2.2.3.9000
+# rbibutils 2.2.4 (CRAN)
 
-# fixed the handling of accents over `i` in authors' names when the LaTeX
+- fixed the handling of accents over `i` in authors' names when the LaTeX
   escapes are not converted to real characters (there were no problems when
   converted to UTF-8). Reported by Manuel López-Ibáñez with examples (issue #5,
   #6, #7).

@@ -1,0 +1,143 @@
+
+R version 4.0.3 (2020-10-10) -- "Bunny-Wunnies Freak Out"
+Copyright (C) 2020 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+[Previously saved workspace restored]
+
+> setwd('~/repos/private/rbibutils')
+> devtools::load_all()
+*** output flushed ***
+> devtools::load_all()
+*** output flushed ***
+> devtools::load_all()
+*** output flushed ***
+> devtools::load_all()
+*** output flushed ***
+> devtools::test()
+ℹ Loading rbibutils
+ℹ Testing rbibutils
+✔ | F W S  OK | Context
+⠹ | 2       1 | bib                                                                                           Error in (function (bibtype, textVersion, header = NULL, footer = NULL,  : 
+  ‘bibtype’ has to be one of Article, Book, Booklet, InBook, InCollection, InProceedings, Manual, MastersThesis, Misc, PhdThesis, Proceedings, TechReport, Unpublished
+✖ | 3 1    26 | bib [0.4s]
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────
+Failure (test-bib.R:7:5): bibRead works ok
+readBib(bibacc, direct = TRUE, texChars = "keep") has changed from known value recorded in 'bibacc_1.rds'.
+Component “test1”: Component “title”: 1 string mismatch
+Component “test1”: Component “note”: 1 string mismatch
+
+Failure (test-bib.R:11:5): bibRead works ok
+readBib(bibacc, direct = TRUE, texChars = "export") has changed from known value recorded in 'bibacc_2.rds'.
+Component “test1”: Component “title”: 1 string mismatch
+Component “test1”: Component “note”: 1 string mismatch
+
+Failure (test-bib.R:15:5): bibRead works ok
+readBib(bibacc, direct = TRUE, texChars = "convert") has changed from known value recorded in 'bibacc_3.rds'.
+Component “test1”: Component “title”: 1 string mismatch
+Component “test1”: Component “note”: 1 string mismatch
+
+Warning (test-bib.R:299:5): bibRead works ok
+Creating reference value
+Backtrace:
+ 1. testthat::expect_known_value(test_5, "issue_5a.rds", FALSE) test-bib.R:299:4
+
+[ FAIL 3 | WARN 1 | SKIP 0 | PASS 69 ]
+> system.file("bib/latin1accents_utf8.bib", package = "rbibutils")
+[1] "/home/georgi/repos/private/rbibutils/inst/bib/latin1accents_utf8.bib"
+> readBib(system.file("bib/latin1accents_utf8.bib", package = "rbibutils"), direct = TRUE, texChars = "keep")
+Lêáé K (2020). “Kàrè üä Lêáé.” _Latin-1 accents_. Having the similar
+title and author is helpful for debugging since authors are processed
+differently from other fields. Here is a formula: $\t{a}n(\alpha)$,
+$\sin(\d{e}lta)/\d{e}lta \t{o} 1$, $\sqrtx$.
+> readRDS(system.file("tests/testthat/bibacc_1.rds", package = "rbibutils"))
+Lêáé K (2020). “Kàrè üä Lêáé.” _Latin-1 accents_. Having the similar
+title and author is helpful for debugging since authors are processed
+differently from other fields. Here is a formula: $\tan(\alpha)$,
+$\sin(\delta)/\delta\to1$, $\sqrt{x}$.
+> print(readRDS(system.file("tests/testthat/bibacc_1.rds", package = "rbibutils")), style = "R")
+bibentry(bibtype = "Article",
+         key = "test1",
+         author = person(given = "Kàrè",
+                         family = "Lêáé"),
+         title = "Kàrè \\\"u\\\"a Lêáé",
+         journal = "Latin-1 accents",
+         year = "2020",
+         note = "Having the similar title and author is helpful for debugging since authors are processed differently from other fields. Here is a formula: $\\tan(\\alpha)$, $\\sin(\\delta)/\\delta \\to 1$, $\\sqrt{x}$.")
+> tmp <- readBib(system.file("bib/latin1accents_utf8.bib", package = "rbibutils"), direct = TRUE, texChars = "keep")
+> print(tmp, style = "R")
+bibentry(bibtype = "Article",
+         key = "test1",
+         author = person(given = "Kàrè",
+                         family = "Lêáé"),
+         title = "Kàrè {\\\"u}{\\\"a} Lêáé",
+         journal = "Latin-1 accents",
+         year = "2020",
+         note = "Having the similar title and author is helpful for debugging since authors are processed differently from other fields. Here is a formula: ${\\t{a}}n({\\al}pha)$, ${\\si}n({\\d{e}}lta)/{\\d{e}}lta {\\t{o}} 1$, ${\\sq}rt{x}$.")
+> 
+> 
+> devtools::load_all()
+*** output flushed ***
+> tmp <- readBib(system.file("bib/latin1accents_utf8.bib", package = "rbibutils"), direct = TRUE, texChars = "keep")
+> print(tmp, style = "R")
+bibentry(bibtype = "Article",
+         key = "test1",
+         author = person(given = "Kàrè",
+                         family = "Lêáé"),
+         title = "Kàrè {\\\"u}{\\\"a} Lêáé",
+         journal = "Latin-1 accents",
+         year = "2020",
+         note = "Having the similar title and author is helpful for debugging since authors are processed differently from other fields. Here is a formula: ${\\t{a}}n({\\al}pha)$, ${\\si}n({\\d{e}}lta)/{\\d{e}}lta {\\t{o}} 1$, ${\\sq}rt{x}$.")
+> 
+> 
+> 
+> devtools::load_all()
+*** output flushed ***
+> tmp <- readBib(system.file("bib/latin1accents_utf8.bib", package = "rbibutils"), direct = TRUE, texChars = "keep")
+> print(tmp, style = "R")
+bibentry(bibtype = "Article",
+         key = "test1",
+         author = person(given = "Kàrè",
+                         family = "Lêáé"),
+         title = "Kàrè {\\\"u}{\\\"a} Lêáé",
+         journal = "Latin-1 accents",
+         year = "2020",
+         note = "Having the similar title and author is helpful for debugging since authors are processed differently from other fields. Here is a formula: ${\\t{a}}n({\\al}pha)$, ${\\si}n({\\d{e}}lta)/{\\d{e}}lta {\\t{o}} 1$, ${\\sq}rt{x}$.")
+> 
+> 
+> devtools::load_all()
+*** output flushed ***
+> tmp <- readBib(system.file("bib/latin1accents_utf8.bib", package = "rbibutils"), direct = TRUE, texChars = "keep")
+*** output flushed ***
+> devtools::load_all()
+*** output flushed ***
+> tmp <- readBib(system.file("bib/latin1accents_utf8.bib", package = "rbibutils"), direct = TRUE, texChars = "keep")
+> devtools::load_all()
+ℹ Loading rbibutils
+> print(tmp, style = "R")
+bibentry(bibtype = "Article",
+         key = "test1",
+         author = person(given = "Kàrè",
+                         family = "Lêáé"),
+         title = "Kàrè \\\"u\\\"a Lêáé",
+         journal = "Latin-1 accents",
+         year = "2020",
+         note = "Having the similar title and author is helpful for debugging since authors are processed differently from other fields. Here is a formula: $\\tan(\\alpha)$, $\\sin(\\delta)/\\delta \\to 1$, $\\sqrt{x}$.")
+> devtools::test()
+> devtools::check()
+*** output flushed ***
+> 

@@ -967,19 +967,34 @@ bibtexdirectin_cleanref( fields *bibin, param *pm )
 // REprintf("nout = %d\n" , fields_num( bibin ));
                         // goto out;
 		}
-
 		// else {
-                // //         // REprintf("i = %d, value = %s\n", i, (bibin->value[i]).data);
-		// // 
-                //          value = fields_value( bibin, i, FIELDS_STRP_NOUSE );
-		//          if ( str_is_empty( value ) ) continue;
-		// // 
-                // //         // Georgi: bibtex_cleanvalue() drops $, {, }, for now just skip it
-                // //         //   TODO: fix bibtex_cleanvalue() to not do that when not necessary 
-		// // 	// // REprintf("i = %d, value = %s\n", i, value->data);
-		// //         // status = bibtex_cleanvalue( value );
-		// // 	// // REprintf("i = %d, value = %s\n", i, (bibin->value[i]).data);
-		// // 	// if ( status!=BIBL_OK ) goto out;
+		//   // Georgi (2021-10-10) - this 'else' branch had been commented out;
+		//   //      start making it work;                 
+		//   // REprintf("i = %d, value = %s\n", i, (bibin->value[i]).data);
+		//   
+		//   // value = fields_value( bibin, i, FIELDS_STRP_NOUSE );
+		//   // if ( str_is_empty( value ) ) continue;
+		//  
+		//   // Georgi: bibtex_cleanvalue() drops $, {, }, for now just skip it
+		//   //   TODO: fix bibtex_cleanvalue() to not do that when not necessary 
+		//   // REprintf("i = %d, value = %s\n", i, value->data);
+		//   //     status = bibtex_cleanvalue( value );
+		//   // TODO: this should be conditional on a new value for texChars in readBib, requesting
+		//   //       conversion to Unicode but only for latex escape characters.
+		//   //
+		//   // name_fix_latex_escapes is just to get things going. It assumes that
+		//   //   there are only latex escape characters and no other commands. This is
+		//   //   fine for persons' names but not for toher fields.
+		//   //
+		//   // TODO: Also, probably should not process tag's like URL here (maybe additional else-if's)
+		//   // TODO: base other_fix_latex_escapes on name_fix_latex_escapes
+		//   //       However, this will not be successful. Need to be able to work
+		//   //       with the parsed late tree and only tuch stuff outside maths mode
+		//   //   No, this won't work; need proper look at the latex parse tree.
+		//   // status = other_fix_latex_escapes( value );
+		// 
+		//   // REprintf("i = %d, value = %s\n", i, (bibin->value[i]).data);
+		//   // if ( status!=BIBL_OK ) goto out;
 		// }
 
 	}
