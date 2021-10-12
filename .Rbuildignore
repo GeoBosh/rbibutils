@@ -1,3 +1,4 @@
+^latest\.Rout
 ^src/.*\.diff
 ^memcheck$
 ^TODO.org
