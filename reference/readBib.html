@@ -121,8 +121,8 @@
     </div>
 
     <pre class="usage"><span class='fu'>readBib</span><span class='op'>(</span><span class='va'>file</span>, encoding <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span>, direct <span class='op'>=</span> <span class='cn'>FALSE</span>, 
-        texChars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"keep"</span>, <span class='st'>"convert"</span>, <span class='st'>"export"</span><span class='op'>)</span>, macros <span class='op'>=</span> <span class='cn'>NULL</span>, 
-        extra <span class='op'>=</span> <span class='cn'>FALSE</span>, <span class='va'>key</span><span class='op'>)</span>
+        texChars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"keep"</span>, <span class='st'>"convert"</span>, <span class='st'>"export"</span>, <span class='st'>"Rdpack"</span><span class='op'>)</span>, 
+        macros <span class='op'>=</span> <span class='cn'>NULL</span>, extra <span class='op'>=</span> <span class='cn'>FALSE</span>, <span class='va'>key</span><span class='op'>)</span>
 
 <span class='fu'>writeBib</span><span class='op'>(</span><span class='va'>object</span>, con <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/showConnections.html'>stdout</a></span><span class='op'>(</span><span class='op'>)</span>, append <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 
@@ -153,7 +153,10 @@
     export as TeX escapes when possible. If <code>"convert"</code>, convert
     to the target encoding. If <code>"keep"</code>, output the characters as
     they were in the input file, like <code>"export"</code>, but don't convert
-    normal characters to TeX escapes.</p></td>
+    normal characters to TeX escapes.</p>
+<p><code>"Rdpack"</code> is mainly for internal use and its actions may be
+    changed. It is equivalent to "keep" plus some additional processing,
+    see <a href='https://github.com/GeoBosh/rbibutils/issues/7#issue-1020385889'>https://github.com/GeoBosh/rbibutils/issues/7#issue-1020385889</a>.</p></td>
     </tr>
     <tr>
       <th>macros</th>
