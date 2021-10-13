@@ -1,3 +1,11 @@
+# rbibutils 2.2.4.9001
+
+- argument `texChars` of `readBib` gets new possible value, "Rdpack". This is
+  like the default, "keep", but additionally is converts `\'i' to `\'\i`. This
+  is related to issue #7, see below the fix in v2.2.4 for details. This is
+  mainly for internal use.
+
+
 # rbibutils 2.2.4 (CRAN)
 
 - fixed the handling of accents over `i` in authors' names when the LaTeX

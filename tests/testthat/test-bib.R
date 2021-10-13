@@ -298,6 +298,9 @@ test_that("bibRead works ok", {
     test_5 <- rbibutils::readBib(issue_5, direct = TRUE)
     expect_known_value(test_5, "issue_5a.rds", FALSE)
 
+    test_5rdpack <- rbibutils::readBib(issue_5, direct = TRUE, texChars = "Rdpack")
+    expect_known_value(test_5rdpack, "issue_5rdpack.rds", FALSE)
+    
     test5_extra <- bibentryExtra(test_5)
     expect_identical(test5_extra[["x", "author"]]$family, test5_extra[["y", "author"]]$family)
     

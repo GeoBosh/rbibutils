@@ -1,5 +1,6 @@
 readBib <- function(file, encoding = NULL, ..., direct = FALSE,
-                    texChars = c("keep", "convert", "export"), macros = NULL, extra = FALSE, key){
+                    texChars = c("keep", "convert", "export", "Rdpack"),
+                    macros = NULL, extra = FALSE, key){
 
     if(is.null(encoding))
         encoding <- c("utf8", "utf8")  # would default input 'native' be better?
@@ -56,6 +57,10 @@ readBib <- function(file, encoding = NULL, ..., direct = FALSE,
                    ## this will need separate no_latex option for infile and outfile.
                    #stop(" 'texChars = keep' not implemented yet")
                    tex <- c("keep_tex_chars", "no_latex")
+               },
+               Rdpack = {
+                   ## like 'keep' but patches for Rdpack, see issue #7 in rbibutils
+                   tex <- c("keep_tex_chars", "no_latex", "Rdpack")
                },
                ## export
                ## default

@@ -24,6 +24,8 @@
 extern int bibtexdirectin_initparams( param *pm, const char *progname );
 extern void bibdirectin_more_cleanf();
 
+extern void rdpack_patch_set(int value); // 2021-10-13
+
 char *helpBE[] = {
 		 /* bib2be */
 		 "Converts a Bibtex reference file into Bibentry source\n\n",
@@ -87,6 +89,10 @@ process_direct_args( int *argc, char *argv[], param *p, const char *progname[] )
 	  		subtract = 1;
 	  	} else if ( args_match( argv[i], "-at", "--abbreviated-titles" ) ) {
 	  		p->format_opts |= BIBL_FORMAT_BIBOUT_SHORTTITLE;
+	  		subtract = 1;
+	  	} else if ( args_match( argv[i], "--Rdpack", "" ) ) { // new 2021-10-13
+		        p->format_opts |= BIBL_FORMAT_BIBOUT_RDPACK;
+			rdpack_patch_set(BIBL_FORMAT_BIBOUT_RDPACK); // crude patch!
 	  		subtract = 1;
 	  	} else if ( args_match( argv[i], "-nl", "--no-latex" ) ) {
 	  		p->latexout = 0;
@@ -162,6 +168,7 @@ bib2be_main( int *argcin, char *argv[], char *outfile[], double *nref)
   	bibl_freeparams( &p );
 
 	bibdirectin_more_cleanf();
+	rdpack_patch_set(0); // TODO: add this to 'bibdirectin_more_cleanf'
 	
 	*argcin = argc;
 	// return EXIT_SUCCESS;

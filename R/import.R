@@ -41,6 +41,9 @@ bibtexImport <- function(infile, ..., tex = NULL, encoding = NULL, options, extr
                    comma = {
                        argv_2be <- c(argv_2be, "-fc")
                    },
+                   Rdpack = {
+                       argv_2be <- c(argv_2be, "--Rdpack")
+                   },
                    ## default
                    stop("unsupported 'tex' option")
                    )

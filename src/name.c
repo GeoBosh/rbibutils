@@ -23,6 +23,18 @@
 #include "intlist.h"
 #include "name.h"
 
+static int rdpack_patch = 0;
+
+int rdpack_patch_get()
+{
+  return(rdpack_patch);
+}
+
+void rdpack_patch_set(int value)
+{
+  rdpack_patch = value;
+}
+
 /* name_build_withcomma()
  *
  * reconstruct parsed names in format: 'family|given|given||suffix'
@@ -404,6 +416,11 @@ name_mutlielement_build( str *name, intlist *given, intlist *family, slist *toke
 		  pastslash++;
 		  // pastslash[1] checks that the following char is not NULL
 		  //                                            (it is probably an error if it is)
+		  // Georgi (2021-10-13): issue #7 TODO: do this for Rdpack only!
+		  if(*pastslash == 'i'  &&  rdpack_patch_get() != 0 ) {
+		    str_addchar( name, '\\' );     // \'i => \'\i, see issue #7
+		  }
+
 		  if(*pastslash == '\\' && pastslash[1]) {
 		    // Georgi (2021-10-09): issues #5-7
 		    //     Don't change  \'\i  to  \'i
@@ -502,10 +519,15 @@ name_fix_latex_escapes( str *name ) {
 		  pastslash++;
 		  // pastslash[1] checks that the following char is not NULL
 		  //                                            (it is probably an error if it is)
+		  // Georgi (2021-10-13): issue #7 TODO: do this for Rdpack only!
+		  if(*pastslash == 'i'  &&  rdpack_patch_get() != 0 ) {
+		    str_addchar( name, '\\' );     // \'i => \'\i, see issue #7
+		  }
+
 		  if(*pastslash == '\\' && pastslash[1]) {
 		    // Georgi (2021-10-09): issues #5-7
 		    //     Don't change  \'\i  to  \'i
-		    //         pastslash++; // just skip '\' for now, so \'\i => \'i
+		    //     was:  pastslash++; // just skip '\' for now, so \'\i => \'i
 		    str_addchar( name, *pastslash );       // emit the backslash
 		    pastslash++;
 		  } 
