@@ -6,8 +6,8 @@
 \description{Read and write bibtex files.}
 \usage{
 readBib(file, encoding = NULL, \dots, direct = FALSE, 
-        texChars = c("keep", "convert", "export"), macros = NULL, 
-        extra = FALSE, key)
+        texChars = c("keep", "convert", "export", "Rdpack"), 
+        macros = NULL, extra = FALSE, key)
 
 writeBib(object, con = stdout(), append = FALSE)
 
@@ -28,6 +28,10 @@ charToBib(text, informat, \dots)
     to the target encoding. If \code{"keep"}, output the characters as
     they were in the input file, like \code{"export"}, but don't convert
     normal characters to TeX escapes.
+
+    \code{"Rdpack"} is mainly for internal use and its actions may be
+    changed. It is equivalent to "keep" plus some additional processing,
+    see \url{https://github.com/GeoBosh/rbibutils/issues/7#issue-1020385889}.
   }
   \item{macros}{
 
