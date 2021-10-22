@@ -100,10 +100,12 @@ charToBib(text, informat, \dots)
   encoding of o-umlaut, while \code{"export"} will export it as
   \verb{\\"o}. 
 
-  Note that \code{"convert"} converts also a large number of
-  mathematical symbols (such as \code{"\\alpha"}) to the target encoding
-  (UTF-8), which may or may not be desirable. Also, some mathematical
-  formulas may cause surprises.
+  % 2021-10-21 commenting out since it is fixed now.
+  %
+  % Note that \code{"convert"} converts also a large number of
+  % mathematical symbols (such as \code{"\\alpha"}) to the target encoding
+  % (UTF-8), which may or may not be desirable. Also, some mathematical
+  % formulas may cause surprises.
 
   Currently, \code{texChars = "export"} does not process properly
   mathematical formulas.
@@ -186,8 +188,9 @@ be2
 print(be2, style = "R")
 print(be2, style = "bibtex")
 
-## "convert" converts to characters
-## a lot of TeX commands representing symbols
+## in older versions (up to 2.2.4) of rbibutils, "convert" converted
+##     a lot of TeX commands representing symbols  to characters.
+## This is no longer the case:
 be3 <- readBib(bibacc, direct = TRUE, texChars = "convert")
 ## be3
 print(be3, style = "R")

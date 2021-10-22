@@ -1,10 +1,19 @@
 # rbibutils 2.2.4.9001
 
+- in `readBib` with `direct = TRUE` and `texChars = "convert"`, mathematical
+  symbols and commands are treated properly. In particular, commands for
+  symbols, like `\alpha`, are no longer converted to (unicode) characters.
+  This was a documented shortcoming of the `"convert"` option.
+  
 - argument `texChars` of `readBib` gets new possible value, "Rdpack". This is
   like the default, "keep", but additionally is converts `\'i' to `\'\i`. This
   is related to issue #7, see below the fix in v2.2.4 for details. This is
   mainly for internal use.
 
+- improved the messages from error handling when creating bibentry
+  objects. The fix is in `readBibentry` but users typically see them when
+  calling `readBib`.
+  
 
 # rbibutils 2.2.4 (CRAN)
 

@@ -66,26 +66,41 @@ readBibentry <- function(file, extra = FALSE){
                     
                     miscbib <- try(eval(modbib, envir = envir), silent = TRUE)  # simple 'try' for now
                         # miscbib <- tryCatch(eval(modbib, envir = envir), error = print("Hello!"))
-                    if(inherits(miscbib, "try-error"))
+                    if(inherits(miscbib, "try-error")){
+                        caution[[j]] <- paste0(caution[[j]],
+                                               "\n  NOT FIXED.")
                         next
+                    }
+                    
                     curbib <- unclass(miscbib)
                        # curbib$bibtype <- oldtype # no, bibtype is attribute!
                     attr(curbib[[1]], "bibtype") <- oldtype
                     class(curbib) <- "bibentry"
                     wrk[[i]] <- curbib
-                    caution[[j]] <- ""  # success, no need for the message
+                    ## 2021-10-16 was:  caution[[j]] <- ""  # success, no need for the message
+                    caution[[j]] <- paste0("\nMessage: ", caution[[j]],
+                                           "\n  FIXED by changing bibtype to 'Misc'.\n")
                     extraflag <- TRUE
-                }       
+                }else{
+                        caution[[j]] <- paste0(caution[[j]], "\n  NOT FIXED.")
+                }
             }
 
         }
+
+        cat("\nTried to fix above errors/warnings, see the warnings and messages below.\n\n")
+        for(i in seq_along(caution))
+            if(caution[[i]] != ""){
+                if(grepl("NOT FIXED", caution[[i]]))
+                    warning(caution[[i]])
+                else
+                    message(caution[[i]])
+            }
     }
-    
+
+
     ind <- sapply(wrk, function(x) identical(x, NA))
     wrk <- wrk[!ind]
-    for(i in seq_along(caution))
-        if(caution[[i]] != "")
-            warning(caution[[i]])
 
     if(length(wrk) > 0){       # wrk is list of bibentry objects or list()
         res <- do.call("c", wrk)

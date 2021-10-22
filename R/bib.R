@@ -51,7 +51,8 @@ readBib <- function(file, encoding = NULL, ..., direct = FALSE,
         texChars <- match.arg(texChars)
         switch(texChars,
                convert = {
-                   tex <- "no_latex"
+                   ## was: tex <- "no_latex"
+                   tex <- c("convert_latex_escapes", "no_latex")
                },
                keep = {
                    ## this will need separate no_latex option for infile and outfile.

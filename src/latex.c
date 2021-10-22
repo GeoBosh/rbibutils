@@ -521,6 +521,42 @@ latex2char( char *s, unsigned int *pos, int *unicode )
 	return value;
 }
 
+unsigned int
+latex2char_temp_export( char *s, unsigned int *pos, int *unicode ) // Georgi
+{
+	unsigned int value, result;
+	char *p;
+
+	p = &( s[*pos] );
+	value = (unsigned char) *p;
+
+	// if ( strchr( "\\\'\"`-^_lL", value ) ) {  // }
+	if ( value ==  '\\' ) {
+	  // result = lookup_latex( latex_chars, nlatex_chars, p, pos, unicode );
+	  result = lookup_latex( latex_chars, 197, p, pos, unicode ); // until \Alpha in latex.c
+	  if ( result!=0 ) return result;
+	  // crude patch for \\v{z} and similar, should really consolidate all this.
+	  if(p[1] && p[2] && p[3] && p[4]  && p[2] == '{' && p[4] == '}'  ) {
+	    p[2] = ' ';
+	    result = lookup_latex( latex_chars, 197, p, pos, unicode ); // until \Alpha in latex.c
+	    if ( result!=0 ) {
+	      *pos += 1;  // skip '}'
+	      p[2] = '{';
+	      return result;
+	    }
+	  }
+	}
+
+	// if ( value=='~' || value=='\\' ) {
+	// 	result = lookup_latex( only_from_latex, num_only_from_latex, p, pos, unicode );
+	// 	if ( result!=0 ) return result;
+	// }
+
+	*unicode = 0;
+	*pos = *pos + 1;
+	return value;
+}
+
 void
 uni2latex( unsigned int ch, char buf[], int buf_size )
 {

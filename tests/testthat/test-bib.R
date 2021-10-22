@@ -308,4 +308,15 @@ test_that("bibRead works ok", {
     
     expect_known_value(rbibutils::readBib(issue_5, direct=TRUE, encoding = "UTF-8", texChars = "convert"),
                        "issue_5_utf8.rds", FALSE)
+
+    bib_extra <- system.file("bib", "extra.bib", package = "rbibutils")
+    expect_warning(readBib(bib_extra, direct = TRUE, extra = TRUE))
+
+    ## test the fix for texChars = "export"; the file contains both escaped TeX chars and unicode chars
+    bib_texChars <- system.file("bib", "texChars.bib", package = "rbibutils")
+    expect_known_value(readBib(bib_texChars, direct = TRUE, texChars = "convert"),
+                       "texChars_converted.rds", FALSE)
+                       
+    expect_known_value(readBib(bib_texChars, direct = TRUE),
+                       "texChars_kept.rds", FALSE)
 })

@@ -63,6 +63,10 @@ process_direct_args( int *argc, char *argv[], param *p, const char *progname[] )
 	  	} else if ( args_match( argv[i], "--keep-tex-chars", "" ) ) { // Georgi
 	  		p->latexin = 0;
 	  		subtract = 1;
+	  	} else if ( args_match( argv[i], "--convert_latex_escapes", "" ) ) { // Georgi
+		        p->latexin = 0; // like --keep-tex-chars
+		        p->format_opts |= BIBL_FORMAT_BIBOUT_TEXCHARS_CONVERT;
+	  		subtract = 1;
 	  	} else if ( args_match( argv[i], "-v", "--version" ) ) {
 	  		args_tellversion( p->progname );
 	  		error("\n"); // exit( EXIT_SUCCESS );

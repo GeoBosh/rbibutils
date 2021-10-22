@@ -44,6 +44,9 @@ bibtexImport <- function(infile, ..., tex = NULL, encoding = NULL, options, extr
                    Rdpack = {
                        argv_2be <- c(argv_2be, "--Rdpack")
                    },
+                   convert_latex_escapes = {
+                       argv_2be <- c(argv_2be, "--convert_latex_escapes")
+                   },
                    ## default
                    stop("unsupported 'tex' option")
                    )
