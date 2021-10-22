@@ -21,6 +21,8 @@
 
 #include "args.h"
 
+extern int convert_latex_escapes_only;
+
 extern int bibtexdirectin_initparams( param *pm, const char *progname );
 extern void bibdirectin_more_cleanf();
 
@@ -65,7 +67,8 @@ process_direct_args( int *argc, char *argv[], param *p, const char *progname[] )
 	  		subtract = 1;
 	  	} else if ( args_match( argv[i], "--convert_latex_escapes", "" ) ) { // Georgi
 		        p->latexin = 0; // like --keep-tex-chars
-		        p->format_opts |= BIBL_FORMAT_BIBOUT_TEXCHARS_CONVERT;
+			convert_latex_escapes_only = 1;
+	  		p->latexout = 0;
 	  		subtract = 1;
 	  	} else if ( args_match( argv[i], "-v", "--version" ) ) {
 	  		args_tellversion( p->progname );

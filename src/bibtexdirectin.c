@@ -25,6 +25,7 @@
 #include "bibformats.h"
 #include "generic.h"
 
+extern int convert_latex_escapes_only;
 extern unsigned int latex2char_temp_export( char *s, unsigned int *pos, int *unicode );
 
 #include "R.h"
@@ -94,6 +95,7 @@ void bibdirectin_more_cleanf()
   //       note that 'find' and 'replace' work in tandem, so both need to be cleared.
   slist_free( &find );
   slist_free( &replace );
+  convert_latex_escapes_only = 0;
 }
 
 
@@ -955,59 +957,14 @@ bibtexdirectin_cleanref( fields *bibin, param *pm )
 
 		// }
 
-		  if(pm->format_opts & BIBL_FORMAT_BIBOUT_TEXCHARS_CONVERT ) { // convert
-		    unsigned int curpos;
-		    int unicode;
-		    unsigned int unicode_code_point;
-		    unsigned char utf8_encoded[6];
-		    int nbytes, i_nbytes;
-		    str ns;
-		    
-		    curpos = 0;
-		    str_initstrc( &ns, "" );
-		    
-		    while ( value->data[curpos] ) {
-		      if(value->data[curpos] == '\\') {
-		        unicode_code_point = latex2char_temp_export( value->data, &curpos, &unicode );
-		      }
-		      // else if(value->data[curpos] & (1 << 7)) {
-		      // }
-		      else {
-		        str_addchar( &ns, value->data[curpos]);
-		        curpos++;
-		        continue;
-		      }
-		      
-		      nbytes = utf8_encode(unicode_code_point, utf8_encoded);
-		      for ( i_nbytes=0; i_nbytes<nbytes; ++i_nbytes )  // see addutf8char
-		        str_addchar( &ns, utf8_encoded[i_nbytes] );
-		    }
-		    
-		    str_swapstrings( value, &ns );
-		    str_free( &ns );
-
-		//   // Georgi: bibtex_cleanvalue() drops $, {, }, for now just skip it
-		//   //   TODO: fix bibtex_cleanvalue() to not do that when not necessary 
-		//   // REprintf("i = %d, value = %s\n", i, value->data);
-		//   //     status = bibtex_cleanvalue( value );
-		//   // TODO: this should be conditional on a new value for texChars in readBib, requesting
-		//   //       conversion to Unicode but only for latex escape characters.
-		//   //
-		//   // name_fix_latex_escapes is just to get things going. It assumes that
-		//   //   there are only latex escape characters and no other commands. This is
-		//   //   fine for persons' names but not for other fields.
-		//   //
-		//   // TODO: Also, probably should not process tag's like URL here (maybe additional else-if's)
-		//   // TODO: base other_fix_latex_escapes on name_fix_latex_escapes
-		//   //       However, this will not be successful. Need to be able to work
-		//   //       with the parsed latex tree and only tuch stuff outside maths mode
-		//   //   No, this won't work; need proper look at the latex parse tree.
-		//   // status = other_fix_latex_escapes( value );
-		// 
-		//   // REprintf("i = %d, value = %s\n", i, (bibin->value[i]).data);
-		//  if ( status!=BIBL_OK ) goto out;
-		  }
-		
+		if(convert_latex_escapes_only) { // convert
+		  str_convert( value,
+			       // pm->charsetin,  pm->latexin,  pm->utf8in,  pm->xmlin,
+			       pm->charsetin,  1,  pm->utf8in,  pm->xmlin,
+			       // pm->charsetout, pm->latexout, pm->utf8out, pm->xmlout );
+       			       pm->charsetout, 0, pm->utf8out, pm->xmlout );
+		}
+	
 		if ( is_name_tag( tag ) ) {
 			status = bibtexdirectin_person( bibin, i, pm );
 						
@@ -1023,22 +980,13 @@ bibtexdirectin_cleanref( fields *bibin, param *pm )
 // REprintf("nout = %d\n" , fields_num( bibin ));
                         // goto out;
 		}
-		else { // Testing... The old comments are after the code
-		  // based on latex2char in latex.c
-
-		  // TODO: the conversion in this else clause needs to be conditional on
-		  //       texChars = "export". Also, need corresponding change in the
-		  //       processing of options earlier (maybe in the R code?) to prevent
-		  //       conversion to utf8 earlier. (i.e. initial conversion needs to be
-		  //       set as for "texChars = "keep" but with another flag marking that
-		  //       "convert" has been requested.
-		  
-		  
-		//   // Georgi (2021-10-10) - this 'else' branch had been commented out;
-		//   //      start making it work;                 
+		// else {
+		//   // status = bibtex_cleanvalue( value );
+		//   // if ( status!=BIBL_OK ) goto out;
+		// 
 		//   // REprintf("i = %d, value = %s\n", i, (bibin->value[i]).data);
-
-		}
+		// 
+		// }
 
 	}
 

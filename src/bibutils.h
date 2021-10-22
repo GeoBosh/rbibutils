@@ -60,7 +60,6 @@ extern "C" {
 #define BIBL_FORMAT_BIBOUT_DROPKEY    (256)
 #define BIBL_FORMAT_MODSOUT_DROPKEY   (512)
 #define BIBL_FORMAT_BIBOUT_RDPACK     (1024) // Georgi  These are misplaced but need a marker for options :TODO:
-#define BIBL_FORMAT_BIBOUT_TEXCHARS_CONVERT (2048) // Georgi
 
 #define BIBL_RAW_WITHCLEAN       (2) // Georgi
 #define BIBL_RAW_WITHCHARCONVERT (4)

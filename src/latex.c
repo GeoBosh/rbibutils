@@ -14,6 +14,10 @@
 #include <string.h>
 #include "latex.h"
 
+#include <R.h>
+
+int convert_latex_escapes_only = 0;
+
 #define LATEX_COMBO (0)  /* 'combo' no need for protection on output */
 #define LATEX_MACRO (1)  /* 'macro_name' to be protected by {\macro_name} on output */
 #define LATEX_MATH  (2)  /* 'math_expression' to be protected by $math_expression$ on output */
@@ -502,20 +506,42 @@ latex2char( char *s, unsigned int *pos, int *unicode )
 {
 	unsigned int value, result;
 	char *p;
+	int nlatexchars_escaped_only = 197; // until \Alpha in latex.c
 
 	p = &( s[*pos] );
 	value = (unsigned char) *p;
 
-	if ( strchr( "\\\'\"`-^_lL", value ) ) {
-		result = lookup_latex( latex_chars, nlatex_chars, p, pos, unicode );
-		if ( result!=0 ) return result;
-	}
+	if(convert_latex_escapes_only == 1) {
+	  // REprintf("(latex2char) kiki!");
+	  // if ( strchr( "\\\'\"`-^_lL", value ) ) {  // }
+	  if ( value ==  '\\' ) {
+	    result = lookup_latex( latex_chars, nlatexchars_escaped_only, p, pos, unicode );
+	    if ( result!=0 ) return result;
 
-	if ( value=='~' || value=='\\' ) {
-		result = lookup_latex( only_from_latex, num_only_from_latex, p, pos, unicode );
-		if ( result!=0 ) return result;
+	    // crude patch for \\v{z} and similar, should really consolidate all this.
+	    if(p[1] && p[2] && p[3] && p[4]  && p[2] == '{' && p[4] == '}'  ) {
+	      p[2] = ' ';
+	      result = lookup_latex( latex_chars, 197, p, pos, unicode ); // until \Alpha in latex.c
+	      if ( result!=0 ) {
+		*pos += 1;  // skip '}'
+		p[2] = '{';
+		return result;
+	      }
+	    }
+	  }
 	}
+	else {
+	  if ( strchr( "\\\'\"`-^_lL", value ) ) {
+	    result = lookup_latex( latex_chars, nlatex_chars, p, pos, unicode );
+	    if ( result!=0 ) return result;
+	  }
 
+	  if ( value=='~' || value=='\\' ) {
+	    result = lookup_latex( only_from_latex, num_only_from_latex, p, pos, unicode );
+	    if ( result!=0 ) return result;
+	  }
+	}
+	
 	*unicode = 0;
 	*pos = *pos + 1;
 	return value;

@@ -12,6 +12,7 @@
 extern unsigned int latex2char( char *s, unsigned int *pos, int *unicode );
 extern void uni2latex( unsigned int ch, char buf[], int buf_size );
 
+extern int convert_latex_escapes_only;
 
 #endif
 
