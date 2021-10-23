@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rbibutils</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.2.4.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.2.4.9003</span>
       </span>
     </div>
 
@@ -119,8 +119,8 @@
 <a href="#rbibutils-2249001" class="anchor"></a>rbibutils 2.2.4.9001<small> Unreleased </small>
 </h1>
 <ul>
-<li><p>in <code>readBib</code> with <code>direct = TRUE</code> and <code>texChars = "convert"</code>, mathematical symbols and commands are treated properly. In particular, commands for symbols, like <code>\alpha</code>, are no longer converted to (unicode) characters. This was a documented shortcoming of the <code>"convert"</code> option.</p></li>
-<li><p>argument <code>texChars</code> of <code>readBib</code> gets new possible value, “Rdpack”. This is like the default, “keep”, but additionally is converts <code>\'i' to</code>'\i`. This is related to issue <a href='https://github.com/GeoBosh/rbibutils/issues/7'>#7</a>, see below the fix in v2.2.4 for details. This is mainly for internal use.</p></li>
+<li><p><code>readBib</code> with <code>direct = TRUE</code> and <code>texChars</code> set to <code>"convert"</code> or <code>"export"</code> was not processing mathematical expressions properly. Now fixed.</p></li>
+<li><p>argument <code>texChars</code> of <code>readBib</code> gets new possible value, “Rdpack”. This is like the default, “keep”, but in addition it converts <code>\'i' to</code>'\i`. This is related to issue <a href='https://github.com/GeoBosh/rbibutils/issues/7'>#7</a>, see below the fix in v2.2.4 for details. This is mainly for internal use.</p></li>
 <li><p>improved the messages from error handling when creating bibentry objects. The fix is in <code>readBibentry</code> but users typically see them when calling <code>readBib</code>.</p></li>
 </ul>
 </div>
