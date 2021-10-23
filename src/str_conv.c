@@ -21,6 +21,8 @@
 #include "charsets.h"
 #include "str_conv.h"
 
+int export_tex_chars_only = 0; // Georgi
+
 static void
 addentity( str *s, unsigned int ch )
 {
@@ -83,7 +85,22 @@ static void
 addlatexchar( str *s, unsigned int ch, int xmlout, int utf8out )
 {
 	char buf[512];
+
+	
 	uni2latex( ch, buf, sizeof( buf ) );
+
+	// Georgi
+	if(export_tex_chars_only) {
+	  if( ch == 36  || ch == 123 || ch == 125 ) { // '$', '{', '}'
+	    str_addchar(s, (char) ch);
+	    return;
+	  }
+	  else if( !strcmp(buf, "{\\backslash}") ) {
+	    str_addchar(s, '\\');
+	    return;
+	  }
+	}
+	
 	/* If the unicode character isn't recognized as latex output
 	 * a '?' unless the user has requested unicode output.  If so,
 	 * output the unicode.
@@ -151,7 +168,6 @@ write_unicode( str *s, unsigned int ch, int charsetout, int latexout,
 
 	// Georgi
 	// REprintf("(write_unicode) ch: %x, latexout: %d, utf8out: %d\n", ch, utf8out, charsetout);
-
 	
 	if ( latexout ) {
 		addlatexchar( s, ch, xmlout, utf8out );

@@ -29,6 +29,9 @@ bibtexImport <- function(infile, ..., tex = NULL, encoding = NULL, options, extr
                    no_latex = { # accents to letters    # TODO: this needs further work
                        argv_2be <- c(argv_2be, "-nl") 
                    },
+                   export_tex_chars = {
+                       argv_2be <- c(argv_2be, "--export_tex_chars")
+                   },
                    ## uppercase = {
                    ##     argv_2be <- c(argv_2be, "-U")
                    ## },

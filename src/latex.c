@@ -4,7 +4,7 @@
  * convert between latex special chars and unicode
  *
  * Copyright (c) Chris Putnam 2004-2020
- * Copyright (c) Georgi N. Boshnakov 2020
+ * Copyright (c) Georgi N. Boshnakov 2020-2021
  *
  * Source code released under the GPL version 2
  *
@@ -16,7 +16,7 @@
 
 #include <R.h>
 
-int convert_latex_escapes_only = 0;
+int convert_latex_escapes_only = 0; // Georgi
 
 #define LATEX_COMBO (0)  /* 'combo' no need for protection on output */
 #define LATEX_MACRO (1)  /* 'macro_name' to be protected by {\macro_name} on output */
@@ -504,83 +504,46 @@ lookup_latex( struct latex_chars *lc, int n, char *p, unsigned int *pos, int *un
 unsigned int
 latex2char( char *s, unsigned int *pos, int *unicode )
 {
-	unsigned int value, result;
-	char *p;
-	int nlatexchars_escaped_only = 197; // until \Alpha in latex.c
+     unsigned int value, result;
+     char *p;
+     int nlatexchars_escaped_only = 197; // until \Alpha in latex.c
 
-	p = &( s[*pos] );
-	value = (unsigned char) *p;
+     p = &( s[*pos] );
+     value = (unsigned char) *p;
 
-	if(convert_latex_escapes_only == 1) {
-	  // REprintf("(latex2char) kiki!");
-	  // if ( strchr( "\\\'\"`-^_lL", value ) ) {  // }
+     if(convert_latex_escapes_only == 1) {
+	  // if ( strchr( "\\\'\"`-^_lL", value ) ) { ... }
 	  if ( value ==  '\\' ) {
-	    result = lookup_latex( latex_chars, nlatexchars_escaped_only, p, pos, unicode );
-	    if ( result!=0 ) return result;
+	       result = lookup_latex( latex_chars, nlatexchars_escaped_only, p, pos, unicode );
+	       if ( result!=0 ) return result;
 
-	    // crude patch for \\v{z} and similar, should really consolidate all this.
-	    if(p[1] && p[2] && p[3] && p[4]  && p[2] == '{' && p[4] == '}'  ) {
-	      p[2] = ' ';
-	      result = lookup_latex( latex_chars, 197, p, pos, unicode ); // until \Alpha in latex.c
-	      if ( result!=0 ) {
-		*pos += 1;  // skip '}'
-		p[2] = '{';
-		return result;
-	      }
-	    }
+	       // crude patch for \\v{z} and similar, should really consolidate all this.
+	       if(p[1] && p[2] && p[2] == '{'  && p[3]  && p[4] && p[4] == '}'  ) {
+		    p[2] = ' ';
+		    result = lookup_latex( latex_chars, 197, p, pos, unicode ); // until \Alpha in latex.c
+		    if ( result!=0 ) {
+			 *pos += 1;  // skip '}'
+			 p[2] = '{';
+			 return result;
+		    }
+	       }
 	  }
-	}
-	else {
+     }
+     else {
 	  if ( strchr( "\\\'\"`-^_lL", value ) ) {
-	    result = lookup_latex( latex_chars, nlatex_chars, p, pos, unicode );
-	    if ( result!=0 ) return result;
+	       result = lookup_latex( latex_chars, nlatex_chars, p, pos, unicode );
+	       if ( result!=0 ) return result;
 	  }
 
 	  if ( value=='~' || value=='\\' ) {
-	    result = lookup_latex( only_from_latex, num_only_from_latex, p, pos, unicode );
-	    if ( result!=0 ) return result;
+	       result = lookup_latex( only_from_latex, num_only_from_latex, p, pos, unicode );
+	       if ( result!=0 ) return result;
 	  }
-	}
+     }
 	
-	*unicode = 0;
-	*pos = *pos + 1;
-	return value;
-}
-
-unsigned int
-latex2char_temp_export( char *s, unsigned int *pos, int *unicode ) // Georgi
-{
-	unsigned int value, result;
-	char *p;
-
-	p = &( s[*pos] );
-	value = (unsigned char) *p;
-
-	// if ( strchr( "\\\'\"`-^_lL", value ) ) {  // }
-	if ( value ==  '\\' ) {
-	  // result = lookup_latex( latex_chars, nlatex_chars, p, pos, unicode );
-	  result = lookup_latex( latex_chars, 197, p, pos, unicode ); // until \Alpha in latex.c
-	  if ( result!=0 ) return result;
-	  // crude patch for \\v{z} and similar, should really consolidate all this.
-	  if(p[1] && p[2] && p[3] && p[4]  && p[2] == '{' && p[4] == '}'  ) {
-	    p[2] = ' ';
-	    result = lookup_latex( latex_chars, 197, p, pos, unicode ); // until \Alpha in latex.c
-	    if ( result!=0 ) {
-	      *pos += 1;  // skip '}'
-	      p[2] = '{';
-	      return result;
-	    }
-	  }
-	}
-
-	// if ( value=='~' || value=='\\' ) {
-	// 	result = lookup_latex( only_from_latex, num_only_from_latex, p, pos, unicode );
-	// 	if ( result!=0 ) return result;
-	// }
-
-	*unicode = 0;
-	*pos = *pos + 1;
-	return value;
+     *unicode = 0;
+     *pos = *pos + 1;
+     return value;
 }
 
 void

@@ -63,7 +63,9 @@ readBib <- function(file, encoding = NULL, ..., direct = FALSE,
                    ## like 'keep' but patches for Rdpack, see issue #7 in rbibutils
                    tex <- c("keep_tex_chars", "no_latex", "Rdpack")
                },
-               ## export
+               export = {
+                   tex <- c("export_tex_chars")
+               },
                ## default
                tex <- NULL
                )

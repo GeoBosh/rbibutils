@@ -4,6 +4,7 @@
  * mangle names w/ and w/o commas
  *
  * Copyright (c) Chris Putnam 2004-2020
+ * Copyright (c) Georgi N. Boshnakov 2020-2021
  *
  * Source code released under the GPL version 2
  *
@@ -23,17 +24,7 @@
 #include "intlist.h"
 #include "name.h"
 
-static int rdpack_patch = 0;
-
-int rdpack_patch_get()
-{
-  return(rdpack_patch);
-}
-
-void rdpack_patch_set(int value)
-{
-  rdpack_patch = value;
-}
+int rdpack_patch_for_i_acute_variant = 0;
 
 /* name_build_withcomma()
  *
@@ -181,42 +172,42 @@ has_suffix( slist *tokens, int begin, int end, int *suffixpos )
 static int
 add_given_split( str *name, str *s )
 {
-	unsigned int unicode_char;
-	unsigned int pos = 0;
-	char utf8s[7];
-	while ( pos < s->len ) {
-		unicode_char = utf8_decode( s->data, &pos );
-		if ( is_ws( (char) unicode_char ) ) continue;
-		else if ( unicode_char==(unsigned int)'.' ) {
-			if ( s->data[pos]=='-' ) {
-				str_strcatc( name, ".-" );
-				pos += 1;
-				unicode_char = utf8_decode( s->data, &pos );
-				utf8_encode_str( unicode_char, utf8s );
-				str_strcatc( name, utf8s );
-				str_addchar( name, '.' );
-			}
-		} else if ( unicode_char==(unsigned int)'-' ) {
-			str_strcatc( name, ".-" );
-			unicode_char = utf8_decode( s->data, &pos );
-			utf8_encode_str( unicode_char, utf8s );
-			str_strcatc( name, utf8s );
-			str_addchar( name, '.' );
-		} else if ( unicode_char==(unsigned int)',' ) { /* nothing */
-		} else {
-			str_addchar( name, '|' );
-			utf8_encode_str( unicode_char, utf8s );
-			str_strcatc( name, utf8s );
-		}
-	}
-		// Georgi - handle latex combinations like \'E ; TODO: need more universal solution here
-		//    TODO: Maybe names specifically can always be converted to the unicode
-		//    equivalents before calling this (or somewhere further up the line).
-	// char *slashacute = "\\|'|";
+     unsigned int unicode_char;
+     unsigned int pos = 0;
+     char utf8s[7];
+     while ( pos < s->len ) {
+	  unicode_char = utf8_decode( s->data, &pos );
+	  if ( is_ws( (char) unicode_char ) ) continue;
+	  else if ( unicode_char==(unsigned int)'.' ) {
+	       if ( s->data[pos]=='-' ) {
+		    str_strcatc( name, ".-" );
+		    pos += 1;
+		    unicode_char = utf8_decode( s->data, &pos );
+		    utf8_encode_str( unicode_char, utf8s );
+		    str_strcatc( name, utf8s );
+		    str_addchar( name, '.' );
+	       }
+	  } else if ( unicode_char==(unsigned int)'-' ) {
+	       str_strcatc( name, ".-" );
+	       unicode_char = utf8_decode( s->data, &pos );
+	       utf8_encode_str( unicode_char, utf8s );
+	       str_strcatc( name, utf8s );
+	       str_addchar( name, '.' );
+	  } else if ( unicode_char==(unsigned int)',' ) { /* nothing */
+	  } else {
+	       str_addchar( name, '|' );
+	       utf8_encode_str( unicode_char, utf8s );
+	       str_strcatc( name, utf8s );
+	  }
+     }
+     // Georgi - handle latex combinations like \'E ; TODO: need more universal solution here
+     //    TODO: Maybe names specifically can always be converted to the unicode
+     //    equivalents before calling this (or somewhere further up the line).
+     // char *slashacute = "\\|'|";
 
-	if(str_strstrc(name, "\\")) { // crude patch; TODO: solve somewhere upstream!
+     if(str_strstrc(name, "\\")) { // crude patch; TODO: solve somewhere upstream!
 	  while(str_strstrc(name, "\\|'|")){
-	    str_findreplace(name, "\\|'|", "\\'");
+	       str_findreplace(name, "\\|'|", "\\'");
 	  }
 
 	  // Georgi (2021-10-09): issues #5-7
@@ -226,11 +217,11 @@ add_given_split( str *name, str *s )
 	  // }
 
 	  while((str_strstrc(name, "\\|"))){ // why is this? it shouldn't happen
-	    str_findreplace(name, "\\|", "|");        // TODO: this probably will hide errors
+	       str_findreplace(name, "\\|", "|");        // TODO: this probably will hide errors
 	  }
-	}
+     }
 	
-	return 1;
+     return 1;
 }
 
 static unsigned char
@@ -254,42 +245,42 @@ token_has_upper( slist *tokens, int n )
 static int
 name_multielement_nocomma( intlist *given, intlist *family, slist *tokens, int begin, int end, int suffixpos )
 {
-	int family_start, family_end;
-	int i, n;
+     int family_start, family_end;
+     int i, n;
 
-// 	REprintf("name_multielement_nocomma:\n");
-// for ( i=0; i<tokens->n; ++i )
-//   REprintf("\t%s\n", slist_cstr( tokens, i ) );
+     // REprintf("name_multielement_nocomma:\n");
+     // for ( i=0; i<tokens->n; ++i )
+     //   REprintf("\t%s\n", slist_cstr( tokens, i ) );
 	
-	/* ...family name(s) */
-	family_start = family_end = end - 1;
-	if ( family_start == suffixpos ) family_start = family_end = end - 2;
+     /* ...family name(s) */
+     family_start = family_end = end - 1;
+     if ( family_start == suffixpos ) family_start = family_end = end - 2;
 
-	/* ...if family name is capitalized, then look for first non-capitalized
-	 * ...token and combine range to family name, e.g. single quoted parts of
-	 * ..."Ludwig 'von Beethoven'"
-	 * ..."Johannes Diderik 'van der Waals'"
-	 * ..."Charles Louis Xavier Joseph 'de la Valla Poussin' */
-	if ( token_has_upper( tokens, family_start ) ) {
-		i = family_start - 1;
-		n = -1;
-		while ( i >= begin && ( n==-1 || token_has_no_upper( tokens, i ) ) ) {
-			if ( token_has_no_upper( tokens, i ) ) n = i;
-			i--;
-		}
-		if ( n != -1 ) family_start = n;
-	}
-	for ( i=family_start; i<family_end+1; i++ )
-		intlist_add( family, i );
+     /* ...if family name is capitalized, then look for first non-capitalized
+      * ...token and combine range to family name, e.g. single quoted parts of
+      * ..."Ludwig 'von Beethoven'"
+      * ..."Johannes Diderik 'van der Waals'"
+      * ..."Charles Louis Xavier Joseph 'de la Valla Poussin' */
+     if ( token_has_upper( tokens, family_start ) ) {
+	  i = family_start - 1;
+	  n = -1;
+	  while ( i >= begin && ( n==-1 || token_has_no_upper( tokens, i ) ) ) {
+	       if ( token_has_no_upper( tokens, i ) ) n = i;
+	       i--;
+	  }
+	  if ( n != -1 ) family_start = n;
+     }
+     for ( i=family_start; i<family_end+1; i++ )
+	  intlist_add( family, i );
 
-	/* ...given names */
-	for ( i=begin; i<end-1; i++ ) {
-		if ( i>=family_start && i<=family_end ) continue;
-		if ( i==suffixpos ) continue;
-		intlist_add( given, i );
-	}
+     /* ...given names */
+     for ( i=begin; i<end-1; i++ ) {
+	  if ( i>=family_start && i<=family_end ) continue;
+	  if ( i==suffixpos ) continue;
+	  intlist_add( given, i );
+     }
 
-	return 1;
+     return 1;
 }
 
 static int
@@ -319,51 +310,51 @@ name_multielement_comma( intlist *given, intlist *family, slist *tokens, int beg
 static int
 name_mutlielement_build( str *name, intlist *given, intlist *family, slist *tokens )
 {
-	unsigned short case_given = 0, case_family = 0, should_split = 0;
-	str *s;
-	int i, m;
+     unsigned short case_given = 0, case_family = 0, should_split = 0;
+     str *s;
+     int i, m;
 
-	/* ...copy and analyze family name */
-	for ( i=0; i<family->n; ++i ) {
-		m = intlist_get( family, i );
-		s = slist_str( tokens, m );
-		if ( i ) str_addchar( name, ' '  );
-		str_strcat( name, s );
-		case_family |= unicode_utf8_classify_str( s );
-		// REprintf("name_mutlielement_build: unicode_utf8_classify_str: current_name = %s, case_family = %d\n", s->data, case_family);
-	}
+     /* ...copy and analyze family name */
+     for ( i=0; i<family->n; ++i ) {
+	  m = intlist_get( family, i );
+	  s = slist_str( tokens, m );
+	  if ( i ) str_addchar( name, ' '  );
+	  str_strcat( name, s );
+	  case_family |= unicode_utf8_classify_str( s );
+	  // REprintf("name_mutlielement_build: unicode_utf8_classify_str: current_name = %s, case_family = %d\n", s->data, case_family);
+     }
 
-	/* ...check given name case */
-	for ( i=0; i<given->n; ++i ) {
-		m = intlist_get( given, i );
-		s = slist_str( tokens, m );
-		case_given |= unicode_utf8_classify_str( s );
-		// REprintf("name_mutlielement_build: unicode_utf8_classify_str: given_name = %s, case_given = %d\n", s->data, case_given);
-	}
+     /* ...check given name case */
+     for ( i=0; i<given->n; ++i ) {
+	  m = intlist_get( given, i );
+	  s = slist_str( tokens, m );
+	  case_given |= unicode_utf8_classify_str( s );
+	  // REprintf("name_mutlielement_build: unicode_utf8_classify_str: given_name = %s, case_given = %d\n", s->data, case_given);
+     }
 
-	if ( ( ( case_family & UNICODE_MIXEDCASE ) == UNICODE_MIXEDCASE ) &&
-	     ( ( case_given  & UNICODE_MIXEDCASE ) == UNICODE_UPPER ) ) {
-		should_split = 1;
-	}
-	// REprintf("\tshould_split = %d\n", should_split);
+     if ( ( ( case_family & UNICODE_MIXEDCASE ) == UNICODE_MIXEDCASE ) &&
+	  ( ( case_given  & UNICODE_MIXEDCASE ) == UNICODE_UPPER ) ) {
+	  should_split = 1;
+     }
+     // REprintf("\tshould_split = %d\n", should_split);
 	
-	str *mys = str_new();
-	for ( i=0; i<given->n; ++i ) {
-		m = intlist_get( given, i );
-		s = slist_str( tokens, m );
-		// REprintf("\t(name_mutlielement_build) before: given[i] i = %d, %s,", i, s->data);
-		// REprintf(" should_split = %d\n", should_split);
-		if ( !should_split ) {
-			str_addchar( name, '|' );
-			str_strcat( name, s );
-		} else add_given_split( name, s );
-	}    
+     str *mys = str_new();
+     for ( i=0; i<given->n; ++i ) {
+	  m = intlist_get( given, i );
+	  s = slist_str( tokens, m );
+	  // REprintf("\t(name_mutlielement_build) before: given[i] i = %d, %s,", i, s->data);
+	  // REprintf(" should_split = %d\n", should_split);
+	  if ( !should_split ) {
+	       str_addchar( name, '|' );
+	       str_strcat( name, s );
+	  } else add_given_split( name, s );
+     }    
 
-	// patch TODO: fix properly
-	const char *pastslash;
-	char ch;
+     // patch TODO: fix properly
+     const char *pastslash;
+     char ch;
 		
-	if(str_strstrc(name, "\\")) { // crude patch; TODO: fix somewhere upstream!
+     if(str_strstrc(name, "\\")) { // crude patch; TODO: fix somewhere upstream!
 	  str_free(mys);
 	  str_initstr(mys, name);
 	  str_free(name);  // str_init(name);
@@ -372,102 +363,102 @@ name_mutlielement_build( str *name, intlist *given, intlist *family, slist *toke
 		  
 	  pastslash = str_cattodelim(name, mys->data, "\\", 1);
 	  while( *pastslash  ) {
-	    // Here we are after a backslash
-	    // TODO: can pastslash be NULL?
-	    if(pastslash  && *pastslash) {
-	      if(pastslash[1]) { // the following char is not NULL
-		str_strcatc(name, "{\\");
+	       // Here we are after a backslash
+	       // TODO: can pastslash be NULL?
+	       if(pastslash  && *pastslash) {
+		    if(pastslash[1]) { // the following char is not NULL
+			 str_strcatc(name, "{\\");
 		
-		ch = *pastslash;
-		switch(ch) {
-		case 'O':
-		case 'o':
-		  str_addchar( name, *pastslash );
-		  pastslash++;
-		  break;
-		case 'H':
-		case 'c':
-		case 'k':
-		case 'l':
-		case 'b':
-		case 'd':
-		case 'r':
-		case 'u':
-		case 't':
-		case 'v':
-		  str_addchar( name, *pastslash );
-		  pastslash++;
-		  if(*pastslash == ' ') // is this allowed in TeX? anyway, people use
-		    pastslash++;        // it
-		  str_strcatc(name, "{");
-		  str_addchar( name, *pastslash );
-		  str_addchar( name, '}' );
-		  pastslash++;
-		  // REprintf("(name_mutlielement_build) nafter:  %s\n", name->data);
-		  break;
+			 ch = *pastslash;
+			 switch(ch) {
+			 case 'O':
+			 case 'o':
+			      str_addchar( name, *pastslash );
+			      pastslash++;
+			      break;
+			 case 'H':
+			 case 'c':
+			 case 'k':
+			 case 'l':
+			 case 'b':
+			 case 'd':
+			 case 'r':
+			 case 'u':
+			 case 't':
+			 case 'v':
+			      str_addchar( name, *pastslash );
+			      pastslash++;
+			      if(*pastslash == ' ') // is this allowed in TeX? anyway, people use
+				   pastslash++;        // it
+			      str_strcatc(name, "{");
+			      str_addchar( name, *pastslash );
+			      str_addchar( name, '}' );
+			      pastslash++;
+			      // REprintf("(name_mutlielement_build) nafter:  %s\n", name->data);
+			      break;
 			  
-		case 'i':   // new 2021-10-08, see issues #5-7
-		  str_addchar( name, *pastslash );
-		  pastslash++;
-		  break;
+			 case 'i':   // new 2021-10-08, see issues #5-7
+			      str_addchar( name, *pastslash );
+			      pastslash++;
+			      break;
 		  
-		case '\'':
-		  str_addchar( name, *pastslash ); // emit the '
-		  pastslash++;
-		  // pastslash[1] checks that the following char is not NULL
-		  //                                            (it is probably an error if it is)
-		  // Georgi (2021-10-13): issue #7 TODO: do this for Rdpack only!
-		  if(*pastslash == 'i'  &&  rdpack_patch_get() != 0 ) {
-		    str_addchar( name, '\\' );     // \'i => \'\i, see issue #7
-		  }
+			 case '\'':
+			      str_addchar( name, *pastslash ); // emit the '
+			      pastslash++;
+			      // pastslash[1] checks that the following char is not NULL
+			      //                                            (it is probably an error if it is)
+			      // // Georgi (2021-10-13): issue #7 TODO: do this for Rdpack only!
+			      // if(*pastslash == 'i'  &&  rdpack_patch_get() != 0 ) {
+			      //   str_addchar( name, '\\' );     // \'i => \'\i, see issue #7
+			      // }
 
-		  if(*pastslash == '\\' && pastslash[1]) {
-		    // Georgi (2021-10-09): issues #5-7
-		    //     Don't change  \'\i  to  \'i
-		    //         pastslash++; // just skip '\' for now, so \'\i => \'i
-		    str_addchar( name, *pastslash );       // emit the backslash
-		    pastslash++;
-		  } 
-		  str_addchar( name, *pastslash );
-		  pastslash++;
+			      if(*pastslash == '\\' && pastslash[1]) {
+				   // Georgi (2021-10-09): issues #5-7
+				   //     Don't change  \'\i  to  \'i
+				   //         pastslash++; // just skip '\' for now, so \'\i => \'i
+				   str_addchar( name, *pastslash );       // emit the backslash
+				   pastslash++;
+			      } 
+			      str_addchar( name, *pastslash );
+			      pastslash++;
 		  
-		  break;
-		default: 
-		  str_addchar( name, *pastslash );
-		  str_addchar( name, *(pastslash + 1));
-		  pastslash+=2;
-		}
+			      break;
+			 default: 
+			      str_addchar( name, *pastslash );
+			      str_addchar( name, *(pastslash + 1));
+			      pastslash+=2;
+			 }
 		
-		str_addchar( name, '}' );
-	      }
+			 str_addchar( name, '}' );
+		    }
 		      
-	      // REprintf("(name_mutlielement_build) after if clause:  %s\n", name->data);
+		    // REprintf("(name_mutlielement_build) after if clause:  %s\n", name->data);
 		  
-	    } else {
-	      // just copy the backslash, but this almost certainly should not happen
-	      str_strcatc(name, "\\");
-	    }
+	       } else {
+		    // just copy the backslash, but this almost certainly should not happen
+		    str_strcatc(name, "\\");
+	       }
 		
-	    pastslash = str_cattodelim(name, pastslash, "\\", 1);
+	       pastslash = str_cattodelim(name, pastslash, "\\", 1);
 	  }
-	}
+     }
  
-	// REprintf("\t(name_mutlielement_build) after:  name = %s\n", name->data);
+     // REprintf("\t(name_mutlielement_build) after:  name = %s\n", name->data);
 		
-	str_delete(mys);
-	return 1;
+     str_delete(mys);
+     return 1;
 }
 
 
 static void
 name_fix_latex_escapes( str *name ) {
-	// deals with issue #5 (the part ,
-        // (based on name_mutlielement_build) TODO: change name_mutlielement_build to call to this function?
-	const char *pastslash;
-	char ch;
-	str *mys = str_new();
+     // deals with issue #5 (the part ,
+     // (based on name_mutlielement_build) TODO: change name_mutlielement_build to call to this function?
+     const char *pastslash;
+     char ch;
+     str *mys = str_new();
 		
-	if(str_strstrc(name, "\\")) {
+     if(str_strstrc(name, "\\")) {
 	  str_initstr(mys, name);
 	  str_free(name);  // str_init(name);
 	  
@@ -475,142 +466,142 @@ name_fix_latex_escapes( str *name ) {
 		  
 	  pastslash = str_cattodelim(name, mys->data, "\\", 1);
 	  while( *pastslash  ) {
-	    // Here we are after a backslash
-	    // TODO: can pastslash be NULL?
-	    if(pastslash  && *pastslash) {
-	      if(pastslash[1]) { // the following char is not NULL
-		str_strcatc(name, "{\\");
+	       // Here we are after a backslash
+	       // TODO: can pastslash be NULL?
+	       if(pastslash  && *pastslash) {
+		    if(pastslash[1]) { // the following char is not NULL
+			 str_strcatc(name, "{\\");
 		
-		ch = *pastslash;
-		switch(ch) {
-		case 'O':
-		case 'o':
-		  str_addchar( name, *pastslash );
-		  pastslash++;
-		  break;
-		case 'H':
-		case 'c':
-		case 'k':
-		case 'l':
-		case 'b':
-		case 'd':
-		case 'r':
-		case 'u':
-		case 't':
-		case 'v':
-		  str_addchar( name, *pastslash );
-		  pastslash++;
-		  if(*pastslash == ' ') // is this allowed in TeX? anyway, people use
-		    pastslash++;        // it
-		  str_strcatc(name, "{");
-		  str_addchar( name, *pastslash );
-		  str_addchar( name, '}' );
-		  pastslash++;
-		  // REprintf("(name_fix_latex_escapes) nafter:  %s\n", name->data);
-		  break;
+			 ch = *pastslash;
+			 switch(ch) {
+			 case 'O':
+			 case 'o':
+			      str_addchar( name, *pastslash );
+			      pastslash++;
+			      break;
+			 case 'H':
+			 case 'c':
+			 case 'k':
+			 case 'l':
+			 case 'b':
+			 case 'd':
+			 case 'r':
+			 case 'u':
+			 case 't':
+			 case 'v':
+			      str_addchar( name, *pastslash );
+			      pastslash++;
+			      if(*pastslash == ' ') // is this allowed in TeX? anyway, people use
+				   pastslash++;        // it
+			      str_strcatc(name, "{");
+			      str_addchar( name, *pastslash );
+			      str_addchar( name, '}' );
+			      pastslash++;
+			      // REprintf("(name_fix_latex_escapes) nafter:  %s\n", name->data);
+			      break;
 			  
-		case 'i':   // new 2021-10-08, see issues #5-7
-		  str_addchar( name, *pastslash );
-		  pastslash++;
-		  break;
+			 case 'i':   // new 2021-10-08, see issues #5-7
+			      str_addchar( name, *pastslash );
+			      pastslash++;
+			      break;
 		  
-		case '\'':
-		  str_addchar( name, *pastslash ); // emit the '
-		  pastslash++;
-		  // pastslash[1] checks that the following char is not NULL
-		  //                                            (it is probably an error if it is)
-		  // Georgi (2021-10-13): issue #7 TODO: do this for Rdpack only!
-		  if(*pastslash == 'i'  &&  rdpack_patch_get() != 0 ) {
-		    str_addchar( name, '\\' );     // \'i => \'\i, see issue #7
-		  }
+			 case '\'':
+			      str_addchar( name, *pastslash ); // emit the '
+			      pastslash++;
+			      // pastslash[1] checks that the following char is not NULL
+			      //                                            (it is probably an error if it is)
+			      // Georgi (2021-10-13): issue #7 TODO: do this for Rdpack only!
+			      // if(*pastslash == 'i'  &&  rdpack_patch_get() != 0 ) {
+			      //   str_addchar( name, '\\' );     // \'i => \'\i, see issue #7
+			      // }
 
-		  if(*pastslash == '\\' && pastslash[1]) {
-		    // Georgi (2021-10-09): issues #5-7
-		    //     Don't change  \'\i  to  \'i
-		    //     was:  pastslash++; // just skip '\' for now, so \'\i => \'i
-		    str_addchar( name, *pastslash );       // emit the backslash
-		    pastslash++;
-		  } 
-		  str_addchar( name, *pastslash );
-		  pastslash++;
+			      if(*pastslash == '\\' && pastslash[1]) {
+				   // Georgi (2021-10-09): issues #5-7
+				   //     Don't change  \'\i  to  \'i
+				   //     was:  pastslash++; // just skip '\' for now, so \'\i => \'i
+				   str_addchar( name, *pastslash );       // emit the backslash
+				   pastslash++;
+			      } 
+			      str_addchar( name, *pastslash );
+			      pastslash++;
 		  
-		  break;
-		default: 
-		  str_addchar( name, *pastslash );
-		  str_addchar( name, *(pastslash + 1));
-		  pastslash+=2;
-		}
+			      break;
+			 default: 
+			      str_addchar( name, *pastslash );
+			      str_addchar( name, *(pastslash + 1));
+			      pastslash+=2;
+			 }
 		
-		str_addchar( name, '}' );
-	      }
+			 str_addchar( name, '}' );
+		    }
 		      
-	      // REprintf("(name_fix_latex_escapes) after if clause:  %s\n", name->data);
+		    // REprintf("(name_fix_latex_escapes) after if clause:  %s\n", name->data);
 		  
-	    } else {
-	      // just copy the backslash, but this almost certainly should not happen
-	      str_strcatc(name, "\\");
-	    }
+	       } else {
+		    // just copy the backslash, but this almost certainly should not happen
+		    str_strcatc(name, "\\");
+	       }
 		
-	    pastslash = str_cattodelim(name, pastslash, "\\", 1);
+	       pastslash = str_cattodelim(name, pastslash, "\\", 1);
 	  }
-	}
+     }
  
-	// REprintf("\t(name_fix_latex_escapes) after:  name = %s\n", name->data);
+     // REprintf("\t(name_fix_latex_escapes) after:  name = %s\n", name->data);
 		
-	str_delete(mys);
+     str_delete(mys);
 }
 
 
 static int
 name_construct_multi( str *outname, slist *tokens, int begin, int end )
 {
-	int i, suffix, suffixpos=-1, comma=-1;
-	intlist given, family;
-	str *s;
+     int i, suffix, suffixpos=-1, comma=-1;
+     intlist given, family;
+     str *s;
 
- 	// REprintf("name_construct_multi (begin): number of tokens: %d, begin: %d, end: %d\n", tokens->n, begin, end);
-	// for ( i=begin; i<end; ++i ) REprintf( "%s\n", slist_cstr( tokens, i ) );
-	// REprintf( "\n" );
+     // REprintf("name_construct_multi (begin): number of tokens: %d, begin: %d, end: %d\n", tokens->n, begin, end);
+     // for ( i=begin; i<end; ++i ) REprintf( "%s\n", slist_cstr( tokens, i ) );
+     // REprintf( "\n" );
 	
-	intlist_init( &family );
-	intlist_init( &given );
+     intlist_init( &family );
+     intlist_init( &given );
 
-	str_empty( outname );
+     str_empty( outname );
 	
-	suffix = has_suffix( tokens, begin, end, &suffixpos );
-	// REprintf( "suffix: %d\n", suffixpos );
+     suffix = has_suffix( tokens, begin, end, &suffixpos );
+     // REprintf( "suffix: %d\n", suffixpos );
 		  
-	for ( i=begin; i<end && comma==-1; i++ ) {
-		if ( i==suffixpos ) continue;
-		s = slist_str( tokens, i );
-		if ( s->data[ s->len - 1 ] == ',' ) {
-			if ( suffix && i==suffixpos-1 && !(suffix&WITHCOMMA) )
-				str_trimend( s, 1 );
-			else
-				comma = i;
-		}
-	}
+     for ( i=begin; i<end && comma==-1; i++ ) {
+	  if ( i==suffixpos ) continue;
+	  s = slist_str( tokens, i );
+	  if ( s->data[ s->len - 1 ] == ',' ) {
+	       if ( suffix && i==suffixpos-1 && !(suffix&WITHCOMMA) )
+		    str_trimend( s, 1 );
+	       else
+		    comma = i;
+	  }
+     }
 
-	if ( comma != -1 )
-		name_multielement_comma( &given, &family, tokens, begin, end, comma, suffixpos );
-	else
-		name_multielement_nocomma( &given, &family, tokens, begin, end, suffixpos );
+     if ( comma != -1 )
+	  name_multielement_comma( &given, &family, tokens, begin, end, comma, suffixpos );
+     else
+	  name_multielement_nocomma( &given, &family, tokens, begin, end, suffixpos );
 
-	name_mutlielement_build( outname, &given, &family, tokens );
+     name_mutlielement_build( outname, &given, &family, tokens );
 
-	if ( suffix ) {
-		if ( suffix & JUNIOR ) str_strcatc( outname, "||Jr." );
-		if ( suffix & SENIOR ) str_strcatc( outname, "||Sr." );
-		if ( suffix & THIRD  ) str_strcatc( outname, "||III" );
-		if ( suffix & FOURTH ) str_strcatc( outname, "||IV"  );
-	}
+     if ( suffix ) {
+	  if ( suffix & JUNIOR ) str_strcatc( outname, "||Jr." );
+	  if ( suffix & SENIOR ) str_strcatc( outname, "||Sr." );
+	  if ( suffix & THIRD  ) str_strcatc( outname, "||III" );
+	  if ( suffix & FOURTH ) str_strcatc( outname, "||IV"  );
+     }
 
-	intlist_free( &given );
-	intlist_free( &family );
+     intlist_free( &given );
+     intlist_free( &family );
 
-// REprintf("\nname_construct_multi (end): outname: %s\n", outname->data);
+     // REprintf("\nname_construct_multi (end): outname: %s\n", outname->data);
 	
-	return 1;
+     return 1;
 }
 
 int

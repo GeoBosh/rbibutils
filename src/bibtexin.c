@@ -864,107 +864,107 @@ out:
 static int
 bibtexin_cleanref( fields *bibin, param *pm )
 {
-	int i, n, fstatus, status = BIBL_OK;
-	str *tag, *value;
-	intlist toremove;
+     int i, n, fstatus, status = BIBL_OK;
+     str *tag, *value;
+     intlist toremove;
 
-	intlist_init( &toremove );
+     intlist_init( &toremove );
 
-	n = fields_num( bibin );
-// REprintf("n = %d\n", n);
+     n = fields_num( bibin );
+     // REprintf("n = %d\n", n);
 
-	  // REprintf("n = %d\n" , n);
-	  // for(i = 0; i < n; i++) {
-	  //   REprintf("i = %d, value = %s\n", i, (bibin->value[i]).data);
-	  // }
+     // REprintf("n = %d\n" , n);
+     // for(i = 0; i < n; i++) {
+     //   REprintf("i = %d, value = %s\n", i, (bibin->value[i]).data);
+     // }
 	  
 
  
-	for ( i=0; i<n; ++i ) {
+     for ( i=0; i<n; ++i ) {
 
-		tag = fields_tag( bibin, i, FIELDS_STRP_NOUSE );
-// REprintf("\ntag = %s\n", tag->data);
-		if ( is_url_tag( tag ) ) continue; /* protect url from parsing */
+	  tag = fields_tag( bibin, i, FIELDS_STRP_NOUSE );
+          // REprintf("\ntag = %s\n", tag->data);
+	  if ( is_url_tag( tag ) ) continue; /* protect url from parsing */
 
-		/* Georgi:  protecting names, otherwise havoc ensues if the input is 
-                            in a different encoding; 
-                       TODO: test side effects of doing this.
-		   delay names from undergoing any parsing */
-		/* 2020-09-26: but names need parsing since there may be more than one!
-                       Commenting out to process properly names fields
+	  /* Georgi:  protecting names, otherwise havoc ensues if the input is 
+	     in a different encoding; 
+	     TODO: test side effects of doing this.
+	     delay names from undergoing any parsing */
+	  /* 2020-09-26: but names need parsing since there may be more than one!
+	     Commenting out to process properly names fields
 
-                       TODO: return to this and check again!
-                            I commented this out because of encodings - do tests!
-                       Amendment: run the nex two lines  but only if tag is not names tag
-                        (actually, moved them to the else part)
-		 */
-		// if ( is_name_tag( tag ) ) return BIBL_OK;
-		// if ( !is_name_tag( tag ) ){
-		value = fields_value( bibin, i, FIELDS_STRP_NOUSE );
-		if ( str_is_empty( value ) ) continue;
+	     TODO: return to this and check again!
+	     I commented this out because of encodings - do tests!
+	     Amendment: run the nex two lines  but only if tag is not names tag
+	     (actually, moved them to the else part)
+	  */
+	  // if ( is_name_tag( tag ) ) return BIBL_OK;
+	  // if ( !is_name_tag( tag ) ){
+	  value = fields_value( bibin, i, FIELDS_STRP_NOUSE );
+	  if ( str_is_empty( value ) ) continue;
 
-		// }
-		if ( is_name_tag( tag ) ) {
-			status = bibtexin_person( bibin, i, pm );
-// REprintf("i = %d\n", i);
-// REprintf("value = %s\n", (bibin->value[i]).data);
+	  // }
+	  if ( is_name_tag( tag ) ) {
+	       status = bibtexin_person( bibin, i, pm );
+               // REprintf("i = %d\n", i);
+               // REprintf("value = %s\n", (bibin->value[i]).data);
  
-			if ( status!=BIBL_OK ) goto out;
+	       if ( status!=BIBL_OK ) goto out;
 
-			fstatus = intlist_add( &toremove, i );
-			if ( fstatus!=INTLIST_OK ) { status = BIBL_ERR_MEMERR; goto out; }
-// REprintf("nout = %d\n" , fields_num( bibin ));
-                        // goto out;
-		}
+	       fstatus = intlist_add( &toremove, i );
+	       if ( fstatus!=INTLIST_OK ) { status = BIBL_ERR_MEMERR; goto out; }
+               // REprintf("nout = %d\n" , fields_num( bibin ));
+	       // goto out;
+	  }
 
-		// else {
-                // //         // REprintf("i = %d, value = %s\n", i, (bibin->value[i]).data);
-		// // 
-                //          value = fields_value( bibin, i, FIELDS_STRP_NOUSE );
-		//          if ( str_is_empty( value ) ) continue;
-		// // 
-                // //         // Georgi: bibtex_cleanvalue() drops $, {, }, for now just skip it
-                // //         //   TODO: fix bibtex_cleanvalue() to not do that when not necessary 
-		// // 	// // REprintf("i = %d, value = %s\n", i, value->data);
-		// //         // status = bibtex_cleanvalue( value );
-		// // 	// // REprintf("i = %d, value = %s\n", i, (bibin->value[i]).data);
-		// // 	// if ( status!=BIBL_OK ) goto out;
-		// }
+	  // else {
+	  // //         // REprintf("i = %d, value = %s\n", i, (bibin->value[i]).data);
+	  // // 
+	  //          value = fields_value( bibin, i, FIELDS_STRP_NOUSE );
+	  //          if ( str_is_empty( value ) ) continue;
+	  // // 
+	  // //         // Georgi: bibtex_cleanvalue() drops $, {, }, for now just skip it
+	  // //         //   TODO: fix bibtex_cleanvalue() to not do that when not necessary 
+	  // // 	// // REprintf("i = %d, value = %s\n", i, value->data);
+	  // //         // status = bibtex_cleanvalue( value );
+	  // // 	// // REprintf("i = %d, value = %s\n", i, (bibin->value[i]).data);
+	  // // 	// if ( status!=BIBL_OK ) goto out;
+	  // }
 
-	}
+     }
 
 
-	// int nout = fields_num( bibin );
-	// if(nout > n) {
-	//   REprintf("nout = %d\n" , nout);
-	//   for(i = 0; i < nout; i++) {
-	//     REprintf("i = %d, value = %s\n", i, (bibin->value[i]).data);
-	//   }
-	//   
-	// }
+     // int nout = fields_num( bibin );
+     // if(nout > n) {
+     //   REprintf("nout = %d\n" , nout);
+     //   for(i = 0; i < nout; i++) {
+     //     REprintf("i = %d, value = %s\n", i, (bibin->value[i]).data);
+     //   }
+     //   
+     // }
 
 	
-	for ( i=toremove.n-1; i>=0; i-- ) {
-		fstatus = fields_remove( bibin, intlist_get( &toremove, i ) );
-		if ( fstatus!=FIELDS_OK ) { status = BIBL_ERR_MEMERR; goto out; }
-	}
+     for ( i=toremove.n-1; i>=0; i-- ) {
+	  fstatus = fields_remove( bibin, intlist_get( &toremove, i ) );
+	  if ( fstatus!=FIELDS_OK ) { status = BIBL_ERR_MEMERR; goto out; }
+     }
 
 	
 out:
 
-	intlist_free( &toremove );
+     intlist_free( &toremove );
 
 	
-	// nout = fields_num( bibin );
-	// if(nout > n) {
-	//   REprintf("nout = %d\n" , nout);
-	//   for(i = 0; i < nout; i++) {
-	//     REprintf("i = %d, value = %s\n", i, (bibin->value[i]).data);
-	//   }
-	//   
-	// }
+     // nout = fields_num( bibin );
+     // if(nout > n) {
+     //   REprintf("nout = %d\n" , nout);
+     //   for(i = 0; i < nout; i++) {
+     //     REprintf("i = %d, value = %s\n", i, (bibin->value[i]).data);
+     //   }
+     //   
+     // }
 	
-	return status;
+     return status;
 }
 
 static void

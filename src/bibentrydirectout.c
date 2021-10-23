@@ -963,168 +963,167 @@ out:
 static int
 bibentrydirectout_assemble( fields *in, fields *out, param *pm, unsigned long refnum )
 {
-	int type, status = BIBL_OK;
+     int type, status = BIBL_OK;
 
-	// // Georgi; for testing
-	// fields_report_stderr(in);
+     // // Georgi; for testing
+     // fields_report_stderr(in);
 
-	// Determine type 
-	//   type = bibentrydirectout_type( in, pm->progname, "", refnum );
-	//
-	// Georgi: the chunk below replaces the above call (type = ...)
-	//         TODO: needs further work
+     // Determine type 
+     //   type = bibentrydirectout_type( in, pm->progname, "", refnum );
+     //
+     // Georgi: the chunk below replaces the above call (type = ...)
+     //         TODO: needs further work
 	
-	int n, fstatus;
-	char *fld_val;
-	n = fields_find( in, "INTERNAL_TYPE", LEVEL_ANY );
+     int n, fstatus;
+     char *fld_val;
+     n = fields_find( in, "INTERNAL_TYPE", LEVEL_ANY );
 
- // REprintf("\nassemble: INTERNAL_TYPE = %d\n", n);
- // REprintf("\nassemble: FIELDS_NOTFOUND = %d\n", FIELDS_NOTFOUND);
+     // REprintf("\nassemble: INTERNAL_TYPE = %d\n", n);
+     // REprintf("\nassemble: FIELDS_NOTFOUND = %d\n", FIELDS_NOTFOUND);
 	
-	if ( n!=FIELDS_NOTFOUND ) {
-		fields_set_used( in, n );
-		fld_val = fields_value( in, n, FIELDS_CHRP );
+     if ( n!=FIELDS_NOTFOUND ) {
+	  fields_set_used( in, n );
+	  fld_val = fields_value( in, n, FIELDS_CHRP );
 
-		// TODO: this is absolutely temporary
-		if ( !strcmp( fld_val, "Article" ) ) {
-		  type = 1;
-		}
-		else if ( !strcmp( fld_val, "Inbook" ) ) {         
-		  type = 2;
-		}
-		else if ( !strcmp( fld_val, "Proceedings" ) ) {    
-		  type = 3;
-		}
-		else if ( !strcmp( fld_val, "InProceedings" ) ) {  
-		  type = 4;
-		}
-		else if ( !strcmp( fld_val, "Book" ) ) {           
-		  type = 5;
-		}
-		else if ( !strcmp( fld_val, "PhdThesis" ) ) {      
-		  type = 6;
-		}
-		else if ( !strcmp( fld_val, "MastersThesis" ) ) {  
-		  type = 7;
-		}
-		else if ( !strcmp( fld_val, "MastersThesis" ) ) {  
-		  type = 8;
-		}
-		else if ( !strcmp( fld_val, "TechReport" ) ) {     
-		  type = 9;
-		}
-		else if ( !strcmp( fld_val, "Manual" ) ) {         
-		  type = 10;
-		}
-		else if ( !strcmp( fld_val, "Collection" ) ) {     
-		  type = 11;
-		}
-		else if ( !strcmp( fld_val, "InCollection" ) ) {   
-		  type = 12;
-		}
-		else if ( !strcmp( fld_val, "Unpublished" ) ) {    
-		  type = 13;
-		}
-		else if ( !strcmp( fld_val, "Electronic" ) ) {     
-		  type = 14;
-		}
-		else if ( !strcmp( fld_val, "Misc" ) ) {           
-		  type = 15;
-		}
-		// TODO: temporary!!
-		else if ( !strcmp( fld_val, "online" ) ) {     // patch!!      
-		  type = 15;
-		}
-		else {
-		  type = 0; // unknown
-		}
+	  // TODO: this is absolutely temporary
+	  if ( !strcmp( fld_val, "Article" ) ) {
+	       type = 1;
+	  }
+	  else if ( !strcmp( fld_val, "Inbook" ) ) {         
+	       type = 2;
+	  }
+	  else if ( !strcmp( fld_val, "Proceedings" ) ) {    
+	       type = 3;
+	  }
+	  else if ( !strcmp( fld_val, "InProceedings" ) ) {  
+	       type = 4;
+	  }
+	  else if ( !strcmp( fld_val, "Book" ) ) {           
+	       type = 5;
+	  }
+	  else if ( !strcmp( fld_val, "PhdThesis" ) ) {      
+	       type = 6;
+	  }
+	  else if ( !strcmp( fld_val, "MastersThesis" ) ) {  
+	       type = 7;
+	  }
+	  else if ( !strcmp( fld_val, "MastersThesis" ) ) {  
+	       type = 8;
+	  }
+	  else if ( !strcmp( fld_val, "TechReport" ) ) {     
+	       type = 9;
+	  }
+	  else if ( !strcmp( fld_val, "Manual" ) ) {         
+	       type = 10;
+	  }
+	  else if ( !strcmp( fld_val, "Collection" ) ) {     
+	       type = 11;
+	  }
+	  else if ( !strcmp( fld_val, "InCollection" ) ) {   
+	       type = 12;
+	  }
+	  else if ( !strcmp( fld_val, "Unpublished" ) ) {    
+	       type = 13;
+	  }
+	  else if ( !strcmp( fld_val, "Electronic" ) ) {     
+	       type = 14;
+	  }
+	  else if ( !strcmp( fld_val, "Misc" ) ) {           
+	       type = 15;
+	  }
+	  // TODO: temporary!!
+	  else if ( !strcmp( fld_val, "online" ) ) {     // patch!!      
+	       type = 15;
+	  }
+	  else {
+	       type = 0; // unknown
+	  }
 
-		// REprintf("(bibentrydirectout_assemble): fld_val=%s\n", fld_val);
-		//  REprintf("type = %d\n\n", type);
+	  // REprintf("(bibentrydirectout_assemble): fld_val=%s\n", fld_val);
+	  //  REprintf("type = %d\n\n", type);
 		
-		if ( strcmp( fld_val, "online" ) )
-		  fstatus = fields_add( out, "bibtype", fld_val, LEVEL_MAIN );
-		else
-		  // this is temporary patch!
-		  fstatus = fields_add( out, "bibtype", "Misc", LEVEL_MAIN );
-	} else{
+	  if ( strcmp( fld_val, "online" ) )
+	       fstatus = fields_add( out, "bibtype", fld_val, LEVEL_MAIN );
+	  else
+	       // this is temporary patch!
+	       fstatus = fields_add( out, "bibtype", "Misc", LEVEL_MAIN );
+     } else{
 	  type = 15; // default to Misc; TODO: issue a message?
 	  fstatus = fields_add( out, "bibtype", "Misc", LEVEL_MAIN );
-	}
-	if ( fstatus!=FIELDS_OK ) status = BIBL_ERR_MEMERR;
+     }
+     if ( fstatus!=FIELDS_OK ) status = BIBL_ERR_MEMERR;
 
-	// Georgi: end of 'determine type' (the above also outputs it, so the line below is commented out
+     // Georgi: end of 'determine type' (the above also outputs it, so the line below is commented out
 	
-	// append_type        ( type, out, &status );
-	append_simple        ( in, "REFNUM", "refnum", out, &status );
+     // append_type        ( type, out, &status );
+     append_simple        ( in, "REFNUM", "refnum", out, &status );
 
-	// append_citekey     ( in, out, pm->format_opts, &status );
-	append_simple      ( in, "REFNUM", "refnum", out, &status );
+     // append_citekey     ( in, out, pm->format_opts, &status );
+     append_simple      ( in, "REFNUM", "refnum", out, &status );
 	
-	append_people      ( in, "AUTHOR",     "AUTHOR:CORP",     "AUTHOR:ASIS",     "author", LEVEL_MAIN, out, pm->format_opts, pm->latexout, &status );
-	append_people      ( in, "EDITOR",     "EDITOR:CORP",     "EDITOR:ASIS",     "editor", LEVEL_ANY, out, pm->format_opts, pm->latexout, &status );
-	append_people      ( in, "TRANSLATOR", "TRANSLATOR:CORP", "TRANSLATOR:ASIS", "translator", LEVEL_ANY, out, pm->format_opts, pm->latexout, &status );
-	append_titles      ( in, type, out, pm->format_opts, &status );
-	append_date        ( in, out, &status );
-	append_simple      ( in, "EDITION",            "edition",   out, &status );
+     append_people      ( in, "AUTHOR",     "AUTHOR:CORP",     "AUTHOR:ASIS",     "author", LEVEL_MAIN, out, pm->format_opts, pm->latexout, &status );
+     append_people      ( in, "EDITOR",     "EDITOR:CORP",     "EDITOR:ASIS",     "editor", LEVEL_ANY, out, pm->format_opts, pm->latexout, &status );
+     append_people      ( in, "TRANSLATOR", "TRANSLATOR:CORP", "TRANSLATOR:ASIS", "translator", LEVEL_ANY, out, pm->format_opts, pm->latexout, &status );
+     append_titles      ( in, type, out, pm->format_opts, &status );
+     append_date        ( in, out, &status );
+     append_simple      ( in, "EDITION",            "edition",   out, &status );
 
-	  append_simple      ( in, "INSTITUTION",        "institution", out, &status );
-	  append_simple      ( in, "PUBLISHER",          "publisher", out, &status );
+     append_simple      ( in, "INSTITUTION",        "institution", out, &status );
+     append_simple      ( in, "PUBLISHER",          "publisher", out, &status );
 
 
-	append_simple      ( in, "ADDRESS",            "address",   out, &status );
-	append_simple      ( in, "VOLUME",             "volume",    out, &status );
-	append_issue_number( in, out, &status );
-	append_pages       ( in, out, pm->format_opts, &status );
-	append_keywords    ( in, out, &status );
-	append_simple      ( in, "CONTENTS",           "contents",  out, &status );
-	append_simple      ( in, "ABSTRACT",           "abstract",  out, &status );
-	append_simple      ( in, "LOCATION",           "location",  out, &status );
-	append_simple      ( in, "DEGREEGRANTOR",      "school",    out, &status );
-	append_simple      ( in, "DEGREEGRANTOR:ASIS", "school",    out, &status );
-	append_simple      ( in, "DEGREEGRANTOR:CORP", "school",    out, &status );
-	append_simpleall   ( in, "NOTES",              "note",      out, &status );
-	append_simpleall   ( in, "ANNOTE",             "annote",    out, &status );
-	append_simple      ( in, "ISBN",               "isbn",      out, &status );
-	append_simple      ( in, "ISSN",               "issn",      out, &status );
-	append_simple      ( in, "MRNUMBER",           "mrnumber",  out, &status );
-	append_simple      ( in, "CODEN",              "coden",     out, &status );
-	append_simple      ( in, "DOI",                "doi",       out, &status );
-	append_urls        ( in, out, &status );
-	append_fileattach  ( in, out, &status );
-	append_arxiv       ( in, out, &status );
-	append_simple      ( in, "EPRINTCLASS",        "primaryClass", out, &status );
-	append_isi         ( in, out, &status );
-	append_simple      ( in, "LANGUAGE",           "language",  out, &status );
-	append_howpublished( in, out, &status );
+     append_simple      ( in, "ADDRESS",            "address",   out, &status );
+     append_simple      ( in, "VOLUME",             "volume",    out, &status );
+     append_issue_number( in, out, &status );
+     append_pages       ( in, out, pm->format_opts, &status );
+     append_keywords    ( in, out, &status );
+     append_simple      ( in, "CONTENTS",           "contents",  out, &status );
+     append_simple      ( in, "ABSTRACT",           "abstract",  out, &status );
+     append_simple      ( in, "LOCATION",           "location",  out, &status );
+     append_simple      ( in, "DEGREEGRANTOR",      "school",    out, &status );
+     append_simple      ( in, "DEGREEGRANTOR:ASIS", "school",    out, &status );
+     append_simple      ( in, "DEGREEGRANTOR:CORP", "school",    out, &status );
+     append_simpleall   ( in, "NOTES",              "note",      out, &status );
+     append_simpleall   ( in, "ANNOTE",             "annote",    out, &status );
+     append_simple      ( in, "ISBN",               "isbn",      out, &status );
+     append_simple      ( in, "ISSN",               "issn",      out, &status );
+     append_simple      ( in, "MRNUMBER",           "mrnumber",  out, &status );
+     append_simple      ( in, "CODEN",              "coden",     out, &status );
+     append_simple      ( in, "DOI",                "doi",       out, &status );
+     append_urls        ( in, out, &status );
+     append_fileattach  ( in, out, &status );
+     append_arxiv       ( in, out, &status );
+     append_simple      ( in, "EPRINTCLASS",        "primaryClass", out, &status );
+     append_isi         ( in, out, &status );
+     append_simple      ( in, "LANGUAGE",           "language",  out, &status );
+     append_howpublished( in, out, &status );
 
-	append_simple      ( in, "CHAPTER",           "chapter",  out, &status ); // Georgi
+     append_simple      ( in, "CHAPTER",           "chapter",  out, &status ); // Georgi
 
-	// Georgi - some entries may have field 'key' (it is used by some bibtex styles)
-        //       other = c(key = "mykey")
-	append_key      ( in, "KEY",   "other"        ,  out, &status );
+     // Georgi - some entries may have field 'key' (it is used by some bibtex styles)
+     //       other = c(key = "mykey")
+     append_key      ( in, "KEY",   "other"        ,  out, &status );
 
 
 	
-	int i, f_len;
-	char * fld_tag;
+     int i, f_len;
+     char * fld_tag;
 
-	f_len = fields_num( in );
-	for ( i=0; i<f_len; ++i ) {
+     f_len = fields_num( in );
+     for ( i=0; i<f_len; ++i ) {
 	  if( !fields_used(in, i) ){
-	    fld_tag = fields_tag( in, i, FIELDS_CHRP );
-	    fld_val = fields_value( in, i, FIELDS_CHRP );
+	       fld_tag = fields_tag( in, i, FIELDS_CHRP );
+	       fld_val = fields_value( in, i, FIELDS_CHRP );
 
-	    // for(int i = 0; str[i]; i++){
-	    //   str[i] = tolower(str[i]);
-	    // }
+	       // for(int i = 0; str[i]; i++){
+	       //   str[i] = tolower(str[i]);
+	       // }
 
-	    append_simple_quoted_tag( in, fld_tag, fld_tag, out, &status );
+	       append_simple_quoted_tag( in, fld_tag, fld_tag, out, &status );
 	  }
-	}
-
+     }
 	
-	return status;
+     return status;
 }
 
 /*****************************************************

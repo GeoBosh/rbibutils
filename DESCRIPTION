@@ -1,8 +1,8 @@
 Package: rbibutils
 Type: Package
 Title: Read 'Bibtex' Files and Convert Between Bibliography Formats
-Version: 2.2.4.9002
-Date: 2021-10-21
+Version: 2.2.4.9003
+Date: 2021-10-23
 Authors@R: c( person(given = c("Georgi", "N."), family = "Boshnakov", 
                      role = c("aut", "cre"), 	
                      email = "georgi.boshnakov@manchester.ac.uk",

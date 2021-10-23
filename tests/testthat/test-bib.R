@@ -314,9 +314,37 @@ test_that("bibRead works ok", {
 
     ## test the fix for texChars = "export"; the file contains both escaped TeX chars and unicode chars
     bib_texChars <- system.file("bib", "texChars.bib", package = "rbibutils")
+    expect_known_value(readBib(bib_texChars, direct = TRUE),
+                       "texChars_kept.rds", FALSE)
+
     expect_known_value(readBib(bib_texChars, direct = TRUE, texChars = "convert"),
                        "texChars_converted.rds", FALSE)
                        
-    expect_known_value(readBib(bib_texChars, direct = TRUE),
-                       "texChars_kept.rds", FALSE)
+    expect_known_value(readBib(bib_texChars, direct = TRUE, texChars = "export"),
+                       "texChars_exported.rds", FALSE)
+
+    xample_fn <- system.file("bib", "xampl_modified.bib", package = "rbibutils")
+
+    xampl <- readBib(xample_fn, direct = TRUE)
+    expect_known_value(xampl, "xampl_1.rds", FALSE)
+
+    ## This gives error (a number of such things currently are fixed only for direct = TRUE): 
+    ##    expect_known_value(readBib(xample_fn), "xampl_2.rds", FALSE)
+    ##
+    ## > tmp <- readBib(xample_fn)
+    ## Error in parse(n = -1, file = file, srcfile = NULL, keep.source = FALSE,  : 
+    ##   360:39: unexpected symbol
+    ## 359:       key = "unpublished-minimal",
+    ## 360:       author = c(person(family = "{\\"U
+    ##
+    ## Trace:
+    ##
+    ## Enter a frame number, or 0 to exit   
+    ##
+    ## 1: readBib(xample_fn)
+    ## 2: bib.R#47: bibConvert(file, bib, "bibtex", "bibentry", encoding = encoding, 
+    ## 3: convert.R#279: readBibentry(outfile)
+    ## 4: bibentry.R#9: parse(n = -1, file = file, srcfile = NULL, keep.source = FALS
+
+                       
 })

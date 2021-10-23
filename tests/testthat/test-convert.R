@@ -298,5 +298,41 @@ test_that("bibConvert works ok", {
     bibConvert(tmp_bib, tmp_xml, options = c(i = "cp1251"))
     
     bibConvert(bibacc, tempfile(fileext = "bib"), outformat = "biblatex")
+
+    ## #########################
+
+    tmpdir <- tempdir(dir)
+    xample_fn <- system.file("bib", "xampl_modified.bib", package = "rbibutils")
+
+    bibConvert(xample_fn, tmp_ads, options = c(nb = ""))
+    expect_known_value(readLines(tmp_ads), "xampl_bib2ads.rds", update = FALSE)
+    
+    bibConvert(xample_fn, tmp_bbl, outformat = "biblatex", options = c(nb = ""))
+    expect_known_value(readLines(tmp_bbl), "xampl2biblatex.rds", update = FALSE)
+    
+    xample_fn2 <- file.path(tmpdir, "xample_bbl2bib.bib")
+    bibConvert(tmp_bbl, xample_fn2, informat = "biblatex", options = c(nb = ""))
+    expect_known_value(readLines(xample_fn2), "xampl_bbl2bib.rds", update = FALSE)
+       
+    bibConvert(xample_fn, tmp_end)
+    bibConvert(xample_fn, tmp_end, outformat = "end", options = c(nb = ""))
+    expect_known_value(readLines(tmp_end), "xampl_bib2end.rds", update = FALSE)
+    
+    bibConvert(tmp_end, tmp_bib3)     
+    bibConvert(tmp_end, tmp_bib2, informat = "end", options = c(nb = ""))
+    
+    bibConvert(xample_fn, tmp_isi, options = c(nb = ""))
+    expect_known_value(readLines(tmp_isi), "xampl_bib2isi.rds", update = FALSE)
+    
+    bibConvert(tmp_isi, tmp_bib2, options = c(nb = ""))
+    expect_known_value(readLines(xample_fn2), "xampl_isi2bib.rds", update = FALSE)
+
+    bibConvert(med_in, tmp_bib2, informat = "med")
+    bibConvert(med_in, tmp_bib3, informat = "med", outformat = "biblatex", options = c(nb = ""))
+    expect_known_value(readLines(tmp_bib3), "med2bib.rds", update = FALSE)
+
+    
+    
+
     
 })

@@ -2,7 +2,7 @@
  * bibutils.h
  *
  * Copyright (c) Chris Putnam 2005-2020
- * Copyright (c) Georgi N. Boshnakov 2020
+ * Copyright (c) Georgi N. Boshnakov 2020-2021
  *
  * Source code released under GPL version 2
  *
@@ -59,7 +59,6 @@ extern "C" {
 #define BIBL_FORMAT_BIBOUT_SHORTTITLE (128)
 #define BIBL_FORMAT_BIBOUT_DROPKEY    (256)
 #define BIBL_FORMAT_MODSOUT_DROPKEY   (512)
-#define BIBL_FORMAT_BIBOUT_RDPACK     (1024) // Georgi  These are misplaced but need a marker for options :TODO:
 
 #define BIBL_RAW_WITHCLEAN       (2) // Georgi
 #define BIBL_RAW_WITHCHARCONVERT (4)

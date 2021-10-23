@@ -1,12 +1,10 @@
 # rbibutils 2.2.4.9001
 
-- in `readBib` with `direct = TRUE` and `texChars = "convert"`, mathematical
-  symbols and commands are treated properly. In particular, commands for
-  symbols, like `\alpha`, are no longer converted to (unicode) characters.
-  This was a documented shortcoming of the `"convert"` option.
+- `readBib` with `direct = TRUE` and `texChars` set to `"convert"` or `"export"`
+  was not processing mathematical expressions properly. Now fixed.
   
 - argument `texChars` of `readBib` gets new possible value, "Rdpack". This is
-  like the default, "keep", but additionally is converts `\'i' to `\'\i`. This
+  like the default, "keep", but in addition it converts `\'i' to `\'\i`. This
   is related to issue #7, see below the fix in v2.2.4 for details. This is
   mainly for internal use.
 
