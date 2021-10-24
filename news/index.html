@@ -122,6 +122,7 @@
 <li><p><code>readBib</code> with <code>direct = TRUE</code> and <code>texChars</code> set to <code>"convert"</code> or <code>"export"</code> was not processing mathematical expressions properly. Now fixed.</p></li>
 <li><p>argument <code>texChars</code> of <code>readBib</code> gets new possible value, “Rdpack”. This is like the default, “keep”, but in addition it converts <code>\'i' to</code>'\i`. This is related to issue <a href='https://github.com/GeoBosh/rbibutils/issues/7'>#7</a>, see below the fix in v2.2.4 for details. This is mainly for internal use.</p></li>
 <li><p>improved the messages from error handling when creating bibentry objects. The fix is in <code>readBibentry</code> but users typically see them when calling <code>readBib</code>.</p></li>
+<li><p>fixed an error which caused <code>bibConvert</code> to segfault when importing <code>nbib</code> files.</p></li>
 </ul>
 </div>
     <div id="rbibutils-224-cran" class="section level1">
