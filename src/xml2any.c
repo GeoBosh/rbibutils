@@ -443,6 +443,7 @@ xml2any_main( int *argc, char *argv[], char *outfile[], double *nref )
 	//REprintf("OOOOh: p.latexout: %d, p.charsetout: %d\n", p.latexout, p.charsetout );
 	
 	*nref = bibprog( argc[0], argv, &p, outfile );   // bibprog( argc, argv, &p );
+
 	// Georgi, no need to print, returned to caller
 	// if( p.progname ) REprintf( "%s: ", p.progname );
 	// REprintf( "processed %g references.\n", *nref );

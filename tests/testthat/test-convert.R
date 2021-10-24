@@ -1,5 +1,9 @@
 
 test_that("bibConvert works ok", {
+    expect_error(bibConvert(tempfile(fileext = ".bib"), tempfile(fileext = ".bib")),
+                 "input file .* doesn't exist")
+    bibConvert(tempfile(fileext = ".bib"), tempfile(fileext = ".bib"), options = c(h = ""))
+
     bibdir <- system.file("bib", package = "rbibutils")
 
     ## file is from
@@ -35,6 +39,7 @@ test_that("bibConvert works ok", {
     tmp_isi   <- tempfile(fileext = ".isi")
     tmp_med   <- tempfile(fileext = ".med")
     tmp_nbib  <- tempfile(fileext = ".nbib")
+    tmp2_nbib  <- tempfile(fileext = ".nbib")
     tmp_ris   <- tempfile(fileext = ".ris")
     tmp_wordbib   <- tempfile(fileext = ".wordbib")
 
@@ -60,9 +65,12 @@ test_that("bibConvert works ok", {
 
     
     ## TODO: need copac file to test for input from copac
-    expect_error(bibConvert(tmp_bib, tmp_copac),
-                 "export to copac format not implemented")
- 
+    ##     tmp2 <- bibConvert(tmp_copac, tmp_xml, options = c(h = ""))
+    ##     tmp2 <- bibConvert(tmp_copac, tmp_bib3, informat = "copac")
+    ## export to copac is not implemented:
+    expect_error(bibConvert(tmp_bib, tmp_copac), "export to copac format not implemented")
+
+    
      
     expect_error(bibConvert(tmp_bib, tmp_ebi, outformat = "ebi"),
                  "export to EBI XML format not implemented")
@@ -121,10 +129,28 @@ test_that("bibConvert works ok", {
     ##   (but it causes check error on Windows due to BOM)
     ## tmp_bib <- file.path(bibdir, "bib_from_medin.bib")
    
-    ## bibConvert(tmp_bib, tmp_nbib)   # TODO: segfaults!
-    ## bibConvert(tmp_nbib, tmp_bib2)  # TODO: need nbib file for import!
+    bibConvert(tmp_bib, tmp_nbib)
+    ## This 
+    ##     bibConvert(tmp_nbib, tmp_bib2)
+    ## fails to process the references with messages like:
+    ##
+    ## Warning.  Tagged line not in properly started reference.
+    ## Ignored: 'VI  - 50'
+    ##
+    ## There is no error, just 0 output references. Apparently tmp_nbib created from
+    ## bib-to-nbib doesn't contain crucial info for each reference.
+    ##
+    ## TODO: maybe exporting a dummy PMID field will resolve this when the input doesn't have
+    ##       it? Or give a more informative message?
+    ##
     ## expect_known_value(readLines(tmp_bib2), "nbib2bib.rds", update = FALSE)
 
+    single_nbib <- system.file("bib", "single.nbib", package = "rbibutils")
+    bibConvert(single_nbib, tmp_bib2)
+
+    ## when the input file contains PMID the nbib output is read back successfully:
+    bibConvert(tmp_bib2, tmp2_nbib)
+    bibConvert(tmp2_nbib, tmp_bib3 )
     
     bibConvert(tmp_bib, tmp_ris, options = c(nb = ""))
     expect_known_value(readLines(tmp_ris), "bib2ris.rds", update = FALSE)
@@ -238,7 +264,6 @@ test_that("bibConvert works ok", {
 ##       # a <- capture.output(tmp2 <- bibConvert(tmp_ads,     tmp_xml, options = c(h = "")), type = "message")
 ##     a <- capture.output(tmp2 <- bibConvert(tmp_copac,   tmp_xml, options = c(h = "")), type = "message")
 ##     expect_match(a, "usage: copac2xml copac_file > xml_file", all = FALSE)
-    tmp2 <- bibConvert(tmp_copac,   tmp_xml, options = c(h = ""))
     
 ##       # a <- capture.output(tmp2 <- bibConvert(tmp_ebi,     tmp_xml, options = c(h = "")), type = "message")
 ##     a <- capture.output(tmp2 <- bibConvert(tmp_end,     tmp_xml, options = c(h = "")), type = "message")
@@ -301,7 +326,7 @@ test_that("bibConvert works ok", {
 
     ## #########################
 
-    tmpdir <- tempdir(dir)
+    tmpdir <- tempdir()
     xample_fn <- system.file("bib", "xampl_modified.bib", package = "rbibutils")
 
     bibConvert(xample_fn, tmp_ads, options = c(nb = ""))

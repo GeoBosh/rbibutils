@@ -11,6 +11,9 @@
 - improved the messages from error handling when creating bibentry
   objects. The fix is in `readBibentry` but users typically see them when
   calling `readBib`.
+
+- fixed an error which caused `bibConvert` to segfault when importing `nbib`
+  files.
   
 
 # rbibutils 2.2.4 (CRAN)

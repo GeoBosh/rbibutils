@@ -46,6 +46,8 @@ nbibout_initparams( param *pm, const char *progname )
 		pm->utf8out = pm->utf8bom = 1;
 	}
 
+	pm->assemblef = NULL;  // Georgi
+
 	pm->headerf = generic_writeheader;
 	pm->footerf = NULL;
 	pm->writef  = nbibout_write;
