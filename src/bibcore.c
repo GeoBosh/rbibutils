@@ -805,16 +805,23 @@ convert_refs( bibl *bin, char *fname, bibl *bout, param *p )
 	fields *rin, *rout;
 	long i;
 
-	for ( i=0; i<bin->n; ++i ) {
+	// REprintf("convert_refs: in convert_refs!\n");
 
+	// REprintf("convert_refs: bib->n = %d\n", bin->n);
+	for ( i=0; i<bin->n; ++i ) {
+	        // REprintf("convert_refs: i = %d\n", i);
 		rin = bin->ref[i];
+
+		// fields_report_stderr( rin );  // Testing only !!!!!!!!!!!!!!!1
 
 		rout = fields_new();
 		if ( !rout ) return BIBL_ERR_MEMERR;
 
 		if ( p->typef ) reftype = p->typef( rin, fname, i+1, p );
 
+		// REprintf("convert_refs: before p->convertf\n");
 		status = p->convertf( rin, rout, reftype, p );
+		// REprintf("convert_refs: after p->convertf\n");
 		if ( status!=BIBL_OK ) return status;
 
 		if ( p->all ) {
@@ -828,6 +835,7 @@ convert_refs( bibl *bin, char *fname, bibl *bout, param *p )
 		if ( status!=BIBL_OK ) return status;
 	}
 
+	// REprintf("convert_refs: end of convert_refs!\n");
 	return BIBL_OK;
 }
 
@@ -837,6 +845,7 @@ bibl_read( bibl *b, FILE *fp, char *filename, param *p )
 	int status = BIBL_OK;
 	param read_params;
 	bibl bin;
+	// REprintf("(bibl_read) in bibl_read!\n");
 
 	if ( !b )  return BIBL_ERR_BADINPUT;
 	if ( !fp ) return BIBL_ERR_BADINPUT;
@@ -847,7 +856,12 @@ bibl_read( bibl *b, FILE *fp, char *filename, param *p )
 		return BIBL_ERR_BADINPUT;
 	}
 
+	// REprintf("(bibl_read) after bibl_illegalinmode\n");
+	
 	status = bibl_setreadparams( &read_params, p );
+
+	// REprintf("(bibl_read) after bibl_setreadparams\n");
+	
 	if ( status!=BIBL_OK ) {
 	  if ( debug_set( p ) ) report_params( "bibl_read", p );
 		return status;
@@ -859,6 +873,9 @@ bibl_read( bibl *b, FILE *fp, char *filename, param *p )
 
 	bibl_init( &bin );
 
+
+	// REprintf("(bibl_read) before read_refs\n");
+	
 	status = read_refs( fp, &bin, filename, &read_params );
 	if ( status!=BIBL_OK ) {
 	  if ( debug_set( &read_params ) ) report_params( "bibl_read", &read_params );
@@ -866,11 +883,11 @@ bibl_read( bibl *b, FILE *fp, char *filename, param *p )
 		return status;
 	}
 
-	// Georgi: for testing
-//   REprintf("bibl_read: (after(read_refs)\n");
-//   for(long i = 0; i < bin.n; ++i) {
-//     fields_report_stderr( bin.ref[i] );
-//   }
+	// // Georgi: for testing
+	// REprintf("bibl_read: (after(read_refs)\n");
+	// for(long i = 0; i < bin.n; ++i) {
+	//   fields_report_stderr( bin.ref[i] );
+	// }
 
 	if ( debug_set( &read_params ) ) { 
 		bibl_verbose( &bin, "raw_input", "for bibl_read" );
@@ -882,12 +899,11 @@ bibl_read( bibl *b, FILE *fp, char *filename, param *p )
 		if ( debug_set( &read_params ) ) bibl_verbose( &bin, "post_clean_refs", "for bibl_read" );
 	}
 	
-//   REprintf("bibl_read: (after(clean_refs)\n");
-//   // Georgi: for testing
-//   for(long i = 0; i < bin.n; ++i) {
-//     fields_report_stderr( bin.ref[i] );
-//   }
-
+	// // Georgi: for testing
+	// REprintf("bibl_read: (after(clean_refs)\n");
+	// for(long i = 0; i < bin.n; ++i) {
+	//   fields_report_stderr( bin.ref[i] );
+	// }
 
 	if ( ( !read_params.output_raw ) || ( read_params.output_raw & BIBL_RAW_WITHCHARCONVERT ) ) {
 	  	status = bibl_fixcharsets( &bin, &read_params );
@@ -895,25 +911,31 @@ bibl_read( bibl *b, FILE *fp, char *filename, param *p )
 		if ( debug_set( &read_params ) ) bibl_verbose( &bin, "post_fixcharsets", "for bibl_read" );
 	}
 
-//   REprintf("bibl_read: (after(bibl_fixcharsets)\n");
-//   // Georgi: for testing
-//   for(long i = 0; i < bin.n; ++i) {
-//     fields_report_stderr( bin.ref[i] );
-//   }
+	// REprintf("bibl_read: (after(bibl_fixcharsets)\n");
+	// Georgi: for testing
+	// for(long i = 0; i < bin.n; ++i) {
+	//   fields_report_stderr( bin.ref[i] );
+	// }
 
 	if ( !read_params.output_raw ) {
+	        // REprintf("bibl_read: before convert_refs; read_params.output_raw is FALSE\n");
 		status = convert_refs( &bin, filename, b, &read_params );
 		if ( status!=BIBL_OK ) goto out;
 		if ( debug_set( &read_params ) ) bibl_verbose( b, "post_convert_refs", "for bibl_read" );
 	}
 	
 	else {
+	  // REprintf("bibl_read: before convert_refs; read_params.output_raw is TRUE\n");
 	 	status = bibl_copy( b, &bin );
 	 	if ( status!=BIBL_OK ) goto out;
 	 	if ( debug_set( &read_params ) ) bibl_verbose( b, "post_bibl_copy", "for bibl_read" );
 	}
 
+	
+	// REprintf("bibl_read: before 'if' and uniquify_citekeys\n");
+  
 	if ( ( !read_params.output_raw ) || ( read_params.output_raw & BIBL_RAW_WITHMAKEREFID ) ) {
+	        // REprintf("bibl_read: before uniquify_citekeys\n");
 		status = uniqueify_citekeys( b );
 		if ( status!=BIBL_OK ) goto out;
 		if ( read_params.addcount ) {
@@ -923,11 +945,11 @@ bibl_read( bibl *b, FILE *fp, char *filename, param *p )
 		if ( debug_set( &read_params ) ) bibl_verbose( &bin, "post_uniqueify_citekeys", "for bibl_read" );
 	}
 
-//   REprintf("\nbibl_read: at end of bibl_read\n");
-//   // Georgi: for testing
-//   for(long i = 0; i < b->n; ++i) {
-//     fields_report_stderr( b->ref[i] );
-//   }
+	// // Georgi: for testing
+	// REprintf("\nbibl_read: at end of bibl_read\n");
+	// for(long i = 0; i < b->n; ++i) {
+	//   fields_report_stderr( b->ref[i] );
+	// }
 
 out:
 	bibl_free( &bin );

@@ -69,13 +69,10 @@ test_that("bibConvert works ok", {
     ##     tmp2 <- bibConvert(tmp_copac, tmp_bib3, informat = "copac")
     ## export to copac is not implemented:
     expect_error(bibConvert(tmp_bib, tmp_copac), "export to copac format not implemented")
-
-    
      
     expect_error(bibConvert(tmp_bib, tmp_ebi, outformat = "ebi"),
                  "export to EBI XML format not implemented")
     ## TODO: need EBI file to test for input from EBI
-
     
     bibConvert(tmp_bib, tmp_end)
     bibConvert(tmp_bib, tmp_end, outformat = "end", options = c(nb = ""))
@@ -90,24 +87,23 @@ test_that("bibConvert works ok", {
     bibConvert(end_in, tmp_bib3, options = c(nb = ""))
     ## see note above 
     ## expect_known_value(readLines(tmp_bib3), "end2bib2.rds", update = FALSE)
-    
 
     expect_error(bibConvert(tmp_bib3, tmp_endx),
                  "export to Endnote XML format not implemented")
     expect_error(bibConvert(tmp_bib3, tmp_endx, outformat = "endx"),
                  "export to Endnote XML format not implemented")
     expect_message(bibConvert(endx_in, tmp_bib3), "no references to output")
-## these raise valgrind erors abput uninitialised values:
-##     bibConvert(endx_in, tmp_bib3, informat = "endx", options = c(nb = ""))
-##     expect_known_value(readLines(tmp_bib3), "end2bib.rds", update = FALSE)
-
+    ## these raise valgrind erors abput uninitialised values:
+    ##     2021-10-29 Note: restoring, maybe this was fixed when other valgroind
+    ##                      were fixed?
+    bibConvert(endx_in, tmp_bib3, informat = "endx", options = c(nb = ""))
+    expect_known_value(readLines(tmp_bib3), "end2bib.rds", update = FALSE)
     
     bibConvert(tmp_bib, tmp_isi, options = c(nb = ""))
     expect_known_value(readLines(tmp_isi), "bib2isi.rds", update = FALSE)
 
     bibConvert(tmp_isi, tmp_bib2, options = c(nb = ""))
     expect_known_value(readLines(tmp_bib2), "isi2bib.rds", update = FALSE)
-
     
     expect_error(bibConvert(tmp_bib, tmp_med),
                  "export to Medline XML format not implemented")
@@ -123,7 +119,6 @@ test_that("bibConvert works ok", {
     expect_identical(readLines(tmp_meda), readLines(tmp_medb))
     unlink(tmp_meda)
     unlink(tmp_medb)
-    
     
     ## this assignment was used when the above lines were commented out during memory leak tests.
     ##   (but it causes check error on Windows due to BOM)
@@ -151,6 +146,10 @@ test_that("bibConvert works ok", {
     ## when the input file contains PMID the nbib output is read back successfully:
     bibConvert(tmp_bib2, tmp2_nbib)
     bibConvert(tmp2_nbib, tmp_bib3 )
+
+    ## use a shorter file in tests
+    ##     bibConvert(system.file("bib", "pubmed-balloongui-set.nbib", package = "rbibutils"), "tmp.xml")
+    bibConvert(system.file("bib", "pubmed-balloongui-set_09_31542275.nbib", package = "rbibutils"), "tmp.xml")
     
     bibConvert(tmp_bib, tmp_ris, options = c(nb = ""))
     expect_known_value(readLines(tmp_ris), "bib2ris.rds", update = FALSE)
@@ -327,37 +326,97 @@ test_that("bibConvert works ok", {
     ## #########################
 
     tmpdir <- tempdir()
-    xample_fn <- system.file("bib", "xampl_modified.bib", package = "rbibutils")
+    xampl_fn <- system.file("bib", "xampl_modified.bib", package = "rbibutils")
 
-    bibConvert(xample_fn, tmp_ads, options = c(nb = ""))
+    bibConvert(xampl_fn, tmp_ads, options = c(nb = ""))
     expect_known_value(readLines(tmp_ads), "xampl_bib2ads.rds", update = FALSE)
     
-    bibConvert(xample_fn, tmp_bbl, outformat = "biblatex", options = c(nb = ""))
+    bibConvert(xampl_fn, tmp_bbl, outformat = "biblatex", options = c(nb = ""))
     expect_known_value(readLines(tmp_bbl), "xampl2biblatex.rds", update = FALSE)
     
-    xample_fn2 <- file.path(tmpdir, "xample_bbl2bib.bib")
-    bibConvert(tmp_bbl, xample_fn2, informat = "biblatex", options = c(nb = ""))
-    expect_known_value(readLines(xample_fn2), "xampl_bbl2bib.rds", update = FALSE)
+    xampl_fn2 <- file.path(tmpdir, "xampl_bbl2bib.bib")
+    bibConvert(tmp_bbl, xampl_fn2, informat = "biblatex", options = c(nb = ""))
+    expect_known_value(readLines(xampl_fn2), "xampl_bbl2bib.rds", update = FALSE)
        
-    bibConvert(xample_fn, tmp_end)
-    bibConvert(xample_fn, tmp_end, outformat = "end", options = c(nb = ""))
+    bibConvert(xampl_fn, tmp_end)
+    bibConvert(xampl_fn, tmp_end, outformat = "end", options = c(nb = ""))
     expect_known_value(readLines(tmp_end), "xampl_bib2end.rds", update = FALSE)
     
     bibConvert(tmp_end, tmp_bib3)     
     bibConvert(tmp_end, tmp_bib2, informat = "end", options = c(nb = ""))
     
-    bibConvert(xample_fn, tmp_isi, options = c(nb = ""))
+    bibConvert(xampl_fn, tmp_isi, options = c(nb = ""))
     expect_known_value(readLines(tmp_isi), "xampl_bib2isi.rds", update = FALSE)
     
     bibConvert(tmp_isi, tmp_bib2, options = c(nb = ""))
-    expect_known_value(readLines(xample_fn2), "xampl_isi2bib.rds", update = FALSE)
+    expect_known_value(readLines(xampl_fn2), "xampl_isi2bib.rds", update = FALSE)
 
     bibConvert(med_in, tmp_bib2, informat = "med")
     bibConvert(med_in, tmp_bib3, informat = "med", outformat = "biblatex", options = c(nb = ""))
     expect_known_value(readLines(tmp_bib3), "med2bib.rds", update = FALSE)
 
     
+    ## tex.bib
+    tex_fn <- system.file("bib", "tex.bib", package = "rbibutils")
+
+    bibConvert(tex_fn, "tmp.ads")
+    bibConvert(tex_fn, "tmp.bibtex")
+    bibConvert(tex_fn, "tmp.biblatex")
+    bibConvert(tex_fn, "tmp.biblatex", informat = "biblatex") # it's bibtex but should work
     
+    ## bibConvert(tex_fn, "tmp.copac") # not supported
+    ## bibConvert(tex_fn, "tmp.ebi")      # not supported
+    bibConvert(tex_fn, "tmp.end")
+    ## bibConvert(tex_fn, "tmp.endx") 
+    bibConvert(tex_fn, "tmp.isi")
+    ## bibConvert(tex_fn, "tmp.med")
+    bibConvert(tex_fn, "tmp.nbib")
+    bibConvert(tex_fn, "tmp.ris")
+    bibConvert(tex_fn, "tmp.R", outformat = "Rstyle")
+    bibConvert(tex_fn, "tmp.rds")
+    bibConvert(tex_fn, "tmp.xml")
+
+    bibConvert(tex_fn, "tmp.wordbib")
+    bibConvert(tex_fn, "tmp.word", outformat = "word")
+
+    bibConvert("tmp.bibtex"  , "tmp2.xml")
+    bibConvert("tmp.biblatex", "tmp2.xml")
+    bibConvert("tmp.word"    , "tmp2.xml", informat = "word")
+    ## bibConvert("tmp.ads"  , "tmp2.xml")  # not supported
+    ## bibConvert("tmp.copac", "tmp2.xml")  # "tmp.copac" not available
+    ## bibConvert("tmp.ebi"  , "tmp2.xml")  # "tmp.ebi" not available
+    bibConvert("tmp.end"     , "tmp2.xml")
+    ## bibConvert("tmp.endx" , "tmp2.xml")  # "tmp.endx" not available
+    bibConvert("tmp.isi"     , "tmp2.xml")
+    ## bibConvert("tmp.med", , "tmp2.xml")  # "tmp.med" not available
+    bibConvert("tmp.nbib"    , "tmp2.xml")  # TODO: amend nbib output to output dummy PMID's
+                                            #       when not present in input file?
+    bibConvert("tmp.ris"     , "tmp2.xml")
+    bibConvert("tmp.R"       , "tmp2.xml")  # "bibentry"
+    bibConvert("tmp.rds"     , "tmp2.xml")
+    bibConvert("tmp.xml"     , "tmp2.xml")
+    bibConvert("tmp.wordbib" , "tmp2.xml")
 
     
+    readBib(tex_fn, direct = TRUE)
+    readBib(xampl_fn, direct = TRUE)
+
+    biblatex_fn <- system.file("bib", "biblatex-examples_sans_key_aksin.bib", package = "rbibutils")
+    
+    tmp <- bibConvert(biblatex_fn, "tmp2.bib", informat = "biblatex")
+    
 })
+
+## TODO: 'tried to fix' is not followed by report if it was successful
+##
+## > tmp <- bibConvert(tex_fn, "tmp.rds")
+## Error in .bibentry_check_bibentry1(rval) : 
+##   A bibentry of bibtype ‘Book’ has to specify the field: year
+## 
+## Tried to fix above errors/warnings, see the warnings and messages below.
+## 
+## key 'G-G'
+##       A bibentry of bibtype ‘Book’ has to specify the field: year
+
+
+

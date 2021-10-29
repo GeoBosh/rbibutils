@@ -418,7 +418,7 @@ nbibin_pages( fields *bibin, int n, str *intag, str *invalue, int level, param *
 	str sp, tmp, ep;
 	char *p;
 	int i;
-
+	
 	p = str_cstr( invalue );
 	if ( !p ) return BIBL_OK;
 
@@ -450,15 +450,27 @@ nbibin_pages( fields *bibin, int n, str *intag, str *invalue, int level, param *
 	}
 
 	if ( tmp.len ) {
-		for ( i=0; i<sp.len - tmp.len; ++i )
-			str_addchar( &ep, sp.data[i] );
-		str_strcat( &ep, &tmp );
-
-		fstatus = fields_add( bibout, "PAGES:STOP", str_cstr( &ep ), LEVEL_MAIN );
-		if ( fstatus!=FIELDS_OK ) {
-			status = BIBL_ERR_MEMERR;
-			goto out;
-		}
+	        // REprintf("page:last = %s\n", tmp.data);
+	        // REprintf("sp.len = %d, tmp.len = %d, sp.len - tmp.len = %u\n", sp.len, tmp.len,
+	        // 	   sp.len - tmp.len);
+	        //
+	        // Georgi: sp.len and tmp.len are unsigned long, so is their difference, with
+	        //         devastating (segfault) consequences if the difference is negative.
+	        // eg, a biblio entry had:
+	        //     page:start = 379.e9
+	        //     page:last = 379.e13
+	        // so, sp.len = 6, tmp.len = 7, sp.len - tmp.len = 4294967295 (!)
+	        if(sp.len >= tmp.len) {
+	          for ( i=0; i<sp.len - tmp.len; ++i )
+	            str_addchar( &ep, sp.data[i] );
+	        }
+	        str_strcat( &ep, &tmp );
+	        
+	        fstatus = fields_add( bibout, "PAGES:STOP", str_cstr( &ep ), LEVEL_MAIN );
+	        if ( fstatus!=FIELDS_OK ) {
+	          status = BIBL_ERR_MEMERR;
+	          goto out;
+	        }
 	}
 out:
 	strs_free( &sp, &tmp, &ep, NULL );
@@ -522,6 +534,7 @@ nbib_convertf( fields *bibin, fields *bibout, int reftype, param *p )
 
 	for ( i=0; i<nfields; ++i ) {
 		intag = fields_tag( bibin, i, FIELDS_STRP );
+
 		if ( !translate_oldtag( str_cstr( intag ), reftype, p->all, p->nall, &process, &level, &outtag ) ) {
 			nbib_report_notag( p, str_cstr( intag ) );
 			continue;

@@ -124,11 +124,14 @@ any2xml_main( int *argcin, char *argv[], char *outfile[], double *nref)
 	modsout_initparams( &p, progname );
 	tomods_processargs( &argc, argv, &p, help0[ihelp], help0[ihelp + 1] );
 
+	// REprintf("(any2xml)before bibprog\n");
+
 	*nref = bibprog( argc, argv, &p, outfile );
 	// Georgi, no need to print, returned to caller
 	// if( p.progname ) REprintf( "%s: ", p.progname );
 	// REprintf( "processed %g references.\n", *nref );
 
+	// REprintf("(any2xml)after bibprog\n");
 
 	bibl_freeparams( &p );
 

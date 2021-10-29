@@ -14,7 +14,7 @@
 
 - fixed an error which caused `bibConvert` to segfault when importing `nbib`
   files.
-  
+
 
 # rbibutils 2.2.4 (CRAN)
 

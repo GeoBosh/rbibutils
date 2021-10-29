@@ -19,6 +19,7 @@ bibprog( int argc, char *argv[], param *p, char *outfile[] )
 	FILE *fp;
 	bibl b;
 	int err, i;
+	// REprintf("(bibprog) start of bibprog!\n");
 
 	// Georgi
 	FILE *fout;
@@ -26,10 +27,14 @@ bibprog( int argc, char *argv[], param *p, char *outfile[] )
 	fout = fopen(outfile[0], "w");
 	
 	bibl_init( &b );
+	// REprintf("(bibprog) before bibl_read!\n");
 	if ( argc<2 ) {
+	    REprintf("(bibprog) args < 2\n");
+
 		err = bibl_read( &b, stdin, "stdin", p );
 		if ( err ) bibl_reporterr( err ); 
 	} else {
+	        // REprintf("(bibprog) args >= 2\n");
 		for ( i=1; i<argc; ++i ) {
 			fp = fopen( argv[i], "r" );
 			if ( fp ) {
@@ -39,12 +44,13 @@ bibprog( int argc, char *argv[], param *p, char *outfile[] )
 			}
 		} 
 	}
+	// REprintf("(bibprog) after bibl_read!\n");
 	
-  // REprintf("(bibprog) Bh: before_bibl_write\n");
-  // // Georgi: for testing
-  // for(long i = 0; i < b.n; ++i) {
-  //   fields_report_stderr( b.ref[i] );
-  // }
+	// // Georgi: for testing
+	// REprintf("(bibprog) Bh: before_bibl_write\n");
+	// for(long i = 0; i < b.n; ++i) {
+	//   fields_report_stderr( b.ref[i] );
+	// }
   
         bibl_write( &b, fout, p );
         fflush( fout );
