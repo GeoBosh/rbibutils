@@ -248,7 +248,7 @@ bibConvert <- function(infile, outfile, informat, outformat, ..., tex, encoding,
     argv_xml2 <- as.character(argv_xml2)    
     switch(outformat,
            xml = {
-               wrk_out = list(xmlfile)
+               wrk_out = list(xmlfile, nref_in = wrk_in$nref_in, nref_out = wrk_in$nref_in)
            },
            bibtex = ,
            bib = {
@@ -308,7 +308,7 @@ bibConvert <- function(infile, outfile, informat, outformat, ..., tex, encoding,
 
     if(is.numeric(wrk_out$nref_out) && wrk_out$nref_out == 0)
         message("\nno references to output.\n",
-                "if this is wrong, consider using argument 'informat'.\n")
+                "if this seems wrong, consider using argument 'informat'.\n")
 
     wrk <- list("infile" = infile, "outfile" = outfile,
                 nref_in = wrk_in$nref_in,

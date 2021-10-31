@@ -477,7 +477,10 @@ read_refs( FILE *fp, bibl *bin, char *filename, param *p )
 			goto out;
 		}
 		if ( p->processf( ref, reference.data, filename, refnum+1, p )){
-			ret = bibl_addref( bin, ref );
+		  			ret = bibl_addref( bin, ref );
+					
+					// fields_report_stderr(ref); // Georgi, for tests
+				
 			if ( ret!=BIBL_OK ) {
 				bibl_free( bin );
 				fields_delete( ref );

@@ -162,6 +162,7 @@ static int
 ebiin_medlinedate_year( fields *info, const char *p, int level, const char **end )
 {
 	int fstatus, status = BIBL_OK;
+	
 	str s;
 
 	str_init( &s );
@@ -757,6 +758,7 @@ ebiin_assembleref( xml *node, fields *info )
 	return BIBL_OK;
 }
 
+extern void xml_draw( xml *node, int n );
 static int
 ebiin_processf( fields *ebiin, const char *data, const char *filename, long nref, param *p )
 {
@@ -765,6 +767,10 @@ ebiin_processf( fields *ebiin, const char *data, const char *filename, long nref
 
 	xml_init( &top );
 	xml_parse( data, &top );
+
+	// REprintf("\n(ebiin_processf)Test print:\n");	
+	// xml_draw( &top, 0);
+	
 	status = ebiin_assembleref( &top, ebiin );
 	xml_free( &top );
 

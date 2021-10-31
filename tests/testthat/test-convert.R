@@ -23,9 +23,12 @@ test_that("bibConvert works ok", {
     litprog280_bib <- file.path(bibdir, "litprog280.bib")
     
     tmp_xml <- tempfile(fileext = ".xml")
+    tmp_xml2 <- tempfile(fileext = ".xml")
     tmp_bib <- tempfile(fileext = ".bib")
     tmp_bib2 <- tempfile(fileext = ".bib")
     tmp_bib3 <- tempfile(fileext = ".bib")
+    tmp_bibtex <- tempfile(fileext = ".bibtex")
+    tmp_biblatex <- tempfile(fileext = ".biblatex")
     tmp_bbl <- tempfile(fileext = ".bbl")
     tmp_bbl2 <- tempfile(fileext = ".bbl")
     tmp_rds <- tempfile(fileext = ".rds")
@@ -42,6 +45,7 @@ test_that("bibConvert works ok", {
     tmp2_nbib  <- tempfile(fileext = ".nbib")
     tmp_ris   <- tempfile(fileext = ".ris")
     tmp_wordbib   <- tempfile(fileext = ".wordbib")
+    tmp_word      <- tempfile(fileext = ".word")
 
     ex0_xml <- file.path(bibdir, "ex0.xml")
     bibConvert(ex0_xml, tmp_bib, options = c(nb = ""))
@@ -72,7 +76,9 @@ test_that("bibConvert works ok", {
      
     expect_error(bibConvert(tmp_bib, tmp_ebi, outformat = "ebi"),
                  "export to EBI XML format not implemented")
-    ## TODO: need EBI file to test for input from EBI
+    ## can't export to EBI, so using another file
+    bibConvert(system.file("bib", "ebi.xml", package = "rbibutils"), tmp_xml2,
+               informat = "ebi")
     
     bibConvert(tmp_bib, tmp_end)
     bibConvert(tmp_bib, tmp_end, outformat = "end", options = c(nb = ""))
@@ -95,7 +101,7 @@ test_that("bibConvert works ok", {
     expect_message(bibConvert(endx_in, tmp_bib3), "no references to output")
     ## these raise valgrind erors abput uninitialised values:
     ##     2021-10-29 Note: restoring, maybe this was fixed when other valgroind
-    ##                      were fixed?
+    ##                      errors were fixed?
     bibConvert(endx_in, tmp_bib3, informat = "endx", options = c(nb = ""))
     expect_known_value(readLines(tmp_bib3), "end2bib.rds", update = FALSE)
     
@@ -148,8 +154,8 @@ test_that("bibConvert works ok", {
     bibConvert(tmp2_nbib, tmp_bib3 )
 
     ## use a shorter file in tests
-    ##     bibConvert(system.file("bib", "pubmed-balloongui-set.nbib", package = "rbibutils"), "tmp.xml")
-    bibConvert(system.file("bib", "pubmed-balloongui-set_09_31542275.nbib", package = "rbibutils"), "tmp.xml")
+    ##     bibConvert(system.file("bib", "pubmed-balloongui-set.nbib", package = "rbibutils"), tmp_xml)
+    bibConvert(system.file("bib", "pubmed-balloongui-set_09_31542275.nbib", package = "rbibutils"), tmp_xml)
     
     bibConvert(tmp_bib, tmp_ris, options = c(nb = ""))
     expect_known_value(readLines(tmp_ris), "bib2ris.rds", update = FALSE)
@@ -359,43 +365,43 @@ test_that("bibConvert works ok", {
     ## tex.bib
     tex_fn <- system.file("bib", "tex.bib", package = "rbibutils")
 
-    bibConvert(tex_fn, "tmp.ads")
-    bibConvert(tex_fn, "tmp.bibtex")
-    bibConvert(tex_fn, "tmp.biblatex")
-    bibConvert(tex_fn, "tmp.biblatex", informat = "biblatex") # it's bibtex but should work
+    bibConvert(tex_fn, tmp_ads)
+    bibConvert(tex_fn, tmp_bibtex)
+    bibConvert(tex_fn, tmp_biblatex)
+    bibConvert(tex_fn, tmp_biblatex, informat = "biblatex") # it's bibtex but should work
     
-    ## bibConvert(tex_fn, "tmp.copac") # not supported
-    ## bibConvert(tex_fn, "tmp.ebi")      # not supported
-    bibConvert(tex_fn, "tmp.end")
-    ## bibConvert(tex_fn, "tmp.endx") 
-    bibConvert(tex_fn, "tmp.isi")
-    ## bibConvert(tex_fn, "tmp.med")
-    bibConvert(tex_fn, "tmp.nbib")
-    bibConvert(tex_fn, "tmp.ris")
-    bibConvert(tex_fn, "tmp.R", outformat = "Rstyle")
-    bibConvert(tex_fn, "tmp.rds")
-    bibConvert(tex_fn, "tmp.xml")
+    ## bibConvert(tex_fn, tmp_copac) # not supported
+    ## bibConvert(tex_fn, tmp_ebi)      # not supported
+    bibConvert(tex_fn, tmp_end)
+    ## bibConvert(tex_fn, tmp_endx) 
+    bibConvert(tex_fn, tmp_isi)
+    ## bibConvert(tex_fn, tmp_med)
+    bibConvert(tex_fn, tmp_nbib)
+    bibConvert(tex_fn, tmp_ris)
+    bibConvert(tex_fn, tmp_R, outformat = "Rstyle")
+    bibConvert(tex_fn, tmp_rds)
+    bibConvert(tex_fn, tmp_xml)
 
-    bibConvert(tex_fn, "tmp.wordbib")
-    bibConvert(tex_fn, "tmp.word", outformat = "word")
+    bibConvert(tex_fn, tmp_wordbib)
+    bibConvert(tex_fn, tmp_word, outformat = "word")
 
-    bibConvert("tmp.bibtex"  , "tmp2.xml")
-    bibConvert("tmp.biblatex", "tmp2.xml")
-    bibConvert("tmp.word"    , "tmp2.xml", informat = "word")
-    ## bibConvert("tmp.ads"  , "tmp2.xml")  # not supported
-    ## bibConvert("tmp.copac", "tmp2.xml")  # "tmp.copac" not available
-    ## bibConvert("tmp.ebi"  , "tmp2.xml")  # "tmp.ebi" not available
-    bibConvert("tmp.end"     , "tmp2.xml")
-    ## bibConvert("tmp.endx" , "tmp2.xml")  # "tmp.endx" not available
-    bibConvert("tmp.isi"     , "tmp2.xml")
-    ## bibConvert("tmp.med", , "tmp2.xml")  # "tmp.med" not available
-    bibConvert("tmp.nbib"    , "tmp2.xml")  # TODO: amend nbib output to output dummy PMID's
+    bibConvert(tmp_bibtex  , tmp_xml2)
+    bibConvert(tmp_biblatex, tmp_xml2)
+    bibConvert(tmp_word    , tmp_xml2, informat = "word")
+    ## bibConvert(tmp_ads  , tmp_xml2)  # not supported
+    ## bibConvert(tmp_copac, tmp_xml2)  # tmp_copac not available
+    ## bibConvert(tmp_ebi  , tmp_xml2)  # tmp_ebi not available
+    bibConvert(tmp_end     , tmp_xml2)
+    ## bibConvert(tmp_endx , tmp_xml2)  # tmp_endx not available
+    bibConvert(tmp_isi     , tmp_xml2)
+    ## bibConvert(tmp_med, , tmp_xml2)  # tmp_med not available
+    bibConvert(tmp_nbib    , tmp_xml2)  # TODO: amend nbib output to output dummy PMID's
                                             #       when not present in input file?
-    bibConvert("tmp.ris"     , "tmp2.xml")
-    bibConvert("tmp.R"       , "tmp2.xml")  # "bibentry"
-    bibConvert("tmp.rds"     , "tmp2.xml")
-    bibConvert("tmp.xml"     , "tmp2.xml")
-    bibConvert("tmp.wordbib" , "tmp2.xml")
+    bibConvert(tmp_ris     , tmp_xml2)
+    bibConvert(tmp_R       , tmp_xml2)  # "bibentry"
+    bibConvert(tmp_rds     , tmp_xml2)
+    bibConvert(tmp_xml     , tmp_xml2)
+    bibConvert(tmp_wordbib , tmp_xml2)
 
     
     readBib(tex_fn, direct = TRUE)
@@ -403,13 +409,13 @@ test_that("bibConvert works ok", {
 
     biblatex_fn <- system.file("bib", "biblatex-examples_sans_key_aksin.bib", package = "rbibutils")
     
-    tmp <- bibConvert(biblatex_fn, "tmp2.bib", informat = "biblatex")
+    tmp <- bibConvert(biblatex_fn, tmp_bib2, informat = "biblatex")
     
 })
 
 ## TODO: 'tried to fix' is not followed by report if it was successful
 ##
-## > tmp <- bibConvert(tex_fn, "tmp.rds")
+## > tmp <- bibConvert(tex_fn, tmp_rds)
 ## Error in .bibentry_check_bibentry1(rval) : 
 ##   A bibentry of bibtype ‘Book’ has to specify the field: year
 ## 
