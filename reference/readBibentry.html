@@ -152,7 +152,7 @@
 
 <p>These functions read/write <code>bibentry</code> objects from/to R source
   files. Two styles are supported. <code>"Rstyle"</code> is the format used by
-  <code><a href='https://rdrr.io/r/base/print.html'>print(be, style = "R")</a></code>, which writes the <code>bibentry</code> calls
+  <code>print(be, style = "R")</code>, which writes the <code>bibentry</code> calls
   as a comma separated sequence wrapped in <code><a href='https://rdrr.io/r/base/c.html'>c()</a></code>. Style
   <code>"loose"</code> writes the entries without separators and no wrapping.</p>
 <p><code>writeBibentry</code> writes the object to the specified file in the
@@ -179,101 +179,103 @@
 <p><code><a href='bibConvert.html'>bibConvert</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>bibs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='readBib.html'>readBib</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"REFERENCES.bib"</span>, package <span class='op'>=</span> <span class='st'>"rbibutils"</span><span class='op'>)</span>,
-                encoding <span class='op'>=</span> <span class='st'>"UTF-8"</span><span class='op'>)</span>
-<span class='va'>fn</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span><span class='op'>(</span>fileext <span class='op'>=</span> <span class='st'>".bib"</span><span class='op'>)</span>
-
-<span class='fu'>writeBibentry</span><span class='op'>(</span><span class='va'>bibs</span>, file <span class='op'>=</span> <span class='va'>fn</span><span class='op'>)</span> <span class='co'># style = "Rstyle" (default)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span><span class='op'>(</span><span class='va'>fn</span><span class='op'>)</span>, sep <span class='op'>=</span> <span class='st'>"\n"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; c(bibentry(bibtype = "Manual",
-#&gt;            key = "Rpackage:bibtex",
-#&gt;            author = person(given = "Romain",
-#&gt;                            family = "Francois"),
-#&gt;            title = "bibtex: bibtex parser",
-#&gt;            year = "2014",
-#&gt;            note = "R package version 0.4.0"),
-#&gt;   bibentry(bibtype = "Misc",
-#&gt;            key = "Rpackage:Rdpack",
-#&gt;            author = person(given = c("Georgi", "N"),
-#&gt;                            family = "Boshnakov"),
-#&gt;            title = "{\\{}Rdpack{\\}}: Update and Manipulate Rd Documentation Objects",
-#&gt;            year = "2020",
-#&gt;            note = "R package version 2.0.0",
-#&gt;            doi = "10.5281/zenodo.3925612",
-#&gt;            url = "https://doi.org/10.5281/zenodo.3925612"),
-#&gt;   bibentry(bibtype = "Article",
-#&gt;            key = "Rpackage:RefManageR",
-#&gt;            author = person(given = c("Mathew", "William"),
-#&gt;                            family = "McLean"),
-#&gt;            title = "RefManageR: Import and Manage BibTeX and BibLaTeX References in R",
-#&gt;            journal = "The Journal of Open Source Software",
-#&gt;            year = "2017",
-#&gt;            doi = "10.21105/joss.00338",
-#&gt;            url = "https://doi.org/10.21105/joss.00338"),
-#&gt;   bibentry(bibtype = "Misc",
-#&gt;            key = "bibutils6.10",
-#&gt;            author = person(given = "Chris",
-#&gt;                            family = "Putnam"),
-#&gt;            title = "Library bibutils, version 6.10",
-#&gt;            year = "2020",
-#&gt;            url = "https://sourceforge.net/projects/bibutils/"),
-#&gt;   bibentry(bibtype = "Misc",
-#&gt;            key = "Rpackage:easyPubMed",
-#&gt;            author = person(given = "Damiano",
-#&gt;                            family = "Fantini"),
-#&gt;            title = "easyPubMed: Search and Retrieve Scientific Publication Records from PubMed",
-#&gt;            year = "2019",
-#&gt;            note = "R package version 2.13",
-#&gt;            url = "https://CRAN.R-project.org/package=easyPubMed"))</div><div class='input'>
-<span class='fu'>writeBibentry</span><span class='op'>(</span><span class='va'>bibs</span>, file <span class='op'>=</span> <span class='va'>fn</span>, style <span class='op'>=</span> <span class='st'>"loose"</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span><span class='op'>(</span><span class='va'>fn</span><span class='op'>)</span>, sep <span class='op'>=</span> <span class='st'>"\n"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; bibentry(bibtype = "Manual",
-#&gt;          key = "Rpackage:bibtex",
-#&gt;          author = person(given = "Romain",
-#&gt;                          family = "Francois"),
-#&gt;          title = "bibtex: bibtex parser",
-#&gt;          year = "2014",
-#&gt;          note = "R package version 0.4.0")
-#&gt; 
-#&gt; bibentry(bibtype = "Misc",
-#&gt;          key = "Rpackage:Rdpack",
-#&gt;          author = person(given = c("Georgi", "N"),
-#&gt;                          family = "Boshnakov"),
-#&gt;          title = "{\\{}Rdpack{\\}}: Update and Manipulate Rd Documentation Objects",
-#&gt;          year = "2020",
-#&gt;          note = "R package version 2.0.0",
-#&gt;          doi = "10.5281/zenodo.3925612",
-#&gt;          url = "https://doi.org/10.5281/zenodo.3925612")
-#&gt; 
-#&gt; bibentry(bibtype = "Article",
-#&gt;          key = "Rpackage:RefManageR",
-#&gt;          author = person(given = c("Mathew", "William"),
-#&gt;                          family = "McLean"),
-#&gt;          title = "RefManageR: Import and Manage BibTeX and BibLaTeX References in R",
-#&gt;          journal = "The Journal of Open Source Software",
-#&gt;          year = "2017",
-#&gt;          doi = "10.21105/joss.00338",
-#&gt;          url = "https://doi.org/10.21105/joss.00338")
-#&gt; 
-#&gt; bibentry(bibtype = "Misc",
-#&gt;          key = "bibutils6.10",
-#&gt;          author = person(given = "Chris",
-#&gt;                          family = "Putnam"),
-#&gt;          title = "Library bibutils, version 6.10",
-#&gt;          year = "2020",
-#&gt;          url = "https://sourceforge.net/projects/bibutils/")
-#&gt; 
-#&gt; bibentry(bibtype = "Misc",
-#&gt;          key = "Rpackage:easyPubMed",
-#&gt;          author = person(given = "Damiano",
-#&gt;                          family = "Fantini"),
-#&gt;          title = "easyPubMed: Search and Retrieve Scientific Publication Records from PubMed",
-#&gt;          year = "2019",
-#&gt;          note = "R package version 2.13",
-#&gt;          url = "https://CRAN.R-project.org/package=easyPubMed")
-#&gt; </div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span><span class='op'>(</span><span class='va'>fn</span><span class='op'>)</span>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>bibs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='readBib.html'>readBib</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"REFERENCES.bib"</span>, package <span class='op'>=</span> <span class='st'>"rbibutils"</span><span class='op'>)</span>,</span>
+<span class='r-in'>                encoding <span class='op'>=</span> <span class='st'>"UTF-8"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>fn</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span><span class='op'>(</span>fileext <span class='op'>=</span> <span class='st'>".bib"</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>writeBibentry</span><span class='op'>(</span><span class='va'>bibs</span>, file <span class='op'>=</span> <span class='va'>fn</span><span class='op'>)</span> <span class='co'># style = "Rstyle" (default)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span><span class='op'>(</span><span class='va'>fn</span><span class='op'>)</span>, sep <span class='op'>=</span> <span class='st'>"\n"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> c(bibentry(bibtype = "Manual",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            key = "Rpackage:bibtex",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            author = person(given = "Romain",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                            family = "Francois"),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            title = "bibtex: bibtex parser",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            year = "2014",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            note = "R package version 0.4.0"),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   bibentry(bibtype = "Misc",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            key = "Rpackage:Rdpack",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            author = person(given = c("Georgi", "N"),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                            family = "Boshnakov"),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            title = "{\\{}Rdpack{\\}}: Update and Manipulate Rd Documentation Objects",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            year = "2020",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            note = "R package version 2.0.0",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            doi = "10.5281/zenodo.3925612",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            url = "https://doi.org/10.5281/zenodo.3925612"),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   bibentry(bibtype = "Article",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            key = "Rpackage:RefManageR",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            author = person(given = c("Mathew", "William"),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                            family = "McLean"),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            title = "RefManageR: Import and Manage BibTeX and BibLaTeX References in R",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            journal = "The Journal of Open Source Software",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            year = "2017",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            doi = "10.21105/joss.00338",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            url = "https://doi.org/10.21105/joss.00338"),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   bibentry(bibtype = "Misc",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            key = "bibutils6.10",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            author = person(given = "Chris",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                            family = "Putnam"),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            title = "Library bibutils, version 6.10",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            year = "2020",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            url = "https://sourceforge.net/projects/bibutils/"),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   bibentry(bibtype = "Misc",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            key = "Rpackage:easyPubMed",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            author = person(given = "Damiano",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                            family = "Fantini"),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            title = "easyPubMed: Search and Retrieve Scientific Publication Records from PubMed",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            year = "2019",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            note = "R package version 2.13",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            url = "https://CRAN.R-project.org/package=easyPubMed"))</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>writeBibentry</span><span class='op'>(</span><span class='va'>bibs</span>, file <span class='op'>=</span> <span class='va'>fn</span>, style <span class='op'>=</span> <span class='st'>"loose"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span><span class='op'>(</span><span class='va'>fn</span><span class='op'>)</span>, sep <span class='op'>=</span> <span class='st'>"\n"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> bibentry(bibtype = "Manual",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          key = "Rpackage:bibtex",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          author = person(given = "Romain",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                          family = "Francois"),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          title = "bibtex: bibtex parser",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          year = "2014",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          note = "R package version 0.4.0")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> bibentry(bibtype = "Misc",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          key = "Rpackage:Rdpack",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          author = person(given = c("Georgi", "N"),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                          family = "Boshnakov"),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          title = "{\\{}Rdpack{\\}}: Update and Manipulate Rd Documentation Objects",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          year = "2020",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          note = "R package version 2.0.0",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          doi = "10.5281/zenodo.3925612",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          url = "https://doi.org/10.5281/zenodo.3925612")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> bibentry(bibtype = "Article",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          key = "Rpackage:RefManageR",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          author = person(given = c("Mathew", "William"),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                          family = "McLean"),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          title = "RefManageR: Import and Manage BibTeX and BibLaTeX References in R",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          journal = "The Journal of Open Source Software",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          year = "2017",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          doi = "10.21105/joss.00338",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          url = "https://doi.org/10.21105/joss.00338")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> bibentry(bibtype = "Misc",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          key = "bibutils6.10",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          author = person(given = "Chris",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                          family = "Putnam"),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          title = "Library bibutils, version 6.10",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          year = "2020",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          url = "https://sourceforge.net/projects/bibutils/")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> bibentry(bibtype = "Misc",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          key = "Rpackage:easyPubMed",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          author = person(given = "Damiano",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                          family = "Fantini"),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          title = "easyPubMed: Search and Retrieve Scientific Publication Records from PubMed",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          year = "2019",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          note = "R package version 2.13",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          url = "https://CRAN.R-project.org/package=easyPubMed")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span><span class='op'>(</span><span class='va'>fn</span><span class='op'>)</span></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

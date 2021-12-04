@@ -154,7 +154,7 @@
 <p>The default style can be changed at any time to any of the styles
   currently registered in the session using
   <code><a href='https://rdrr.io/r/tools/bibstyle.html'>tools::bibstyle()</a></code>. A list of these styles can be obtained
-  with <code><a href='https://rdrr.io/r/tools/bibstyle.html'>tools::getBibstyle(TRUE)</a></code>. The currently default style can
+  with <code>tools::getBibstyle(TRUE)</code>. The currently default style can
   be seen with <code><a href='https://rdrr.io/r/tools/bibstyle.html'>tools::getBibstyle()</a></code>.
   As a convenience <code>register_JSSextra(TRUE)</code> makes and registers
   <code>"JSSextra"</code> as the default style.</p>
@@ -177,21 +177,30 @@
     <p>Georgi N. Boshnakov</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>## current default style</span>
-<span class='fu'>tools</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/tools/bibstyle.html'>getBibstyle</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "JSS"</div><div class='input'><span class='fu'>tools</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/tools/bibstyle.html'>getBibstyle</a></span><span class='op'>(</span><span class='cn'>TRUE</span><span class='op'>)</span>  <span class='co'># all styles, currently "JSS" only</span>
-</div><div class='output co'>#&gt; [1] "JSS"</div><div class='input'>
-<span class='fu'>register_JSSextra</span><span class='op'>(</span><span class='op'>)</span>       <span class='co'># register "JSSextra"</span>
-</div><div class='output co'>#&gt; &lt;environment: 0x7f9f63078630&gt;</div><div class='input'><span class='fu'>tools</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/tools/bibstyle.html'>getBibstyle</a></span><span class='op'>(</span><span class='cn'>TRUE</span><span class='op'>)</span>  <span class='co'># now it is available</span>
-</div><div class='output co'>#&gt; [1] "JSS"      "JSSextra"</div><div class='input'><span class='fu'>tools</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/tools/bibstyle.html'>getBibstyle</a></span><span class='op'>(</span><span class='op'>)</span>      <span class='co'># ... but not default</span>
-</div><div class='output co'>#&gt; [1] "JSS"</div><div class='input'>
-<span class='fu'>register_JSSextra</span><span class='op'>(</span><span class='cn'>TRUE</span><span class='op'>)</span>  <span class='co'># this makes it default</span>
-</div><div class='output co'>#&gt; &lt;environment: 0x7f9f63078630&gt;</div><div class='input'><span class='fu'>tools</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/tools/bibstyle.html'>getBibstyle</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "JSSextra"</div><div class='input'>
-<span class='co'>## setting default style with bibstyle():</span>
-<span class='fu'>tools</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/tools/bibstyle.html'>bibstyle</a></span><span class='op'>(</span><span class='st'>"JSS"</span>, .default <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;environment: 0x7f9f63078630&gt;</div><div class='input'><span class='fu'>tools</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/tools/bibstyle.html'>getBibstyle</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "JSS"</div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'>## current default style</span></span>
+<span class='r-in'><span class='fu'>tools</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/tools/bibstyle.html'>getBibstyle</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "JSS"</span>
+<span class='r-in'><span class='fu'>tools</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/tools/bibstyle.html'>getBibstyle</a></span><span class='op'>(</span><span class='cn'>TRUE</span><span class='op'>)</span>  <span class='co'># all styles, currently "JSS" only</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "JSS"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>register_JSSextra</span><span class='op'>(</span><span class='op'>)</span>       <span class='co'># register "JSSextra"</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;environment: 0x7fc3b0eb88c8&gt;</span>
+<span class='r-in'><span class='fu'>tools</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/tools/bibstyle.html'>getBibstyle</a></span><span class='op'>(</span><span class='cn'>TRUE</span><span class='op'>)</span>  <span class='co'># now it is available</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "JSS"      "JSSextra"</span>
+<span class='r-in'><span class='fu'>tools</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/tools/bibstyle.html'>getBibstyle</a></span><span class='op'>(</span><span class='op'>)</span>      <span class='co'># ... but not default</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "JSS"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>register_JSSextra</span><span class='op'>(</span><span class='cn'>TRUE</span><span class='op'>)</span>  <span class='co'># this makes it default</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;environment: 0x7fc3b0eb88c8&gt;</span>
+<span class='r-in'><span class='fu'>tools</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/tools/bibstyle.html'>getBibstyle</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "JSSextra"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## setting default style with bibstyle():</span></span>
+<span class='r-in'><span class='fu'>tools</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/tools/bibstyle.html'>bibstyle</a></span><span class='op'>(</span><span class='st'>"JSS"</span>, .default <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;environment: 0x7fc3b0eb88c8&gt;</span>
+<span class='r-in'><span class='fu'>tools</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/tools/bibstyle.html'>getBibstyle</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "JSS"</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -160,7 +160,7 @@ Read a bibliography file in one of the supported formats, convert it
     </tr>
     <tr>
       <th>encoding</th>
-      <td><p><code><a href='https://rdrr.io/r/base/character.html'>character(2)</a></code>, a length two vector specifying input and output
+      <td><p><code>character(2)</code>, a length two vector specifying input and output
     encodings. Default to both is <code>"utf8"</code>, see Details.</p></td>
     </tr>
     <tr>
@@ -193,7 +193,7 @@ Read a bibliography file in one of the supported formats, convert it
   supported: <code>"R"</code> and <code>"Rstyle"</code>.  When (<code>outformat =
   "R"</code>, there is one <code>bibentry</code> call for each reference, just as in
   a Bibtex file, each reference is a single entry.  <code>outformat =
-  "Rstyle"</code> uses the format of <code><a href='https://rdrr.io/r/base/print.html'>print(be, style = "R")</a></code>, i.e., the
+  "Rstyle"</code> uses the format of <code>print(be, style = "R")</code>, i.e., the
   <code>bibentry</code> calls are output as a comma separated sequence wrapped
   in <code><a href='https://rdrr.io/r/base/c.html'>c()</a></code>. For input, it is not necessary to specify which
   variant is used.</p>
@@ -245,8 +245,8 @@ Read a bibliography file in one of the supported formats, convert it
   problem in such cases.</p>  
 <p>Argument <code>options</code> is mostly for debugging and mimics the command
   line options of the bibutils' binaries. The argument is a named
-  character vector and is supplied as <code><a href='https://rdrr.io/r/base/c.html'>c(tag1= val1, tag2 = val2,
-  ...)</a></code>, where each tag is the name of an option and the value is the
+  character vector and is supplied as <code>c(tag1= val1, tag2 = val2,
+  ...)</code>, where each tag is the name of an option and the value is the
   corresponding value. The value for options that do not require one is
   ignored and can be set to <code>""</code>. Some of the available options
   are:</p>  
@@ -352,289 +352,303 @@ Chris Putnam (2020).
 <!-- % end:bibentry:  bibutils6.10 --></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>fn_biblatex</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"bib"</span>, <span class='st'>"ex0.biblatex"</span>,  package <span class='op'>=</span> <span class='st'>"rbibutils"</span><span class='op'>)</span>
-<span class='va'>fn_biblatex</span>
-</div><div class='output co'>#&gt; [1] "/Users/runner/work/_temp/Library/rbibutils/bib/ex0.biblatex"</div><div class='input'><span class='co'>## file.show(fn_biblatex)</span>
-
-<span class='co'>## convert a biblatex file to xml</span>
-<span class='va'>modl</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span><span class='op'>(</span>fileext <span class='op'>=</span> <span class='st'>".xml"</span><span class='op'>)</span>
-<span class='fu'>bibConvert</span><span class='op'>(</span>infile <span class='op'>=</span> <span class='va'>fn_biblatex</span>, outfile <span class='op'>=</span> <span class='va'>modl</span>, informat <span class='op'>=</span> <span class='st'>"biblatex"</span>, outformat <span class='op'>=</span> <span class='st'>"xml"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $infile
-#&gt; [1] "/Users/runner/work/_temp/Library/rbibutils/bib/ex0.biblatex"
-#&gt; 
-#&gt; $outfile
-#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpaZVBMz/filee4f150af3de.xml"
-#&gt; 
-#&gt; $nref_in
-#&gt; [1] 3
-#&gt; 
-#&gt; $nref_out
-#&gt; [1] 3
-#&gt; </div><div class='input'><span class='co'>## file.show(modl)</span>
-
-<span class='co'>## convert a biblatex file to bibtex</span>
-<span class='va'>bib</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span><span class='op'>(</span>fileext <span class='op'>=</span> <span class='st'>".bib"</span><span class='op'>)</span>
-<span class='va'>bib2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span><span class='op'>(</span>fileext <span class='op'>=</span> <span class='st'>".bib"</span><span class='op'>)</span>
-<span class='fu'>bibConvert</span><span class='op'>(</span>infile <span class='op'>=</span> <span class='va'>fn_biblatex</span>, outfile <span class='op'>=</span> <span class='va'>bib</span>, informat <span class='op'>=</span> <span class='st'>"biblatex"</span>, outformat <span class='op'>=</span> <span class='st'>"bib"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $infile
-#&gt; [1] "/Users/runner/work/_temp/Library/rbibutils/bib/ex0.biblatex"
-#&gt; 
-#&gt; $outfile
-#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpaZVBMz/filee4f2107e9d.bib"
-#&gt; 
-#&gt; $nref_in
-#&gt; [1] 3
-#&gt; 
-#&gt; $nref_out
-#&gt; [1] 3
-#&gt; </div><div class='input'><span class='co'>## file.show(bib)</span>
-
-<span class='co'>## convert a biblatex file to bibentry</span>
-<span class='va'>rds</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span><span class='op'>(</span>fileext <span class='op'>=</span> <span class='st'>".rds"</span><span class='op'>)</span>
-<span class='va'>fn_biblatex</span>
-</div><div class='output co'>#&gt; [1] "/Users/runner/work/_temp/Library/rbibutils/bib/ex0.biblatex"</div><div class='input'><span class='va'>rds</span>
-</div><div class='output co'>#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpaZVBMz/filee4f38d72469.rds"</div><div class='input'><span class='va'>be</span> <span class='op'>&lt;-</span> <span class='fu'>bibConvert</span><span class='op'>(</span><span class='va'>fn_biblatex</span>, <span class='va'>rds</span>, <span class='st'>"biblatex"</span>, <span class='st'>"bibentry"</span><span class='op'>)</span>
-<span class='va'>bea</span> <span class='op'>&lt;-</span> <span class='fu'>bibConvert</span><span class='op'>(</span><span class='va'>fn_biblatex</span>, <span class='va'>rds</span>, <span class='st'>"biblatex"</span><span class='op'>)</span> <span class='co'># same</span>
-<span class='fu'><a href='https://rdrr.io/r/base/readRDS.html'>readRDS</a></span><span class='op'>(</span><span class='va'>rds</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Beach CM, Davidson R (1983). “Distribution-free statistical inference
-#&gt; with Lorenz curves and income shares.” _Review of Economic Studies_,
-#&gt; *50*, 723-735.
-#&gt; 
-#&gt; Beach CM, Kaliski SF (1986). “Lorenz curve inference with sample
-#&gt; weights: an application to the distribution of unemployment
-#&gt; experience.” _Appl. Statist._, *35*, 38-45.
-#&gt; 
-#&gt; Lambert PJ (1993). _The distribution and redistribution of income. A
-#&gt; mathematical analysis_, 2 edition. Manchester University Press,
-#&gt; Manchester.</div><div class='input'>
-<span class='co'>## convert to R source file</span>
-<span class='va'>r</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span><span class='op'>(</span>fileext <span class='op'>=</span> <span class='st'>".R"</span><span class='op'>)</span>
-<span class='fu'>bibConvert</span><span class='op'>(</span><span class='va'>fn_biblatex</span>, <span class='va'>r</span>, <span class='st'>"biblatex"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $infile
-#&gt; [1] "/Users/runner/work/_temp/Library/rbibutils/bib/ex0.biblatex"
-#&gt; 
-#&gt; $outfile
-#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpaZVBMz/filee4f744112fb.R"
-#&gt; 
-#&gt; $nref_in
-#&gt; [1] 3
-#&gt; 
-#&gt; $nref_out
-#&gt; [1] 3
-#&gt; 
-#&gt; $bib
-#&gt; Beach CM, Davidson R (1983). “Distribution-free statistical inference
-#&gt; with Lorenz curves and income shares.” _Review of Economic Studies_,
-#&gt; *50*, 723-735.
-#&gt; 
-#&gt; Beach CM, Kaliski SF (1986). “Lorenz curve inference with sample
-#&gt; weights: an application to the distribution of unemployment
-#&gt; experience.” _Appl. Statist._, *35*, 38-45.
-#&gt; 
-#&gt; Lambert PJ (1993). _The distribution and redistribution of income. A
-#&gt; mathematical analysis_, 2 edition. Manchester University Press,
-#&gt; Manchester.
-#&gt; </div><div class='input'><span class='co'>## file.show(r)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span><span class='op'>(</span><span class='va'>r</span><span class='op'>)</span>, sep <span class='op'>=</span> <span class='st'>"\n"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; bibentry(bibtype = "Article",
-#&gt;          key = "beachanddavidson1983",
-#&gt;          author = c(person(given = c("Charles", "M"),
-#&gt;                            family = "Beach"),
-#&gt;                     person(given = "Russell",
-#&gt;                            family = "Davidson")),
-#&gt;          title = "Distribution-free statistical inference with Lorenz curves and income shares",
-#&gt;          journal = "Review of Economic Studies",
-#&gt;          year = "1983",
-#&gt;          month = "Feb",
-#&gt;          volume = "50",
-#&gt;          pages = "723--735")
-#&gt; 
-#&gt; bibentry(bibtype = "Article",
-#&gt;          key = "beachandkaliski1986a",
-#&gt;          author = c(person(given = c("C", "M"),
-#&gt;                            family = "Beach"),
-#&gt;                     person(given = c("S", "F"),
-#&gt;                            family = "Kaliski")),
-#&gt;          title = "Lorenz curve inference with sample weights: an application to the distribution of unemployment experience",
-#&gt;          journal = "Appl. Statist.",
-#&gt;          year = "1986",
-#&gt;          volume = "35",
-#&gt;          pages = "38--45")
-#&gt; 
-#&gt; bibentry(bibtype = "Book",
-#&gt;          key = "lambert1993",
-#&gt;          author = person(given = c("Peter", "J"),
-#&gt;                          family = "Lambert"),
-#&gt;          title = "The distribution and redistribution of income. A mathematical analysis",
-#&gt;          year = "1993",
-#&gt;          edition = "2",
-#&gt;          publisher = "Manchester University Press",
-#&gt;          address = "Manchester")
-#&gt; </div><div class='input'>
-<span class='va'>fn_cyr_utf8</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"bib"</span>, <span class='st'>"cyr_utf8.bib"</span>,  package <span class='op'>=</span> <span class='st'>"rbibutils"</span><span class='op'>)</span>
-
-<span class='co'>## Can't have files with different encodings in the package, so below</span>
-<span class='co'>## first convert a UTF-8 file to something else.</span>
-<span class='co'>##</span>
-<span class='co'>## input here contains cyrillic (UTF-8) output to Windows Cyrillic,</span>
-<span class='co'>## notice the "no_latex" option</span>
-<span class='va'>a</span> <span class='op'>&lt;-</span> <span class='fu'>bibConvert</span><span class='op'>(</span><span class='va'>fn_cyr_utf8</span>, <span class='va'>bib</span>, encoding <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"utf8"</span>, <span class='st'>"cp1251"</span><span class='op'>)</span>, tex <span class='op'>=</span> <span class='st'>"no_latex"</span><span class='op'>)</span>
-
-<span class='co'>## now take the bib file and convert it to UTF-8</span>
-<span class='fu'>bibConvert</span><span class='op'>(</span><span class='va'>bib</span>, <span class='va'>bib2</span>, encoding <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"cp1251"</span>, <span class='st'>"utf8"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $infile
-#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpaZVBMz/filee4f2107e9d.bib"
-#&gt; 
-#&gt; $outfile
-#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpaZVBMz/filee4f8e8767a.bib"
-#&gt; 
-#&gt; $nref_in
-#&gt; [1] 2
-#&gt; 
-#&gt; $nref_out
-#&gt; [1] 2
-#&gt; </div><div class='input'>
-<span class='co'>## Latin-1 example: Author and Title fileds contain Latin-1 accented</span>
-<span class='co'>##   characters, not real names. As above, the file is in UTF-8</span>
-<span class='va'>fn_latin1_utf8</span>  <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"bib"</span>, <span class='st'>"latin1accents_utf8.bib"</span>, package <span class='op'>=</span> <span class='st'>"rbibutils"</span><span class='op'>)</span>
-<span class='co'>## convert to Latin-1, by default the accents are converted to TeX combinations:</span>
-<span class='va'>b</span> <span class='op'>&lt;-</span> <span class='fu'>bibConvert</span><span class='op'>(</span><span class='va'>fn_latin1_utf8</span>, <span class='va'>bib</span> , encoding <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"utf8"</span>, <span class='st'>"latin1"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span><span class='op'>(</span><span class='va'>bib</span><span class='op'>)</span>, sep <span class='op'>=</span> <span class='st'>"\n"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; @Article{test1,
-#&gt; author="L{\^e}{\'a}{\'e}, K{\`a}r{\`e}",
-#&gt; title="K{\`a}r{\`e} {\"u}{\"a} L{\^e}{\'a}{\'e}",
-#&gt; journal="Latin-1 accents",
-#&gt; year="2020",
-#&gt; note="Having the similar title and author is helpful for debugging since authors are processed differently from other fields. Here is a formula: {\$}{\backslash}tan($\alpha$){\$}, {\$}{\backslash}sin($\delta$)/$\delta$ $\to$ 1{\$}, {\$}{\backslash}sqrt{\{}x{\}}{\$}."
-#&gt; }
-#&gt; </div><div class='input'><span class='co'>## use "no_latex" option to keep them Latin1:</span>
-<span class='va'>c</span> <span class='op'>&lt;-</span> <span class='fu'>bibConvert</span><span class='op'>(</span><span class='va'>fn_latin1_utf8</span>, <span class='va'>bib</span> , encoding <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"utf8"</span>, <span class='st'>"latin1"</span><span class='op'>)</span>, tex <span class='op'>=</span> <span class='st'>"no_latex"</span><span class='op'>)</span>
-<span class='co'>## this will show properly in Latin-1 locale (or suitable text editor):</span>
-<span class='co'>##cat(readLines(bib), sep = "\n")</span>
-
-<span class='co'>## gb18030 example (Chinese)</span>
-<span class='co'>##</span>
-<span class='co'>## prepare some filenames for the examples below:</span>
-<span class='va'>xeCJK_utf8</span>    <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"bib/xeCJK_utf8.bib"</span>, package <span class='op'>=</span> <span class='st'>"rbibutils"</span><span class='op'>)</span>
-<span class='va'>xeCJK_gb18030</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"bib/xeCJK_gb18030.bib"</span>, package <span class='op'>=</span> <span class='st'>"rbibutils"</span><span class='op'>)</span>
-<span class='va'>fn_gb18030</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span><span class='op'>(</span>fileext <span class='op'>=</span> <span class='st'>".bib"</span><span class='op'>)</span>
-<span class='va'>fn_rds</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span><span class='op'>(</span>fileext <span class='op'>=</span> <span class='st'>".rds"</span><span class='op'>)</span>
-
-<span class='co'>## input bib file utf8, output bib file gb18030:</span>
-<span class='fu'>bibConvert</span><span class='op'>(</span><span class='va'>xeCJK_utf8</span>, <span class='va'>fn_gb18030</span>, encoding <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"utf8"</span>, <span class='st'>"gb18030"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $infile
-#&gt; [1] "/Users/runner/work/_temp/Library/rbibutils/bib/xeCJK_utf8.bib"
-#&gt; 
-#&gt; $outfile
-#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpaZVBMz/filee4f30fbc13.bib"
-#&gt; 
-#&gt; $nref_in
-#&gt; [1] 1
-#&gt; 
-#&gt; $nref_out
-#&gt; [1] 1
-#&gt; </div><div class='input'>
-<span class='co'>## input bib file utf8, output file rds (and the rds object is returned</span>
-<span class='fu'>bibConvert</span><span class='op'>(</span><span class='va'>xeCJK_utf8</span>, <span class='va'>fn_rds</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $infile
-#&gt; [1] "/Users/runner/work/_temp/Library/rbibutils/bib/xeCJK_utf8.bib"
-#&gt; 
-#&gt; $outfile
-#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpaZVBMz/filee4f7e0484f6.rds"
-#&gt; 
-#&gt; $nref_in
-#&gt; [1] 1
-#&gt; 
-#&gt; $nref_out
-#&gt; [1] 1
-#&gt; 
-#&gt; $bib
-#&gt; 陈骁, 黄声华, 万山明, 庞珽 (2012).
-#&gt; “基于电无级变速器的内燃机最优控制策略及整车能量管理.” _电工技术学报_,
-#&gt; *27*(2), 133-138.
-#&gt; </div><div class='input'>
-
-<span class='co'>## a Pubmed file</span>
-<span class='va'>fn_med</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"bib/easyPubMedvig.xml"</span>, package <span class='op'>=</span> <span class='st'>"rbibutils"</span><span class='op'>)</span>
-<span class='co'>## convert a Pubmed file to bibtex:</span>
-<span class='fu'>bibConvert</span><span class='op'>(</span><span class='va'>fn_med</span>, <span class='va'>bib</span>, informat <span class='op'>=</span> <span class='st'>"med"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $infile
-#&gt; [1] "/Users/runner/work/_temp/Library/rbibutils/bib/easyPubMedvig.xml"
-#&gt; 
-#&gt; $outfile
-#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpaZVBMz/filee4f2107e9d.bib"
-#&gt; 
-#&gt; $nref_in
-#&gt; [1] 6
-#&gt; 
-#&gt; $nref_out
-#&gt; [1] 6
-#&gt; </div><div class='input'><span class='co'>## convert a Pubmed file to rds and import:</span>
-<span class='fu'>bibConvert</span><span class='op'>(</span><span class='va'>fn_med</span>, <span class='va'>rds</span>, informat <span class='op'>=</span> <span class='st'>"med"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $infile
-#&gt; [1] "/Users/runner/work/_temp/Library/rbibutils/bib/easyPubMedvig.xml"
-#&gt; 
-#&gt; $outfile
-#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpaZVBMz/filee4f38d72469.rds"
-#&gt; 
-#&gt; $nref_in
-#&gt; [1] 6
-#&gt; 
-#&gt; $nref_out
-#&gt; [1] 6
-#&gt; 
-#&gt; $bib
-#&gt; Fantini D, Seiler R, Meeks JJ (2019 ). “Molecular footprints of
-#&gt; muscle-invasive bladder cancer in smoking and nonsmoking patients.  .”
-#&gt; _Urologic oncology _, *37 *(11 ), 818-825 . ISSN 1873-2496 , doi:
-#&gt; 10.1016/j.urolonc.2018.09.017 (URL:
-#&gt; https://doi.org/10.1016/j.urolonc.2018.09.017 ), &lt;URL:
-#&gt; https://doi.org/10.1016/j.urolonc.2018.09.017&gt;.
-#&gt; 
-#&gt; Fantini D, Meeks JJ (2019 ). “Genomic classification and risk
-#&gt; stratification of bladder cancer.  .” _World journal of urology _, *37
-#&gt; *(9 ), 1751-1757 . ISSN 1433-8726 , doi: 10.1007/s00345-018-2558-2
-#&gt; (URL: https://doi.org/10.1007/s00345-018-2558-2 ), &lt;URL:
-#&gt; https://doi.org/10.1007/s00345-018-2558-2&gt;.
-#&gt; 
-#&gt; Fantini D, Meeks JJ (2018 ). “The BBN model: a mouse bladder cancer
-#&gt; model featuring basal-subtype gene expression and MLL3/MLL4 genetic
-#&gt; disruption.  .” _Oncoscience _, *5 *(5-6 ), 172-173 . ISSN 2331-4737 ,
-#&gt; doi: 10.18632/oncoscience.439 (URL:
-#&gt; https://doi.org/10.18632/oncoscience.439 ), &lt;URL:
-#&gt; https://doi.org/10.18632/oncoscience.439&gt;.
-#&gt; 
-#&gt; Wang L, Zhao Z, Ozark PA, Fantini D, Marshall SA, Rendleman EJ,
-#&gt; Cozzolino KA, Louis N, He X, Morgan MA, Takahashi Y, Collings CK, Smith
-#&gt; ER, Ntziachristos P, Savas JN, Zou L, Hashizume R, Meeks JJ,
-#&gt; Shilatifard A (2018 ). “Resetting the epigenetic balance of Polycomb
-#&gt; and COMPASS function at enhancers for cancer therapy.  .” _Nature
-#&gt; medicine _, *24 *(6 ), 758-769 . ISSN 1546-170X , doi:
-#&gt; 10.1038/s41591-018-0034-6 (URL:
-#&gt; https://doi.org/10.1038/s41591-018-0034-6 ), &lt;URL:
-#&gt; https://doi.org/10.1038/s41591-018-0034-6&gt;.
-#&gt; 
-#&gt; Glaser AP, Fantini D, Wang Y, Yu Y, Rimar KJ, Podojil JR, Miller SD,
-#&gt; Meeks JJ (2018 ). “APOBEC-mediated mutagenesis in urothelial carcinoma
-#&gt; is associated with improved survival, mutations in DNA damage response
-#&gt; genes, and immune response.  .” _Oncotarget _, *9 *(4 ), 4537-4548 .
-#&gt; ISSN 1949-2553 , doi: 10.18632/oncotarget.23344 (URL:
-#&gt; https://doi.org/10.18632/oncotarget.23344 ), &lt;URL:
-#&gt; https://doi.org/10.18632/oncotarget.23344&gt;.
-#&gt; 
-#&gt; Fantini D, Glaser AP, Rimar KJ, Wang Y, Schipma M, Varghese N,
-#&gt; Rademaker A, Behdad A, Yellapa A, Yu Y, Sze CC, Wang L, Zhao Z,
-#&gt; Crawford SE, Hu D, Licht JD, Collings CK, Bartom E, Theodorescu D,
-#&gt; Shilatifard A, Meeks JJ (2018 ). “A Carcinogen-induced mouse model
-#&gt; recapitulates the molecular alterations of human muscle invasive
-#&gt; bladder cancer.  .” _Oncogene _, *37 *(14 ), 1911-1925 . ISSN 1476-5594
-#&gt; , doi: 10.1038/s41388-017-0099-6 (URL:
-#&gt; https://doi.org/10.1038/s41388-017-0099-6 ), &lt;URL:
-#&gt; https://doi.org/10.1038/s41388-017-0099-6&gt;.
-#&gt; </div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>modl</span>, <span class='va'>bib</span>, <span class='va'>bib2</span>, <span class='va'>r</span>, <span class='va'>rds</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>fn_gb18030</span>, <span class='va'>fn_rds</span><span class='op'>)</span><span class='op'>)</span>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>fn_biblatex</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"bib"</span>, <span class='st'>"ex0.biblatex"</span>,  package <span class='op'>=</span> <span class='st'>"rbibutils"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>fn_biblatex</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "/Users/runner/work/_temp/Library/rbibutils/bib/ex0.biblatex"</span>
+<span class='r-in'><span class='co'>## file.show(fn_biblatex)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## convert a biblatex file to xml</span></span>
+<span class='r-in'><span class='va'>modl</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span><span class='op'>(</span>fileext <span class='op'>=</span> <span class='st'>".xml"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>bibConvert</span><span class='op'>(</span>infile <span class='op'>=</span> <span class='va'>fn_biblatex</span>, outfile <span class='op'>=</span> <span class='va'>modl</span>, informat <span class='op'>=</span> <span class='st'>"biblatex"</span>, outformat <span class='op'>=</span> <span class='st'>"xml"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $infile</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "/Users/runner/work/_temp/Library/rbibutils/bib/ex0.biblatex"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $outfile</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmp96wqjz/file16b4103e0631.xml"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $nref_in</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $nref_out</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='co'>## file.show(modl)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## convert a biblatex file to bibtex</span></span>
+<span class='r-in'><span class='va'>bib</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span><span class='op'>(</span>fileext <span class='op'>=</span> <span class='st'>".bib"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>bib2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span><span class='op'>(</span>fileext <span class='op'>=</span> <span class='st'>".bib"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>bibConvert</span><span class='op'>(</span>infile <span class='op'>=</span> <span class='va'>fn_biblatex</span>, outfile <span class='op'>=</span> <span class='va'>bib</span>, informat <span class='op'>=</span> <span class='st'>"biblatex"</span>, outformat <span class='op'>=</span> <span class='st'>"bib"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $infile</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "/Users/runner/work/_temp/Library/rbibutils/bib/ex0.biblatex"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $outfile</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmp96wqjz/file16b45808834b.bib"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $nref_in</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $nref_out</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='co'>## file.show(bib)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## convert a biblatex file to bibentry</span></span>
+<span class='r-in'><span class='va'>rds</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span><span class='op'>(</span>fileext <span class='op'>=</span> <span class='st'>".rds"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>fn_biblatex</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "/Users/runner/work/_temp/Library/rbibutils/bib/ex0.biblatex"</span>
+<span class='r-in'><span class='va'>rds</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmp96wqjz/file16b4148f6418.rds"</span>
+<span class='r-in'><span class='va'>be</span> <span class='op'>&lt;-</span> <span class='fu'>bibConvert</span><span class='op'>(</span><span class='va'>fn_biblatex</span>, <span class='va'>rds</span>, <span class='st'>"biblatex"</span>, <span class='st'>"bibentry"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>bea</span> <span class='op'>&lt;-</span> <span class='fu'>bibConvert</span><span class='op'>(</span><span class='va'>fn_biblatex</span>, <span class='va'>rds</span>, <span class='st'>"biblatex"</span><span class='op'>)</span> <span class='co'># same</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/readRDS.html'>readRDS</a></span><span class='op'>(</span><span class='va'>rds</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Beach CM, Davidson R (1983). “Distribution-free statistical inference</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> with Lorenz curves and income shares.” _Review of Economic Studies_,</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> *50*, 723-735.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Beach CM, Kaliski SF (1986). “Lorenz curve inference with sample</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> weights: an application to the distribution of unemployment</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> experience.” _Appl. Statist._, *35*, 38-45.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Lambert PJ (1993). _The distribution and redistribution of income. A</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mathematical analysis_, 2 edition. Manchester University Press,</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Manchester.</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## convert to R source file</span></span>
+<span class='r-in'><span class='va'>r</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span><span class='op'>(</span>fileext <span class='op'>=</span> <span class='st'>".R"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>bibConvert</span><span class='op'>(</span><span class='va'>fn_biblatex</span>, <span class='va'>r</span>, <span class='st'>"biblatex"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $infile</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "/Users/runner/work/_temp/Library/rbibutils/bib/ex0.biblatex"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $outfile</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmp96wqjz/file16b418374934.R"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $nref_in</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $nref_out</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $bib</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Beach CM, Davidson R (1983). “Distribution-free statistical inference</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> with Lorenz curves and income shares.” _Review of Economic Studies_,</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> *50*, 723-735.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Beach CM, Kaliski SF (1986). “Lorenz curve inference with sample</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> weights: an application to the distribution of unemployment</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> experience.” _Appl. Statist._, *35*, 38-45.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Lambert PJ (1993). _The distribution and redistribution of income. A</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mathematical analysis_, 2 edition. Manchester University Press,</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Manchester.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='co'>## file.show(r)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span><span class='op'>(</span><span class='va'>r</span><span class='op'>)</span>, sep <span class='op'>=</span> <span class='st'>"\n"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> bibentry(bibtype = "Article",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          key = "beachanddavidson1983",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          author = c(person(given = c("Charles", "M"),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                            family = "Beach"),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                     person(given = "Russell",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                            family = "Davidson")),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          title = "Distribution-free statistical inference with Lorenz curves and income shares",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          journal = "Review of Economic Studies",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          year = "1983",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          month = "Feb",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          volume = "50",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          pages = "723--735")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> bibentry(bibtype = "Article",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          key = "beachandkaliski1986a",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          author = c(person(given = c("C", "M"),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                            family = "Beach"),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                     person(given = c("S", "F"),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                            family = "Kaliski")),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          title = "Lorenz curve inference with sample weights: an application to the distribution of unemployment experience",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          journal = "Appl. Statist.",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          year = "1986",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          volume = "35",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          pages = "38--45")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> bibentry(bibtype = "Book",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          key = "lambert1993",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          author = person(given = c("Peter", "J"),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                          family = "Lambert"),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          title = "The distribution and redistribution of income. A mathematical analysis",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          year = "1993",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          edition = "2",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          publisher = "Manchester University Press",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          address = "Manchester")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>fn_cyr_utf8</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"bib"</span>, <span class='st'>"cyr_utf8.bib"</span>,  package <span class='op'>=</span> <span class='st'>"rbibutils"</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Can't have files with different encodings in the package, so below</span></span>
+<span class='r-in'><span class='co'>## first convert a UTF-8 file to something else.</span></span>
+<span class='r-in'><span class='co'>##</span></span>
+<span class='r-in'><span class='co'>## input here contains cyrillic (UTF-8) output to Windows Cyrillic,</span></span>
+<span class='r-in'><span class='co'>## notice the "no_latex" option</span></span>
+<span class='r-in'><span class='va'>a</span> <span class='op'>&lt;-</span> <span class='fu'>bibConvert</span><span class='op'>(</span><span class='va'>fn_cyr_utf8</span>, <span class='va'>bib</span>, encoding <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"utf8"</span>, <span class='st'>"cp1251"</span><span class='op'>)</span>, tex <span class='op'>=</span> <span class='st'>"no_latex"</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## now take the bib file and convert it to UTF-8</span></span>
+<span class='r-in'><span class='fu'>bibConvert</span><span class='op'>(</span><span class='va'>bib</span>, <span class='va'>bib2</span>, encoding <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"cp1251"</span>, <span class='st'>"utf8"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $infile</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmp96wqjz/file16b45808834b.bib"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $outfile</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmp96wqjz/file16b416e3de14.bib"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $nref_in</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $nref_out</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Latin-1 example: Author and Title fileds contain Latin-1 accented</span></span>
+<span class='r-in'><span class='co'>##   characters, not real names. As above, the file is in UTF-8</span></span>
+<span class='r-in'><span class='va'>fn_latin1_utf8</span>  <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"bib"</span>, <span class='st'>"latin1accents_utf8.bib"</span>, package <span class='op'>=</span> <span class='st'>"rbibutils"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='co'>## convert to Latin-1, by default the accents are converted to TeX combinations:</span></span>
+<span class='r-in'><span class='va'>b</span> <span class='op'>&lt;-</span> <span class='fu'>bibConvert</span><span class='op'>(</span><span class='va'>fn_latin1_utf8</span>, <span class='va'>bib</span> , encoding <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"utf8"</span>, <span class='st'>"latin1"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span><span class='op'>(</span><span class='va'>bib</span><span class='op'>)</span>, sep <span class='op'>=</span> <span class='st'>"\n"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> @Article{test1,</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> author="L{\^e}{\'a}{\'e}, K{\`a}r{\`e}",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> title="K{\`a}r{\`e} {\"u}{\"a} L{\^e}{\'a}{\'e}",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> journal="Latin-1 accents",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> year="2020",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> note="Having the similar title and author is helpful for debugging since authors are processed differently from other fields. Here is a formula: {\$}{\backslash}tan($\alpha$){\$}, {\$}{\backslash}sin($\delta$)/$\delta$ $\to$ 1{\$}, {\$}{\backslash}sqrt{\{}x{\}}{\$}."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> }</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='co'>## use "no_latex" option to keep them Latin1:</span></span>
+<span class='r-in'><span class='va'>c</span> <span class='op'>&lt;-</span> <span class='fu'>bibConvert</span><span class='op'>(</span><span class='va'>fn_latin1_utf8</span>, <span class='va'>bib</span> , encoding <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"utf8"</span>, <span class='st'>"latin1"</span><span class='op'>)</span>, tex <span class='op'>=</span> <span class='st'>"no_latex"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='co'>## this will show properly in Latin-1 locale (or suitable text editor):</span></span>
+<span class='r-in'><span class='co'>##cat(readLines(bib), sep = "\n")</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## gb18030 example (Chinese)</span></span>
+<span class='r-in'><span class='co'>##</span></span>
+<span class='r-in'><span class='co'>## prepare some filenames for the examples below:</span></span>
+<span class='r-in'><span class='va'>xeCJK_utf8</span>    <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"bib/xeCJK_utf8.bib"</span>, package <span class='op'>=</span> <span class='st'>"rbibutils"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>xeCJK_gb18030</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"bib/xeCJK_gb18030.bib"</span>, package <span class='op'>=</span> <span class='st'>"rbibutils"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>fn_gb18030</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span><span class='op'>(</span>fileext <span class='op'>=</span> <span class='st'>".bib"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>fn_rds</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span><span class='op'>(</span>fileext <span class='op'>=</span> <span class='st'>".rds"</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## input bib file utf8, output bib file gb18030:</span></span>
+<span class='r-in'><span class='fu'>bibConvert</span><span class='op'>(</span><span class='va'>xeCJK_utf8</span>, <span class='va'>fn_gb18030</span>, encoding <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"utf8"</span>, <span class='st'>"gb18030"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $infile</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "/Users/runner/work/_temp/Library/rbibutils/bib/xeCJK_utf8.bib"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $outfile</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmp96wqjz/file16b47c0bc744.bib"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $nref_in</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $nref_out</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## input bib file utf8, output file rds (and the rds object is returned</span></span>
+<span class='r-in'><span class='fu'>bibConvert</span><span class='op'>(</span><span class='va'>xeCJK_utf8</span>, <span class='va'>fn_rds</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $infile</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "/Users/runner/work/_temp/Library/rbibutils/bib/xeCJK_utf8.bib"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $outfile</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmp96wqjz/file16b4694780fb.rds"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $nref_in</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $nref_out</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $bib</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 陈骁, 黄声华, 万山明, 庞珽 (2012).</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> “基于电无级变速器的内燃机最优控制策略及整车能量管理.” _电工技术学报_,</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> *27*(2), 133-138.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## a Pubmed file</span></span>
+<span class='r-in'><span class='va'>fn_med</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"bib/easyPubMedvig.xml"</span>, package <span class='op'>=</span> <span class='st'>"rbibutils"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='co'>## convert a Pubmed file to bibtex:</span></span>
+<span class='r-in'><span class='fu'>bibConvert</span><span class='op'>(</span><span class='va'>fn_med</span>, <span class='va'>bib</span>, informat <span class='op'>=</span> <span class='st'>"med"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $infile</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "/Users/runner/work/_temp/Library/rbibutils/bib/easyPubMedvig.xml"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $outfile</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmp96wqjz/file16b45808834b.bib"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $nref_in</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 6</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $nref_out</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 6</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='co'>## convert a Pubmed file to rds and import:</span></span>
+<span class='r-in'><span class='fu'>bibConvert</span><span class='op'>(</span><span class='va'>fn_med</span>, <span class='va'>rds</span>, informat <span class='op'>=</span> <span class='st'>"med"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $infile</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "/Users/runner/work/_temp/Library/rbibutils/bib/easyPubMedvig.xml"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $outfile</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmp96wqjz/file16b4148f6418.rds"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $nref_in</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 6</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $nref_out</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 6</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $bib</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Fantini D, Seiler R, Meeks JJ (2019 ). “Molecular footprints of</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> muscle-invasive bladder cancer in smoking and nonsmoking patients.  .”</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> _Urologic oncology _, *37 *(11 ), 818-825 . ISSN 1873-2496 , doi:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 10.1016/j.urolonc.2018.09.017 (URL:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> https://doi.org/10.1016/j.urolonc.2018.09.017 ), &lt;URL:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> https://doi.org/10.1016/j.urolonc.2018.09.017&gt;.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Fantini D, Meeks JJ (2019 ). “Genomic classification and risk</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> stratification of bladder cancer.  .” _World journal of urology _, *37</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> *(9 ), 1751-1757 . ISSN 1433-8726 , doi: 10.1007/s00345-018-2558-2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> (URL: https://doi.org/10.1007/s00345-018-2558-2 ), &lt;URL:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> https://doi.org/10.1007/s00345-018-2558-2&gt;.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Fantini D, Meeks JJ (2018 ). “The BBN model: a mouse bladder cancer</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> model featuring basal-subtype gene expression and MLL3/MLL4 genetic</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> disruption.  .” _Oncoscience _, *5 *(5-6 ), 172-173 . ISSN 2331-4737 ,</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> doi: 10.18632/oncoscience.439 (URL:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> https://doi.org/10.18632/oncoscience.439 ), &lt;URL:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> https://doi.org/10.18632/oncoscience.439&gt;.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Wang L, Zhao Z, Ozark PA, Fantini D, Marshall SA, Rendleman EJ,</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Cozzolino KA, Louis N, He X, Morgan MA, Takahashi Y, Collings CK, Smith</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ER, Ntziachristos P, Savas JN, Zou L, Hashizume R, Meeks JJ,</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Shilatifard A (2018 ). “Resetting the epigenetic balance of Polycomb</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> and COMPASS function at enhancers for cancer therapy.  .” _Nature</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> medicine _, *24 *(6 ), 758-769 . ISSN 1546-170X , doi:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 10.1038/s41591-018-0034-6 (URL:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> https://doi.org/10.1038/s41591-018-0034-6 ), &lt;URL:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> https://doi.org/10.1038/s41591-018-0034-6&gt;.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Glaser AP, Fantini D, Wang Y, Yu Y, Rimar KJ, Podojil JR, Miller SD,</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Meeks JJ (2018 ). “APOBEC-mediated mutagenesis in urothelial carcinoma</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> is associated with improved survival, mutations in DNA damage response</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> genes, and immune response.  .” _Oncotarget _, *9 *(4 ), 4537-4548 .</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ISSN 1949-2553 , doi: 10.18632/oncotarget.23344 (URL:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> https://doi.org/10.18632/oncotarget.23344 ), &lt;URL:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> https://doi.org/10.18632/oncotarget.23344&gt;.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Fantini D, Glaser AP, Rimar KJ, Wang Y, Schipma M, Varghese N,</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Rademaker A, Behdad A, Yellapa A, Yu Y, Sze CC, Wang L, Zhao Z,</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Crawford SE, Hu D, Licht JD, Collings CK, Bartom E, Theodorescu D,</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Shilatifard A, Meeks JJ (2018 ). “A Carcinogen-induced mouse model</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> recapitulates the molecular alterations of human muscle invasive</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> bladder cancer.  .” _Oncogene _, *37 *(14 ), 1911-1925 . ISSN 1476-5594</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> , doi: 10.1038/s41388-017-0099-6 (URL:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> https://doi.org/10.1038/s41388-017-0099-6 ), &lt;URL:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> https://doi.org/10.1038/s41388-017-0099-6&gt;.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>modl</span>, <span class='va'>bib</span>, <span class='va'>bib2</span>, <span class='va'>r</span>, <span class='va'>rds</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>fn_gb18030</span>, <span class='va'>fn_rds</span><span class='op'>)</span><span class='op'>)</span></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

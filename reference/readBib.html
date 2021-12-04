@@ -261,8 +261,8 @@
   called function.</p>
 <p>The files specified by argument <code>macros</code> are read in before those
   in <code>file</code>. Currently this is implemented by concatenating the
-  files in the order they appear in <code><a href='https://rdrr.io/r/base/c.html'>c(macros, file)</a></code>. It is ok for
-  <code>macros</code> to be <code><a href='https://rdrr.io/r/base/character.html'>character(0)</a></code>.</p>
+  files in the order they appear in <code>c(macros, file)</code>. It is ok for
+  <code>macros</code> to be <code>character(0)</code>.</p>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>for <code>readBib</code>, a <code>bibentry</code> object</p>
@@ -277,235 +277,254 @@
 <p><code><a href='bibConvert.html'>bibConvert</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>## create a bibentry object</span>
-<span class='va'>bibs</span> <span class='op'>&lt;-</span> <span class='fu'>readBib</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"REFERENCES.bib"</span>, package <span class='op'>=</span> <span class='st'>"rbibutils"</span><span class='op'>)</span>,
-                encoding <span class='op'>=</span> <span class='st'>"UTF-8"</span><span class='op'>)</span>
-<span class='co'>## write bibs to a file</span>
-<span class='va'>fn</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span><span class='op'>(</span>fileext <span class='op'>=</span> <span class='st'>".bib"</span><span class='op'>)</span>
-<span class='fu'>writeBib</span><span class='op'>(</span><span class='va'>bibs</span>, <span class='va'>fn</span><span class='op'>)</span>
-
-<span class='co'>## see the contents of the file</span>
-<span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span><span class='op'>(</span><span class='va'>fn</span><span class='op'>)</span> <span class='co'># or: file.show(fn)</span>
-</div><div class='output co'>#&gt;  [1] "@Manual{Rpackage:bibtex,"                                                               
-#&gt;  [2] "  author = {Romain Francois},"                                                          
-#&gt;  [3] "  title = {bibtex: bibtex parser},"                                                     
-#&gt;  [4] "  year = {2014},"                                                                       
-#&gt;  [5] "  note = {R package version 0.4.0},"                                                    
-#&gt;  [6] "}"                                                                                      
-#&gt;  [7] ""                                                                                       
-#&gt;  [8] "@Misc{Rpackage:Rdpack,"                                                                 
-#&gt;  [9] "  author = {Georgi N Boshnakov},"                                                       
-#&gt; [10] "  title = {{\\{}Rdpack{\\}}: Update and Manipulate Rd Documentation Objects},"          
-#&gt; [11] "  year = {2020},"                                                                       
-#&gt; [12] "  note = {R package version 2.0.0},"                                                    
-#&gt; [13] "  doi = {10.5281/zenodo.3925612},"                                                      
-#&gt; [14] "  url = {https://doi.org/10.5281/zenodo.3925612},"                                      
-#&gt; [15] "}"                                                                                      
-#&gt; [16] ""                                                                                       
-#&gt; [17] "@Article{Rpackage:RefManageR,"                                                          
-#&gt; [18] "  author = {Mathew William McLean},"                                                    
-#&gt; [19] "  title = {RefManageR: Import and Manage BibTeX and BibLaTeX References in R},"         
-#&gt; [20] "  journal = {The Journal of Open Source Software},"                                     
-#&gt; [21] "  year = {2017},"                                                                       
-#&gt; [22] "  doi = {10.21105/joss.00338},"                                                         
-#&gt; [23] "  url = {https://doi.org/10.21105/joss.00338},"                                         
-#&gt; [24] "}"                                                                                      
-#&gt; [25] ""                                                                                       
-#&gt; [26] "@Misc{bibutils6.10,"                                                                    
-#&gt; [27] "  author = {Chris Putnam},"                                                             
-#&gt; [28] "  title = {Library bibutils, version 6.10},"                                            
-#&gt; [29] "  year = {2020},"                                                                       
-#&gt; [30] "  url = {https://sourceforge.net/projects/bibutils/},"                                  
-#&gt; [31] "}"                                                                                      
-#&gt; [32] ""                                                                                       
-#&gt; [33] "@Misc{Rpackage:easyPubMed,"                                                             
-#&gt; [34] "  author = {Damiano Fantini},"                                                          
-#&gt; [35] "  title = {easyPubMed: Search and Retrieve Scientific Publication Records from PubMed},"
-#&gt; [36] "  year = {2019},"                                                                       
-#&gt; [37] "  note = {R package version 2.13},"                                                     
-#&gt; [38] "  url = {https://CRAN.R-project.org/package=easyPubMed},"                               
-#&gt; [39] "}"                                                                                      </div><div class='input'>
-<span class='co'>## import a bib file containing Chineese characters encoded with UTF-8:</span>
-<span class='va'>ch_bib</span> <span class='op'>&lt;-</span> <span class='fu'>readBib</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"bib/xeCJK_utf8.bib"</span>, package <span class='op'>=</span> <span class='st'>"rbibutils"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>ch_bib</span>
-</div><div class='output co'>#&gt; 陈骁, 黄声华, 万山明, 庞珽 (2012).
-#&gt; “基于电无级变速器的内燃机最优控制策略及整车能量管理.” _电工技术学报_,
-#&gt; *27*(2), 133-138.</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>ch_bib</span>, style <span class='op'>=</span> <span class='st'>"R"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; bibentry(bibtype = "Article",
-#&gt;          key = "chen2012",
-#&gt;          author = c(person(family = "陈骁"),
-#&gt;                     person(family = "黄声华"),
-#&gt;                     person(family = "万山明"),
-#&gt;                     person(family = "庞珽")),
-#&gt;          title = "基于电无级变速器的内燃机最优控制策略及整车能量管理",
-#&gt;          journal = "电工技术学报",
-#&gt;          year = "2012",
-#&gt;          volume = "27",
-#&gt;          number = "2",
-#&gt;          pages = "133--138")</div><div class='input'>
-<span class='co'>## import a bib file encoded with the official Chineese encoding:</span>
-<span class='va'>ch_bib2</span> <span class='op'>&lt;-</span> <span class='fu'>readBib</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"bib/xeCJK_gb18030.bib"</span>, package <span class='op'>=</span> <span class='st'>"rbibutils"</span><span class='op'>)</span>,
-                   encoding <span class='op'>=</span> <span class='st'>"gb18030"</span><span class='op'>)</span>
-
-
-<span class='co'>## a dummy reference with accented characters</span>
-<span class='co'>## (in the file some are uft8, others are TeX escapes)</span>
-<span class='va'>bibacc</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"bib/latin1accents_utf8.bib"</span>, package <span class='op'>=</span> <span class='st'>"rbibutils"</span><span class='op'>)</span>
-
-<span class='co'>## export as UTF-8 characters</span>
-<span class='co'>## this will print as true characters in suitable locale:</span>
-<span class='va'>be</span> <span class='op'>&lt;-</span> <span class='fu'>readBib</span><span class='op'>(</span><span class='va'>bibacc</span>, direct <span class='op'>=</span> <span class='cn'>TRUE</span>, texChars <span class='op'>=</span> <span class='st'>"convert"</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>be</span>, style <span class='op'>=</span> <span class='st'>"R"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; bibentry(bibtype = "Article",
-#&gt;          key = "test1",
-#&gt;          author = person(given = "Kàrè",
-#&gt;                          family = "Lêáé"),
-#&gt;          title = "Kàrè üä Lêáé",
-#&gt;          journal = "Latin-1 accents",
-#&gt;          year = "2020",
-#&gt;          note = "Having the similar title and author is helpful for debugging since authors are processed differently from other fields. Here is a formula: $\\tan(\\alpha)$, $\\sin(\\delta)/\\delta \\to 1$, $\\sqrt{x}$.")</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>be</span>, style <span class='op'>=</span> <span class='st'>"bibtex"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; @Article{test1,
-#&gt;   author = {Kàrè Lêáé},
-#&gt;   title = {Kàrè üä Lêáé},
-#&gt;   journal = {Latin-1 accents},
-#&gt;   year = {2020},
-#&gt;   note = {Having the similar title and author is helpful for debugging since authors are processed differently from other fields. Here is a formula: $\tan(\alpha)$, $\sin(\delta)/\delta \to 1$, $\sqrt{x}$.},
-#&gt; }</div><div class='input'><span class='co'>## compare to the input file:</span>
-<span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span><span class='op'>(</span><span class='va'>bibacc</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "   @ARTICLE{test1,"                                                                             
-#&gt; [2] "     AUTHOR = {Kàrè Lêáé},"                                                                     
-#&gt; [3] "     TITLE = {Kàrè \\\"u\\\"a Lêáé},"                                                           
-#&gt; [4] "     JOURNAL = {Latin-1 accents},"                                                              
-#&gt; [5] "     YEAR = {2020},"                                                                            
-#&gt; [6] "     NOTE = {Having the similar title and author is helpful for debugging since authors are"    
-#&gt; [7] "                  processed differently from other fields. Here is a formula: $\\tan(\\alpha)$,"
-#&gt; [8] "                  $\\sin(\\delta)/\\delta \\to 1$, $\\sqrt{x}$.}"                               
-#&gt; [9] "}"                                                                                              </div><div class='input'>
-
-<span class='va'>be1</span> <span class='op'>&lt;-</span> <span class='fu'>readBib</span><span class='op'>(</span><span class='va'>bibacc</span>, direct <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-<span class='va'>be1a</span> <span class='op'>&lt;-</span> <span class='fu'>readBib</span><span class='op'>(</span><span class='va'>bibacc</span>, direct <span class='op'>=</span> <span class='cn'>TRUE</span>, texChars <span class='op'>=</span> <span class='st'>"keep"</span><span class='op'>)</span> <span class='co'># same</span>
-<span class='va'>be1</span>
-</div><div class='output co'>#&gt; Lêáé K (2020). “Kàrè üä Lêáé.” _Latin-1 accents_. Having the similar
-#&gt; title and author is helpful for debugging since authors are processed
-#&gt; differently from other fields. Here is a formula: $\tan(\alpha)$,
-#&gt; $\sin(\delta)/\delta\to1$, $\sqrt{x}$.</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>be1</span>, style <span class='op'>=</span> <span class='st'>"R"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; bibentry(bibtype = "Article",
-#&gt;          key = "test1",
-#&gt;          author = person(given = "Kàrè",
-#&gt;                          family = "Lêáé"),
-#&gt;          title = "Kàrè \\\"u\\\"a Lêáé",
-#&gt;          journal = "Latin-1 accents",
-#&gt;          year = "2020",
-#&gt;          note = "Having the similar title and author is helpful for debugging since authors are processed differently from other fields. Here is a formula: $\\tan(\\alpha)$, $\\sin(\\delta)/\\delta \\to 1$, $\\sqrt{x}$.")</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>be1</span>, style <span class='op'>=</span> <span class='st'>"bibtex"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; @Article{test1,
-#&gt;   author = {Kàrè Lêáé},
-#&gt;   title = {Kàrè \"u\"a Lêáé},
-#&gt;   journal = {Latin-1 accents},
-#&gt;   year = {2020},
-#&gt;   note = {Having the similar title and author is helpful for debugging since authors are processed differently from other fields. Here is a formula: $\tan(\alpha)$, $\sin(\delta)/\delta \to 1$, $\sqrt{x}$.},
-#&gt; }</div><div class='input'>
-<span class='co'>## export as TeX escapes, when possible</span>
-<span class='va'>be2</span> <span class='op'>&lt;-</span> <span class='fu'>readBib</span><span class='op'>(</span><span class='va'>bibacc</span>, direct <span class='op'>=</span> <span class='cn'>TRUE</span>, texChars <span class='op'>=</span> <span class='st'>"export"</span><span class='op'>)</span> <span class='co'>## same</span>
-<span class='va'>be2</span>
-</div><div class='output co'>#&gt; Lêáé K (2020). “Kàrè üä Lêáé.” _Latin-1 accents_. Having the similar
-#&gt; title and author is helpful for debugging since authors are processed
-#&gt; differently from other fields. Here is a formula: $\tan(\alpha)$,
-#&gt; $\sin(\delta)/\delta\to1$, $\sqrt{x}$.</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>be2</span>, style <span class='op'>=</span> <span class='st'>"R"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; bibentry(bibtype = "Article",
-#&gt;          key = "test1",
-#&gt;          author = person(given = "K{\\`a}r{\\`e}",
-#&gt;                          family = "L{\\^e}{\\'a}{\\'e}"),
-#&gt;          title = "K{\\`a}r{\\`e} \\\"u\\\"a L{\\^e}{\\'a}{\\'e}",
-#&gt;          journal = "Latin-1 accents",
-#&gt;          year = "2020",
-#&gt;          note = "Having the similar title and author is helpful for debugging since authors are processed differently from other fields. Here is a formula: $\\tan(\\alpha)$, $\\sin(\\delta)/\\delta \\to 1$, $\\sqrt{x}$.")</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>be2</span>, style <span class='op'>=</span> <span class='st'>"bibtex"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; @Article{test1,
-#&gt;   author = {K{\`a}r{\`e} L{\^e}{\'a}{\'e}},
-#&gt;   title = {K{\`a}r{\`e} \"u\"a L{\^e}{\'a}{\'e}},
-#&gt;   journal = {Latin-1 accents},
-#&gt;   year = {2020},
-#&gt;   note = {Having the similar title and author is helpful for debugging since authors are processed differently from other fields. Here is a formula: $\tan(\alpha)$, $\sin(\delta)/\delta \to 1$, $\sqrt{x}$.},
-#&gt; }</div><div class='input'>
-<span class='co'>## in older versions (up to 2.2.4) of rbibutils, "convert" converted</span>
-<span class='co'>##     a lot of TeX commands representing symbols  to characters.</span>
-<span class='co'>## This is no longer the case:</span>
-<span class='va'>be3</span> <span class='op'>&lt;-</span> <span class='fu'>readBib</span><span class='op'>(</span><span class='va'>bibacc</span>, direct <span class='op'>=</span> <span class='cn'>TRUE</span>, texChars <span class='op'>=</span> <span class='st'>"convert"</span><span class='op'>)</span>
-<span class='co'>## be3</span>
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>be3</span>, style <span class='op'>=</span> <span class='st'>"R"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; bibentry(bibtype = "Article",
-#&gt;          key = "test1",
-#&gt;          author = person(given = "Kàrè",
-#&gt;                          family = "Lêáé"),
-#&gt;          title = "Kàrè üä Lêáé",
-#&gt;          journal = "Latin-1 accents",
-#&gt;          year = "2020",
-#&gt;          note = "Having the similar title and author is helpful for debugging since authors are processed differently from other fields. Here is a formula: $\\tan(\\alpha)$, $\\sin(\\delta)/\\delta \\to 1$, $\\sqrt{x}$.")</div><div class='input'><span class='co'>## print(be3, style = "bibtex")</span>
-
-<span class='co'>## charToBib</span>
-<span class='co'>##</span>
-<span class='co'>## get a bibtex reference for R</span>
-<span class='va'>Rcore</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/format.html'>format</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/utils/citation.html'>citation</a></span><span class='op'>(</span><span class='op'>)</span>, style <span class='op'>=</span> <span class='st'>"bibtex"</span><span class='op'>)</span>
-<span class='co'>## add a citation key</span>
-<span class='va'>Rcore</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/grep.html'>sub</a></span><span class='op'>(</span><span class='st'>"@Manual{"</span>, <span class='st'>"@Manual{Rcore"</span>, <span class='va'>Rcore</span>, fixed <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='va'>Rcore</span>, sep <span class='op'>=</span> <span class='st'>"\n"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; @Manual{Rcore,
-#&gt;   title = {R: A Language and Environment for Statistical Computing},
-#&gt;   author = {{R Core Team}},
-#&gt;   organization = {R Foundation for Statistical Computing},
-#&gt;   address = {Vienna, Austria},
-#&gt;   year = {2021},
-#&gt;   url = {https://www.R-project.org/},
-#&gt; }</div><div class='input'><span class='va'>beRcore</span> <span class='op'>&lt;-</span> <span class='fu'>charToBib</span><span class='op'>(</span><span class='va'>Rcore</span><span class='op'>)</span>
-<span class='va'>beRcore</span>
-</div><div class='output co'>#&gt; R Core Team (2021). _R: A Language and Environment for Statistical
-#&gt; Computing_. &lt;URL: https://www.R-project.org/&gt;.</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span><span class='op'>(</span><span class='va'>beRcore</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "bibentry"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>beRcore</span>, style <span class='op'>=</span> <span class='st'>"R"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; bibentry(bibtype = "Manual",
-#&gt;          key = "Rcore",
-#&gt;          author = person(family = "R Core Team"),
-#&gt;          title = "R: A Language and Environment for Statistical Computing",
-#&gt;          year = "2021",
-#&gt;          publisher = "R Foundation for Statistical Computing",
-#&gt;          address = "Vienna, Austria",
-#&gt;          url = "https://www.R-project.org/")</div><div class='input'>
-<span class='co'>## bibtex entries generated by citation() don't have cite keys.</span>
-<span class='co'>## this sets the key to 'Rcore'</span>
-<span class='va'>beRcore</span> <span class='op'>&lt;-</span> <span class='fu'>charToBib</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/utils/toLatex.html'>toBibtex</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/utils/citation.html'>citation</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>, key <span class='op'>=</span> <span class='st'>"Rcore"</span><span class='op'>)</span>
-<span class='va'>beRcore</span><span class='op'>$</span><span class='va'>key</span> <span class='op'>==</span> <span class='st'>"Rcore"</span>  <span class='co'># TRUE</span>
-</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
-<span class='co'>## this sets two keys</span>
-<span class='va'>bemore</span> <span class='op'>&lt;-</span> <span class='fu'>charToBib</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/utils/toLatex.html'>toBibtex</a></span><span class='op'>(</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/utils/citation.html'>citation</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/utils/citation.html'>citation</a></span><span class='op'>(</span><span class='st'>"rbibutils"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>,
-    key <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Rcore"</span>, <span class='st'>"Rpackage:rbibutils"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/all.equal.html'>all.equal</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>bemore</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Rcore"</span>, <span class='st'>"Rpackage:rbibutils"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
-
-<span class='co'>## a large example with several files - needs internet access;</span>
-<span class='co'>## it is better to clone repository https://github.com/iridia-ulb/references</span>
-<span class='co'>## and work on local files</span>
-<span class='co'>##</span>
-<span class='co'>## iridia_mac &lt;- c("abbrev.bib", "authors.bib", "journals.bib", "crossref.bib")</span>
-<span class='co'>## iridia_biblio &lt;- "biblio.bib"</span>
-<span class='co'>## </span>
-<span class='co'>## iridia_raw_url &lt;- "https://raw.githubusercontent.com/iridia-ulb/references/master"</span>
-<span class='co'>## iridia_mac_url &lt;- file.path(iridia_raw_url, iridia_mac)</span>
-<span class='co'>## iridia_biblio_url &lt;- file.path(iridia_raw_url, iridia_biblio)</span>
-<span class='co'>## </span>
-<span class='co'>## bibdir &lt;- tempdir()</span>
-<span class='co'>## iridia_mac_loc &lt;- file.path(bibdir, iridia_mac)</span>
-<span class='co'>## iridia_biblio_loc &lt;- file.path(bibdir, iridia_biblio)</span>
-<span class='co'>## </span>
-<span class='co'>## ## download the files to bibdir</span>
-<span class='co'>## sapply(c(iridia_biblio_url, iridia_mac_url),</span>
-<span class='co'>##        function(x) download.file(x, file.path(bibdir, basename(x))))</span>
-<span class='co'>## </span>
-<span class='co'>## iridia &lt;- readBib(iridia_biblio_loc, direct = TRUE, macros = iridia_mac_loc)</span>
-<span class='co'>## iridia[1]</span>
-<span class='co'>## print(iridia[1], style = "R")</span>
-<span class='co'>## toBibtex(iridia[1])  # or: print(iridia[1], style = "bibtex")</span>
-<span class='co'>## length(iridia)  # 2576 at the time of writing</span>
-
-<span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span><span class='op'>(</span><span class='va'>fn</span><span class='op'>)</span>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'>## create a bibentry object</span></span>
+<span class='r-in'><span class='va'>bibs</span> <span class='op'>&lt;-</span> <span class='fu'>readBib</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"REFERENCES.bib"</span>, package <span class='op'>=</span> <span class='st'>"rbibutils"</span><span class='op'>)</span>,</span>
+<span class='r-in'>                encoding <span class='op'>=</span> <span class='st'>"UTF-8"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='co'>## write bibs to a file</span></span>
+<span class='r-in'><span class='va'>fn</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span><span class='op'>(</span>fileext <span class='op'>=</span> <span class='st'>".bib"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>writeBib</span><span class='op'>(</span><span class='va'>bibs</span>, <span class='va'>fn</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## see the contents of the file</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span><span class='op'>(</span><span class='va'>fn</span><span class='op'>)</span> <span class='co'># or: file.show(fn)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] "@Manual{Rpackage:bibtex,"                                                               </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [2] "  author = {Romain Francois},"                                                          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [3] "  title = {bibtex: bibtex parser},"                                                     </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [4] "  year = {2014},"                                                                       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [5] "  note = {R package version 0.4.0},"                                                    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [6] "}"                                                                                      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [7] ""                                                                                       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [8] "@Misc{Rpackage:Rdpack,"                                                                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [9] "  author = {Georgi N Boshnakov},"                                                       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [10] "  title = {{\\{}Rdpack{\\}}: Update and Manipulate Rd Documentation Objects},"          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [11] "  year = {2020},"                                                                       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [12] "  note = {R package version 2.0.0},"                                                    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [13] "  doi = {10.5281/zenodo.3925612},"                                                      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [14] "  url = {https://doi.org/10.5281/zenodo.3925612},"                                      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [15] "}"                                                                                      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [16] ""                                                                                       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [17] "@Article{Rpackage:RefManageR,"                                                          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [18] "  author = {Mathew William McLean},"                                                    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [19] "  title = {RefManageR: Import and Manage BibTeX and BibLaTeX References in R},"         </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [20] "  journal = {The Journal of Open Source Software},"                                     </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [21] "  year = {2017},"                                                                       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [22] "  doi = {10.21105/joss.00338},"                                                         </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [23] "  url = {https://doi.org/10.21105/joss.00338},"                                         </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [24] "}"                                                                                      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [25] ""                                                                                       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [26] "@Misc{bibutils6.10,"                                                                    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [27] "  author = {Chris Putnam},"                                                             </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [28] "  title = {Library bibutils, version 6.10},"                                            </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [29] "  year = {2020},"                                                                       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [30] "  url = {https://sourceforge.net/projects/bibutils/},"                                  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [31] "}"                                                                                      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [32] ""                                                                                       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [33] "@Misc{Rpackage:easyPubMed,"                                                             </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [34] "  author = {Damiano Fantini},"                                                          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [35] "  title = {easyPubMed: Search and Retrieve Scientific Publication Records from PubMed},"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [36] "  year = {2019},"                                                                       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [37] "  note = {R package version 2.13},"                                                     </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [38] "  url = {https://CRAN.R-project.org/package=easyPubMed},"                               </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [39] "}"                                                                                      </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## import a bib file containing Chineese characters encoded with UTF-8:</span></span>
+<span class='r-in'><span class='va'>ch_bib</span> <span class='op'>&lt;-</span> <span class='fu'>readBib</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"bib/xeCJK_utf8.bib"</span>, package <span class='op'>=</span> <span class='st'>"rbibutils"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>ch_bib</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 陈骁, 黄声华, 万山明, 庞珽 (2012).</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> “基于电无级变速器的内燃机最优控制策略及整车能量管理.” _电工技术学报_,</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> *27*(2), 133-138.</span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>ch_bib</span>, style <span class='op'>=</span> <span class='st'>"R"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> bibentry(bibtype = "Article",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          key = "chen2012",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          author = c(person(family = "陈骁"),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                     person(family = "黄声华"),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                     person(family = "万山明"),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                     person(family = "庞珽")),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          title = "基于电无级变速器的内燃机最优控制策略及整车能量管理",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          journal = "电工技术学报",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          year = "2012",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          volume = "27",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          number = "2",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          pages = "133--138")</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## import a bib file encoded with the official Chineese encoding:</span></span>
+<span class='r-in'><span class='va'>ch_bib2</span> <span class='op'>&lt;-</span> <span class='fu'>readBib</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"bib/xeCJK_gb18030.bib"</span>, package <span class='op'>=</span> <span class='st'>"rbibutils"</span><span class='op'>)</span>,</span>
+<span class='r-in'>                   encoding <span class='op'>=</span> <span class='st'>"gb18030"</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## a dummy reference with accented characters</span></span>
+<span class='r-in'><span class='co'>## (in the file some are uft8, others are TeX escapes)</span></span>
+<span class='r-in'><span class='va'>bibacc</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"bib/latin1accents_utf8.bib"</span>, package <span class='op'>=</span> <span class='st'>"rbibutils"</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## export as UTF-8 characters</span></span>
+<span class='r-in'><span class='co'>## this will print as true characters in suitable locale:</span></span>
+<span class='r-in'><span class='va'>be</span> <span class='op'>&lt;-</span> <span class='fu'>readBib</span><span class='op'>(</span><span class='va'>bibacc</span>, direct <span class='op'>=</span> <span class='cn'>TRUE</span>, texChars <span class='op'>=</span> <span class='st'>"convert"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>be</span>, style <span class='op'>=</span> <span class='st'>"R"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> bibentry(bibtype = "Article",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          key = "test1",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          author = person(given = "Kàrè",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                          family = "Lêáé"),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          title = "Kàrè üä Lêáé",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          journal = "Latin-1 accents",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          year = "2020",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          note = "Having the similar title and author is helpful for debugging since authors are processed differently from other fields. Here is a formula: $\\tan(\\alpha)$, $\\sin(\\delta)/\\delta \\to 1$, $\\sqrt{x}$.")</span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>be</span>, style <span class='op'>=</span> <span class='st'>"bibtex"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> @Article{test1,</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   author = {Kàrè Lêáé},</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   title = {Kàrè üä Lêáé},</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   journal = {Latin-1 accents},</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   year = {2020},</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   note = {Having the similar title and author is helpful for debugging since authors are processed differently from other fields. Here is a formula: $\tan(\alpha)$, $\sin(\delta)/\delta \to 1$, $\sqrt{x}$.},</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> }</span>
+<span class='r-in'><span class='co'>## compare to the input file:</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span><span class='op'>(</span><span class='va'>bibacc</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "   @ARTICLE{test1,"                                                                             </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [2] "     AUTHOR = {Kàrè Lêáé},"                                                                     </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [3] "     TITLE = {Kàrè \\\"u\\\"a Lêáé},"                                                           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [4] "     JOURNAL = {Latin-1 accents},"                                                              </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [5] "     YEAR = {2020},"                                                                            </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [6] "     NOTE = {Having the similar title and author is helpful for debugging since authors are"    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [7] "                  processed differently from other fields. Here is a formula: $\\tan(\\alpha)$,"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [8] "                  $\\sin(\\delta)/\\delta \\to 1$, $\\sqrt{x}$.}"                               </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [9] "}"                                                                                              </span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>be1</span> <span class='op'>&lt;-</span> <span class='fu'>readBib</span><span class='op'>(</span><span class='va'>bibacc</span>, direct <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>be1a</span> <span class='op'>&lt;-</span> <span class='fu'>readBib</span><span class='op'>(</span><span class='va'>bibacc</span>, direct <span class='op'>=</span> <span class='cn'>TRUE</span>, texChars <span class='op'>=</span> <span class='st'>"keep"</span><span class='op'>)</span> <span class='co'># same</span></span>
+<span class='r-in'><span class='va'>be1</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Lêáé K (2020). “Kàrè üä Lêáé.” _Latin-1 accents_. Having the similar</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> title and author is helpful for debugging since authors are processed</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> differently from other fields. Here is a formula: $\tan(\alpha)$,</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $\sin(\delta)/\delta\to1$, $\sqrt{x}$.</span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>be1</span>, style <span class='op'>=</span> <span class='st'>"R"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> bibentry(bibtype = "Article",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          key = "test1",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          author = person(given = "Kàrè",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                          family = "Lêáé"),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          title = "Kàrè \\\"u\\\"a Lêáé",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          journal = "Latin-1 accents",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          year = "2020",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          note = "Having the similar title and author is helpful for debugging since authors are processed differently from other fields. Here is a formula: $\\tan(\\alpha)$, $\\sin(\\delta)/\\delta \\to 1$, $\\sqrt{x}$.")</span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>be1</span>, style <span class='op'>=</span> <span class='st'>"bibtex"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> @Article{test1,</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   author = {Kàrè Lêáé},</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   title = {Kàrè \"u\"a Lêáé},</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   journal = {Latin-1 accents},</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   year = {2020},</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   note = {Having the similar title and author is helpful for debugging since authors are processed differently from other fields. Here is a formula: $\tan(\alpha)$, $\sin(\delta)/\delta \to 1$, $\sqrt{x}$.},</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> }</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## export as TeX escapes, when possible</span></span>
+<span class='r-in'><span class='va'>be2</span> <span class='op'>&lt;-</span> <span class='fu'>readBib</span><span class='op'>(</span><span class='va'>bibacc</span>, direct <span class='op'>=</span> <span class='cn'>TRUE</span>, texChars <span class='op'>=</span> <span class='st'>"export"</span><span class='op'>)</span> <span class='co'>## same</span></span>
+<span class='r-in'><span class='va'>be2</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Lêáé K (2020). “Kàrè üä Lêáé.” _Latin-1 accents_. Having the similar</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> title and author is helpful for debugging since authors are processed</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> differently from other fields. Here is a formula: $\tan(\alpha)$,</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $\sin(\delta)/\delta\to1$, $\sqrt{x}$.</span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>be2</span>, style <span class='op'>=</span> <span class='st'>"R"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> bibentry(bibtype = "Article",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          key = "test1",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          author = person(given = "K{\\`a}r{\\`e}",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                          family = "L{\\^e}{\\'a}{\\'e}"),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          title = "K{\\`a}r{\\`e} \\\"u\\\"a L{\\^e}{\\'a}{\\'e}",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          journal = "Latin-1 accents",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          year = "2020",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          note = "Having the similar title and author is helpful for debugging since authors are processed differently from other fields. Here is a formula: $\\tan(\\alpha)$, $\\sin(\\delta)/\\delta \\to 1$, $\\sqrt{x}$.")</span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>be2</span>, style <span class='op'>=</span> <span class='st'>"bibtex"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> @Article{test1,</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   author = {K{\`a}r{\`e} L{\^e}{\'a}{\'e}},</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   title = {K{\`a}r{\`e} \"u\"a L{\^e}{\'a}{\'e}},</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   journal = {Latin-1 accents},</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   year = {2020},</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   note = {Having the similar title and author is helpful for debugging since authors are processed differently from other fields. Here is a formula: $\tan(\alpha)$, $\sin(\delta)/\delta \to 1$, $\sqrt{x}$.},</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> }</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## in older versions (up to 2.2.4) of rbibutils, "convert" converted</span></span>
+<span class='r-in'><span class='co'>##     a lot of TeX commands representing symbols  to characters.</span></span>
+<span class='r-in'><span class='co'>## This is no longer the case:</span></span>
+<span class='r-in'><span class='va'>be3</span> <span class='op'>&lt;-</span> <span class='fu'>readBib</span><span class='op'>(</span><span class='va'>bibacc</span>, direct <span class='op'>=</span> <span class='cn'>TRUE</span>, texChars <span class='op'>=</span> <span class='st'>"convert"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='co'>## be3</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>be3</span>, style <span class='op'>=</span> <span class='st'>"R"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> bibentry(bibtype = "Article",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          key = "test1",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          author = person(given = "Kàrè",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                          family = "Lêáé"),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          title = "Kàrè üä Lêáé",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          journal = "Latin-1 accents",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          year = "2020",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          note = "Having the similar title and author is helpful for debugging since authors are processed differently from other fields. Here is a formula: $\\tan(\\alpha)$, $\\sin(\\delta)/\\delta \\to 1$, $\\sqrt{x}$.")</span>
+<span class='r-in'><span class='co'>## print(be3, style = "bibtex")</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## charToBib</span></span>
+<span class='r-in'><span class='co'>##</span></span>
+<span class='r-in'><span class='co'>## get a bibtex reference for R</span></span>
+<span class='r-in'><span class='va'>Rcore</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/format.html'>format</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/utils/citation.html'>citation</a></span><span class='op'>(</span><span class='op'>)</span>, style <span class='op'>=</span> <span class='st'>"bibtex"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='co'>## add a citation key</span></span>
+<span class='r-in'><span class='va'>Rcore</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/grep.html'>sub</a></span><span class='op'>(</span><span class='st'>"@Manual{"</span>, <span class='st'>"@Manual{Rcore"</span>, <span class='va'>Rcore</span>, fixed <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='va'>Rcore</span>, sep <span class='op'>=</span> <span class='st'>"\n"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> @Manual{Rcore,</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   title = {R: A Language and Environment for Statistical Computing},</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   author = {{R Core Team}},</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   organization = {R Foundation for Statistical Computing},</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   address = {Vienna, Austria},</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   year = {2021},</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   url = {https://www.R-project.org/},</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> }</span>
+<span class='r-in'><span class='va'>beRcore</span> <span class='op'>&lt;-</span> <span class='fu'>charToBib</span><span class='op'>(</span><span class='va'>Rcore</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>beRcore</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> R Core Team (2021). _R: A Language and Environment for Statistical</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Computing_. &lt;URL: https://www.R-project.org/&gt;.</span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span><span class='op'>(</span><span class='va'>beRcore</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "bibentry"</span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>beRcore</span>, style <span class='op'>=</span> <span class='st'>"R"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> bibentry(bibtype = "Manual",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          key = "Rcore",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          author = person(family = "R Core Team"),</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          title = "R: A Language and Environment for Statistical Computing",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          year = "2021",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          publisher = "R Foundation for Statistical Computing",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          address = "Vienna, Austria",</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          url = "https://www.R-project.org/")</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## bibtex entries generated by citation() don't have cite keys.</span></span>
+<span class='r-in'><span class='co'>## this sets the key to 'Rcore'</span></span>
+<span class='r-in'><span class='va'>beRcore</span> <span class='op'>&lt;-</span> <span class='fu'>charToBib</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/utils/toLatex.html'>toBibtex</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/utils/citation.html'>citation</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>, key <span class='op'>=</span> <span class='st'>"Rcore"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>beRcore</span><span class='op'>$</span><span class='va'>key</span> <span class='op'>==</span> <span class='st'>"Rcore"</span>  <span class='co'># TRUE</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## this sets two keys</span></span>
+<span class='r-in'><span class='va'>bemore</span> <span class='op'>&lt;-</span> <span class='fu'>charToBib</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/utils/toLatex.html'>toBibtex</a></span><span class='op'>(</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/utils/citation.html'>citation</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/utils/citation.html'>citation</a></span><span class='op'>(</span><span class='st'>"rbibutils"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>,</span>
+<span class='r-in'>    key <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Rcore"</span>, <span class='st'>"Rpackage:rbibutils"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/all.equal.html'>all.equal</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>bemore</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Rcore"</span>, <span class='st'>"Rpackage:rbibutils"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## a large example with several files - needs internet access;</span></span>
+<span class='r-in'><span class='co'>## it is better to clone repository https://github.com/iridia-ulb/references</span></span>
+<span class='r-in'><span class='co'>## and work on local files</span></span>
+<span class='r-in'><span class='co'>##</span></span>
+<span class='r-in'><span class='co'>## iridia_mac &lt;- c("abbrev.bib", "authors.bib", "journals.bib", "crossref.bib")</span></span>
+<span class='r-in'><span class='co'>## iridia_biblio &lt;- "biblio.bib"</span></span>
+<span class='r-in'><span class='co'>## </span></span>
+<span class='r-in'><span class='co'>## iridia_raw_url &lt;- "https://raw.githubusercontent.com/iridia-ulb/references/master"</span></span>
+<span class='r-in'><span class='co'>## iridia_mac_url &lt;- file.path(iridia_raw_url, iridia_mac)</span></span>
+<span class='r-in'><span class='co'>## iridia_biblio_url &lt;- file.path(iridia_raw_url, iridia_biblio)</span></span>
+<span class='r-in'><span class='co'>## </span></span>
+<span class='r-in'><span class='co'>## bibdir &lt;- tempdir()</span></span>
+<span class='r-in'><span class='co'>## iridia_mac_loc &lt;- file.path(bibdir, iridia_mac)</span></span>
+<span class='r-in'><span class='co'>## iridia_biblio_loc &lt;- file.path(bibdir, iridia_biblio)</span></span>
+<span class='r-in'><span class='co'>## </span></span>
+<span class='r-in'><span class='co'>## ## download the files to bibdir</span></span>
+<span class='r-in'><span class='co'>## sapply(c(iridia_biblio_url, iridia_mac_url),</span></span>
+<span class='r-in'><span class='co'>##        function(x) download.file(x, file.path(bibdir, basename(x))))</span></span>
+<span class='r-in'><span class='co'>## </span></span>
+<span class='r-in'><span class='co'>## iridia &lt;- readBib(iridia_biblio_loc, direct = TRUE, macros = iridia_mac_loc)</span></span>
+<span class='r-in'><span class='co'>## iridia[1]</span></span>
+<span class='r-in'><span class='co'>## print(iridia[1], style = "R")</span></span>
+<span class='r-in'><span class='co'>## toBibtex(iridia[1])  # or: print(iridia[1], style = "bibtex")</span></span>
+<span class='r-in'><span class='co'>## length(iridia)  # 2576 at the time of writing</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span><span class='op'>(</span><span class='va'>fn</span><span class='op'>)</span></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
