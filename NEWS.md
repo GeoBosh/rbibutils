@@ -1,4 +1,9 @@
-# rbibutils 2.2.4.9001
+# rbibutils 2.2.4.9003
+
+- `readBibentry` with `extra = TRUE` now parses (almost) any syntactically
+  correct bib entries. In particular, it accepts arbitrary bib types and doesn't
+  throw errors for bibentries missing fields required by bibtex for the standard
+  bibtex types. For example, biblatex entries typically have `date`, not `year`.
 
 - `readBib` with `direct = TRUE` and `texChars` set to `"convert"` or `"export"`
   was not processing mathematical expressions properly. Now fixed.
@@ -15,6 +20,9 @@
 - fixed an error which caused `bibConvert` to segfault when importing `nbib`
   files.
 
+- `readBibentry` (and hence `readBib`) were printing some error messages that
+  were actually handled.
+  
 
 # rbibutils 2.2.4 (CRAN)
 

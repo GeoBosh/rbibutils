@@ -159,8 +159,14 @@ bibstyle_JSSextra <- local({
             ## TODO: this is a patch to make this safely reentrable
             if(!exists("formatMiscJSS"))
                 formatMiscJSS <- formatMisc
-        
+
+            ## TODO: more work needed here
             formatMisc <- function(paper) {
+                if(is.null(paper$year) && !is.null(paper$date)){
+                    if(grepl("^[0-9][0-9][0-9][0-9]", paper$date))
+                        paper$year <- substr(paper$date, 1, 4)
+                }
+                
                 if(is.null(paper$truebibtype))
                     ## default copy of JSS's formatMisc
                     formatMiscJSS(paper)
@@ -185,12 +191,55 @@ bibstyle_JSSextra <- local({
                                    paste0(paper$bibsource)
                                ))
                            },
-                           ## default - TODO, 
-                           collapse(c(fmtPrefix(paper),
-                                      sentence(authorList(paper), fmtYear(paper$year), sep = " "),
-                                      fmtTitle(paper$title),
-                                      sentence(fmtHowpublished(paper$howpublished)),
-                                      sentence(extraInfo(paper))))
+                           Article = {
+                               if(is.null(paper$journal))
+                                   paper$journal <- paper$journaltitle
+                               formatArticle(paper)
+                           },
+                           Book = {
+                               formatBook(paper)
+                           },
+                           # Booklet = {
+                           #     formatBook(paper)
+                           # },
+                           InBook = {
+                               formatInBook(paper)
+                           },
+                           InCollection = {
+                               formatInCollection(paper)
+                           },
+                           InProceedings = {
+                               formatInProceedings(paper)
+                           },
+                           Manual = {
+                               formatManual(paper)
+                           },
+                           MastersThesis = {
+                               formatMastersThesis(paper)
+                           },
+                           Misc = {
+                               formatMisc(paper)
+                           },
+                           PhdThesis = {
+                               formatPhdThesis(paper)
+                           },
+                           Proceedings = {
+                               formatProceedings(paper)
+                           },
+                           TechReport = {
+                               formatTechReport(paper)
+                           },
+                           Unpublished = {
+                               formatUnpublished(paper)
+                           },
+                           ## default - TODO,
+                           {
+                               collapse(c(fmtPrefix(paper),
+                                          sentence(authorList(paper), fmtYear(paper$year), sep = " "),
+                                          fmtTitle(paper$title),
+                                          sentence(fmtHowpublished(paper$howpublished)),
+                                          sentence(extraInfo(paper))))
+                           }
                            )
                 }
             }

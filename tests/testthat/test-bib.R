@@ -310,7 +310,7 @@ test_that("bibRead works ok", {
                        "issue_5_utf8.rds", FALSE)
 
     bib_extra <- system.file("bib", "extra.bib", package = "rbibutils")
-    expect_warning(readBib(bib_extra, direct = TRUE, extra = TRUE))
+    expect_message(readBib(bib_extra, direct = TRUE, extra = TRUE))
 
     ## test the fix for texChars = "export"; the file contains both escaped TeX chars and unicode chars
     bib_texChars <- system.file("bib", "texChars.bib", package = "rbibutils")
