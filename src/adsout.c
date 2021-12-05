@@ -351,7 +351,8 @@ output_4digit_value( char *pos, long long n )
 	char buf[6];
 	n = n % 10000; /* truncate to 0->9999, will fit in buf[6] */
 #ifdef WIN32
-	sprintf( buf, "%I64d", n );
+	// sprintf( buf, "%I64d", n ); // warning: ISO C does not support the 'I' printf flag [-Wformat=]
+	sprintf( buf, "%d", (int)n );
 #else
 	sprintf( buf, "%lld", n );
 #endif
