@@ -2,7 +2,7 @@
 [![CRAN RStudio mirror downloads](https://cranlogs.r-pkg.org/badges/rbibutils)](https://www.r-pkg.org/pkg/rbibutils)
 [![CRAN RStudio mirror downloads](https://cranlogs.r-pkg.org/badges/grand-total/rbibutils?color=blue)](https://r-pkg.org/pkg/rbibutils)
 [![R build status](https://github.com/GeoBosh/rbibutils/workflows/R-CMD-check/badge.svg)](https://github.com/GeoBosh/rbibutils/actions)
-[![codecov](https://codecov.io/gh/GeoBosh/rbibutils/branch/master/graph/badge.svg?token=SNUE0KC0TX)](https://codecov.io/gh/GeoBosh/rbibutils)
+[![codecov](https://app.codecov.io/gh/GeoBosh/rbibutils/branch/master/graph/badge.svg?token=SNUE0KC0TX)](https://app.codecov.io/gh/GeoBosh/rbibutils)
 
 Read and write 'BibTeX' files. Convert bibliography files between various
 formats, including BibTeX, BibLaTeX, PubMed, EndNote and Bibentry. Includes an R

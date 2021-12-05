@@ -409,7 +409,8 @@ append_keywords( fields *in, char *nbibtag, int level, fields *out, int *status 
 		fstatus = fields_add( out, nbibtag, kw, LEVEL_MAIN );
 		if ( fstatus!=FIELDS_OK ) *status = BIBL_ERR_MEMERR;
 	}
-	
+
+	vplist_free( &keywords ); // Georgi
 }
 
 static int

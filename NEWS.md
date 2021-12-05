@@ -1,4 +1,4 @@
-# rbibutils 2.2.4.9003
+# rbibutils 2.2.5 (CRAN)
 
 - `readBibentry` with `extra = TRUE` now parses (almost) any syntactically
   correct bib entries. In particular, it accepts arbitrary bib types and doesn't
