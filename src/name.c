@@ -459,6 +459,7 @@ name_fix_latex_escapes( str *name ) {
      str *mys = str_new();
 		
      if(str_strstrc(name, "\\")) {
+	  str_free(mys);
 	  str_initstr(mys, name);
 	  str_free(name);  // str_init(name);
 	  
