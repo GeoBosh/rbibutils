@@ -21,6 +21,8 @@
 #include "charsets.h"
 #include "str_conv.h"
 
+#include <R.h>
+
 int export_tex_chars_only = 0; // Georgi
 
 static void
@@ -224,6 +226,12 @@ str_convert( str *s,
 		ch = get_unicode( s, &pos, charsetin, latexin, utf8in, xmlin );
 		ok = write_unicode( &ns, ch, charsetout, latexout, utf8out, xmlout );
 		if ( !ok ) goto out;
+		// test output for the bug in v2.4.5 and 2.4.6 (from isiout.c)
+		//    get_unicode went over the final NULL in that case,
+		//    TODO: maybe make it more robust?
+		// if(pos > s->len)
+		//   REprintf("(str_convert) pos past the NULL byte!: pos = %d, s->len = %d, s->data = %s\n",
+		// 	   pos, s->len, s->data);
 	}
 
 	str_swapstrings( s, &ns );

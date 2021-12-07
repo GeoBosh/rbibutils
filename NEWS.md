@@ -1,3 +1,13 @@
+# rbibutils 2.2.7 (CRAN)
+
+- fix bug in isi output occuring revealed by gss/ASAN check in v2.2.5 and 2.2.6.
+
+
+# rbibutils 2.2.6
+
+- fix memory leaks in nbib output in biblatex input occuring in v2.2.5.
+
+
 # rbibutils 2.2.5 (CRAN)
 
 - `readBibentry` with `extra = TRUE` now parses (almost) any syntactically

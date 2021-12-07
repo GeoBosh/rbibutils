@@ -196,8 +196,26 @@ process_person( str *person, char *name )
 
 	while ( *p=='|' && *(p+1)!='|' ) {
 		p++;
-		if ( *p!='|' ) str_addchar( &given, *p++ );
-		while ( *p && *p!='|' ) p++;
+		// 2021-12-06 :TODO: Georgi
+		//    so, only the first letter of the given name is kept, the rest skipped;
+		// see Org/isiout_bug.txt for details.
+                //   
+                // Crude patch, was:
+		//     if ( *p!='|' ) str_addchar( &given, *p++ );
+		//     while ( *p && *p!='|' ) p++;
+		if ( *p!='|' ) {
+		  if( (*p & 128) == 0) { // ascii
+		    str_addchar( &given, *p++);
+		  } else { // not ascii
+		    // Georgi TODO: do this properly.
+		    //
+		    // this will be ok if the following character is ascii
+		    // but it will emit all char's up to the first ascii one
+		    while ( *p && (*p & 128) ) str_addchar( &given, *p++);
+		  }
+		  while ( *p && *p!='|' ) p++;
+		}
+		
 	}
 
 	if ( *p=='|' && *(p+1)=='|' ) {
