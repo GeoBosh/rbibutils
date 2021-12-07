@@ -1,6 +1,7 @@
 # rbibutils 2.2.7 (CRAN)
 
-- fix bug in isi output occuring revealed by gss/ASAN check in v2.2.5 and 2.2.6.
+- fix bug in isi output occuring in v2.2.5 and 2.2.6 and revealed by gss/ASAN
+  check.
 
 
 # rbibutils 2.2.6
