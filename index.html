@@ -4,14 +4,19 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="Read and write Bibtex files. Convert between bibliography
+    formats, including Bibtex, Biblatex, PubMed, Endnote, and
+    Bibentry.  Includes a port of the bibutils utilities by Chris
+    Putnam &lt;https://sourceforge.net/projects/bibutils/&gt;. Supports all
+    bibliography formats and character encodings implemented in
+    bibutils.">
 <title>Read Bibtex Files and Convert Between Bibliography Formats • rbibutils</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
-<script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet">
+<script src="deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
-<script src="pkgdown.js"></script><meta property="og:title" content="Read Bibtex Files and Convert Between Bibliography Formats">
+<!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Read Bibtex Files and Convert Between Bibliography Formats">
 <meta property="og:description" content="Read and write Bibtex files. Convert between bibliography
     formats, including Bibtex, Biblatex, PubMed, Endnote, and
     Bibentry.  Includes a port of the bibutils utilities by Chris
@@ -23,85 +28,75 @@
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
-<body data-spy="scroll" data-target="#toc">
-    <div class="container template-home">
-      <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <span class="navbar-brand">
-        <a class="navbar-link" href="index.html">rbibutils</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.2.5.9000</span>
-      </span>
-    </div>
+<body>
+    <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
+    
 
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-<li>
-  <a href="index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
+    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
+    
+    <a class="navbar-brand me-2" href="index.html">rbibutils</a>
+
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.2.7.9000</small>
+
+    
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbar" class="collapse navbar-collapse ms-2">
+      <ul class="navbar-nav me-auto">
+<li class="nav-item">
+  <a class="nav-link" href="reference/index.html">Reference</a>
 </li>
-<li>
-  <a href="reference/index.html">Reference</a>
-</li>
-<li>
-  <a href="news/index.html">Changelog</a>
+<li class="nav-item">
+  <a class="nav-link" href="news/index.html">Changelog</a>
 </li>
       </ul>
-<ul class="nav navbar-nav navbar-right">
-<li>
-  <a href="https://github.com/GeoBosh/rbibutils/">
-    <span class="fab fa-github fa-lg"></span>
+<form class="form-inline my-2 my-lg-0" role="search">
+        <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="search.json" id="search-input" placeholder="Search for" autocomplete="off">
+</form>
+
+      <ul class="navbar-nav">
+<li class="nav-item">
+  <a class="external-link nav-link" href="https://github.com/GeoBosh/rbibutils/" aria-label="github">
+    <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
 </li>
       </ul>
 </div>
-<!--/.nav-collapse -->
+
+    
   </div>
-<!--/.container -->
-</div>
-<!--/.navbar -->
-
-      
-
-      </header><div class="row">
-  <div class="contents col-md-9">
-
-
+</nav><div class="container template-home">
+<div class="row">
+  <main id="main" class="col-md-9">
 <p>Read and write ‘BibTeX’ files. Convert bibliography files between various formats, including BibTeX, BibLaTeX, PubMed, EndNote and Bibentry. Includes an R port of the <code>bibutils</code> utilities.</p>
-<div id="installing-rbibutils" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#installing-rbibutils" class="anchor"></a>Installing rbibutils</h1></div>
-<p>Install the <a href="https://cran.r-project.org/package=rbibutils">latest stable version</a> from CRAN:</p>
+<div class="section level1">
+<div class="page-header"><h1 id="installing-rbibutils">Installing rbibutils<a class="anchor" aria-label="anchor" href="#installing-rbibutils"></a>
+</h1></div>
+<p>Install the <a href="https://cran.r-project.org/package=rbibutils" class="external-link">latest stable version</a> from CRAN:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">install.packages</span>(<span class="st">"rbibutils"</span>)</span></code></pre></div>
-<p>You can also install the <a href="https://github.com/GeoBosh/rbibutils">development version</a> of <code>rbibutils</code> from Github:</p>
+<p>You can also install the <a href="https://github.com/GeoBosh/rbibutils" class="external-link">development version</a> of <code>rbibutils</code> from Github:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">library</span>(devtools)</span>
 <span id="cb2-2"><a href="#cb2-2"></a><span class="kw">install_github</span>(<span class="st">"GeoBosh/rbibutils"</span>)</span></code></pre></div>
 </div>
-<div id="overview" class="section level1">
-<h1 class="hasAnchor">
-<a href="#overview" class="anchor"></a>Overview</h1>
+<div class="section level1">
+<h1 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
+</h1>
 <p>Import and export ‘BibTeX’ files. Convert bibliography files between various formats. All formats supported by the <code>bibutils</code> utilities are available, see <code><a href="reference/bibConvert.html">bibConvert()</a></code> for a complete list. In addition, conversion from and to <code>bibentry</code>, the R native representation based on Bibtex, is supported.</p>
-<p><code><a href="reference/readBib.html">readBib()</a></code> and <code><a href="reference/readBib.html">writeBib()</a></code> import/export BiBTeX files. <code><a href="reference/readBibentry.html">readBibentry()</a></code> and <code><a href="reference/readBibentry.html">writeBibentry()</a></code> import/export <code>R</code> source files in which the references are represented by <code><a href="https://rdrr.io/r/utils/bibentry.html">bibentry()</a></code> calls.</p>
+<p><code><a href="reference/readBib.html">readBib()</a></code> and <code><a href="reference/readBib.html">writeBib()</a></code> import/export BiBTeX files. <code><a href="reference/readBibentry.html">readBibentry()</a></code> and <code><a href="reference/readBibentry.html">writeBibentry()</a></code> import/export <code>R</code> source files in which the references are represented by <code><a href="https://rdrr.io/r/utils/bibentry.html" class="external-link">bibentry()</a></code> calls.</p>
 <p>The convenience function <code><a href="reference/readBib.html">charToBib()</a></code> takes input from a character vector, rather than a file. It calls <code><a href="reference/readBib.html">readBib()</a></code> or <code><a href="reference/bibConvert.html">bibConvert()</a></code>.</p>
 <p><code><a href="reference/bibConvert.html">bibConvert()</a></code> takes an input bibliography file in one of the supported formats, converts its contents to another format, and writes the result to a file. All formats, except for <code>rds</code> (see below) are plain text files. <code><a href="reference/bibConvert.html">bibConvert()</a></code> tries to infer the input/output formats from the file extentions. There is ambiguity however about <code>bib</code> files, which can be either Bibtex or Biblatex. Bibtex is assumed if the format is not specified. Also, the <code>xml</code> extension is shared by XML-based formats. Its default is ‘XML MODS intermediate’ format.</p>
 <p>The default encoding is UTF-8 for both, input and output. All encodings handled by <code>bibutils</code> are supported. Besides UTF-8, these include <code>gb18030</code> (Chinese), ISO encodings such as <code>iso8859_1</code>, Windows code pages (e.g. <code>cp1251</code> for Windows Cyrillic) and many others. Common alternative names are also accepted (e.g. <code>latin1</code>).</p>
-<p>Bibentry objects can be input from an <code>R</code> source file or from an <code>rds</code> file. The <code>rds</code> file should contain a <code>bibentry</code> R object, saved from R with <code><a href="https://rdrr.io/r/base/readRDS.html">saveRDS()</a></code>. The <code>rds</code> format is a compressed binary format`. Alternatively, an R source file containing one or more bibentry instructions and maybe other commands can be used. The R file is sourced and all bibentry objects created by it are collected.</p>
+<p>Bibentry objects can be input from an <code>R</code> source file or from an <code>rds</code> file. The <code>rds</code> file should contain a <code>bibentry</code> R object, saved from R with <code><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">saveRDS()</a></code>. The <code>rds</code> format is a compressed binary format`. Alternatively, an R source file containing one or more bibentry instructions and maybe other commands can be used. The R file is sourced and all bibentry objects created by it are collected.</p>
 </div>
-<div id="examples" class="section level1">
-<h1 class="hasAnchor">
-<a href="#examples" class="anchor"></a>Examples:</h1>
-<div id="readbib" class="section level2">
-<h2 class="hasAnchor">
-<a href="#readbib" class="anchor"></a>readBib</h2>
+<div class="section level1">
+<h1 id="examples">Examples:<a class="anchor" aria-label="anchor" href="#examples"></a>
+</h1>
+<div class="section level2">
+<h2 id="readbib">readBib<a class="anchor" aria-label="anchor" href="#readbib"></a>
+</h2>
 <p>The examples in this section import the following file:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>bibacc &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">"bib/latin1accents_utf8.bib"</span>, <span class="dt">package =</span> <span class="st">"rbibutils"</span>)</span></code></pre></div>
 <p>Note that some characters may not be displayed on some locales. Also, on Windows some characters may be “approximated” by other characters.</p>
@@ -123,9 +118,9 @@
 <div class="sourceCode" id="cb7"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>be3 &lt;-<span class="st"> </span><span class="kw">readBib</span>(bibacc, <span class="dt">direct =</span> <span class="ot">TRUE</span>, <span class="dt">texChars =</span> <span class="st">"export"</span>)</span>
 <span id="cb7-2"><a href="#cb7-2"></a><span class="kw">print</span>(be3, <span class="dt">style =</span> <span class="st">"bibtex"</span>)</span></code></pre></div>
 </div>
-<div id="bibconvert" class="section level2">
-<h2 class="hasAnchor">
-<a href="#bibconvert" class="anchor"></a>bibConvert</h2>
+<div class="section level2">
+<h2 id="bibconvert">bibConvert<a class="anchor" aria-label="anchor" href="#bibconvert"></a>
+</h2>
 <p>Convert Bibtex file <code>myfile.bib</code> to a <code>bibentry</code> object and save the latter to `“myfile.rds”:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="kw">bibConvert</span>(<span class="st">"myfile.bib"</span>, <span class="st">"myfile.rds"</span>, <span class="dt">informat =</span> <span class="st">"bibtex"</span>, <span class="dt">outformat =</span> <span class="st">"bibentry"</span>)</span>
 <span id="cb8-2"><a href="#cb8-2"></a><span class="kw">bibConvert</span>(<span class="st">"myfile.bib"</span>, <span class="st">"myfile.rds"</span>)</span></code></pre></div>
@@ -151,64 +146,70 @@
 </div>
 </div>
 
-  </div>
-
-  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
-    <div class="links">
-<h2>Links</h2>
+  </main><aside class="col-md-3"><div class="links">
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=rbibutils">https://​cloud.r-project.org/​package=rbibutils</a>
-</li>
-<li>Browse source code at <br><a href="https://github.com/GeoBosh/rbibutils/">https://​github.com/​GeoBosh/​rbibutils/​</a>
-</li>
-<li>Report a bug at <br><a href="https://github.com/GeoBosh/rbibutils/issues">https://​github.com/​GeoBosh/​rbibutils/​issues</a>
-</li>
+<li><a href="https://cloud.r-project.org/package=rbibutils" class="external-link">View on CRAN</a></li>
+<li><a href="https://github.com/GeoBosh/rbibutils/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/GeoBosh/rbibutils/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
+
 <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
-<li><a href="https://www.r-project.org/Licenses/GPL-2">GPL-2</a></li>
+<li><a href="https://www.r-project.org/Licenses/GPL-2" class="external-link">GPL-2</a></li>
 </ul>
 </div>
+
+
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
+<ul class="list-unstyled">
+<li><a href="authors.html#citation">Citing rbibutils</a></li>
+</ul>
+</div>
+
 <div class="developers">
-<h2>Developers</h2>
+<h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li>Georgi N. Boshnakov <br><small class="roles"> Author, maintainer </small>  <br><small>(R port, R code, new C code and modifications to bibutils' C code, conversion to Bibentry (R and C code))</small>
-</li>
-<li>Chris Putman <br><small class="roles"> Author </small>  <br><small>(src/*, author of the bibutils libraries, https://sourceforge.net/projects/bibutils/)</small>
-</li>
-<li><a href="authors.html">All authors...</a></li>
+<li>Georgi N. Boshnakov <br><small class="roles"> Author, maintainer </small>  </li>
+<li>Chris Putman <br><small class="roles"> Author </small>  </li>
+<li><a href="authors.html">More about authors...</a></li>
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://cran.r-project.org/package=rbibutils"><img src="http://www.r-pkg.org/badges/version/rbibutils" alt="CRANStatusBadge"></a></li>
-<li><a href="https://www.r-pkg.org/pkg/rbibutils"><img src="https://cranlogs.r-pkg.org/badges/rbibutils" alt="CRAN RStudio mirror downloads"></a></li>
-<li><a href="https://r-pkg.org/pkg/rbibutils"><img src="https://cranlogs.r-pkg.org/badges/grand-total/rbibutils?color=blue" alt="CRAN RStudio mirror downloads"></a></li>
-<li><a href="https://github.com/GeoBosh/rbibutils/actions"><img src="https://github.com/GeoBosh/rbibutils/workflows/R-CMD-check/badge.svg" alt="R build status"></a></li>
-<li><a href="https://app.codecov.io/gh/GeoBosh/rbibutils"><img src="https://app.codecov.io/gh/GeoBosh/rbibutils/branch/master/graph/badge.svg?token=SNUE0KC0TX" alt="codecov"></a></li>
+<li><a href="https://cran.r-project.org/package=rbibutils" class="external-link"><img src="http://www.r-pkg.org/badges/version/rbibutils" alt="CRANStatusBadge"></a></li>
+<li><a href="https://www.r-pkg.org/pkg/rbibutils" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/rbibutils" alt="CRAN RStudio mirror downloads"></a></li>
+<li><a href="https://r-pkg.org/pkg/rbibutils" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/grand-total/rbibutils?color=blue" alt="CRAN RStudio mirror downloads"></a></li>
+<li><a href="https://github.com/GeoBosh/rbibutils/actions" class="external-link"><img src="https://github.com/GeoBosh/rbibutils/workflows/R-CMD-check/badge.svg" alt="R build status"></a></li>
+<li><a href="https://app.codecov.io/gh/GeoBosh/rbibutils" class="external-link"><img src="https://codecov.io/gh/GeoBosh/rbibutils/branch/master/graph/badge.svg?token=SNUE0KC0TX" alt="codecov"></a></li>
 </ul>
 </div>
-</div>
-</div>
 
-
-      <footer><div class="copyright">
-  <p>Developed by Georgi N. Boshnakov, Chris Putman.</p>
+  </aside>
 </div>
 
-<div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+
+    <footer><div class="pkgdown-footer-left">
+  <p></p>
+<p>Developed by Georgi N. Boshnakov, Chris Putman.</p>
 </div>
 
-      </footer>
+<div class="pkgdown-footer-right">
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+</div>
+
+    </footer>
 </div>
 
   
 
+  
 
   </body>
 </html>
