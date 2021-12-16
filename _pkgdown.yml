@@ -1,3 +1,5 @@
+template:
+  bootstrap: 5
 
 reference:
   - title: "rbibutils overview"
@@ -10,3 +12,8 @@ reference:
       - writeBib
       - readBibentry
       - writeBibentry
+  - title: "Other"
+    contents:
+      - rbibutils_formats
+      - register_JSSextra
+
