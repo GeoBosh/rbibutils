@@ -346,5 +346,7 @@ test_that("bibRead works ok", {
     ## 3: convert.R#279: readBibentry(outfile)
     ## 4: bibentry.R#9: parse(n = -1, file = file, srcfile = NULL, keep.source = FALS
 
-                       
+    acc_fn <- system.file("bib", "accents_tabbing.bib", package = "rbibutils")
+    accfn <- readBib(acc_fn, direct = TRUE)
+    expect_known_value(accfn, "acc_fn.rds", FALSE)
 })

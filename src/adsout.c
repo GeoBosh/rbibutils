@@ -28,7 +28,7 @@
 #include "bibformats.h"
 
 // Georgi: removed the include declaration for adsout_journals.c further below
-//         also, removed the 'static' keyword for juornals and njournals in adsout_journals.c
+//         also, removed the 'static' keyword for journals and njournals in adsout_journals.c
 
 //   reason: adsout_journals.c was compiled to .o with the standard Makefile leading to
 //   unnecessary duplication and an warning about unused variable 'njournals' (which is used
