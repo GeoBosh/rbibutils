@@ -423,6 +423,31 @@ name_mutlielement_build( str *name, intlist *given, intlist *family, slist *toke
 			      pastslash++;
 		  
 			      break;
+
+			 case 'a':    // 2021-12-19
+			   // \a'o, \a`o, \a=o are used in latex's tabbing environment but
+			   // latex seems to accept them elsewhere AND bibtex seems to
+			   // convert them to \'o, etc. when writing bbl files AND base-R's
+			   // bibtex stuff supports it.
+			   //
+			   // TODO: test more!
+
+			      str_addchar( name, *pastslash );   // emit 'a'
+			      pastslash++;
+			      if(*pastslash=='\'' || *pastslash=='`' || *pastslash=='=') {
+				str_addchar( name, *pastslash ); 
+				pastslash++;
+			      } 
+			      // the rest as for '\'' above
+			      if(*pastslash == '\\' && pastslash[1]) {
+				   str_addchar( name, *pastslash );    // emit the backslash
+				   pastslash++;
+			      } 
+			      str_addchar( name, *pastslash );
+			      pastslash++;
+
+			      break;
+
 			 default: 
 			      str_addchar( name, *pastslash );
 			      str_addchar( name, *(pastslash + 1));
@@ -527,6 +552,31 @@ name_fix_latex_escapes( str *name ) {
 			      pastslash++;
 		  
 			      break;
+			        
+			 case 'a':    // 2021-12-19
+			   // \a'o, \a`o, \a=o are used in latex's tabbing environment but
+			   // latex seems to accept them elsewhere AND bibtex seems to
+			   // convert them to \'o, etc. when writing bbl files AND base-R's
+			   // bibtex stuff supports it.
+			   //
+			   // TODO: test more!
+
+			      str_addchar( name, *pastslash );   // emit 'a'
+			      pastslash++;
+			      if(*pastslash=='\'' || *pastslash=='`' || *pastslash=='=') {
+				str_addchar( name, *pastslash ); 
+				pastslash++;
+			      } 
+			      // the rest as for '\'' above
+			      if(*pastslash == '\\' && pastslash[1]) {
+				   str_addchar( name, *pastslash );    // emit the backslash
+				   pastslash++;
+			      } 
+			      str_addchar( name, *pastslash );
+			      pastslash++;
+
+			      break;
+
 			 default: 
 			      str_addchar( name, *pastslash );
 			      str_addchar( name, *(pastslash + 1));

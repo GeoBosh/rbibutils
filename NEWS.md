@@ -5,6 +5,11 @@
   the default `utils::bibentry()` but doesn't need to be vectorised, since
   `readBibentry()` generates one `bibentry` call for each reference.
 
+- `readBib` now parses correctly LaTeX accents like `\a'o` and `\a=o`. These are
+  officially defined only for LaTeX's `tabbing` environment as replacements for
+  `\'o`, etc., but seem accepted by LaTeX outside these environments. Also,
+  `Bibtex` converts them to the standard ones when writing `.bbl` files and R's
+  bib processing functions know about them.
 
 # rbibutils 2.2.7 (CRAN)
 
