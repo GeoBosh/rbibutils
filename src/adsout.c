@@ -13,6 +13,9 @@
 #include <stdint.h>
 #include <string.h>
 #include <ctype.h>
+
+#include <R.h>
+
 #include "utf8.h"
 #include "str.h"
 #include "strsearch.h"
@@ -376,13 +379,16 @@ static char
 initial_ascii( const char *name )
 {
 	int b1, b2;
-
 	if ( isascii( name[0] )  )
 		return name[0];
+	
+	// Georgi: fixing github issue #8
+	//     name[0]+256; doesn't give the expected result
+	//     on platforms where char is unsigned char
+        b1 = (unsigned char)(name[0]); // name[0]+256;
+	b2 = (unsigned char)(name[1]); // name[1]+256;
 
-        b1 = name[0]+256;
-        b2 = name[1]+256;
-
+	// REprintf("b1 = %x, b2 = %x\n", b1, b2);
 	switch( b1 ) {
 
 	case 0xc3:

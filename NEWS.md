@@ -11,15 +11,20 @@
   `Bibtex` converts them to the standard ones when writing `.bbl` files and R's
   bib processing functions know about them.
 
+- a bug in ads export was causing a test to fail on platforms with `char`
+  equivalent to `unsigned char`. Reported by @nileshpatra, who also identified
+  the cause. Fixes issue#8 on github.
+
+
 # rbibutils 2.2.7 (CRAN)
 
-- fix bug in isi output occuring in v2.2.5 and 2.2.6 and revealed by gss/ASAN
+- fixed bug in isi output occuring in v2.2.5 and 2.2.6 and revealed by gss/ASAN
   check.
 
 
 # rbibutils 2.2.6
 
-- fix memory leaks in nbib output in biblatex input occuring in v2.2.5.
+- fixed memory leaks in nbib output in biblatex input occuring in v2.2.5.
 
 
 # rbibutils 2.2.5 (CRAN)
