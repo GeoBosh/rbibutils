@@ -53,7 +53,7 @@
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">readBib</span><span class="op">(</span><span class="va">file</span>, encoding <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span>, direct <span class="op">=</span> <span class="cn">FALSE</span>, 
         texChars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"keep"</span>, <span class="st">"convert"</span>, <span class="st">"export"</span>, <span class="st">"Rdpack"</span><span class="op">)</span>, 
-        macros <span class="op">=</span> <span class="cn">NULL</span>, extra <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">key</span><span class="op">)</span>
+        macros <span class="op">=</span> <span class="cn">NULL</span>, extra <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">key</span>, fbibentry <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
 
 <span class="fu">writeBib</span><span class="op">(</span><span class="va">object</span>, con <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/showConnections.html" class="external-link">stdout</a></span><span class="op">(</span><span class="op">)</span>, append <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 
@@ -113,6 +113,9 @@
 <p></p></dd>
 <dt>extra</dt>
 <dd><p>if <code>TRUE</code>, allow non-standard bibtex types.</p></dd>
+<dt>fbibentry</dt>
+<dd><p>a function to use for generating bib objects instead
+    of <code><a href="https://rdrr.io/r/utils/bibentry.html" class="external-link">bibentry()</a></code>, see Details.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -155,7 +158,9 @@
   <!-- % formulas may cause surprises. --></p>
 <p>Currently, <code>texChars = "export"</code> does not process properly
   mathematical formulas.</p>
-  
+<p><code>fbibentry</code>, if supplied, should be a function with arguments
+  like bibentry to be used instead of <code><a href="https://rdrr.io/r/utils/bibentry.html" class="external-link">utils::bibentry</a></code> for
+  creating bib objects in <span style="R">R</span>.</p>  
 <p><code>writeBib</code> writes a <code>bibentry</code> object to a bibtex file.</p>
 <p><code>charTobib</code> is a convenience function for reading or converting
   bibliography information, accepting the input from a
@@ -170,7 +175,10 @@
     </div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>for <code>readBib</code>, a <code>bibentry</code> object
+    <p>for <code>readBib</code>, a <code>bibentry</code> object. If <code>extra</code> is
+<code>TRUE</code> it can also be <code>bibentryExtra</code> (which inherits from
+<code>bibentry</code>). If <code>fbibentry</code> is a function the return value
+  is whatever it returns.
   for <code>writeBib</code>, the <code>bibentry</code> object (invisibly)</p>
     </div>
     <div class="section level2">
