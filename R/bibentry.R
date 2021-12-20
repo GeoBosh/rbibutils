@@ -1,4 +1,4 @@
-readBibentry <- function(file, extra = FALSE){
+readBibentry <- function(file, extra = FALSE, fbibentry = NULL){
     ## TODO: fixed encoding for now, but:
     ##   It is hardly worth the bother to consider other encodings.
     ##   First, bibConvert can produce 'file' in UTF-8.
@@ -8,6 +8,9 @@ readBibentry <- function(file, extra = FALSE){
     ##       connection with from/to encodings for iconv().
     exprs <- parse(n = -1, file = file, srcfile = NULL, keep.source = FALSE,
                    encoding = "UTF-8")
+
+    if(!is.null(fbibentry)) # 2021-12-17 new
+        bibentry <- fbibentry
     
     if(length(exprs) == 1){
         res <- try(eval(exprs), silent = TRUE)

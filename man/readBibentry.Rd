@@ -4,7 +4,7 @@
 \title{Read and write bibentry files}
 \description{Read and write bibentry files.}
 \usage{
-readBibentry(file, extra = FALSE)
+readBibentry(file, extra = FALSE, fbibentry = NULL)
 
 writeBibentry(be, file, style = c("Rstyle", "loose"))
 }
@@ -15,6 +15,10 @@ writeBibentry(be, file, style = c("Rstyle", "loose"))
   \item{style}{
     if \code{"Rstyle"} (default), wrap in \code{c()}, otherwise don't
     wrap and don't put commas between the entries, see Details section.
+  }
+  \item{
+    fbibentry}{a function to use for generating bib objects instead
+    of \code{bibentry()}.
   }
 }
 \details{

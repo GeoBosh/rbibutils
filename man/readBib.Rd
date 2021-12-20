@@ -7,7 +7,7 @@
 \usage{
 readBib(file, encoding = NULL, \dots, direct = FALSE, 
         texChars = c("keep", "convert", "export", "Rdpack"), 
-        macros = NULL, extra = FALSE, key)
+        macros = NULL, extra = FALSE, key, fbibentry = NULL)
 
 writeBib(object, con = stdout(), append = FALSE)
 
@@ -63,6 +63,10 @@ charToBib(text, informat, \dots)
 
   }
   \item{extra}{if \code{TRUE}, allow non-standard bibtex types.}
+
+  \item{fbibentry}{a function to use for generating bib objects instead
+    of \code{bibentry()}, see Details.}
+
 }
 \details{
 
@@ -110,6 +114,9 @@ charToBib(text, informat, \dots)
   Currently, \code{texChars = "export"} does not process properly
   mathematical formulas.
 
+  \code{fbibentry}, if supplied, should be a function with arguments
+  like bibentry to be used instead of \code{utils::bibentry} for
+  creating bib objects in \R.
   
   \code{writeBib} writes a \code{bibentry} object to a bibtex file.
 
@@ -127,7 +134,11 @@ charToBib(text, informat, \dots)
   
 }
 \value{
-  for \code{readBib}, a \code{bibentry} object
+
+  for \code{readBib}, a \code{bibentry} object. If \code{extra} is
+  \code{TRUE} it can also be \code{bibentryExtra} (which inherits from
+  \code{bibentry}). If \code{fbibentry} is a function the return value
+  is whatever it returns.
 
   for \code{writeBib}, the \code{bibentry} object (invisibly)
 }

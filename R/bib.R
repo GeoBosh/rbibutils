@@ -1,6 +1,6 @@
 readBib <- function(file, encoding = NULL, ..., direct = FALSE,
                     texChars = c("keep", "convert", "export", "Rdpack"),
-                    macros = NULL, extra = FALSE, key){
+                    macros = NULL, extra = FALSE, key, fbibentry = NULL){
 
     if(is.null(encoding))
         encoding <- c("utf8", "utf8")  # would default input 'native' be better?
@@ -70,7 +70,8 @@ readBib <- function(file, encoding = NULL, ..., direct = FALSE,
                tex <- NULL
                )
         
-        res <- bibtexImport(file, encoding = encoding, tex = tex, extra = extra)
+        res <- bibtexImport(file, encoding = encoding, tex = tex, extra = extra,
+                            fbibentry = fbibentry)
     }
 
     if(!missing(key)){

@@ -1,11 +1,8 @@
-bibtexImport <- function(infile, ..., tex = NULL, encoding = NULL, options, extra = FALSE){
-    ## informat is always "bibtex"
+convert_bib2be <- function(infile, outfile, ..., tex = NULL, encoding = NULL,
+                           options, extra = FALSE){
     stopifnot(length(list(...)) == 0) # no ... arguments allowed
 
-    outfile <- tempfile(fileext = ".R")
-    on.exit(unlink(outfile))
-
-    argv_2be <- c("dummy")
+    argv_2be <- "bib2be"    # prg
 
     if(!is.null(encoding)){
         if(length(encoding) == 1)
@@ -93,11 +90,13 @@ bibtexImport <- function(infile, ..., tex = NULL, encoding = NULL, options, extr
 
     n_2be <- as.double(0)  # for the number of references (double)
 
-    prg <- paste0("bib", "2be")
-    argv_2be[1] <- prg
-    wrk_out <- .C(C_bib2be_main, as.integer(argc_2be), argv_2be, outfile, nref_in = n_2be)
+    .C(C_bib2be_main, argc_2be, argv_2be, outfile, nref_in = n_2be)
+}
 
-    bibe <- readBibentry(outfile, extra = extra)
+bibtexImport <- function(infile, ..., extra = FALSE, fbibentry = NULL){
+    outfile <- tempfile(fileext = ".R")
+    on.exit(unlink(outfile))
 
-    bibe
+    convert_bib2be(infile, outfile, ...)
+    readBibentry(outfile, extra = extra, fbibentry = fbibentry)
 }

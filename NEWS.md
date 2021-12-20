@@ -1,3 +1,11 @@
+# rbibutils 2.2.7.9000 (CRAN)
+
+- new argument `fbibentry` for `readBib` and `readBibentry` for specification of
+  a function for generation of bib objects. It should have the same arguments as
+  the default `utils::bibentry()` but doesn't need to be vectorised, since
+  `readBibentry()` generates one `bibentry` call for each reference.
+
+
 # rbibutils 2.2.7 (CRAN)
 
 - fix bug in isi output occuring in v2.2.5 and 2.2.6 and revealed by gss/ASAN
