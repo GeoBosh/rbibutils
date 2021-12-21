@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">rbibutils</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.2.7.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.2.7.9001</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -47,7 +47,7 @@
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="2.2.7.9000" id="rbibutils-2279000-cran">rbibutils 2.2.7.9000 (CRAN)<a class="anchor" aria-label="anchor" href="#rbibutils-2279000-cran"></a></h2>
 <ul><li><p>new argument <code>fbibentry</code> for <code>readBib</code> and <code>readBibentry</code> for specification of a function for generation of bib objects. It should have the same arguments as the default <code><a href="https://rdrr.io/r/utils/bibentry.html" class="external-link">utils::bibentry()</a></code> but doesn’t need to be vectorised, since <code><a href="../reference/readBibentry.html">readBibentry()</a></code> generates one <code>bibentry</code> call for each reference.</p></li>
-<li><p><code>readBib</code> now parses correctly LaTeX accents like <code>\a'o</code> and <code>\a=o</code>. These are officially defined only for LaTeX’s <code>tabbing</code> environment as replacements for <code>\'o</code>, etc., but seem accepted by LaTeX outside these environments. Also, <code>Bibtex</code> converts them to the standard ones when writing <code>.bbl</code> files and R’s bib processing functions know about them.</p></li>
+<li><p><code>readBib</code> now parses correctly LaTeX accents like <code>\a'o</code>. These are officially defined only for LaTeX’s <code>tabbing</code> environment as replacements for <code>\'o</code>, etc., but seem accepted by LaTeX outside these environments. Also, <code>Bibtex</code> converts them to the standard ones when writing <code>.bbl</code> files and R’s bib processing functions know about them.</p></li>
 <li><p>a bug in ads export was causing a test to fail on platforms with <code>char</code> equivalent to <code>unsigned char</code>. Reported by <a href="https://github.com/nileshpatra" class="external-link">@nileshpatra</a>, who also identified the cause. Fixes issue#8 on github.</p></li>
 </ul></div>
     <div class="section level2">
