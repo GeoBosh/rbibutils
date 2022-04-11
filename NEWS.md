@@ -1,4 +1,4 @@
-# rbibutils 2.2.7.9000 (CRAN)
+# rbibutils 2.2.8 (CRAN)
 
 - new argument `fbibentry` for `readBib` and `readBibentry` for specification of
   a function for generation of bib objects. It should have the same arguments as
@@ -11,7 +11,7 @@
   converts them to the standard ones when writing `.bbl` files and R's bib
   processing functions know about them.
 
-- a bug in ads export was causing a test to fail on platforms with `char`
+- a bug in `ads` export was causing a test to fail on platforms with `char`
   equivalent to `unsigned char`. Reported by @nileshpatra, who also identified
   the cause. Fixes issue#8 on github.
 
