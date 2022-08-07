@@ -1,5 +1,10 @@
+url: https://geobosh.github.io/rbibutils
+
 template:
   bootstrap: 5
+
+search:
+  exclude: ['news/index.html']
 
 reference:
   - title: "rbibutils overview"

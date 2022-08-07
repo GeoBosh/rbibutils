@@ -1,3 +1,9 @@
+# rbibutils 2.2.8.9000
+
+- fixed wrong markup of an item in this file (for v2.2.4) causing bad rendering
+  and a NOTE from CRAN.
+  
+
 # rbibutils 2.2.8 (CRAN)
 
 - new argument `fbibentry` for `readBib` and `readBibentry` for specification of
@@ -69,8 +75,8 @@
     https://bugs.r-project.org/show_bug.cgi?id=18208 . So, users of the bib file
     may have specific reasons to use one or the other.
 
-# names consisting of just one part, family, were missing processing of escaped
-  characters (issue #5).
+  - names consisting of just one part, family, were missing processing of escaped
+    characters (issue #5).
     
 
 # rbibutils 2.2.3 (CRAN)

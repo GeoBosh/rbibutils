@@ -293,7 +293,7 @@ fn_med <- system.file("bib/easyPubMedvig.xml", package = "rbibutils")
 ## convert a Pubmed file to bibtex:
 bibConvert(fn_med, bib, informat = "med")
 ## convert a Pubmed file to rds and import:
-bibConvert(fn_med, rds, informat = "med")
+#bibConvert(fn_med, rds, informat = "med")
 
 unlink(c(modl, bib, bib2, r, rds))
 unlink(c(fn_gb18030, fn_rds))
