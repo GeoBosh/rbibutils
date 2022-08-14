@@ -1,4 +1,4 @@
-# rbibutils 2.2.8.9000
+# rbibutils 2.2.9 (CRAN)
 
 - fixed wrong markup of an item in this file (for v2.2.4) causing bad rendering
   and a NOTE from CRAN.
