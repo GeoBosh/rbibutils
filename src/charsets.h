@@ -19,7 +19,7 @@
 extern char * charset_get_xmlname( int n );
 extern int charset_find( char *name );
 extern void charset_list_all( FILE *fp );
-extern void charset_list_all_stderr( );
+extern void charset_list_all_stderr( void );
 extern unsigned int charset_lookupchar( int charsetin, char c );
 extern unsigned int charset_lookupuni( int charsetout, unsigned int unicode );
 

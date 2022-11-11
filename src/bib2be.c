@@ -26,7 +26,7 @@ extern int export_tex_chars_only;
 extern int rdpack_patch_for_i_acute_variant;
 
 extern int bibtexdirectin_initparams( param *pm, const char *progname );
-extern void bibdirectin_more_cleanf();
+extern void bibdirectin_more_cleanf( void );
 extern int bibentrydirectout_initparams( param *pm, const char *progname );
 
 char *helpBE[] = {

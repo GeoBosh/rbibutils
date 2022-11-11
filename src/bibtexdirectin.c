@@ -90,7 +90,7 @@ bibtexdirectin_initparams( param *pm, const char *progname )
 
 // Georgi
 // void (*more_cleanf)()
-void bibdirectin_more_cleanf()
+void bibdirectin_more_cleanf( void )
 {
   // TODO: these probably should be made parameters, as the others above;
   //       note that 'find' and 'replace' work in tandem, so both need to be cleared.

@@ -262,6 +262,7 @@ a <- bibConvert(fn_cyr_utf8, bib, encoding = c("utf8", "cp1251"), tex = "no_late
 ## now take the bib file and convert it to UTF-8
 bibConvert(bib, bib2, encoding = c("cp1251", "utf8"))
 
+\donttest{
 ## Latin-1 example: Author and Title fileds contain Latin-1 accented
 ##   characters, not real names. As above, the file is in UTF-8
 fn_latin1_utf8  <- system.file("bib", "latin1accents_utf8.bib", package = "rbibutils")
@@ -286,7 +287,8 @@ bibConvert(xeCJK_utf8, fn_gb18030, encoding = c("utf8", "gb18030"))
 
 ## input bib file utf8, output file rds (and the rds object is returned
 bibConvert(xeCJK_utf8, fn_rds)
-
+unlink(fn_gb18030)
+unlink(fn_rds)
 
 ## a Pubmed file
 fn_med <- system.file("bib/easyPubMedvig.xml", package = "rbibutils")
@@ -294,9 +296,9 @@ fn_med <- system.file("bib/easyPubMedvig.xml", package = "rbibutils")
 bibConvert(fn_med, bib, informat = "med")
 ## convert a Pubmed file to rds and import:
 #bibConvert(fn_med, rds, informat = "med")
+}
 
 unlink(c(modl, bib, bib2, r, rds))
-unlink(c(fn_gb18030, fn_rds))
 }
 \keyword{documentation}
 % use one of  RShowDoc("KEYWORDS")

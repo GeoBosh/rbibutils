@@ -1,3 +1,9 @@
+# rbibutils 2.2.10 (CRAN)
+
+- fixed warnings about deprecated function declarations without prototypes in
+  `C` code.
+
+
 # rbibutils 2.2.9 (CRAN)
 
 - fixed wrong markup of an item in this file (for v2.2.4) causing bad rendering

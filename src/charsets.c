@@ -34611,7 +34611,7 @@ charset_list_all( FILE *fp )
 
 // Georgi
 void
-charset_list_all_stderr( )
+charset_list_all_stderr( void )
 {
 	int i;
 	for ( i=0; i<nallcharconvert; ++i ){
