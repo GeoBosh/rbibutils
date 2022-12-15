@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">rbibutils</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.2.10</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.2.11.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -45,7 +45,10 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="2.2.10" id="rbibutils-2210-cran">rbibutils 2.2.10 (CRAN)<a class="anchor" aria-label="anchor" href="#rbibutils-2210-cran"></a></h2>
+<h2 class="pkg-version" data-toc-text="2.2.11" id="rbibutils-2211-cran">rbibutils 2.2.11 (CRAN)<a class="anchor" aria-label="anchor" href="#rbibutils-2211-cran"></a></h2><p class="text-muted">CRAN release: 2022-12-08</p>
+<ul><li>in <code>C</code> code, changed <code>sprintf</code> calls to use <code>snprintf</code> to fix CRAN warnings.</li></ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="2.2.10" id="rbibutils-2210-cran">rbibutils 2.2.10 (CRAN)<a class="anchor" aria-label="anchor" href="#rbibutils-2210-cran"></a></h2><p class="text-muted">CRAN release: 2022-11-15</p>
 <ul><li>fixed warnings about deprecated function declarations without prototypes in <code>C</code> code.</li></ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="2.2.9" id="rbibutils-229-cran">rbibutils 2.2.9 (CRAN)<a class="anchor" aria-label="anchor" href="#rbibutils-229-cran"></a></h2><p class="text-muted">CRAN release: 2022-08-15</p>
@@ -66,7 +69,7 @@
 <h2 class="pkg-version" data-toc-text="2.2.5" id="rbibutils-225-cran">rbibutils 2.2.5 (CRAN)<a class="anchor" aria-label="anchor" href="#rbibutils-225-cran"></a></h2><p class="text-muted">CRAN release: 2021-12-04</p>
 <ul><li><p><code>readBibentry</code> with <code>extra = TRUE</code> now parses (almost) any syntactically correct bib entries. In particular, it accepts arbitrary bib types and doesn’t throw errors for bibentries missing fields required by bibtex for the standard bibtex types. For example, biblatex entries typically have <code>date</code>, not <code>year</code>.</p></li>
 <li><p><code>readBib</code> with <code>direct = TRUE</code> and <code>texChars</code> set to <code>"convert"</code> or <code>"export"</code> was not processing mathematical expressions properly. Now fixed.</p></li>
-<li><p>argument <code>texChars</code> of <code>readBib</code> gets new possible value, “Rdpack”. This is like the default, “keep”, but in addition it converts <code>\'i' to</code>'`. This is related to issue <a href="https://github.com/GeoBosh/rbibutils/issues/7" class="external-link">#7</a>, see below the fix in v2.2.4 for details. This is mainly for internal use.</p></li>
+<li><p>argument <code>texChars</code> of <code>readBib</code> gets new possible value, “Rdpack”. This is like the default, “keep”, but in addition it converts <code>\'i</code> to <code>\'\i</code>. This is related to issue <a href="https://github.com/GeoBosh/rbibutils/issues/7" class="external-link">#7</a>, see below the fix in v2.2.4 for details. This is mainly for internal use.</p></li>
 <li><p>improved the messages from error handling when creating bibentry objects. The fix is in <code>readBibentry</code> but users typically see them when calling <code>readBib</code>.</p></li>
 <li><p>fixed an error which caused <code>bibConvert</code> to segfault when importing <code>nbib</code> files.</p></li>
 <li><p><code>readBibentry</code> (and hence <code>readBib</code>) were printing some error messages that were actually handled.</p></li>
