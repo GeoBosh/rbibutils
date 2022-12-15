@@ -2,7 +2,7 @@
  * endin.c
  *
  * Copyright (c) Chris Putnam 2003-2020
- * Copyright (c) Georgi N. Boshnakov 2020
+ * Copyright (c) Georgi N. Boshnakov 2020-2022
  *
  * Program and source code released under the GPL version 2
  *
@@ -422,9 +422,9 @@ month_convert( char *in, char *out )
 	if ( found==-1 ) return 0;
 
 	if ( found > 8 )
-		sprintf( out, "%d", found+1 );
-	else
-		sprintf( out, "0%d", found+1 );
+	  snprintf( out, 10, "%d", found+1 );  // GNB: 10 is the length of out in the only 
+	else                                   //  function calling this one.
+	  snprintf( out, 10, "0%d", found+1 ); //  But 1 <= found <= 12, so no danger anyway.
 
 	return 1;
 }

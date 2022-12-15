@@ -2,6 +2,7 @@
  * bibcore.c
  *
  * Copyright (c) Chris Putnam 2005-2020
+ * Copyright (c) Georgi N. Boshnakov 2020-2022
  *
  * Source code released under the GPL version 2
  *
@@ -591,7 +592,7 @@ bibl_addcount( bibl *b )
 		n = fields_find( ref, "REFNUM", LEVEL_MAIN );
 		if ( n==FIELDS_NOTFOUND ) continue;
 
-		sprintf( buf, "_%ld", i+1 );
+		snprintf( buf, 512, "_%ld", i+1 );
 		str_strcatc( fields_value( ref, n, FIELDS_STRP_NOUSE ), buf );
 		if ( str_memerr( fields_value( ref, n, FIELDS_STRP_NOUSE ) ) ) {
 			return BIBL_ERR_MEMERR;
@@ -640,7 +641,7 @@ generate_citekey( fields *f, long nref )
 	}
 
 	else {
-		sprintf( buf, "ref%ld", nref );
+	  snprintf( buf, 100, "ref%ld", nref );
 		str_strcpyc( &citekey, buf );
 	}
 
@@ -979,8 +980,8 @@ singlerefname( fields *reffields, long nref, int mode )
 	found = fields_find( reffields, "REFNUM", LEVEL_MAIN );
 	/* find new filename based on reference */
 	if ( found!=-1 ) {
-		sprintf( outfile,"%s.%s",(char*)fields_value(reffields,found,FIELDS_CHRP_NOUSE), suffix );
-	} else  sprintf( outfile,"%ld.%s",nref, suffix );
+	  snprintf( outfile, 2048, "%s.%s",(char*)fields_value(reffields,found,FIELDS_CHRP_NOUSE), suffix );
+	} else  snprintf( outfile, 2048,"%ld.%s",nref, suffix );
 	count = 0;
 	fp = fopen( outfile, "r" );
 	while ( fp ) {
@@ -988,8 +989,8 @@ singlerefname( fields *reffields, long nref, int mode )
 		count++;
 		if ( count==60000 ) return NULL;
 		if ( found!=-1 )
-			sprintf( outfile, "%s_%ld.%s", (char*)fields_value( reffields, found, FIELDS_CHRP_NOUSE ), count, suffix );
-		else sprintf( outfile,"%ld_%ld.%s", nref, count, suffix );
+			snprintf( outfile, 2048, "%s_%ld.%s", (char*)fields_value( reffields, found, FIELDS_CHRP_NOUSE ), count, suffix );
+		else snprintf( outfile, 2048, "%ld_%ld.%s", nref, count, suffix );
 		fp = fopen( outfile, "r" );
 	}
 	return fopen( outfile, "w" );

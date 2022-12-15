@@ -26,6 +26,8 @@ int  name_addsingleelement( fields *info, const char *tag, const char *name, int
 int  name_addmultielement( fields *info, const char *tag, slist *tokens, int begin, int end, int level );
 int  name_findetal( slist *tokens );
 
+void tag_fix_latex_escapes( str *name ); // Georgi
+
 extern int rdpack_patch_for_i_acute_variant; // Georgi
 
 #endif

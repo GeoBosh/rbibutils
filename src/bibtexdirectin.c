@@ -987,13 +987,14 @@ bibtexdirectin_cleanref( fields *bibin, param *pm )
 	       // REprintf("nout = %d\n" , fields_num( bibin ));
 	       // goto out;
 	  }
-	  // else {
-	  //   status = bibtex_cleanvalue( value );
-	  //   if ( status!=BIBL_OK ) goto out;
-	  //   
-	  //   REprintf("i = %d, value = %s\n", i, (bibin->value[i]).data);
-	  //   
-	  // }
+	  else {
+	    //   status = bibtex_cleanvalue( value );
+	    tag_fix_latex_escapes( value );  // Georgi: 2022-12-15
+	    //   if ( status!=BIBL_OK ) goto out;
+	    //   
+	    //   REprintf("i = %d, value = %s\n", i, (bibin->value[i]).data);
+	    //   
+	  }
 
      }
 

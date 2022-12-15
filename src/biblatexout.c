@@ -2,6 +2,7 @@
  * biblatexout.c
  *
  * Copyright (c) Chris Putnam 2003-2020
+ * Copyright (c) Georgi N. Boshnakov 2020-2022
  *
  * Program and source code released under the GPL version 2
  *
@@ -506,11 +507,11 @@ find_date( fields *in, char *date_element )
 	char date[100], partdate[100];
 	int n;
 
-	sprintf( date, "DATE:%s", date_element );
+	snprintf( date, 100, "DATE:%s", date_element );
 	n = fields_find( in, date, LEVEL_ANY );
 
 	if ( n==FIELDS_NOTFOUND ) {
-		sprintf( partdate, "PARTDATE:%s", date_element );
+	  snprintf( partdate, 100, "PARTDATE:%s", date_element );
 		n = fields_find( in, partdate, LEVEL_ANY );
 	}
 

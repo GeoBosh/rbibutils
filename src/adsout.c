@@ -3,7 +3,7 @@
  *
  * Copyright (c) Richard Mathar 2007-2020
  * Copyright (c) Chris Putnam 2007-2020
- * Copyright (c) Georgi N. Boshnakov 2020-2021
+ * Copyright (c) Georgi N. Boshnakov 2020-2022
  *
  * Program and source code released under the GPL version 2
  *
@@ -339,7 +339,7 @@ append_date( fields *in, char *adstag, int level, fields *out, int *status )
 	year = fields_findv_firstof( in, level, FIELDS_STRP, "DATE:YEAR", "PARTDATE:YEAR", NULL );
 	if ( str_has_value( year ) ) {
 		month = get_month( in, level );
-		sprintf( outstr, "%02d/%s", month, str_cstr( year ) );
+		snprintf( outstr, 1000, "%02d/%s", month, str_cstr( year ) );
 		fstatus = fields_add( out, adstag, outstr, LEVEL_MAIN );
 		if ( fstatus!=FIELDS_OK ) *status = BIBL_ERR_MEMERR;
 	}
@@ -355,9 +355,9 @@ output_4digit_value( char *pos, long long n )
 	n = n % 10000; /* truncate to 0->9999, will fit in buf[6] */
 #ifdef WIN32
 	// sprintf( buf, "%I64d", n ); // warning: ISO C does not support the 'I' printf flag [-Wformat=]
-	sprintf( buf, "%d", (int)n );
+	snprintf( buf, 6, "%d", (int)n );
 #else
-	sprintf( buf, "%lld", n );
+	snprintf( buf, 6, "%lld", n );
 #endif
 	// Georgi:
 	// replaced this with the code further below to avoid the warning about strncpy.

@@ -2,7 +2,7 @@
  * str_conv.c
  *
  * Copyright (c) Chris Putnam 1999-2020
- * Copyright (c) Georgi N. Boshnakov 2020
+ * Copyright (c) Georgi N. Boshnakov 2020-2022
  *
  * Source code released under the GPL version 2
  *
@@ -29,7 +29,7 @@ static void
 addentity( str *s, unsigned int ch )
 {
 	char buf[512];
-	sprintf( buf, "&#%u;", ch );
+	snprintf( buf, 512, "&#%u;", ch );
 	str_strcatc( s, buf );
 }
 

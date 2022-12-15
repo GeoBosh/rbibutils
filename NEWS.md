@@ -1,3 +1,8 @@
+# rbibutils 2.2.11 (CRAN)
+
+- in `C` code, changed `sprintf` calls to use `snprintf` to fix CRAN warnings.
+
+
 # rbibutils 2.2.10 (CRAN)
 
 - fixed warnings about deprecated function declarations without prototypes in
@@ -50,7 +55,7 @@
   was not processing mathematical expressions properly. Now fixed.
   
 - argument `texChars` of `readBib` gets new possible value, "Rdpack". This is
-  like the default, "keep", but in addition it converts `\'i' to `\'\i`. This
+  like the default, "keep", but in addition it converts `\'i` to `\'\i`. This
   is related to issue #7, see below the fix in v2.2.4 for details. This is
   mainly for internal use.
 
