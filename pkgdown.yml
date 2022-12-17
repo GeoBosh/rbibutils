@@ -2,7 +2,7 @@ pandoc: 2.7.3
 pkgdown: 2.0.7
 pkgdown_sha: ~
 articles: {}
-last_built: 2022-12-17T09:51Z
+last_built: 2022-12-17T10:20Z
 urls:
   reference: https://geobosh.github.io/rbibutils/reference
   article: https://geobosh.github.io/rbibutils/articles
