@@ -474,137 +474,6 @@ name_mutlielement_build( str *name, intlist *given, intlist *family, slist *toke
      return 1;
 }
 
-// Georgi 2022-12-15 new
-void
-tag_fix_latex_escapes( str *name ) {
-     // deals with reopened issue #7; started by cloning name_fix_latex_escapes
-     const char *pastslash;
-     char ch;
-     str *mys = str_new();
-		
-     if(str_strstrc(name, "\\")) {
-	  str_free(mys);
-	  str_initstr(mys, name);
-	  str_free(name);  // str_init(name);
-	  
-	  // REprintf("(name_fix_latex_escapes) before: %s\n", mys->data);
-		  
-	  pastslash = str_cattodelim(name, mys->data, "\\", 1);
-	  while( *pastslash  ) {
-	       // Here we are after a backslash
-	       // TODO: can pastslash be NULL?
-	       if(pastslash  && *pastslash) {
-		    if(pastslash[1]) { // the following char is not NULL
-		
-			 ch = *pastslash;
-			 switch(ch) {
-			   // \O etc need latex parsing or similar since they may be starting
-			   // a normal LaTeX command.
-			 // case 'O':
-			 // case 'o':
-			 //      str_addchar( name, *pastslash );
-			 //      pastslash++;
-			 //      break;
-			 // case 'H':
-			 // case 'c':
-			 // case 'k':
-			 // case 'l':
-			 // case 'b':
-			 // case 'd':
-			 // case 'r':
-			 // case 'u':
-			 // case 't':
-			 // case 'v':
-			 //      str_addchar( name, *pastslash );
-			 //      pastslash++;
-			 //      if(*pastslash == ' ') // is this allowed in TeX? anyway, people use
-			 // 	   pastslash++;        // it
-			 //      str_strcatc(name, "{");
-			 //      str_addchar( name, *pastslash );
-			 //      str_addchar( name, '}' );
-			 //      pastslash++;
-			 //      // REprintf("(name_fix_latex_escapes) nafter:  %s\n", name->data);
-			 //      break;
-			 //  
-			 // case 'i':   // new 2021-10-08, see issues #5-7
-			 //      str_addchar( name, *pastslash );
-			 //      pastslash++;
-			 //      break;
-		  
-			 case '\'':
-			   str_strcatc(name, "{\\");
-			      str_addchar( name, *pastslash ); // emit the '
-			      pastslash++;
-			      // pastslash[1] checks that the following char is not NULL
-			      //                                            (it is probably an error if it is)
-			      // Georgi (2021-10-13): issue #7 TODO: do this for Rdpack only!
-			      // if(*pastslash == 'i'  &&  rdpack_patch_get() != 0 ) {
-			      //   str_addchar( name, '\\' );     // \'i => \'\i, see issue #7
-			      // }
-
-			      if(*pastslash == '\\' && pastslash[1]) {
-				   // Georgi (2021-10-09): issues #5-7
-				   //     Don't change  \'\i  to  \'i
-				   //     was:  pastslash++; // just skip '\' for now, so \'\i => \'i
-				   str_addchar( name, *pastslash );       // emit the backslash
-				   pastslash++;
-			      } 
-			      str_addchar( name, *pastslash );
-			      pastslash++;
-		  
-			 str_addchar( name, '}' );
-			      break;
-			        
-			 // case 'a':    // 2021-12-19
-			 //   // \a'o, \a`o, \a=o are used in latex's tabbing environment but
-			 //   // latex seems to accept them elsewhere AND bibtex seems to
-			 //   // convert them to \'o, etc. when writing bbl files AND base-R's
-			 //   // bibtex stuff supports it.
-			 //   //
-			 //   // TODO: test more!
-			 // 
-			 //      str_addchar( name, *pastslash );   // emit 'a'
-			 //      pastslash++;
-			 //      if(*pastslash=='\'' || *pastslash=='`' || *pastslash=='=') {
-			 // 	str_addchar( name, *pastslash ); 
-			 // 	pastslash++;
-			 //      } 
-			 //      // the rest as for '\'' above
-			 //      if(*pastslash == '\\' && pastslash[1]) {
-			 // 	   str_addchar( name, *pastslash );    // emit the backslash
-			 // 	   pastslash++;
-			 //      } 
-			 //      str_addchar( name, *pastslash );
-			 //      pastslash++;
-			 // 
-			 //      break;
-
-			 default: 
-			   str_strcatc(name, "\\");
-			      str_addchar( name, *pastslash );
-			      str_addchar( name, *(pastslash + 1));
-			      pastslash+=2;
-			 }
-		
-		    }
-		      
-		    // REprintf("(name_fix_latex_escapes) after if clause:  %s\n", name->data);
-		  
-	       } else {
-		    // just copy the backslash, but this almost certainly should not happen
-		    str_strcatc(name, "\\");
-	       }
-		
-	       pastslash = str_cattodelim(name, pastslash, "\\", 1);
-	  }
-     }
- 
-     // REprintf("\t(name_fix_latex_escapes) after:  name = %s\n", name->data);
-		
-     str_delete(mys);
-}
-
-
 static void
 name_fix_latex_escapes( str *name ) {
      // deals with issue #5 (the part ,
@@ -629,6 +498,7 @@ name_fix_latex_escapes( str *name ) {
 			 str_strcatc(name, "{\\");
 		
 			 ch = *pastslash;
+			 // (2022-12-16) TODO: case '"'? !!!
 			 switch(ch) {
 			 case 'O':
 			 case 'o':

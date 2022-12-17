@@ -969,7 +969,11 @@ bibtexdirectin_cleanref( fields *bibin, param *pm )
 	  }
 	
 	  if(rdpack_patch_for_i_acute_variant) {
-	       str_findreplace(value, "\\'i", "\\'\\i");
+	    // This may introduce {{\\'\\i}} if \\'i was already in braces.
+	    // In names this doesn't matter since braces are removed anyway.
+	    // In other fields the superfluous braces probably don't matter either
+	    // but they are cleared below in the 'else' branch.
+	       str_findreplace(value, "\\'i", "{\\'\\i}");
 	  }
 
 	  if ( is_name_tag( tag ) ) {
@@ -989,7 +993,9 @@ bibtexdirectin_cleanref( fields *bibin, param *pm )
 	  }
 	  else {
 	    //   status = bibtex_cleanvalue( value );
-	    tag_fix_latex_escapes( value );  // Georgi: 2022-12-15
+	    if(rdpack_patch_for_i_acute_variant) {
+	      str_findreplace(value, "{{\\'\\i}}",  "{\\'\\i}");
+	    }
 	    //   if ( status!=BIBL_OK ) goto out;
 	    //   
 	    //   REprintf("i = %d, value = %s\n", i, (bibin->value[i]).data);
