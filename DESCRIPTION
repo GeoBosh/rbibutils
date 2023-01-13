@@ -1,7 +1,7 @@
 Package: rbibutils
 Type: Package
 Title: Read 'Bibtex' Files and Convert Between Bibliography Formats
-Version: 2.2.11.9000
+Version: 2.2.13
 Authors@R: c( person(given = c("Georgi", "N."), family = "Boshnakov", 
                      role = c("aut", "cre"), 	
                      email = "georgi.boshnakov@manchester.ac.uk",
@@ -24,7 +24,8 @@ Description: Read and write 'Bibtex' files. Convert between bibliography
     bibliography formats and character encodings implemented in
     'bibutils'.
 License: GPL-2
-URL: https://geobosh.github.io/rbibutils/ (doc), https://github.com/GeoBosh/rbibutils (devel)
+URL: https://geobosh.github.io/rbibutils/ (doc),
+        https://github.com/GeoBosh/rbibutils (devel)
 BugReports: https://github.com/GeoBosh/rbibutils/issues
 Depends: R (>= 2.10)
 Imports: utils, tools

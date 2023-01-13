@@ -2,7 +2,7 @@
  * endin.c
  *
  * Copyright (c) Chris Putnam 2003-2020
- * Copyright (c) Georgi N. Boshnakov 2020-2022
+ * Copyright (c) Georgi N. Boshnakov 2020-2023
  *
  * Program and source code released under the GPL version 2
  *

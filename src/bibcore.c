@@ -2,7 +2,7 @@
  * bibcore.c
  *
  * Copyright (c) Chris Putnam 2005-2020
- * Copyright (c) Georgi N. Boshnakov 2020-2022
+ * Copyright (c) Georgi N. Boshnakov 2020-2023
  *
  * Source code released under the GPL version 2
  *

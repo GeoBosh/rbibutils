@@ -2,7 +2,7 @@
  * tomods.c
  *
  * Copyright (c) Chris Putnam 2004-2020
- * Copyright (c) Georgi N. Boshnakov 2020
+ * Copyright (c) Georgi N. Boshnakov 2020-2023
  *
  * Program and source code released under the GPL version 2
  *
@@ -10,12 +10,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "slist.h"
-#include "bibl.h"
 #include "bibutils.h"
 #include "tomods.h"
 #include "args.h"
-#include "bibprog.h"
 
 static void
 args_tomods_help( char *progname, char *help1, char *help2 )
@@ -156,14 +153,3 @@ tomods_processargs( int *argc, char *argv[], param *p,
 		}
 	}
 }
-
-
-
-
-
-
-
-
-
-
-

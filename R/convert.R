@@ -299,6 +299,10 @@ bibConvert <- function(infile, outfile, informat, outformat, ..., tex, encoding,
                ## earlier versions accepted "word" (in the "C" code)
                if(outformat == "word")
                    outformat <- "wordbib"
+               if(outformat == "ads"){
+                   argv_xml2 <- c(argv_xml2, "--journals", adsout_journals)
+                   argc_xml2 <- as.integer(length(argv_xml2))
+               }
                
                prg <- paste0("xml2", outformat)
                argv_xml2[1] <- prg

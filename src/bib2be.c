@@ -1,7 +1,7 @@
 /*
  * bib2be.c
  *
- * Copyright (c) Georgi N. Boshnakov 2021
+ * Copyright (c) Georgi N. Boshnakov 2021-2023
  * 
  * The code in this file is based on xxx2yyy utilities by Chris Putnam 2003-2020
  *
@@ -38,7 +38,7 @@ char *helpBE[] = {
 // extern void process_args( int *argc, char *argv[], param *p );
 
 // bib2be
-void
+static void
 process_direct_args( int *argc, char *argv[], param *p, const char *progname[] )
 {
      // void (*help)( char *progname );

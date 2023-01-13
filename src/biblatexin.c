@@ -3,7 +3,7 @@
  *
  * Copyright (c) Chris Putnam 2008-2020
  * Copyright (c) Johannes Wilm 2010-2020
- * Copyright (c) Georgi N. Boshnakov 2020
+ * Copyright (c) Georgi N. Boshnakov 2020-2023
  *
  * Program and source code released under the GPL version 2
  *
@@ -25,21 +25,23 @@
 #include "bibformats.h"
 #include "generic.h"
 
+#include "common_bt_btd_blt.h"
+
 extern variants biblatex_all[];
 extern int biblatex_nall;
 
-static slist find    = { 0, 0, 0, NULL };
-static slist replace = { 0, 0, 0, NULL };
+extern slist find;
+extern slist replace;
 
 /*****************************************************
  PUBLIC: void biblatexin_initparams()
 *****************************************************/
 
 static int  biblatexin_convertf( fields *bibin, fields *info, int reftype, param *p );
-static int  biblatexin_processf( fields *bibin, const char *data, const char *filename, long nref, param *p );
+static int  biblatexin_processf( fields *bibin, const char *data, const char *filename, long nref, param *p ); // TODO: use currloc
 static int  biblatexin_cleanf( bibl *bin, param *p );
-static int  biblatexin_readf( FILE *fp, char *buf, int bufsize, int *bufpos, str *line, str *reference, int *fcharset );
-static int  biblatexin_typef( fields *bibin, const char *filename, int nrefs, param *p );
+// static int  biblatexin_readf( FILE *fp, char *buf, int bufsize, int *bufpos, str *line, str *reference, int *fcharset );
+// static int  biblatexin_typef( fields *bibin, const char *filename, int nrefs, param *p );
 
 int
 biblatexin_initparams( param *pm, const char *progname )
@@ -55,10 +57,10 @@ biblatexin_initparams( param *pm, const char *progname )
 	pm->addcount         = 0;
 	pm->output_raw       = 0;
 
-	pm->readf    = biblatexin_readf;
+	pm->readf    = bibtexin_readf;
 	pm->processf = biblatexin_processf;
 	pm->cleanf   = biblatexin_cleanf;
-	pm->typef    = biblatexin_typef;
+	pm->typef    = bibtexin_typef;
 	pm->convertf = biblatexin_convertf;
 	pm->all      = biblatex_all;
 	pm->nall     = biblatex_nall;
@@ -81,319 +83,19 @@ biblatexin_initparams( param *pm, const char *progname )
 }
 
 /*****************************************************
- PUBLIC: int biblatexin_readf()
-*****************************************************/
-
-/*
- * readf can "read too far", so we store this information in line, thus
- * the next new text is in line, either from having read too far or
- * from the next chunk obtained via str_fget()
- *
- * return 1 on success, 0 on error/end-of-file
- *
- */
-static int
-readmore( FILE *fp, char *buf, int bufsize, int *bufpos, str *line )
-{
-	if ( line->len ) return 1;
-	else return str_fget( fp, buf, bufsize, bufpos, line );
-}
-
-/*
- * readf()
- *
- * returns zero if cannot get reference and hit end of-file
- * returns 1 if last reference in file, 2 if reference within file
- */
-static int
-biblatexin_readf( FILE *fp, char *buf, int bufsize, int *bufpos, str *line, str *reference, int *fcharset )
-{
-	int haveref = 0;
-	const char *p;
-	while ( haveref!=2 && readmore( fp, buf, bufsize, bufpos, line ) ) {
-		if ( line->len == 0 ) continue; /* blank line */
-		p = &(line->data[0]);
-		p = skip_ws( p );
-		if ( *p == '%' ) { /* commented out line */
-			str_empty( line );
-			continue;
-		}
-		if ( *p == '@' ) haveref++;
-		if ( haveref && haveref<2 ) {
-			str_strcatc( reference, p );
-			str_addchar( reference, '\n' );
-			str_empty( line );
-		} else if ( !haveref ) str_empty( line );
-	}
-	*fcharset = CHARSET_UNKNOWN;
-	return haveref;
-}
-
-/*****************************************************
  PUBLIC: int biblatexin_processf()
 *****************************************************/
 
-static const char *
-process_biblatextype( const char *p, str *type )
-{
-	str tmp;
-	str_init( &tmp );
-
-	if ( *p=='@' ) p++;
-	p = str_cpytodelim( &tmp, p, "{( \t\r\n", 0 );
-	p = skip_ws( p );
-	if ( *p=='{' || *p=='(' ) p++;
-	p = skip_ws( p );
-
-	if ( str_has_value( &tmp ) ) str_strcpy( type, &tmp );
-	else str_empty( type );
-
-	str_free( &tmp );
-	return p;
-}
-
-static const char *
-process_biblatexid( const char *p, str *id )
-{
-	const char *start_p = p;
-	str tmp;
-
-	str_init( &tmp );
-	p = str_cpytodelim( &tmp, p, ",", 1 );
-
-	if ( str_has_value( &tmp ) ) {
-		if ( strchr( tmp.data, '=' ) ) {
-			/* Endnote writes biblatex files w/o fields, try to
-			 * distinguish via presence of an equal sign.... if
-			 * it's there, assume that it's a tag/data pair instead
-			 * and roll back.
-			 */
-			p = start_p;
-			str_empty( id );
-		} else {
-			str_strcpy( id, &tmp );
-		}
-	} else {
-		str_empty( id );
-	}
-
-	str_free( &tmp );
-	return skip_ws( p );
-}
-
-static const char *
-biblatex_tag( const char *p, str *tag )
-{
-	p = str_cpytodelim( tag, skip_ws( p ), "= \t\r\n", 0 );
-	return skip_ws( p );
-}
-
-static const char *
-biblatex_data( const char *p, fields *bibin, slist *tokens, long nref, param *pm )
-{
-	unsigned int nbracket = 0, nquotes = 0;
-	const char *startp = p;
-	int status;
-	str tok;
-
-	str_init( &tok );
-	while ( p && *p ) {
-		if ( !nquotes && !nbracket ) {
-			if ( *p==',' || *p=='=' || *p=='}' || *p==')' )
-				goto out;
-		}
-		if ( *p=='\"' && nbracket==0 && ( p==startp || *(p-1)!='\\' ) ) {
-			nquotes = !nquotes;
-			str_addchar( &tok, *p );
-			if ( !nquotes ) {
-				status = slist_add( tokens, &tok );
-				if ( status!=SLIST_OK ) { p = NULL; goto outerr; }
-				str_empty( &tok );
-			}
-		} else if ( *p=='#' && !nquotes && !nbracket ) {
-			if ( str_has_value( &tok ) ) {
-				status = slist_add( tokens, &tok );
-				if ( status!=SLIST_OK ) { p = NULL; goto outerr; }
-			}
-			str_strcpyc( &tok, "#" );
-			status = slist_add( tokens, &tok );
-			if ( status!=SLIST_OK ) { p = NULL; goto outerr; }
-			str_empty( &tok );
-		} else if ( *p=='{' && !nquotes && ( p==startp || *(p-1)!='\\' ) ) {
-			nbracket++;
-			str_addchar( &tok, *p );
-		} else if ( *p=='}' && !nquotes && ( p==startp || *(p-1)!='\\' ) ) {
-			nbracket--;
-			str_addchar( &tok, *p );
-			if ( nbracket==0 ) {
-				status = slist_add( tokens, &tok );
-				if ( status!=SLIST_OK ) { p = NULL; goto outerr; }
-				str_empty( &tok );
-			}
-		} else if ( !is_ws( *p ) || nquotes || nbracket ) {
-			if ( !is_ws( *p ) ) str_addchar( &tok, *p );
-			else {
-				if ( tok.len!=0 && *p!='\n' && *p!='\r' )
-					str_addchar( &tok, *p );
-				else if ( tok.len!=0 && (*p=='\n' || *p=='\r')) {
-					str_addchar( &tok, ' ' );
-					while ( is_ws( *(p+1) ) ) p++;
-				}
-			}
-		} else if ( is_ws( *p ) ) {
-			if ( str_has_value( &tok ) ) {
-				status = slist_add( tokens, &tok );
-				if ( status!=SLIST_OK ) { p = NULL; goto outerr; }
-				str_empty( &tok );
-			}
-		}
-		p++;
-	}
-out:
-	if ( nbracket!=0 ) {
-		REprintf( "%s: Mismatch in number of brackets in reference %ld\n", pm->progname, nref );
-	}
-	if ( nquotes!=0 ) {
-		REprintf( "%s: Mismatch in number of quotes in reference %ld\n", pm->progname, nref );
-	}
-	if ( str_has_value( &tok ) ) {
-		status = slist_add( tokens, &tok );
-		if ( status!=SLIST_OK ) p = NULL;
-	}
-outerr:
-	str_free( &tok );
-	return p;
-}
-
-/* replace_strings()
- *
- * do string replacement -- only if unprotected by quotation marks or curly brackets
- */
-static void
-replace_strings( slist *tokens, fields *bibin, long nref, param *pm )
-{
-	int i, n, ok;
-	char *q;
-	str *s;
-	i = 0;
-	while ( i < tokens->n ) {
-		s = slist_str( tokens, i );
-		if ( !strcmp( s->data, "#" ) ) {
-		} else if ( s->data[0]!='\"' && s->data[0]!='{' ) {
-			n = slist_find( &find, s );
-			if ( n!=-1 ) {
-				str_strcpy( s, slist_str( &replace, n ) );
-			} else {
-				q = s->data;
-				ok = 1;
-				while ( *q && ok ) {
-					if ( !isdigit( *q ) ) ok = 0;
-					q++;
-				}
-				if ( !ok ) {
-					REprintf( "%s: Warning: Non-numeric "
-					   "BibTeX elements should be in quotations or "
-					   "curly brackets in reference %ld\n", pm->progname, nref );
-				}
-			}
-		}
-		i++;
-	}
-}
-
 static int
-string_concatenate( slist *tokens, fields *bibin, long nref, param *pm )
-{
-	int i, status;
-	str *s, *t;
-	i = 0;
-	while ( i < tokens->n ) {
-		s = slist_str( tokens, i );
-		if ( !strcmp( str_cstr( s ), "#" ) ) {
-			if ( i==0 || i==tokens->n-1 ) {
-				REprintf( "%s: Warning: Stray string concatenation "
-					"('#' character) in reference %ld\n", pm->progname, nref );
-				status = slist_remove( tokens, i );
-				if ( status!=SLIST_OK ) return BIBL_ERR_MEMERR;
-				continue;
-			}
-			s = slist_str( tokens, i-1 );
-			if ( s->data[0]!='\"' && s->data[s->len-1]!='\"' )
-				REprintf( "%s: Warning: String concentation should "
-					"be used in context of quotations marks in reference %ld\n", pm->progname, nref );
-			t = slist_str( tokens, i+1 );
-			if ( t->data[0]!='\"' && t->data[t->len-1]!='\"' )
-				REprintf( "%s: Warning: String concentation should "
-					"be used in context of quotations marks in reference %ld\n", pm->progname, nref );
-			if ( ( s->data[s->len-1]=='\"' && t->data[0]=='\"') || (s->data[s->len-1]=='}' && t->data[0]=='{') ) {
-				str_trimend( s, 1 );
-				str_trimbegin( t, 1 );
-				str_strcat( s, t );
-			} else {
-				str_strcat( s, t );
-			}
-			status = slist_remove( tokens, i );
-			if ( status!=SLIST_OK ) return BIBL_ERR_MEMERR;
-			status = slist_remove( tokens, i );
-			if ( status!=SLIST_OK ) return BIBL_ERR_MEMERR;
-		} else i++;
-	}
-	return BIBL_OK;
-}
-
-static const char *
-process_biblatexline( const char *p, str *tag, str *data, uchar stripquotes, long nref, param *pm )
-{
-	int i, status;
-	slist tokens;
-	str *s;
-
-	str_empty( data );
-
-	p = biblatex_tag( p, tag );
-	if ( str_is_empty( tag ) ) {
-		/* ...skip this line */
-		while ( *p && *p!='\n' && *p!='\r' ) p++;
-		while ( *p=='\n' || *p=='\r' ) p++;
-		return p;
-	}
-
-	slist_init( &tokens );
-
-	if ( *p=='=' ) p = biblatex_data( p+1, NULL, &tokens, nref, pm );
-
-	replace_strings( &tokens, NULL, nref, pm );
-
-	status = string_concatenate( &tokens, NULL, nref, pm );
-	if ( status!=BIBL_OK ) {
-		p = NULL;
-		goto out;
-	}
-
-	for ( i=0; i<tokens.n; i++ ) {
-		s = slist_str( &tokens, i );
-		if ( ( stripquotes && s->data[0]=='\"' && s->data[s->len-1]=='\"' ) ||
-		     ( s->data[0]=='{' && s->data[s->len-1]=='}' ) ) {
-			str_trimbegin( s, 1 );
-			str_trimend( s, 1 );
-		}
-		str_strcat( data, slist_str( &tokens, i ) );
-	}
-out:
-	slist_free( &tokens );
-	return p;
-}
-
-static int
-process_cite( fields *bibin, const char *p, const char *filename, long nref, param *pm )
+process_cite( fields *bibin, const char *p, const char *filename, loc *currloc ) // TODO: use currloc
 {
 	int fstatus, status = BIBL_OK;
 	str type, id, tag, data;
 
 	strs_init( &type, &id, &tag, &data, NULL );
 
-	p = process_biblatextype( p, &type );
-	p = process_biblatexid( p, &id );
+	p = process_bibtextype( p, &type );
+	p = process_bibtexid( p, &id );
 
 	if ( str_is_empty( &type ) || str_is_empty( &id ) ) goto out;
 
@@ -404,7 +106,7 @@ process_cite( fields *bibin, const char *p, const char *filename, long nref, par
 	if ( fstatus!=FIELDS_OK ) { status = BIBL_ERR_MEMERR; goto out; }
 
 	while ( *p ) {
-		p = process_biblatexline( p, &tag, &data, 1, nref, pm );
+		p = process_bibtexline( p, &tag, &data, 1, currloc ); // TODO: use currloc
 		if ( !p ) { status = BIBL_ERR_MEMERR; goto out; }
 		/* no anonymous or empty fields allowed */
 		if ( str_has_value( &tag ) && str_has_value( &data ) ) {
@@ -418,58 +120,20 @@ out:
 	return status;
 }
 
-/* process_string()
- *
- * Handle lines like:
- *
- * '@STRING{TL = {Tetrahedron Lett.}}'
- *
- * p should point to just after '@STRING'
- *
- * In BibTeX, if a string is defined several times, the last one is kept.
- *
- */
-static int
-process_string( const char *p, long nref, param *pm )
-{
-	int n, status = BIBL_OK;
-	str s1, s2, *s;
-	strs_init( &s1, &s2, NULL );
-	while ( *p && *p!='{' && *p!='(' ) p++;
-	if ( *p=='{' || *p=='(' ) p++;
-	(void) process_biblatexline( skip_ws( p ), &s1, &s2, 0, nref, pm );
-	if ( str_has_value( &s2 ) ) {
-		str_findreplace( &s2, "\\ ", " " );
-		if ( str_memerr( &s2 ) ) { status = BIBL_ERR_MEMERR; goto out; }
-	} else {
-		str_strcpyc( &s2, "" );
-	}
-	if ( str_has_value( &s1 ) ) {
-		n = slist_find( &find, &s1 );
-		if ( n==-1 ) {
-			status = slist_add_ret( &find, &s1, BIBL_OK, BIBL_ERR_MEMERR );
-			if ( status!=BIBL_OK ) goto out;
-			status = slist_add_ret( &replace, &s2, BIBL_OK, BIBL_ERR_MEMERR );
-			if ( status!=BIBL_OK ) goto out;
-		} else {
-			if ( str_has_value( &s2 ) ) s = slist_set( &replace, n, &s2 );
-			else s = slist_setc( &replace, n, "" );
-			if ( s==NULL ) { status = BIBL_ERR_MEMERR; goto out; }
-		}
-	}
-out:
-	strs_free( &s1, &s2, NULL );
-	return status;
-}
-
 static int
 biblatexin_processf( fields *bibin, const char *data, const char *filename, long nref, param *p )
 {
+	loc currloc;
+
+	currloc.progname = p->progname;
+	currloc.filename = filename;
+	currloc.nref     = nref;
+
 	if ( !strncasecmp( data, "@STRING", 7 ) ) {
-		process_string( data+7, nref, p );
+	  process_string( data+7, &currloc );   // TODO: use currloc
 		return 0;
         } else {
-		process_cite( bibin, data, filename, nref, p );
+		process_cite( bibin, data, filename, &currloc ); // TODO: use currloc
 		return 1;
 	}
 }
@@ -539,64 +203,6 @@ out:
 	return status;
 }
 
-static void
-biblatexin_nocrossref( bibl *bin, long i, int n, param *p )
-{
-	int n1 = fields_find( bin->ref[i], "REFNUM", LEVEL_ANY );
-	if ( p->progname ) REprintf( "%s: ", p->progname );
-	REprintf( "Cannot find cross-reference '%s'", (char*)fields_value( bin->ref[i], n, FIELDS_CHRP_NOUSE ) );
-	if ( n1!=FIELDS_NOTFOUND )
-		REprintf( " for reference '%s'", (char*)fields_value( bin->ref[i], n1, FIELDS_CHRP_NOUSE ) );
-	REprintf( "\n" );
-}
-
-static int
-biblatexin_crossref_oneref( fields *ref, fields *cross )
-{
-	int j, nl, ntype, fstatus;
-	char *type, *nt, *nd;
-	ntype = fields_find( ref, "INTERNAL_TYPE", LEVEL_ANY );
-	type = ( char * ) fields_value( ref, ntype, FIELDS_CHRP_NOUSE );
-	for ( j=0; j<cross->n; ++j ) {
-		nt = ( char * ) fields_tag( cross, j, FIELDS_CHRP_NOUSE );
-		if ( !strcasecmp( nt, "INTERNAL_TYPE" ) ) continue;
-		if ( !strcasecmp( nt, "REFNUM" ) ) continue;
-		if ( !strcasecmp( nt, "TITLE" ) ) {
-			if ( !strcasecmp( type, "Inproceedings" ) ||
-			     !strcasecmp( type, "Incollection" ) )
-				nt = "booktitle";
-		}
-		nd = ( char * ) fields_value( cross, j, FIELDS_CHRP_NOUSE );
-		nl = fields_level( cross, j ) + 1;
-		fstatus = fields_add( ref, nt, nd, nl );
-		if ( fstatus!=FIELDS_OK ) return BIBL_ERR_MEMERR;
-	}
-	return BIBL_OK;
-}
-
-static int
-biblatexin_crossref( bibl *bin, param *p )
-{
-	int n, ncross, status = BIBL_OK;
-	fields *ref, *cross;
-	long i;
-        for ( i=0; i<bin->n; ++i ) {
-		ref = bin->ref[i];
-		n = fields_find( ref, "CROSSREF", LEVEL_ANY );
-		if ( n==FIELDS_NOTFOUND ) continue;
-		fields_set_used( ref, n );
-		ncross = bibl_findref( bin, (char*) fields_value(ref,n, FIELDS_CHRP_NOUSE) );
-		if ( ncross==-1 ) {
-			biblatexin_nocrossref( bin, i, n, p );
-			continue;
-		}
-		cross = bin->ref[ncross];
-		status = biblatexin_crossref_oneref( ref, cross );
-		if ( status!=BIBL_OK ) return status;
-	}
-	return status;
-}
-
 static int
 biblatexin_cleanref( fields *bibin, param *p )
 {
@@ -631,26 +237,8 @@ biblatexin_cleanf( bibl *bin, param *p )
 		status = biblatexin_cleanref( bin->ref[i], p );
 		if ( status!=BIBL_OK ) return status;
 	}
-	status = biblatexin_crossref( bin, p );
+	status = bibtexin_crossref( bin, p );
 	return status;
-}
-
-/*****************************************************
- PUBLIC: void biblatexin_typef()
-*****************************************************/
-
-static int
-biblatexin_typef( fields *bibin, const char *filename, int nrefs, param *p )
-{
-	int ntypename, nrefname, is_default;
-	char *refname = "", *typename="";
-
-	ntypename = fields_find( bibin, "INTERNAL_TYPE", LEVEL_MAIN );
-	nrefname  = fields_find( bibin, "REFNUM",        LEVEL_MAIN );
-	if ( nrefname!=FIELDS_NOTFOUND )  refname  = fields_value( bibin, nrefname,  FIELDS_CHRP_NOUSE );
-        if ( ntypename!=FIELDS_NOTFOUND ) typename = fields_value( bibin, ntypename, FIELDS_CHRP_NOUSE );
-
-	return get_reftype( typename, nrefs, p->progname, p->all, p->nall, refname, &is_default, REFTYPE_CHATTY );
 }
 
 /*****************************************************
@@ -1181,4 +769,3 @@ biblatexin_convertf( fields *bibin, fields *bibout, int reftype, param *p )
 
 	return status;
 }
-

@@ -4,7 +4,7 @@
  * mangle names w/ and w/o commas
  *
  * Copyright (c) Chris Putnam 2004-2020
- * Copyright (c) Georgi N. Boshnakov 2020-2021
+ * Copyright (c) Georgi N. Boshnakov 2020-2023
  *
  * Source code released under the GPL version 2
  *
@@ -602,7 +602,6 @@ name_fix_latex_escapes( str *name ) {
      str_delete(mys);
 }
 
-
 static int
 name_construct_multi( str *outname, slist *tokens, int begin, int end )
 {
@@ -672,7 +671,6 @@ name_addmultielement( fields *info, const char *tag, slist *tokens, int begin, i
 
 	return ok;
 }
-
 
 /* name_addsingleelement()
  *

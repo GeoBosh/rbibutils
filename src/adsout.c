@@ -3,7 +3,7 @@
  *
  * Copyright (c) Richard Mathar 2007-2020
  * Copyright (c) Chris Putnam 2007-2020
- * Copyright (c) Georgi N. Boshnakov 2020-2022
+ * Copyright (c) Georgi N. Boshnakov 2020-2023
  *
  * Program and source code released under the GPL version 2
  *
@@ -27,15 +27,18 @@
 #include "url.h"
 #include "bibformats.h"
 
-// Georgi: removed the include declaration for adsout_journals.c further below
-//         also, removed the 'static' keyword for journals and njournals in adsout_journals.c
+// (Georgi) removed the include declaration for adsout_journals.c further below;
+//    also, removed the 'static' keyword for journals and njournals in
+//    adsout_journals.c.
+// Reason: adsout_journals.c was compiled to .o with the standard Makefile
+//   leading to unnecessary duplication and an warning about unused variable
+//   'njournals' (which is used below but not in adsout_journals.c).
 
-//   reason: adsout_journals.c was compiled to .o with the standard Makefile leading to
-//   unnecessary duplication and an warning about unused variable 'njournals' (which is used
-//   below but not in adsout_journals.c).
-//
-extern const char *journals[];
-extern const int njournals;
+// The journals are now obtained from the R call.
+// extern const char *journals[];
+// extern const int njournals;
+extern char **journals;
+extern int njournals;
 
 /*****************************************************
  PUBLIC: int adsout_initparams()
@@ -345,23 +348,21 @@ append_date( fields *in, char *adstag, int level, fields *out, int *status )
 	}
 }
 
-// Georgi: now declared as extern towards  the top of this file 
-// #include "adsout_journals.c"
-
 static void
 output_4digit_value( char *pos, long long n )
 {
 	char buf[6];
 	n = n % 10000; /* truncate to 0->9999, will fit in buf[6] */
 #ifdef WIN32
-	// sprintf( buf, "%I64d", n ); // warning: ISO C does not support the 'I' printf flag [-Wformat=]
+	// (Georgi) was: sprintf( buf, "%I64d", n );
+	//   but that now gives:
+	//     warning: ISO C does not support the 'I' printf flag [-Wformat=]
 	snprintf( buf, 6, "%d", (int)n );
 #else
 	snprintf( buf, 6, "%lld", n );
 #endif
-	// Georgi:
-	// replaced this with the code further below to avoid the warning about strncpy.
-	// TODO: not tested yet, test it when output to 'ads' format is activated.
+	// (Georgi) replaced this with the code further below to avoid the
+	//     warning about strncpy.
 	// 
 	// if ( n < 10 )        strncpy( pos+3, buf, 1 );
 	// else if ( n < 100 )  strncpy( pos+2, buf, 2 );
@@ -382,9 +383,8 @@ initial_ascii( const char *name )
 	if ( isascii( name[0] )  )
 		return name[0];
 	
-	// Georgi: fixing github issue #8
-	//     name[0]+256; doesn't give the expected result
-	//     on platforms where char is unsigned char
+	// (Georgi) fixes github issue #8: name[0]+256; doesn't give the expected
+	//     result on platforms where char is unsigned char
         b1 = (unsigned char)(name[0]); // name[0]+256;
 	b2 = (unsigned char)(name[1]); // name[1]+256;
 
@@ -416,10 +416,10 @@ initial_ascii( const char *name )
 	case 0xc4:
 		     if ( b2 >= 0x80 && b2 <= 0x85 ) return 'A';
 		else if ( b2 >= 0x86 && b2 <= 0x8d ) return 'C';
-
-		     // (Georgi) was: 
-		     //   else if ( b2 >= 0x8e || b2 <= 0x91 ) return 'D';
-		     // but that always evaluates to true! Looks like '||' should be '&&'
+                // (Georgi) was: 
+		//   else if ( b2 >= 0x8e || b2 <= 0x91 ) return 'D';
+		// but that always evaluates to true!
+		// Looks like '||' should be '&&'
 		else if ( b2 >= 0x8e && b2 <= 0x91 ) return 'D';
 
 		else if ( b2 >= 0x92 && b2 <= 0x9b ) return 'E';
@@ -434,10 +434,9 @@ initial_ascii( const char *name )
 	case 0xc5:
 		     if ( b2 >= 0x80 && b2 <= 0x82 ) return 'L';
 		else if ( b2 >= 0x83 && b2 <= 0x8b ) return 'N';
-
-		     // (Georgi) was: 
-		     //    else if ( b2 >= 0x8c || b2 <= 0x93 ) return 'O';
-		     // but that always evaluate to true! Looks like '||' should be '&&'
+		// (Georgi) was: 
+		//    else if ( b2 >= 0x8c || b2 <= 0x93 ) return 'O';
+		// see remark above.
 		else if ( b2 >= 0x8c && b2 <= 0x93 ) return 'O';
 
 		else if ( b2 >= 0x94 && b2 <= 0x99 ) return 'R';
@@ -452,9 +451,9 @@ initial_ascii( const char *name )
 	case 0xc6:
 		     if ( b2 >= 0x80 && b2 <= 0x85 ) return 'B';
 		else if ( b2 >= 0x86 && b2 <= 0x88 ) return 'C';
-		     // (Georgi) was: 
-		     //   else if ( b2 >= 0x89 || b2 <= 0x8d ) return 'D';
-		     // but that always evaluate to true! Looks like '||' should be '&&'
+		// (Georgi) was: 
+		//    else if ( b2 >= 0x89 || b2 <= 0x8d ) return 'D';
+		// see remark above.
 		else if ( b2 >= 0x89 && b2 <= 0x8d ) return 'D';
 		     
 		else if ( b2 >= 0x8e && b2 <= 0x90 ) return 'E';
@@ -463,11 +462,11 @@ initial_ascii( const char *name )
 		else if ( b2 == 0x95 )               return 'H';
 		else if ( b2 >= 0x96 && b2 <= 0x97 ) return 'I';
 		else if ( b2 >= 0x98 && b2 <= 0x99 ) return 'K';
-		     // (Georgi) was: 
-		     //   else if ( b2 >= 0xba && b2 <= 0x9b ) return 'L';
-		     // but that always evaluate to false!
-		     // Looking at the surrounding code, seems like '0xba' should be '0x9a'
-		else if ( b2 >= 0x9a && b2 <= 0x9b ) return 'L';
+		// (Georgi) was: 
+		//   else if ( b2 >= 0xba && b2 <= 0x9b ) return 'L';
+		// but that always evaluate to false!  Looking at the
+		// surrounding code, seems like '0xba' should be '0x9a'
+ 		else if ( b2 >= 0x9a && b2 <= 0x9b ) return 'L';
 
 		else if ( b2 == 0xbc )               return 'M';
 		else if ( b2 >= 0x9d && b2 <= 0x9e ) return 'N';

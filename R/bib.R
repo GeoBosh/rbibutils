@@ -69,7 +69,7 @@ readBib <- function(file, encoding = NULL, ..., direct = FALSE,
                ## default
                tex <- NULL
                )
-        
+
         res <- bibtexImport(file, encoding = encoding, tex = tex, extra = extra,
                             fbibentry = fbibentry)
     }

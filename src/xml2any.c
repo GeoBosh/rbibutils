@@ -1,7 +1,7 @@
 /*
  * xml2any.c
  *
- * Copyright (c) Georgi N. Boshnakov 2020 
+ * Copyright (c) Georgi N. Boshnakov 2020-2023
  * 
  * The code in this file is based on xxx2yyy utilities by Chris Putnam 2003-2020
  * Reponsibility for any bugs introduced in this adaptation lies with GNB.
@@ -20,6 +20,10 @@
 #include "bibprog.h"
 
 // const char progname[] = "xml2bib";
+
+char **journals;
+int njournals;
+
 
 void
 help_xml2bibtex( char *progname )
@@ -209,7 +213,7 @@ void
 help_xml2ads( char *progname )
 {
 	args_tellversion( progname );
-	REprintf("Converts an XML intermediate reference file into a ADS aabstracts format\n\n");
+	REprintf("Converts an XML intermediate reference file into a ADS abstracts format\n\n");
 
 	REprintf("usage: %s xml_file > adsabs_file\n\n", progname );
         REprintf("  xml_file can be replaced with file list or omitted to use as a filter\n\n");
@@ -245,9 +249,9 @@ void
 process_args( int *argc, char *argv[], param *p, const char *progname[] )
 {
   void (*help)( char *progname );
+  int i, j, subtract;
   
 	if(strcmp(*progname, "xml2bib") == 0  || strcmp(*progname, "xml2biblatex") == 0){
-	  int i, j, subtract;
 	  i = 1;
 	  while ( i<*argc ) {
 	  	subtract = 0;
@@ -313,9 +317,45 @@ process_args( int *argc, char *argv[], param *p, const char *progname[] )
 	  		i++;
 	  	}
 	  }
+	}else if (strcmp(*progname, "xml2ads") == 0) {
+	  i = 1;
+	  while ( i<*argc ) {
+	  	subtract = 0;
+		if ( args_match( argv[i], "--journals", "" ) ) {
+		  njournals = *argc - i - 1;
+		  journals = argv + i + 1;
+		  break;
+	  	} else if ( args_match( argv[i], "-h", "--help" )) {
+		        help_xml2ads( p->progname );
+		  	subtract = 1;
+	  	} else if ( args_match( argv[i], "-v", "--version" ) ) {
+	  		args_tellversion( p->progname );
+	  		error("\n"); // exit( EXIT_SUCCESS );
+	  	} else if ( args_match( argv[i], "-s", "--single-refperfile")){
+	  		p->singlerefperfile = 1;
+	  		subtract = 1;
+	  	} else if ( args_match( argv[i], "-nb", "--no-bom" ) ) {
+	  		p->utf8bom = 0;
+	  		subtract = 1;
+	  	} else if ( args_match( argv[i], "--verbose", "" ) ) {
+	  		p->verbose = 1;
+	  		subtract = 1;
+	  	} else if ( args_match( argv[i], "--debug", "" ) ) {
+	  		p->verbose = 3;
+	  		subtract = 1;
+	  	}
+	  	if ( subtract ) {
+	  		for ( j=i+subtract; j<*argc; ++j )
+	  			argv[j-subtract] = argv[j];
+	  		*argc -= subtract;
+	  	} else {
+	  		if ( argv[i][0]=='-' ) REprintf( "(xml2any.c:361) Warning: Did not recognize potential command-line argument %s\n", argv[i] );
+	  		i++;
+	  	}
+	  }
+	  
 	}else{ // the remaining xml2xxx
 	  // process_args for the rest
-	  int i, j, subtract;
 	  i = 1;
 	  while ( i<*argc ) {
 	  	subtract = 0;

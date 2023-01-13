@@ -1,14 +1,23 @@
-# rbibutils 2.2.11.9000
+# rbibutils 2.2.13 (CRAN)
 
-- `readBib` with `texChars = "Rdpack"` which converts `\'i` to `\'\i` was
-   wrapping `\'\i` in braces in 'author' and related fields only. Failure to do
-   so in other fields was making the output invalid when `\'i` was followed by
-   alphabetical character(s). Fixes issue#7 reopened by @EricMarcon.
+- Bugfix: the declaration of the return value of a C function was accidentally
+  changed from `const char *` to `char *` in v2.2.12, causing CRAN warnings on
+  some platforms.
 
-   Note that the value `"Rdpack"` for argument `texChars` is mainly for internal
+
+# rbibutils 2.2.12 (CRAN)
+
+- Bugfix: `readBib` with `texChars = "Rdpack"` which converts `\'i` to `\'\i`
+   was wrapping `\'\i` in braces in 'author' and related fields only. Failure to
+   do so in other fields was making the output invalid when `\'i` was followed
+   by alphabetical character(s). Fixes issue#7 reopened by @EricMarcon.
+
+   Note that option `"Rdpack"` for argument `texChars` is mainly for internal
    use which compensates for R not recognising `\'i` as an accented character,
-   see below the news items for v2.2.5 and v2.2.4 and the bug report about
+   see the news items for v2.2.5 and v2.2.4 and the bug report about
    `tools:::latexToUtf8` at [R bugs](https://bugs.r-project.org/show_bug.cgi?id=18208).
+
+- partial internal refactoring of C code to avoid duplication.
 
 
 # rbibutils 2.2.11 (CRAN)

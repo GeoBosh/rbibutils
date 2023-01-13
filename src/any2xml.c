@@ -1,9 +1,9 @@
 /*
  * any2xml.c
  *
- * Copyright (c) Georgi N. Boshnakov 2020 
+ * Copyright (c) Georgi N. Boshnakov 2020-2023
  * 
- * The code in this file is based on xxx2yyy utilities by Chris Putnam 2003-2020
+ * The code in this file is based on xxx2yyy utilities by Chris Putnam 2003-2020.
  * Reponsibility for any bugs introduced in this adaptation lies with GNB.
  *
  * Program and source code released under the GPL version 2
