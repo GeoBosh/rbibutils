@@ -36,7 +36,7 @@
     
     <a class="navbar-brand me-2" href="index.html">rbibutils</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.2.13.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.2.15</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -76,10 +76,10 @@
 <div class="page-header"><h1 id="installing-rbibutils">Installing rbibutils<a class="anchor" aria-label="anchor" href="#installing-rbibutils"></a>
 </h1></div>
 <p>Install the <a href="https://cran.r-project.org/package=rbibutils" class="external-link">latest stable version</a> from CRAN:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">install.packages</span>(<span class="st">"rbibutils"</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"rbibutils"</span>)</span></code></pre></div>
 <p>You can also install the <a href="https://github.com/GeoBosh/rbibutils" class="external-link">development version</a> of <code>rbibutils</code> from Github:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">library</span>(devtools)</span>
-<span id="cb2-2"><a href="#cb2-2"></a><span class="kw">install_github</span>(<span class="st">"GeoBosh/rbibutils"</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(devtools)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install_github</span>(<span class="st">"GeoBosh/rbibutils"</span>)</span></code></pre></div>
 </div>
 <div class="section level1">
 <h1 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
@@ -98,50 +98,50 @@
 <h2 id="readbib">readBib<a class="anchor" aria-label="anchor" href="#readbib"></a>
 </h2>
 <p>The examples in this section import the following file:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>bibacc &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">"bib/latin1accents_utf8.bib"</span>, <span class="dt">package =</span> <span class="st">"rbibutils"</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>bibacc <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">"bib/latin1accents_utf8.bib"</span>, <span class="at">package =</span> <span class="st">"rbibutils"</span>)</span></code></pre></div>
 <p>Note that some characters may not be displayed on some locales. Also, on Windows some characters may be “approximated” by other characters.</p>
 <p>Import the above bibtex file into a <code>bibentry</code> object. By default TeX escape sequences representing characters are kept as is:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>be0 &lt;-<span class="st"> </span><span class="kw">readBib</span>(bibacc)</span>
-<span id="cb4-2"><a href="#cb4-2"></a>be0</span>
-<span id="cb4-3"><a href="#cb4-3"></a><span class="kw">print</span>(be0, <span class="dt">style =</span> <span class="st">"bibtex"</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>be0 <span class="ot">&lt;-</span> <span class="fu">readBib</span>(bibacc)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>be0</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(be0, <span class="at">style =</span> <span class="st">"bibtex"</span>)</span></code></pre></div>
 <p>As above, using the direct option:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>be1 &lt;-<span class="st"> </span><span class="kw">readBib</span>(bibacc, <span class="dt">direct =</span> <span class="ot">TRUE</span>)</span>
-<span id="cb5-2"><a href="#cb5-2"></a><span class="co">## readBib(bibacc, direct = TRUE, texChars = "keep") # same</span></span>
-<span id="cb5-3"><a href="#cb5-3"></a>be1</span>
-<span id="cb5-4"><a href="#cb5-4"></a><span class="kw">print</span>(be1, <span class="dt">style =</span> <span class="st">"bibtex"</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>be1 <span class="ot">&lt;-</span> <span class="fu">readBib</span>(bibacc, <span class="at">direct =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="do">## readBib(bibacc, direct = TRUE, texChars = "keep") # same</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>be1</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(be1, <span class="at">style =</span> <span class="st">"bibtex"</span>)</span></code></pre></div>
 <p>Use the <code>"convert"</code> option to convert TeX sequences to true characters:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>be2 &lt;-<span class="st"> </span><span class="kw">readBib</span>(bibacc, <span class="dt">direct =</span> <span class="ot">TRUE</span>, <span class="dt">texChars =</span> <span class="st">"convert"</span>)</span>
-<span id="cb6-2"><a href="#cb6-2"></a>be2</span>
-<span id="cb6-3"><a href="#cb6-3"></a><span class="kw">print</span>(be2, <span class="dt">style =</span> <span class="st">"R"</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>be2 <span class="ot">&lt;-</span> <span class="fu">readBib</span>(bibacc, <span class="at">direct =</span> <span class="cn">TRUE</span>, <span class="at">texChars =</span> <span class="st">"convert"</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>be2</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(be2, <span class="at">style =</span> <span class="st">"R"</span>)</span></code></pre></div>
 <p>(On Windows the Greek characters alpha and delta may be printed as ‘a’ and ‘d’ but internally they are alpha and delta.)</p>
 <p>Use the <code>"export"</code> option to convert other characters to ASCII TeX sequences, when possible (currently this option doesn’t handle well mathematical expressions):</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>be3 &lt;-<span class="st"> </span><span class="kw">readBib</span>(bibacc, <span class="dt">direct =</span> <span class="ot">TRUE</span>, <span class="dt">texChars =</span> <span class="st">"export"</span>)</span>
-<span id="cb7-2"><a href="#cb7-2"></a><span class="kw">print</span>(be3, <span class="dt">style =</span> <span class="st">"bibtex"</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>be3 <span class="ot">&lt;-</span> <span class="fu">readBib</span>(bibacc, <span class="at">direct =</span> <span class="cn">TRUE</span>, <span class="at">texChars =</span> <span class="st">"export"</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(be3, <span class="at">style =</span> <span class="st">"bibtex"</span>)</span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="bibconvert">bibConvert<a class="anchor" aria-label="anchor" href="#bibconvert"></a>
 </h2>
 <p>Convert Bibtex file <code>myfile.bib</code> to a <code>bibentry</code> object and save the latter to `“myfile.rds”:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="kw">bibConvert</span>(<span class="st">"myfile.bib"</span>, <span class="st">"myfile.rds"</span>, <span class="dt">informat =</span> <span class="st">"bibtex"</span>, <span class="dt">outformat =</span> <span class="st">"bibentry"</span>)</span>
-<span id="cb8-2"><a href="#cb8-2"></a><span class="kw">bibConvert</span>(<span class="st">"myfile.bib"</span>, <span class="st">"myfile.rds"</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bibConvert</span>(<span class="st">"myfile.bib"</span>, <span class="st">"myfile.rds"</span>, <span class="at">informat =</span> <span class="st">"bibtex"</span>, <span class="at">outformat =</span> <span class="st">"bibentry"</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">bibConvert</span>(<span class="st">"myfile.bib"</span>, <span class="st">"myfile.rds"</span>)</span></code></pre></div>
 <p>Convert Bibtex file <code>myfile.bib</code> to a Biblatex save to `“biblatex.bib”:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="kw">bibConvert</span>(<span class="st">"myfile.bib"</span>, <span class="st">"biblatex.bib"</span>, <span class="st">"bibtex"</span>, <span class="st">"biblatex"</span>)</span>
-<span id="cb9-2"><a href="#cb9-2"></a><span class="kw">bibConvert</span>(<span class="st">"myfile.bib"</span>, <span class="st">"biblatex.bib"</span>, <span class="dt">outfile =</span> <span class="st">"biblatex"</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bibConvert</span>(<span class="st">"myfile.bib"</span>, <span class="st">"biblatex.bib"</span>, <span class="st">"bibtex"</span>, <span class="st">"biblatex"</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">bibConvert</span>(<span class="st">"myfile.bib"</span>, <span class="st">"biblatex.bib"</span>, <span class="at">outfile =</span> <span class="st">"biblatex"</span>)</span></code></pre></div>
 <p>Convert Bibtex file <code>myfile.bib</code> to Bibentry and save as <code>rds</code> or <code>R</code>:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="kw">bibConvert</span>(<span class="st">"myfile.bib"</span>, <span class="st">"myfile.rds"</span>)</span>
-<span id="cb10-2"><a href="#cb10-2"></a><span class="kw">bibConvert</span>(<span class="st">"myfile.bib"</span>, <span class="st">"myfile.R"</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bibConvert</span>(<span class="st">"myfile.bib"</span>, <span class="st">"myfile.rds"</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">bibConvert</span>(<span class="st">"myfile.bib"</span>, <span class="st">"myfile.R"</span>)</span></code></pre></div>
 <p>Read back the above files and/or convert them to other formats:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="kw">readLines</span>(<span class="st">"myfile.R"</span>)</span>
-<span id="cb11-2"><a href="#cb11-2"></a><span class="kw">file.show</span>(<span class="st">"myfile.R"</span>)</span>
-<span id="cb11-3"><a href="#cb11-3"></a><span class="kw">readRDS</span>(<span class="st">"myfile.rds"</span>)</span>
-<span id="cb11-4"><a href="#cb11-4"></a><span class="kw">bibConvert</span>(<span class="st">"myfile.rds"</span>, <span class="st">"myfile.bib"</span>)</span>
-<span id="cb11-5"><a href="#cb11-5"></a><span class="kw">bibConvert</span>(<span class="st">"myfile.R"</span>, <span class="st">"myfile.bib"</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">readLines</span>(<span class="st">"myfile.R"</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">file.show</span>(<span class="st">"myfile.R"</span>)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">readRDS</span>(<span class="st">"myfile.rds"</span>)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="fu">bibConvert</span>(<span class="st">"myfile.rds"</span>, <span class="st">"myfile.bib"</span>)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="fu">bibConvert</span>(<span class="st">"myfile.R"</span>, <span class="st">"myfile.bib"</span>)</span></code></pre></div>
 <p>Assuming <code>myfile.bib</code> is a Biblatex file, convert it to Bibtex and save to <code>bibtex.bib</code>:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="kw">bibConvert</span>(<span class="st">"myfile.bib"</span>, <span class="st">"bibtex.bib"</span>, <span class="st">"biblatex"</span>, <span class="st">"bibtex"</span>)</span>
-<span id="cb12-2"><a href="#cb12-2"></a><span class="kw">bibConvert</span>(<span class="st">"myfile.bib"</span>, <span class="st">"bibtex.bib"</span>, <span class="st">"biblatex"</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bibConvert</span>(<span class="st">"myfile.bib"</span>, <span class="st">"bibtex.bib"</span>, <span class="st">"biblatex"</span>, <span class="st">"bibtex"</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">bibConvert</span>(<span class="st">"myfile.bib"</span>, <span class="st">"bibtex.bib"</span>, <span class="st">"biblatex"</span>)</span></code></pre></div>
 <p>Assuming “myfile.med” is a PubMed file, convert it to Bibtex:</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="kw">bibConvert</span>(<span class="dt">infile =</span> <span class="st">"myfile.med"</span>, <span class="dt">outfile =</span> <span class="st">"bibtex.bib"</span>, <span class="dt">informat =</span> <span class="st">"med"</span>, <span class="dt">outformat =</span> <span class="st">"bib"</span>)</span>
-<span id="cb13-2"><a href="#cb13-2"></a><span class="kw">bibConvert</span>(<span class="dt">infile =</span> <span class="st">"myfile.med"</span>, <span class="dt">outfile =</span> <span class="st">"bibtex.bib"</span>, <span class="dt">informat =</span> <span class="st">"med"</span>) <span class="co"># same</span></span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bibConvert</span>(<span class="at">infile =</span> <span class="st">"myfile.med"</span>, <span class="at">outfile =</span> <span class="st">"bibtex.bib"</span>, <span class="at">informat =</span> <span class="st">"med"</span>, <span class="at">outformat =</span> <span class="st">"bib"</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">bibConvert</span>(<span class="at">infile =</span> <span class="st">"myfile.med"</span>, <span class="at">outfile =</span> <span class="st">"bibtex.bib"</span>, <span class="at">informat =</span> <span class="st">"med"</span>) <span class="co"># same</span></span></code></pre></div>
 <p>See <code><a href="reference/bibConvert.html">bibConvert()</a></code> for further examples and their results.</p>
 </div>
 </div>

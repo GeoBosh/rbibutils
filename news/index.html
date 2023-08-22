@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">rbibutils</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.2.13.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.2.15</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -45,10 +45,19 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="2.2.13" id="rbibutils-2213-cran">rbibutils 2.2.13 (CRAN)<a class="anchor" aria-label="anchor" href="#rbibutils-2213-cran"></a></h2>
-<ul><li>Bugfix: the declaration of the return value of a C function was accidentally changed from <code>const char *</code> to <code>char *</code> in v2.2.12, causing CRAN warnings on some platforms.</li></ul></div>
+<h2 class="pkg-version" data-toc-text="2.2.15" id="rbibutils-2215-cran">rbibutils 2.2.15 (CRAN)<a class="anchor" aria-label="anchor" href="#rbibutils-2215-cran"></a></h2><p class="text-muted">CRAN release: 2023-08-21</p>
+<ul><li>adapted some tests to a change in R-devel circa r84986.</li>
+</ul></div>
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="2.2.12" id="rbibutils-2212-cran">rbibutils 2.2.12 (CRAN)<a class="anchor" aria-label="anchor" href="#rbibutils-2212-cran"></a></h2>
+<h2 class="pkg-version" data-toc-text="2.2.14" id="rbibutils-2214-cran">rbibutils 2.2.14 (CRAN)<a class="anchor" aria-label="anchor" href="#rbibutils-2214-cran"></a></h2><p class="text-muted">CRAN release: 2023-08-07</p>
+<ul><li>fixed a couple of tests in ‘test-convert.R’ which started failing (ca. R svn rev 84760) due to an R-devel change in <code><a href="https://rdrr.io/r/utils/person.html" class="external-link">person()</a></code>.</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="2.2.13" id="rbibutils-2213-cran">rbibutils 2.2.13 (CRAN)<a class="anchor" aria-label="anchor" href="#rbibutils-2213-cran"></a></h2><p class="text-muted">CRAN release: 2023-01-13</p>
+<ul><li>Bugfix: the declaration of the return value of a C function was accidentally changed from <code>const char *</code> to <code>char *</code> in v2.2.12, causing CRAN warnings on some platforms.</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="2.2.12" id="rbibutils-2212-cran">rbibutils 2.2.12 (CRAN)<a class="anchor" aria-label="anchor" href="#rbibutils-2212-cran"></a></h2><p class="text-muted">CRAN release: 2023-01-10</p>
 <ul><li>
 <p>Bugfix: <code>readBib</code> with <code>texChars = "Rdpack"</code> which converts <code>\'i</code> to <code>\'\i</code> was wrapping <code>\'\i</code> in braces in ‘author’ and related fields only. Failure to do so in other fields was making the output invalid when <code>\'i</code> was followed by alphabetical character(s). Fixes issue#7 reopened by <a href="https://github.com/EricMarcon" class="external-link">@EricMarcon</a>.</p>
 <p>Note that option <code>"Rdpack"</code> for argument <code>texChars</code> is mainly for internal use which compensates for R not recognising <code>\'i</code> as an accented character, see the news items for v2.2.5 and v2.2.4 and the bug report about <code>tools:::latexToUtf8</code> at <a href="https://bugs.r-project.org/show_bug.cgi?id=18208" class="external-link">R bugs</a>.</p>
@@ -57,13 +66,16 @@
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="2.2.11" id="rbibutils-2211-cran">rbibutils 2.2.11 (CRAN)<a class="anchor" aria-label="anchor" href="#rbibutils-2211-cran"></a></h2><p class="text-muted">CRAN release: 2022-12-08</p>
-<ul><li>in <code>C</code> code, changed <code>sprintf</code> calls to use <code>snprintf</code> to fix CRAN warnings.</li></ul></div>
+<ul><li>in <code>C</code> code, changed <code>sprintf</code> calls to use <code>snprintf</code> to fix CRAN warnings.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="2.2.10" id="rbibutils-2210-cran">rbibutils 2.2.10 (CRAN)<a class="anchor" aria-label="anchor" href="#rbibutils-2210-cran"></a></h2><p class="text-muted">CRAN release: 2022-11-15</p>
-<ul><li>fixed warnings about deprecated function declarations without prototypes in <code>C</code> code.</li></ul></div>
+<ul><li>fixed warnings about deprecated function declarations without prototypes in <code>C</code> code.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="2.2.9" id="rbibutils-229-cran">rbibutils 2.2.9 (CRAN)<a class="anchor" aria-label="anchor" href="#rbibutils-229-cran"></a></h2><p class="text-muted">CRAN release: 2022-08-15</p>
-<ul><li>fixed wrong markup of an item in this file (for v2.2.4) causing bad rendering and a NOTE from CRAN.</li></ul></div>
+<ul><li>fixed wrong markup of an item in this file (for v2.2.4) causing bad rendering and a NOTE from CRAN.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="2.2.8" id="rbibutils-228-cran">rbibutils 2.2.8 (CRAN)<a class="anchor" aria-label="anchor" href="#rbibutils-228-cran"></a></h2><p class="text-muted">CRAN release: 2022-04-11</p>
 <ul><li><p>new argument <code>fbibentry</code> for <code>readBib</code> and <code>readBibentry</code> for specification of a function for generation of bib objects. It should have the same arguments as the default <code><a href="https://rdrr.io/r/utils/bibentry.html" class="external-link">utils::bibentry()</a></code> but doesn’t need to be vectorised, since <code><a href="../reference/readBibentry.html">readBibentry()</a></code> generates one <code>bibentry</code> call for each reference.</p></li>
@@ -72,10 +84,12 @@
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="2.2.7" id="rbibutils-227-cran">rbibutils 2.2.7 (CRAN)<a class="anchor" aria-label="anchor" href="#rbibutils-227-cran"></a></h2><p class="text-muted">CRAN release: 2021-12-07</p>
-<ul><li>fixed bug in isi output occuring in v2.2.5 and 2.2.6 and revealed by gss/ASAN check.</li></ul></div>
+<ul><li>fixed bug in isi output occuring in v2.2.5 and 2.2.6 and revealed by gss/ASAN check.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="2.2.6" id="rbibutils-226">rbibutils 2.2.6<a class="anchor" aria-label="anchor" href="#rbibutils-226"></a></h2>
-<ul><li>fixed memory leaks in nbib output in biblatex input occuring in v2.2.5.</li></ul></div>
+<ul><li>fixed memory leaks in nbib output in biblatex input occuring in v2.2.5.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="2.2.5" id="rbibutils-225-cran">rbibutils 2.2.5 (CRAN)<a class="anchor" aria-label="anchor" href="#rbibutils-225-cran"></a></h2><p class="text-muted">CRAN release: 2021-12-04</p>
 <ul><li><p><code>readBibentry</code> with <code>extra = TRUE</code> now parses (almost) any syntactically correct bib entries. In particular, it accepts arbitrary bib types and doesn’t throw errors for bibentries missing fields required by bibtex for the standard bibtex types. For example, biblatex entries typically have <code>date</code>, not <code>year</code>.</p></li>
@@ -92,16 +106,20 @@
 <ul><li><p><code>\i</code> in authors’ names was messing up the following character (issue#5).</p></li>
 <li><p>stopped converting <code>\'\i'</code> to <code>\'i</code>. They are equivalent but there is no reason to do this. Also, at the time of writing R’s <code><a href="https://rdrr.io/r/tools/parseLatex.html" class="external-link">tools::latexToUtf8</a></code> converts the former but not the latter, while Biber seems to convert the latter but not the former, see <a href="https://bugs.r-project.org/show_bug.cgi?id=18208" class="external-link uri">https://bugs.r-project.org/show_bug.cgi?id=18208</a> . So, users of the bib file may have specific reasons to use one or the other.</p></li>
 <li><p>names consisting of just one part, family, were missing processing of escaped characters (issue <a href="https://github.com/GeoBosh/rbibutils/issues/5" class="external-link">#5</a>).</p></li>
-</ul></li></ul></div>
+</ul></li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="2.2.3" id="rbibutils-223-cran">rbibutils 2.2.3 (CRAN)<a class="anchor" aria-label="anchor" href="#rbibutils-223-cran"></a></h2><p class="text-muted">CRAN release: 2021-08-09</p>
-<ul><li>fixed memory issues from valgrind in v2.2.2 thanks to patch supplied by Bill Dunlap.</li></ul></div>
+<ul><li>fixed memory issues from valgrind in v2.2.2 thanks to patch supplied by Bill Dunlap.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="2.2.2" id="rbibutils-222-cran">rbibutils 2.2.2 (CRAN)<a class="anchor" aria-label="anchor" href="#rbibutils-222-cran"></a></h2><p class="text-muted">CRAN release: 2021-07-31</p>
-<ul><li>import of <code>Pubmed XML</code> was sometimes giving a handful of references for files with tens or hundreds of them. Now fixed, see issue <a href="https://github.com/GeoBosh/rbibutils/issues/4" class="external-link">#4</a>, reported by Rafael Santamaría. (The function reading the file was implicitly assuming that the end of each reference is on a line by itself and was silently ignoring text on the same line after the end of reference tag. Reference files from online databases often have no new lines at all, except for the XML header.)</li></ul></div>
+<ul><li>import of <code>Pubmed XML</code> was sometimes giving a handful of references for files with tens or hundreds of them. Now fixed, see issue <a href="https://github.com/GeoBosh/rbibutils/issues/4" class="external-link">#4</a>, reported by Rafael Santamaría. (The function reading the file was implicitly assuming that the end of each reference is on a line by itself and was silently ignoring text on the same line after the end of reference tag. Reference files from online databases often have no new lines at all, except for the XML header.)</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="2.2.1" id="rbibutils-221-cran">rbibutils 2.2.1 (CRAN)<a class="anchor" aria-label="anchor" href="#rbibutils-221-cran"></a></h2><p class="text-muted">CRAN release: 2021-06-17</p>
-<ul><li>fixed problems revealed by valgrind.</li></ul></div>
+<ul><li>fixed problems revealed by valgrind.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="2.2" id="rbibutils-22-cran">rbibutils 2.2 (CRAN)<a class="anchor" aria-label="anchor" href="#rbibutils-22-cran"></a></h2><p class="text-muted">CRAN release: 2021-06-10</p>
 <ul><li><p>new convenience function <code>charToBib</code> takes input from a character vector rather than a file. By default it assumes that the input is in <code>bibtex</code> format and dispatches to <code>readBib</code>. If an input format is specified it calls <code>bibConvert</code>.</p></li>
@@ -154,7 +172,8 @@
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.2.1" id="rbibutils-121">rbibutils 1.2.1<a class="anchor" aria-label="anchor" href="#rbibutils-121"></a></h2>
-<ul><li>improved processing of URL field when converting to bibentry.</li></ul></div>
+<ul><li>improved processing of URL field when converting to bibentry.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.2" id="rbibutils-12">rbibutils 1.2<a class="anchor" aria-label="anchor" href="#rbibutils-12"></a></h2>
 <ul><li><p>fixed inBook processing.</p></li>
@@ -175,10 +194,12 @@
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.0.2" id="rbibutils-102-cran">rbibutils 1.0.2 (CRAN)<a class="anchor" aria-label="anchor" href="#rbibutils-102-cran"></a></h2><p class="text-muted">CRAN release: 2020-07-18</p>
-<ul><li>completed the copyright credits in DESCRIPTION (there were contributors not mentioned anywhere except in the C source files they contributed).</li></ul></div>
+<ul><li>completed the copyright credits in DESCRIPTION (there were contributors not mentioned anywhere except in the C source files they contributed).</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.0.1" id="rbibutils-101">rbibutils 1.0.1<a class="anchor" aria-label="anchor" href="#rbibutils-101"></a></h2>
-<ul><li>clarified the copyright holders in DESCRIPTION.</li></ul></div>
+<ul><li>clarified the copyright holders in DESCRIPTION.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.0.0" id="rbibutils-100">rbibutils 1.0.0<a class="anchor" aria-label="anchor" href="#rbibutils-100"></a></h2>
 <p>Features of this version:</p>
