@@ -168,17 +168,38 @@ test_that("bibConvert works ok", {
     expect_known_value(readLines(tmp_xml), "bib2xml2.rds", update = FALSE)
 
     bibConvert(tmp_bib, tmp_rds, options = c(nb = ""))
-    expect_known_value(readRDS(tmp_rds), "bib2rds.rds", update = FALSE)
+    ## fixes failure starting with R-devel ca. svn rev 84760, due to a change in `person()`
+    ## TODO: after the next R-release resave "bib2rds.rds" and do the test
+    ##       when R.version > 4.3.1
+    ##
+    ## A change in person() (or related function) now strips trailing whitespace from names
+    ## which it wasn't doing before (but should have). This is a positive change and can be
+    ## resolved by resaving the 'rds' object "bib2rds.rds". But then the test will fail on R
+    ## versions not having the old person().
+    ##
+    ## Note that tmp_bib in the previous command is from the latex version of
+    ## bibConvert(med_in, tmp_bib, informat = "med"), see further above.
+    ## which emits a space before comma in a name.
+    ##
+    ## TODO: include designated tests that no superficious spaces before commas are emited
+    ##       for other converters were they occur (if any).
+    if(getRversion() <= "4.3.1")
+        expect_known_value(readRDS(tmp_rds), "bib2rds.rds", update = FALSE)
 
     bib2R <- bibConvert(tmp_bib, tmp_R)
-    expect_known_value(bib2R$bib, "bib2R.rds", update = FALSE)
+    ## fixes same problem as above
+    ## TODO: see above
+    if(getRversion() <= "4.3.1")
+        expect_known_value(bib2R$bib, "bib2R.rds", update = FALSE)
 
     
     bibConvert(tmp_rds, tmp_xml, options = c(un = ""))  # rds to MODS XML intermediate
-    expect_known_value(readLines(tmp_xml), "rds2xml.rds", update = FALSE)
+    if(is.numeric(svnrev <- R.Version()$'svn rev')  &&  svnrev >= 84986)
+        expect_known_value(readLines(tmp_xml), "rds2xml.rds", update = FALSE)
 
     bibConvert(tmp_rds, tmp_bbl2, outformat = "biblatex", options = c(nb = ""))
-    expect_known_value(readLines(tmp_bbl2), "rds2bbl2.rds", update = FALSE)
+    if(is.numeric(svnrev <- R.Version()$'svn rev')  &&  svnrev >= 84986)
+        expect_known_value(readLines(tmp_bbl2), "rds2bbl2.rds", update = FALSE)
 
     
     bibConvert(tmp_bib, tmp_wordbib)

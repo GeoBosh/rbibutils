@@ -348,5 +348,8 @@ test_that("bibRead works ok", {
 
     acc_fn <- system.file("bib", "accents_tabbing.bib", package = "rbibutils")
     accfn <- readBib(acc_fn, direct = TRUE)
-    expect_known_value(accfn, "acc_fn.rds", FALSE)
+    
+    ## fix for a change in R-devel, see Rdpack/tests/testthattest-bib.R for more info
+    if(is.numeric(svnrev <- R.Version()$'svn rev')  &&  svnrev >= 84986)
+        expect_known_value(accfn, "acc_fn.rds", FALSE)
 })
