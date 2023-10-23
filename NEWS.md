@@ -1,5 +1,14 @@
 # rbibutils 2.2.15 (CRAN)
 
+- fixed processing of the Polish suppressed-l `\l`. Previously the character
+  following it was enclosed in braces, which was harmless in most cases but the
+  superfluous braces could cause trouble in special circumstances. Did the same
+  for the uppercase version, `\L`, which was missing from the code.
+
+
+
+# rbibutils 2.2.15 (CRAN)
+
 - adapted some tests to a change in R-devel circa r84986.
 
 
