@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">rbibutils</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.2.15</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.2.15.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -46,6 +46,10 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="2.2.15" id="rbibutils-2215-cran">rbibutils 2.2.15 (CRAN)<a class="anchor" aria-label="anchor" href="#rbibutils-2215-cran"></a></h2><p class="text-muted">CRAN release: 2023-08-21</p>
+<ul><li>fixed processing of the Polish suppressed-l <code>\l</code>. Previously the character following it was enclosed in braces, which was harmless in most cases but the superfluous braces could cause trouble in special circumstances. Did the same for the uppercase version, <code>\L</code>, which was missing from the code.</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="2.2.15" id="rbibutils-2215-cran-1">rbibutils 2.2.15 (CRAN)<a class="anchor" aria-label="anchor" href="#rbibutils-2215-cran-1"></a></h2><p class="text-muted">CRAN release: 2023-08-21</p>
 <ul><li>adapted some tests to a change in R-devel circa r84986.</li>
 </ul></div>
     <div class="section level2">
