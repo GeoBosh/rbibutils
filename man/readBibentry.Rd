@@ -1,24 +1,39 @@
 \name{readBibentry}
 \alias{readBibentry}
+
 \alias{writeBibentry}
+
+
+\concept{bibtex}
+\concept{biblatex}
+\concept{bibentry}
+
+
 \title{Read and write bibentry files}
 \description{Read and write bibentry files.}
 \usage{
 readBibentry(file, extra = FALSE, fbibentry = NULL)
 
-writeBibentry(be, file, style = c("Rstyle", "loose"))
+writeBibentry(be, file = stdout(), style = c("Rstyle", "loose"))
 }
 \arguments{
   \item{be}{a bibentry object.}
-  \item{file}{filename, a character string.}
+  \item{file}{
+
+    filename, a character string or a connection. The default is stdout
+    (effectively, to write on the screen).
+
+  }
   \item{extra}{if \code{TRUE} allow non-standard bibtex types.}
   \item{style}{
     if \code{"Rstyle"} (default), wrap in \code{c()}, otherwise don't
     wrap and don't put commas between the entries, see Details section.
   }
-  \item{
-    fbibentry}{a function to use for generating bib objects instead
-    of \code{bibentry()}.
+  \item{fbibentry}{
+
+    a function to use for generating bib objects. The default is
+    \code{utils::bibentry()}.
+    
   }
 }
 \details{
@@ -26,11 +41,13 @@ writeBibentry(be, file, style = c("Rstyle", "loose"))
   These functions read/write \code{bibentry} objects from/to R source
   files. Two styles are supported. \code{"Rstyle"} is the format used by
   \code{print(be, style = "R")}, which writes the \code{bibentry} calls
-  as a comma separated sequence wrapped in \code{c()}. Style
-  \code{"loose"} writes the entries without separators and no wrapping.
+  as a comma separated sequence wrapped in \code{c()} (i.e., the file
+  contains a single R expression). Style \code{"loose"} writes the
+  entries without separators and no wrapping.
 
   \code{writeBibentry} writes the object to the specified file in the
-  requested style (default is \code{"Rstyle"}).
+  requested style (default is \code{"Rstyle"}). The file is neatly
+  formatted for humans to read and edit.
 
   \code{readBibentry} reads the file and creates a \code{bibentry}
   object. It doesn't have argument for style, since that is inferred
@@ -51,7 +68,7 @@ writeBibentry(be, file, style = c("Rstyle", "loose"))
 %\references{
 %%% ~put references to the literature/web site here ~
 %}
-\author{Georgi n. Boshnakov}
+\author{Georgi N. Boshnakov}
 %\note{
 %%%  ~~further notes~~
 %}
@@ -86,5 +103,3 @@ unlink(fn)
 % \concept{ ~cpt1 }
 % \concept{ ~cpt2 }
 % Use only one concept per line.
-
-

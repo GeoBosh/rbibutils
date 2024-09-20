@@ -1,7 +1,15 @@
 \name{readBib}
 \alias{readBib}
+
 \alias{writeBib}
 \alias{charToBib}
+
+
+\concept{bibtex}
+\concept{biblatex}
+\concept{bibentry}
+
+
 \title{Read and write bibtex files}
 \description{Read and write bibtex files.}
 \usage{
@@ -17,8 +25,9 @@ charToBib(text, informat, \dots)
   \item{file}{name or path to the file, a character string.}
   \item{encoding}{the encoding of \code{file}, a character string.}
   \item{direct}{
-    If \code{TRUE} parse 'file' directly to \code{bibentry}, otherwise
-    convert first to intermediate XML, then to \code{bibentry}.
+    If \code{TRUE} parse \code{file} directly to \code{bibentry},
+    otherwise convert first to intermediate XML, then to
+    \code{bibentry}.
   }
   \item{texChars}{
     
@@ -135,10 +144,11 @@ charToBib(text, informat, \dots)
 }
 \value{
 
-  for \code{readBib}, a \code{bibentry} object. If \code{extra} is
-  \code{TRUE} it can also be \code{bibentryExtra} (which inherits from
-  \code{bibentry}). If \code{fbibentry} is a function the return value
-  is whatever it returns.
+  for \code{readBib}, a \code{bibentry} object.
+  If \code{extra} is \code{TRUE} it can also
+  be \code{bibentryExtra} (which inherits from \code{bibentry}).
+  If \code{fbibentry} is a function the return value is whatever it
+  returns.
 
   for \code{writeBib}, the \code{bibentry} object (invisibly)
 }
@@ -149,7 +159,7 @@ charToBib(text, informat, \dots)
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 \seealso{
   \code{\link{readBibentry}} and \code{\link{writeBibentry}} for
-  import/export to R code.
+  import/export to R code,
   
   \code{\link{bibConvert}}
 }
@@ -175,7 +185,7 @@ ch_bib2 <- readBib(system.file("bib/xeCJK_gb18030.bib", package = "rbibutils"),
 
 
 ## a dummy reference with accented characters
-## (in the file some are uft8, others are TeX escapes)
+## (in the file some are utf8, others are TeX escapes)
 bibacc <- system.file("bib/latin1accents_utf8.bib", package = "rbibutils")
 
 ## export as UTF-8 characters

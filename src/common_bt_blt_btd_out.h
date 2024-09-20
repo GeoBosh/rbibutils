@@ -13,37 +13,38 @@
 enum {
 	TYPE_UNKNOWN = 0,
 	TYPE_ARTICLE,
-	TYPE_INBOOK,
-	TYPE_INPROCEEDINGS,
-	TYPE_PROCEEDINGS,
-	TYPE_INCOLLECTION,
-	TYPE_COLLECTION,
 	TYPE_BOOK,
-	TYPE_PHDTHESIS,        /* legacy */
-	TYPE_MASTERSTHESIS,    /* legacy */
-	TYPE_DIPLOMATHESIS,
-	TYPE_REPORT,
-	TYPE_MANUAL,
-	TYPE_UNPUBLISHED,
-	TYPE_ELECTRONIC,       /* legacy */
-	TYPE_MISC,
-	TYPE_SUPPPERIODICAL,
-	TYPE_CONFERENCE,       /* legacy */
-	TYPE_SUPPCOLLECTION,
-	TYPE_REFERENCE,
-	TYPE_MVREFERENCE,
 	TYPE_BOOKLET,
-	TYPE_SUPPBOOK,
+	TYPE_INBOOK,
+	TYPE_INCOLLECTION,
+	TYPE_INPROCEEDINGS,
+	TYPE_MANUAL,
+	TYPE_MASTERSTHESIS,
+	TYPE_MISC,
+	TYPE_PHDTHESIS,
+	TYPE_PROCEEDINGS,
 	TYPE_TECHREPORT,
-	TYPE_PATENT,
+	TYPE_UNPUBLISHED,         // end of standard BibTeX types
+	TYPE_COLLECTION, // sometimes included in standard BibTeX types
+	TYPE_CONFERENCE, /* legacy */ // sometimes included in standard BibTeX types
+	                              // equivalent to inproceedings (as per Lamport)
+	TYPE_DIPLOMATHESIS,
+	TYPE_ELECTRONIC,       /* legacy */
+	TYPE_MVREFERENCE,
 	TYPE_ONLINE,
+	TYPE_PATENT,
+	TYPE_REFERENCE,
+	TYPE_REPORT,
+	TYPE_SUPPBOOK,
+	TYPE_SUPPCOLLECTION,
+	TYPE_SUPPPERIODICAL,
 	TYPE_WWW,              /* jurabib compatibility */
 	NUM_TYPES
 };
 
-// TYPE_SUPPPERIODICAL must be just after the last bibtex type above (i.e. MISC) !!!
+// TYPE_COLLECTION must be just after the last bibtex type above !!!
 enum {
-      NUM_BIBTEX_TYPES = TYPE_SUPPPERIODICAL
+      NUM_BIBTEX_TYPES = TYPE_COLLECTION
 };
 
 enum {

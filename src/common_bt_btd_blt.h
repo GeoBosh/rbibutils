@@ -19,7 +19,6 @@
 #include "is_ws.h"
 #include "str.h"
 
-#include "common_bt_btd_blt.h"
 
 typedef struct loc {
 	const char *progname;

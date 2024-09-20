@@ -70,6 +70,7 @@ test_that("bibRead works ok", {
     ## don't these need JSSextra loaded?
     expect_output(print(obj1))
     expect_output(print(obj1, style = "R"))
+    
     expect_output(print(obj1, style = "bibtex"))
     expect_output(print(obj1, style = "latex"))
     expect_output(print(obj1, style = "text"))
@@ -192,91 +193,6 @@ test_that("bibRead works ok", {
 
 
 
-    ## bibentryExtra
-
-    ## example from ?bibentry
-    bref <- c(
-        bibentry(
-            bibtype = "Manual",
-            title = "boot: Bootstrap R (S-PLUS) Functions",
-            author = c(
-                person("Angelo", "Canty", role = "aut",
-                       comment = "S original"),
-                person(c("Brian", "D."), "Ripley", role = c("aut", "trl", "cre"),
-                       comment = "R port, author of parallel support",
-                       email = "ripley@stats.ox.ac.uk")
-            ),
-            year = "2012",
-            note = "R package version 1.3-4",
-            url = "https://CRAN.R-project.org/package=boot",
-            key = "boot-package"
-        ),
-     
-        bibentry(
-            bibtype = "Book",
-            title = "Bootstrap Methods and Their Applications",
-            author = as.person("Anthony C. Davison [aut], David V. Hinkley [aut]"),
-            year = "1997",
-            publisher = "Cambridge University Press",
-            address = "Cambridge",
-            isbn = "0-521-57391-2",
-            url = "http://statwww.epfl.ch/davison/BMA/",
-            key = "boot-book"
-        )
-    )
-
-    brefExtra <- bibentryExtra(bref)
-
-    ## subset as list
-    expect_error(brefExtra[[1:2, "title"]],
-                 "length of i should be 1 when j is not missing or omitted")
-    expect_equal(brefExtra[[1, "title"]], brefExtra[[list(1, "title")]])
-    brefExtra[[1, "title", drop = FALSE]]
-    brefExtra[[1, c("title", "author")]]
-
-    ## subset as bibentryExtra
-    brefExtra[1, "title"]
-    brefExtra[1, "title", drop = FALSE]
-    brefExtra[1, c("title", "author")]
-    brefExtra_ta <- brefExtra[1:2, c("title", "author")]
-    tt <- brefExtra["boot-book", "title"]
-    
-    b1 <- brefExtra
-
-    expect_equal(b1$key, list("boot-package", "boot-book"))
-    expect_equal(b1$bibtype, list("Manual", "Book"))
-    b1$title
-    b1$author
-
-    b1$key <- list("package", "book")
-
-
-    b1 <- brefExtra
-    format(b1)
-    #expect_output(print(b1))
-
-    b1[[list(1, "*")]] <- list(title = "New title")
-    expect_equal(b1[[1, "title", drop = TRUE]], c(title = "New title"))
-
-    b1[[list(1, "title")]] <- list(title = "New title A")
-
-    expect_equal(all.equal(b1[[1, "title"]], "New title A"), "names for target but not for current")
-
-    
-    ## expect_error(b1[[1]] <- list(title = "New title"),  # or:  c(title = "New title")
-    ##              "when 'value' is a list, 'i' should be a list of length 2")
-
-    b1[[list(1, "year")]] <- list(title = "New title A") ## no change, 'year' is not in 'value'
-    b1[[list(1, "year")]] <- list(title = "New title A", year = NULL) ## removes 'year'
-    
-    b1[[2]] <- bibentry(bibtype = "Misc", title = "Dummy title", author = "A A Dummy", organization = "none")
-
-    format(brefExtra)
-    tt <- format(brefExtra, style = "R")
-    
-    expect_output(print(brefExtra, style = "R"))
-
-    expect_output(print(b1, style = "latex"))
 
     
     xeCJK_utf8    <- system.file("bib", "xeCJK_utf8.bib", package = "rbibutils")
@@ -303,14 +219,16 @@ test_that("bibRead works ok", {
         expect_known_value(test_5rdpack, "issue_5rdpack.rds", FALSE)
     }
     
-    test5_extra <- bibentryExtra(test_5)
+    test5_extra <- as.bibentryExtra(test_5)
     expect_identical(test5_extra[["x", "author"]]$family, test5_extra[["y", "author"]]$family)
     
     expect_known_value(rbibutils::readBib(issue_5, direct=TRUE, encoding = "UTF-8", texChars = "convert"),
                        "issue_5_utf8.rds", FALSE)
 
     bib_extra <- system.file("bib", "extra.bib", package = "rbibutils")
-    expect_message(readBib(bib_extra, direct = TRUE, extra = TRUE))
+
+    ## 2023-11-04 - after today's changes no longer warning
+    ## expect_message(readBib(bib_extra, direct = TRUE, extra = TRUE))
 
     ## test the fix for texChars = "export"; the file contains both escaped TeX chars and unicode chars
     bib_texChars <- system.file("bib", "texChars.bib", package = "rbibutils")
@@ -325,6 +243,10 @@ test_that("bibRead works ok", {
 
     xample_fn <- system.file("bib", "xampl_modified.bib", package = "rbibutils")
 
+    ## 2023-11-05 TODO: xampl[[3]] has a crossreference to a journal but it contains
+    ##     redundant duplicated tags. It looks like bibtexin_crossref_oneref (and/or the
+    ##     calling functions) needs fixing. (although this bug may be harmless)
+    ##
     xampl <- readBib(xample_fn, direct = TRUE)
     expect_known_value(xampl, "xampl_1.rds", FALSE)
 

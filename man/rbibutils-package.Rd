@@ -1,7 +1,31 @@
 \name{rbibutils-package}
 \alias{rbibutils-package}
+
 \alias{rbibutils}
+
 \docType{package}
+
+
+\concept{bibliography formats}
+\concept{tex}
+\concept{latex}
+\concept{bibtex}
+\concept{biblatex}
+\concept{bibentry}
+\concept{copac format}
+\concept{ads reference format}
+\concept{ebi xml}
+\concept{endnote}
+\concept{endnote xml}
+\concept{endnote refer format}
+\concept{isi web of science}
+\concept{pubmed xml}
+\concept{pubmed nbib}
+\concept{ris format}
+\concept{MODS XML intermediate}
+\concept{Word 2007 bibliography format}
+
+
 \title{
 \packageTitle{rbibutils}
 }

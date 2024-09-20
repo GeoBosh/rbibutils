@@ -31,7 +31,6 @@
 #include "R.h"
 
 #include "common_bt_btd_blt.h"
-#include "common_bt_btd.h"
 
 extern slist find;
 extern slist replace;

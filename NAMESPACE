@@ -3,19 +3,18 @@ useDynLib(rbibutils, .registration=TRUE, .fixes = "C_")
 importFrom("utils", "person", "bibentry", "toBibtex")
 importFrom(tools, file_ext, toRd, bibstyle, getBibstyle)
 
-## import(xml2)
-
-## exportPattern("^[[:alpha:]]+")
-
 S3method(print, bibentryExtra)
 S3method(format, bibentryExtra)
 S3method("[", bibentryExtra)
 S3method("[[", bibentryExtra)
 S3method("$<-", bibentryExtra)
 S3method("[[<-", bibentryExtra)
+S3method(c, bibentryExtra)
+S3method(names, bibentryExtra)
 
-S3method("toRd", bibentryExtra)
+S3method(toRd, bibentryExtra)
 
+S3method(as.bibentryExtra, bibentry)
 
 export(
     bibConvert,
@@ -25,5 +24,7 @@ export(
     writeBibentry,
     charToBib,
     rbibutils_formats,
-    register_JSSextra
+    register_JSSextra,
+    bibentryExtra,
+    as.bibentryExtra
 )

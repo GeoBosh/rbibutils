@@ -17,6 +17,12 @@ reference:
       - writeBib
       - readBibentry
       - writeBibentry
+  - title: S3 class bibentryExtra
+    desc: Manipulate objects from class 'bibentryExtra'
+    contents:
+      - bibentryExtra
+      - "`[[.bibentryExtra`"
+      - "`[[<-.bibentryExtra`"
   - title: "Other"
     contents:
       - rbibutils_formats

@@ -1,5 +1,15 @@
 \name{register_JSSextra}
 \alias{register_JSSextra}
+
+
+\concept{bibliography formats}
+\concept{tex}
+\concept{latex}
+\concept{bibtex}
+\concept{biblatex}
+\concept{bibentry}
+
+
 \title{Create and register bibstyle JSSextra}
 \description{Create and register bibstyle JSSextra.}
 \usage{
@@ -18,23 +28,23 @@ register_JSSextra(make_default = FALSE, reset = FALSE, parent_style = "JSS")
 }
 \details{
 
-  \code{register_JSSextra} creates \code{"JSSextra"} and registers it
-  for use in the current \R session. This means that it can be specified
-  for functions which accept a bibstyle argument, most notably printing
-  objects from class  \code{"bibentry"} and \code{"bibentryExtra"}.
-  In normal use \code{register_JSSextra} is called once in a
-  session. 
+  \code{register_JSSextra} creates style \code{"JSSextra"} and registers
+  it for use in the current \R session. This means that it can be
+  specified for functions which accept a bibstyle argument, most notably
+  printing objects from class \code{"bibentry"} and
+  \code{"bibentryExtra"}.  In normal use \code{register_JSSextra} is
+  called once in a session.
 
   Functions accepting a bibstyle argument use a default style if such an
   argument is not provided. In most cases it is \code{"JSS"}.
 
-  The default style can be changed at any time to any of the styles
-  currently registered in the session using
-  \code{tools::bibstyle()}. A list of these styles can be obtained
-  with \code{tools::getBibstyle(TRUE)}. The currently default style can
-  be seen with \code{tools::getBibstyle()}.
-  As a convenience \code{register_JSSextra(TRUE)} makes and registers
-  \code{"JSSextra"} as the default style.
+  Using \code{tools::bibstyle()} the default style can be changed at any
+  time to any of the styles currently registered in the session. A list
+  of these styles can be obtained with
+  \code{tools::getBibstyle(TRUE)}. The currently default style can be
+  seen with \code{tools::getBibstyle()}.  As a convenience
+  \code{register_JSSextra(TRUE)} makes and registers \code{"JSSextra"}
+  as the default style.
 
   The remaining arguments should rarely be needed in normal
   circumstances.
@@ -48,7 +58,6 @@ register_JSSextra(make_default = FALSE, reset = FALSE, parent_style = "JSS")
   
 }
 \value{
-  
   \code{register_JSSextra} is used mainly for the side effect of
   registering and setting the style as default.  It returns the created
   style (an environment) but it can be discarded.

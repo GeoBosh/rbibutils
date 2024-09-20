@@ -141,7 +141,8 @@ bibentryout_type( fields *in, const char *progname, const char *filename, unsign
 static int
 is_TechReport_type( int type )
 {
-	char *typenames[ NUM_BIBENTRY_TYPES ] = {
+    // 2023-11-05 was: char *typenames[ NUM_BIBENTRY_TYPES ] = {
+	char *typenames[ NUM_TYPES ] = {
 		[ TYPE_ARTICLE       ] = "Article",
 		[ TYPE_INBOOK        ] = "Inbook",
 		[ TYPE_PROCEEDINGS   ] = "Proceedings",
@@ -165,7 +166,8 @@ is_TechReport_type( int type )
 static void
 append_type( int type, fields *out, int *status )
 {
-	char *typenames[ NUM_BIBENTRY_TYPES ] = {
+    // 2023-11-05 was: char *typenames[ NUM_BIBENTRY_TYPES ] = {
+	char *typenames[ NUM_TYPES ] = {
 		[ TYPE_ARTICLE       ] = "Article",
 		[ TYPE_INBOOK        ] = "Inbook",
 		[ TYPE_PROCEEDINGS   ] = "Proceedings",

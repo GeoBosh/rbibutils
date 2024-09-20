@@ -1,3 +1,73 @@
+# rbibutils 2.2.16.9000
+
+- consolidated the subsetting operators for 'bibentryExtra' objects and the
+  documentation for them.
+  
+- new function `bibentryExtra()` creates 'bibentryExtra' objects. It accepts
+  arbitrary Bibtex entry types and takes the same arguments as `bibentry()`.
+
+- the default bib style for the `bibentryExtra` method for `format()` is now 
+  "JSSextra", as was .
+
+- refactored and streamlined `writeBibentry()` (the original version didn't use
+  the `format` method).
+
+- fixed a bug in `format.bibentryExtra()` which caused 
+  `writeBibentry()` to misbehave when `style = "Rstyle"`.
+
+- bibstyle 'JSSextra' accidentally had added its stuff directly in the 'JSS'
+  style's environment, causing the two to be equivalent. Now fixed.
+
+- added `onLoad()` to make bibstyle JSSextra default when loading rbibutils.
+
+  *TODO*: remove this note from the release - it is probably a temporary fix to
+  keep the old behaviour intact for now. It has always been documented that
+  JSSextra should be made default to take effect but since it worked anyway
+  users and developers may have not noticed.
+  
+- *TODO*: edit these before release!
+
+- *TDDO:* (remove this remark from the release version, since this is internal
+  not entirely true) bib types that are not among the standard ones are now
+  imported as type 'Misc', with the real type put in field 'truebibtype'.
+
+
+- first draft of a vignette.
+
+- new generic function `as.bibentryExtra`.
+
+- style "JSSextra" was failing to print (when 'style = "latex"') bibentries with
+  types InBook and InCollection, due to typo's in the code.
+
+- new 'bibentryExtra' method for `c()`.
+
+- fixed `[<-` sub-assignment to 'bibentryExtra' objects.
+
+- the class of the object returned by `readBibentry()`, `readBib()`, and
+  `bibtexImport()` is now always `c("bibentryExtra", "bibentry")` (unless
+  argument `fbibentry` is supplied). Previously "bibentryExtra" was added only
+  when there were bib items with non-standard type and `extra = TRUE`.
+  
+- non-standard bibtypes are lowercased.
+
+- bib style "JSSextra" now knows how to render a few more non-standard bib
+  types.
+
+- bib style "JSSextra" now knows how to render 'online' bibtype. It is not among
+  the standard bibtex types but is quite useful these days.
+
+- `print(be, style = "R")`, where `be` is an object from class "bibentryExtra"
+  no longer includes the, effectively, internal for `rbibutils` field
+  `truebibtype`.
+
+- `bibentrydirectout` now ...
+
+- ?? add 'online' type to JSSextra - it is a biblatex (not bibtex) field but
+  very useful.
+
+- a number of minor bugs were fixed.
+
+
 # rbibutils 2.2.16 (CRAN)
 
 - fixed processing of the Polish suppressed-l `\l`. Previously the character

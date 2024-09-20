@@ -1,10 +1,33 @@
 \name{bibConvert}
 \alias{bibConvert}
+
+
+\concept{bibliography formats}
+\concept{tex}
+\concept{latex}
+\concept{bibtex}
+\concept{biblatex}
+\concept{bibentry}
+\concept{copac format}
+\concept{ads reference format}
+\concept{ebi xml}
+\concept{endnote}
+\concept{endnote xml}
+\concept{endnote refer format}
+\concept{isi web of science}
+\concept{pubmed xml}
+\concept{pubmed nbib}
+\concept{ris format}
+\concept{MODS XML intermediate}
+\concept{Word 2007 bibliography format}
+
+
 \title{Convert between bibliography formats}
+
 \description{
 
   Read a bibliography file in one of the supported formats, convert it
-  to nnother format, and write it to a file.
+  to another format, and write that to a file.
 
 }
 \usage{
@@ -23,14 +46,20 @@ bibConvert(infile, outfile, informat, outformat, \dots, tex, encoding,
     formats} and \dQuote{Details}.
   }
   \item{...}{not used.}
-  \item{tex}{TeX specific options, see Details, a character vector.}
+  \item{tex}{
+    TeX/LaTeX specific options, see section \dQuote{Details}, a character
+    vector.
+  }
   \item{encoding}{
+    
     \code{character(2)}, a length two vector specifying input and output
-    encodings. Default to both is \code{"utf8"}, see Details.
+    encodings. Default to both is \code{"utf8"}, see section
+    \dQuote{Details}.
+    
   }
   \item{options}{
     mainly for debugging: additional options for the converters, see
-    Details.
+    section \dQuote{Details}.
   }
 }
 \details{
@@ -187,8 +216,8 @@ bibConvert(infile, outfile, informat, outformat, \dots, tex, encoding,
   \item{nref_in}{number of references read from the input file,}
   \item{nref_out}{number of references written to the output file.}
 
-  Normally, \code{nref_in} and \code{nref_out} are the same. If some
-  references were imported successfully but failed on export,
+  Normally, \code{nref_in} and \code{nref_out} are the same.
+  If some references were imported successfully but failed on export,
   \code{nref_out} may be smaller than \code{nref_in}. In such cases
   informative messages are printed during processing. (If this happens
   silently, it is probably a bug and please create an issue on Github.)
@@ -301,4 +330,3 @@ bibConvert(fn_med, bib, informat = "med")
 unlink(c(modl, bib, bib2, r, rds))
 }
 \keyword{documentation}
-% use one of  RShowDoc("KEYWORDS")

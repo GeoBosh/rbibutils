@@ -137,7 +137,8 @@ bibtexout_type( fields *in, const char *progname, const char *filename, unsigned
 static void
 append_type( int type, fields *out, int *status )
 {
-	char *typenames[ NUM_BIBTEX_TYPES ] = {
+    // 2023-11-05 was: char *typenames[ NUM_BIBTEX_TYPES ] = {
+	char *typenames[ NUM_TYPES ] = {
 		[ TYPE_ARTICLE       ] = "Article",
 		[ TYPE_INBOOK        ] = "Inbook",
 		[ TYPE_PROCEEDINGS   ] = "Proceedings",

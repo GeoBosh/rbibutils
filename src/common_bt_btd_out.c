@@ -25,7 +25,7 @@
 #include "url.h"
 #include "bibformats.h"
 
-#include "common_bt_btd_out.h"
+#include "common_bt_blt_btd_out.h"
 
 void
 append_people( fields *in, char *tag, char *ctag, char *atag,

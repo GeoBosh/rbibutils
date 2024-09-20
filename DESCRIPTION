@@ -1,7 +1,7 @@
 Package: rbibutils
 Type: Package
 Title: Read 'Bibtex' Files and Convert Between Bibliography Formats
-Version: 2.2.16
+Version: 2.2.16.9000
 Authors@R: c( person(given = c("Georgi", "N."), family = "Boshnakov", 
                      role = c("aut", "cre"), 	
                      email = "georgi.boshnakov@manchester.ac.uk",
@@ -15,8 +15,10 @@ Authors@R: c( person(given = c("Georgi", "N."), family = "Boshnakov",
 		     comment = "src/addsout.c"),
               person(given = "Johannes", family = "Wilm",
                      role = "ctb",
-		     comment = "src/biblatexin.c, src/bltypes.c")
-		     )
+		     comment = "src/biblatexin.c, src/bltypes.c"),
+	      person("R Core Team", role = "ctb",
+	             comment = "base R's bibentry and bibstyle implementation")
+            )
 Description: Read and write 'Bibtex' files. Convert between bibliography
     formats, including 'Bibtex', 'Biblatex', 'PubMed', 'Endnote', and
     'Bibentry'.  Includes a port of the 'bibutils' utilities by Chris

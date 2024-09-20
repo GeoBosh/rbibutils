@@ -26,7 +26,8 @@
 #include "url.h"
 #include "bibformats.h"
 
-#include "common_bt_btd_out.h"
+#include "common_bt_blt_btd_out.h"
+
 
 void
 append_citekey( fields *in, fields *out, int format_opts, int *status )
