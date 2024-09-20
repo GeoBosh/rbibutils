@@ -1,36 +1,15 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://geobosh.github.io/rbibutils/404.html</loc>
-  </url>
-  <url>
-    <loc>https://geobosh.github.io/rbibutils/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://geobosh.github.io/rbibutils/index.html</loc>
-  </url>
-  <url>
-    <loc>https://geobosh.github.io/rbibutils/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://geobosh.github.io/rbibutils/reference/bibConvert.html</loc>
-  </url>
-  <url>
-    <loc>https://geobosh.github.io/rbibutils/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://geobosh.github.io/rbibutils/reference/rbibutils-package.html</loc>
-  </url>
-  <url>
-    <loc>https://geobosh.github.io/rbibutils/reference/rbibutils_formats.html</loc>
-  </url>
-  <url>
-    <loc>https://geobosh.github.io/rbibutils/reference/readBib.html</loc>
-  </url>
-  <url>
-    <loc>https://geobosh.github.io/rbibutils/reference/readBibentry.html</loc>
-  </url>
-  <url>
-    <loc>https://geobosh.github.io/rbibutils/reference/register_JSSextra.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://geobosh.github.io/rbibutils/404.html</loc></url>
+<url><loc>https://geobosh.github.io/rbibutils/authors.html</loc></url>
+<url><loc>https://geobosh.github.io/rbibutils/index.html</loc></url>
+<url><loc>https://geobosh.github.io/rbibutils/news/index.html</loc></url>
+<url><loc>https://geobosh.github.io/rbibutils/reference/bibConvert.html</loc></url>
+<url><loc>https://geobosh.github.io/rbibutils/reference/bibentryExtra.html</loc></url>
+<url><loc>https://geobosh.github.io/rbibutils/reference/index.html</loc></url>
+<url><loc>https://geobosh.github.io/rbibutils/reference/rbibutils-package.html</loc></url>
+<url><loc>https://geobosh.github.io/rbibutils/reference/rbibutils_formats.html</loc></url>
+<url><loc>https://geobosh.github.io/rbibutils/reference/readBib.html</loc></url>
+<url><loc>https://geobosh.github.io/rbibutils/reference/readBibentry.html</loc></url>
+<url><loc>https://geobosh.github.io/rbibutils/reference/register_JSSextra.html</loc></url>
 </urlset>
+
