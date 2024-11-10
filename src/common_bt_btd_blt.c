@@ -582,11 +582,16 @@ bibtexin_typef( fields *bibin, const char *filename, int nrefs, param *p )
 {
 	int ntypename, nrefname, is_default;
 	char *refname = "", *typename = "";
-
+	
+// REprintf("(bibtexin_typef:)\n");
+// fields_report_stderr( bibin );  // Testing only
+ 
 	ntypename = fields_find( bibin, "INTERNAL_TYPE", LEVEL_MAIN );
 	nrefname  = fields_find( bibin, "REFNUM",        LEVEL_MAIN );
 	if ( nrefname!=FIELDS_NOTFOUND )  refname  = fields_value( bibin, nrefname,  FIELDS_CHRP_NOUSE );
 	if ( ntypename!=FIELDS_NOTFOUND ) typename = fields_value( bibin, ntypename, FIELDS_CHRP_NOUSE );
+// REprintf("(bibtexin_typef) typename = %s\n", typename);
+// REprintf("(bibtexin_typef) refname = %s\n", typename);
 
 	return get_reftype( typename, nrefs, p->progname, p->all, p->nall, refname, &is_default, REFTYPE_CHATTY );
 }

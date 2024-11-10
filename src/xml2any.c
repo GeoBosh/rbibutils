@@ -19,6 +19,12 @@
 #include "args.h"
 #include "bibprog.h"
 
+
+extern int convert_latex_escapes_only;
+extern int export_tex_chars_only;
+
+extern void bibdirectin_more_cleanf( void );
+
 // const char progname[] = "xml2bib";
 
 char **journals;
@@ -470,6 +476,13 @@ xml2any_main( int *argc, char *argv[], char *outfile[], double *nref )
 	  // ihelp = 22;
 	}else if(strcmp(progname,  "xml2bibentry") == 0){
 	  bibentryout_initparams( &p, progname );
+	  // 2024-10-12
+	  // !!! :TODO: !!! temporary fix to prevent exportint '\' as
+	  // '\backslash', '{' as '\{', '}' as '\}' and use a few other fixes
+	  // for latex escape characters, initially done for 'direct'
+	  convert_latex_escapes_only = 1;
+	  export_tex_chars_only = 1;
+	  
 	}else {
 	  bibl_freeparams( &p );
 	  error("cannot deduce output format from name %s", progname);
@@ -491,5 +504,6 @@ xml2any_main( int *argc, char *argv[], char *outfile[], double *nref )
 
 	bibl_freeparams( &p );
 	// return EXIT_SUCCESS;
+	bibdirectin_more_cleanf(); // 2024-10-13 new; patch after fixing  \ => {\backslash} etc.
 }
 

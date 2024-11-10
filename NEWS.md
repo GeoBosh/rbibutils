@@ -1,4 +1,47 @@
-# rbibutils 2.2.16.9000
+# rbibutils 2.3.0.9000
+
+## TODO: edit this section before release
+
+- *WARNING:* A change of the default for argument `direct` of
+  `readBib()` is planned for rbibutils v3.0 (from `FALSE` to
+  `TRUE`). If you really want `direct = FALSE`, please state that
+  explicitly. Note that for most users `direct = TRUE` is superior
+  (better handling of maths, additional capabilities). Still, `direct =
+  FALSE` has some features that may be desirable for some
+  applications.
+  
+  *:TODO:* the documentation needs improving to describe the above.
+
+- added completion for `bibentryExtra` objects. Useful for interactive use. For
+  example in an R session if `be` is a `bibentryExtra` object, typing `be$bi`
+  then '<Tab>' will be completed to `be$bibtype`. Also, `be$` then '<Tab>' will
+  provide a choice from the available completions. This should work also in
+  RStudio, whereever it provides completion.
+
+- corrected some typo's in the draft vignette.
+
+- now using `bibentrydirectout_write` also in 'bibentryout.c'.
+  `bibentryout_write` was not in sync with changes in `bibentrydirectout_write`.
+
+- some long standing unnoticed bugs or shortcomings of the processing
+  in `readBib()` and `convert()` in the case `direct = FALSE` have
+  been fixed. 
+  
+  *:TODO:* argument `texChars` is not supported when `direct = FALSE`
+           but maybe after these fixes it can be done.
+
+
+# rbibutils 2.3
+
+## New and improved features
+
+- the class of the object returned by `readBibentry()`, `readBib()`, and
+  `bibtexImport()` is now always `c("bibentryExtra", "bibentry")` (unless
+  argument `fbibentry` is supplied). Previously `"bibentryExtra"` was added only
+  when there were bib items with non-standard type and `extra = TRUE`. An option
+  to return just `"bibentry"` may be considered.
+  
+- non-standard bibtypes are lowercased.
 
 - consolidated the subsetting operators for 'bibentryExtra' objects and the
   documentation for them.
@@ -7,68 +50,45 @@
   arbitrary Bibtex entry types and takes the same arguments as `bibentry()`.
 
 - the default bib style for the `bibentryExtra` method for `format()` is now 
-  "JSSextra", as was .
+  "JSSextra".
 
 - refactored and streamlined `writeBibentry()` (the original version didn't use
   the `format` method).
 
-- fixed a bug in `format.bibentryExtra()` which caused 
-  `writeBibentry()` to misbehave when `style = "Rstyle"`.
-
-- bibstyle 'JSSextra' accidentally had added its stuff directly in the 'JSS'
-  style's environment, causing the two to be equivalent. Now fixed.
-
-- added `onLoad()` to make bibstyle JSSextra default when loading rbibutils.
-
-  *TODO*: remove this note from the release - it is probably a temporary fix to
-  keep the old behaviour intact for now. It has always been documented that
-  JSSextra should be made default to take effect but since it worked anyway
-  users and developers may have not noticed.
-  
-- *TODO*: edit these before release!
-
-- *TDDO:* (remove this remark from the release version, since this is internal
-  not entirely true) bib types that are not among the standard ones are now
-  imported as type 'Misc', with the real type put in field 'truebibtype'.
-
-
-- first draft of a vignette.
-
 - new generic function `as.bibentryExtra`.
-
-- style "JSSextra" was failing to print (when 'style = "latex"') bibentries with
-  types InBook and InCollection, due to typo's in the code.
 
 - new 'bibentryExtra' method for `c()`.
 
-- fixed `[<-` sub-assignment to 'bibentryExtra' objects.
-
-- the class of the object returned by `readBibentry()`, `readBib()`, and
-  `bibtexImport()` is now always `c("bibentryExtra", "bibentry")` (unless
-  argument `fbibentry` is supplied). Previously "bibentryExtra" was added only
-  when there were bib items with non-standard type and `extra = TRUE`.
-  
-- non-standard bibtypes are lowercased.
+- bib style "JSSextra" now knows how to render 'online' bibtype. It is a
+  biblatex (not bibtex) field but very useful these days.
 
 - bib style "JSSextra" now knows how to render a few more non-standard bib
   types.
-
-- bib style "JSSextra" now knows how to render 'online' bibtype. It is not among
-  the standard bibtex types but is quite useful these days.
 
 - `print(be, style = "R")`, where `be` is an object from class "bibentryExtra"
   no longer includes the, effectively, internal for `rbibutils` field
   `truebibtype`.
 
-- `bibentrydirectout` now ...
+- first draft of a vignette.
 
-- ?? add 'online' type to JSSextra - it is a biblatex (not bibtex) field but
-  very useful.
+## Bug fixes
+
+- now bibstyle 'JSSextra' creates a new environment for its stuff. Previously it
+  was accidentally adding its objects directly in the 'JSS' style's environment,
+  causing the two to be equivalent.
+
+- fixed a bug in `format.bibentryExtra()` which caused `writeBibentry()` to
+  misbehave when `style = "Rstyle"`.
+
+- fixed `[<-` sub-assignment to 'bibentryExtra' objects.
+
+- when `style = "latex"`, style "JSSextra" was failing to print bibentries with
+  types InBook and InCollection, due to a typo (redundant comma) in the code.
 
 - a number of minor bugs were fixed.
 
-
-# rbibutils 2.2.16 (CRAN)
+  
+# rbibutils 2.2.16
 
 - fixed processing of the Polish suppressed-l `\l`. Previously the character
   following it was enclosed in braces, which was harmless in most cases but the
@@ -76,25 +96,25 @@
   for the uppercase version, `\L`, which was missing from the code.
 
 
-# rbibutils 2.2.15 (CRAN)
+# rbibutils 2.2.15
 
 - adapted some tests to a change in R-devel circa r84986.
 
 
-# rbibutils 2.2.14 (CRAN)
+# rbibutils 2.2.14
 
 - fixed a couple of tests in 'test-convert.R' which started failing (ca. R svn
   rev 84760) due to an R-devel change in `person()`.
 
 
-# rbibutils 2.2.13 (CRAN)
+# rbibutils 2.2.13
 
 - Bugfix: the declaration of the return value of a C function was accidentally
   changed from `const char *` to `char *` in v2.2.12, causing CRAN warnings on
   some platforms.
 
 
-# rbibutils 2.2.12 (CRAN)
+# rbibutils 2.2.12
 
 - Bugfix: `readBib` with `texChars = "Rdpack"` which converts `\'i` to `\'\i`
    was wrapping `\'\i` in braces in 'author' and related fields only. Failure to
@@ -109,24 +129,24 @@
 - partial internal refactoring of C code to avoid duplication.
 
 
-# rbibutils 2.2.11 (CRAN)
+# rbibutils 2.2.11
 
 - in `C` code, changed `sprintf` calls to use `snprintf` to fix CRAN warnings.
 
 
-# rbibutils 2.2.10 (CRAN)
+# rbibutils 2.2.10
 
 - fixed warnings about deprecated function declarations without prototypes in
   `C` code.
 
 
-# rbibutils 2.2.9 (CRAN)
+# rbibutils 2.2.9
 
 - fixed wrong markup of an item in this file (for v2.2.4) causing bad rendering
   and a NOTE from CRAN.
   
 
-# rbibutils 2.2.8 (CRAN)
+# rbibutils 2.2.8
 
 - new argument `fbibentry` for `readBib` and `readBibentry` for specification of
   a function for generation of bib objects. It should have the same arguments as
@@ -144,18 +164,18 @@
   the cause. Fixes issue#8 on github.
 
 
-# rbibutils 2.2.7 (CRAN)
+# rbibutils 2.2.7
 
 - fixed bug in isi output occuring in v2.2.5 and 2.2.6 and revealed by gss/ASAN
   check.
 
 
-# rbibutils 2.2.6
+# rbibutils 2.2.6 (not on CRAN)
 
 - fixed memory leaks in nbib output in biblatex input occuring in v2.2.5.
 
 
-# rbibutils 2.2.5 (CRAN)
+# rbibutils 2.2.5
 
 - `readBibentry` with `extra = TRUE` now parses (almost) any syntactically
   correct bib entries. In particular, it accepts arbitrary bib types and doesn't
@@ -181,33 +201,26 @@
   were actually handled.
   
 
-# rbibutils 2.2.4 (CRAN)
+# rbibutils 2.2.4
 
-- fixed the handling of accents over `i` in authors' names when the LaTeX
-  escapes are not converted to real characters (there were no problems when
-  converted to UTF-8). Reported by Manuel López-Ibáñez with examples (issue #5,
-  #6, #7).
+- stopped converting `\'\i'` to `\'i`. They are equivalent but there is no
+  reason to do this. Also, at the time of writing R's `tools::latexToUtf8`
+  converts the former but not the latter, while Biber seems to convert the
+  latter but not the former, see
+  https://bugs.r-project.org/show_bug.cgi?id=18208 . So, users of the bib file
+  may have specific reasons to use one or the other.
 
-  - `\i` in authors' names was messing up the following character (issue#5).
-
-  - stopped converting `\'\i'` to `\'i`. They are equivalent but there is no
-    reason to do this. Also, at the time of writing R's `tools::latexToUtf8`
-    converts the former but not the latter, while Biber seems to convert the
-    latter but not the former, see
-    https://bugs.r-project.org/show_bug.cgi?id=18208 . So, users of the bib file
-    may have specific reasons to use one or the other.
-
-  - names consisting of just one part, family, were missing processing of escaped
-    characters (issue #5).
+- names consisting of just one part, family, were missing processing of escaped
+  characters (issue #5).
     
 
-# rbibutils 2.2.3 (CRAN)
+# rbibutils 2.2.3
 
 - fixed memory issues from valgrind in v2.2.2 thanks to patch supplied by Bill
   Dunlap.
 
 
-# rbibutils 2.2.2 (CRAN)
+# rbibutils 2.2.2
 
 - import of `Pubmed XML` was sometimes giving a handful of references for files
   with tens or hundreds of them. Now fixed, see issue #4, reported by Rafael
@@ -217,12 +230,12 @@
   databases often have no new lines at all, except for the XML header.)
 
 
-# rbibutils 2.2.1 (CRAN)
+# rbibutils 2.2.1
 
 - fixed problems revealed by valgrind.
 
 
-# rbibutils 2.2 (CRAN)
+# rbibutils 2.2
 
 - new convenience function `charToBib` takes input from a character vector
   rather than a file. By default it assumes that the input is in `bibtex` format
@@ -274,7 +287,7 @@
   with `direct = TRUE`.
 
 
-# rbibutils 2.1.1 (CRAN)
+# rbibutils 2.1.1
 
 - now a warning (rather than error) is issued if package 'testthat' is not
   available for tests.
@@ -283,7 +296,7 @@
    just with one argument (the filename).
 
 
-# rbibutils 2.1 (CRAN)
+# rbibutils 2.1
 
 - `readBib` can now convert bibtex files directly (i.e., without first
   converting to XML intermediate) to bibentry R objects. This can be requested
@@ -305,7 +318,7 @@
   (and R-devel now flags it with a NOTE).
   
 
-# rbibutils 2.0 (CRAN)
+# rbibutils 2.0
 
 - there is no longer (unintended) dependence on R >= 3.4. This was because of
   the use of `R_unif_index`. Report and fix due to Henrik Sloot (#1).
@@ -324,7 +337,7 @@
   messages.
 
 
-# rbibutils 1.4 (CRAN)
+# rbibutils 1.4
 
 - new function `writeBib` for writing bibtex files.
 
@@ -337,7 +350,7 @@
 - somehow `README.md` went missing in v1.3, now reinstated.
 
 
-# rbibutils 1.3 (CRAN)
+# rbibutils 1.3
 
 - reverted a change in v1.2 which caused trouble with some latex characters.
 
@@ -348,12 +361,12 @@
 - new function `readBib` for importing bibtex files.
 
 
-# rbibutils 1.2.1
+# rbibutils 1.2.1 (not on CRAN)
 
 - improved processing of URL field when converting to bibentry.
 
 
-# rbibutils 1.2
+# rbibutils 1.2 (not on CRAN)
 
 - fixed inBook processing.
 
@@ -362,7 +375,7 @@
 - fixed misterous loss of `$`s and curly braces in certain circumstances.
 
 
-# rbibutils 1.1.0 (CRAN)
+# rbibutils 1.1.0
 
 - fixed processing of multiple person names in bibtex import.
 
@@ -371,7 +384,7 @@
 - stopped printing some messages causing problems to Rdpack.
 
 
-# rbibutils 1.0.3 (CRAN)
+# rbibutils 1.0.3
 
 - fixed warnings from `clang` compilers on CRAN. (These were about tautology
   `if` clauses in `src/adsout.c` and default argument promotion of the second
@@ -382,18 +395,18 @@
 - updated the website.
 
 
-# rbibutils 1.0.2 (CRAN)
+# rbibutils 1.0.2
 
 - completed the copyright credits in DESCRIPTION (there were contributors not
   mentioned anywhere except in the C source files they contributed).
 
 
-# rbibutils 1.0.1 
+# rbibutils 1.0.1 (not on CRAN)
 
 - clarified the copyright holders in DESCRIPTION.
 
 
-# rbibutils 1.0.0 
+# rbibutils 1.0.0 (not on CRAN)
 
 Features of this version:
 

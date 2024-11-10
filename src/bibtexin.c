@@ -32,6 +32,9 @@
 extern slist find;
 extern slist replace;
 
+extern int convert_latex_escapes_only;
+
+
 /*****************************************************
  PUBLIC: void bibtexin_initparams()
 *****************************************************/
@@ -51,7 +54,13 @@ bibtexin_initparams( param *pm, const char *progname )
 	pm->nosplittitle     = 0;
 	pm->verbose          = 0;
 	pm->addcount         = 0;
-	pm->output_raw       = 0;
+	// 2024-10-18 was: pm->output_raw       = 0;
+	//    major change! this makes  pm->output_raw the same as that in bibdirectin.c;
+	//    field output_raw is usd in bibl_read() to control which operations to do
+	pm->output_raw       =  // BIBL_RAW_WITHCLEAN |
+	                        // BIBL_RAW_WITHMAKEREFID |
+	  0; // BIBL_RAW_WITHCHARCONVERT;
+	
 
 	pm->readf    = bibtexin_readf;
 	pm->processf = bibtexin_processf;
@@ -92,7 +101,7 @@ bibtexin_cleanref( fields *bibin, param *pm )
 
      n = fields_num( bibin );
 
-     // REprintf("\nbibtexdirectin_cleanref (start): n = %d\n" , n);
+     // REprintf("\nbibtextin_cleanref (start): n = %d\n" , n);
      // for(i = 0; i < n; i++) {
      //   REprintf("i = %d, value = %s\n", i, (bibin->value[i]).data);
      // }
@@ -118,9 +127,29 @@ bibtexin_cleanref( fields *bibin, param *pm )
 	  // if ( is_name_tag( tag ) ) return BIBL_OK;
 	  // if ( !is_name_tag( tag ) ){
 	  value = fields_value( bibin, i, FIELDS_STRP_NOUSE );
+	  // REprintf("(after fields_value): tag = %s, value = %s\n", tag->data, value->data);
+	  
 	  if ( str_is_empty( value ) ) continue;
 
+	  // REprintf("(before convert_latex_escapes_only): tag = %s, value = %s\n", tag->data, value->data);
 	  // }
+	  // 2024-10-12
+	  // !!! :TODO: !!! temporary fix to prevent exportint '\' as
+	  // '\backslash', '{' as '\{', '}' as '\}' and use a few other fixes
+	  // for latex escape characters, initially done for 'direct'
+	  //
+	  // this if(convert_latex_escapes_only) block copied from bibtexdirectin_cleanref
+	  if(convert_latex_escapes_only) { // convert
+	       str_convert( value,
+			    // pm->charsetin,  pm->latexin,  pm->utf8in,  pm->xmlin,
+			    pm->charsetin,  1,  pm->utf8in,  pm->xmlin,
+			    // pm->charsetout, pm->latexout, pm->utf8out, pm->xmlout );
+			    pm->charsetout, 0, pm->utf8out, pm->xmlout );
+	  }
+
+	  // REprintf("after convert_latex_escapes_only): tag = %s, value = %s\n", tag->data, value->data);
+	  
+	
 	  if ( is_name_tag( tag ) ) {
 	       status = bibtexin_person( bibin, i, pm );
                // REprintf("i = %d\n", i);

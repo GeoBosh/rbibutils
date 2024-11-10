@@ -29,7 +29,6 @@
  PUBLIC: int bibentryout_initparams()
 *****************************************************/
 
-static int  bibentryout_write( fields *in, FILE *fp, param *p, unsigned long refnum );
 static int  bibentryout_assemble( fields *in, fields *out, param *pm, unsigned long refnum );
 
 int
@@ -51,7 +50,7 @@ bibentryout_initparams( param *pm, const char *progname )
 	pm->headerf   = bibentrydirectout_writeheader; // generic_writeheader;
 	pm->footerf   = bibentrydirectout_writefooter; // NULL;
 	pm->assemblef = bibentryout_assemble;
-	pm->writef    = bibentryout_write;
+	pm->writef    = bibentrydirectout_write;
 
 	if ( !pm->progname ) {
 		if ( !progname ) pm->progname = NULL;
@@ -252,106 +251,4 @@ bibentryout_assemble( fields *in, fields *out, param *pm, unsigned long refnum )
 	append_key      ( in, "KEY",   "other"        ,  out, &status );
 
 	return status;
-}
-
-/*****************************************************
- PUBLIC: int bibentryout_write()
-*****************************************************/
-
-static int
-bibentryout_write( fields *out, FILE *fp, param *pm, unsigned long refnum )
-{
-  int i, j, len; // nquotes, format_opts = pm->format_opts;
-	char *tag, *value, ch;
-	int not_person; // Georgi
-
-	fprintf( fp, ",\n\n" ); // Georgi
-	
-	/* ...output type information "@article{" */
-	value = ( char * ) fields_value( out, 0, FIELDS_CHRP );
-	// if ( !(format_opts & BIBL_FORMAT_BIBOUT_UPPERCASE) ) fprintf( fp, "@%s{", value );
-	// else {
-	// 	len = (value) ? strlen( value ) : 0;
-	// 	fprintf( fp, "@" );
-	// 	for ( i=0; i<len; ++i )
-	// 		fprintf( fp, "%c", toupper((unsigned char)value[i]) );
-	// 	fprintf( fp, "{" );
-	// }
-	len = (value) ? strlen( value ) : 0;
-	fprintf( fp, "  bibentry(bibtype = \"" );
-	if(len > 0)
-	    fprintf( fp, "%c", toupper((unsigned char)value[0]) );
-	for (i=1; i<len; ++i )
-		fprintf( fp, "%c", tolower((unsigned char)value[i]) );
-	fprintf( fp, "\"" );
-
-	/* ...output refnum "Smith2001" */
-	value = ( char * ) fields_value( out, 1, FIELDS_CHRP );
-	// fprintf( fp, "%s", value );
-	fprintf( fp, ",\n      key = \"%s\"", value );
-
-	/* ...rest of the references */
-	for ( j=2; j<out->n; ++j ) {
-	        // nquotes = 0;
-		tag   = ( char * ) fields_tag( out, j, FIELDS_CHRP );
-		value = ( char * ) fields_value( out, j, FIELDS_CHRP );
-		fprintf( fp, ",\n      " );
-
-		// if ( format_opts & BIBL_FORMAT_BIBOUT_WHITESPACE ) fprintf( fp, "  " );
-		// if ( !(format_opts & BIBL_FORMAT_BIBOUT_UPPERCASE ) ) fprintf( fp, "%s", tag );
-		// else {
-		// 	len = strlen( tag );
-		// 	for ( i=0; i<len; ++i )
-		// 		fprintf( fp, "%c", toupper((unsigned char)tag[i]) );
-		// }
-		fprintf( fp, "%s", tag );
-		
-		// if ( format_opts & BIBL_FORMAT_BIBOUT_WHITESPACE ) fprintf( fp, " = \t" );
-		// else fprintf( fp, "=" );
-		fprintf( fp, " = " );
-
-		// if ( format_opts & BIBL_FORMAT_BIBOUT_BRACKETS ) fprintf( fp, "{" );
-		// else fprintf( fp, "\"" );
-		not_person = strcmp( tag, "author" ) && strcmp( tag, "editor" ) 
-		  && strcmp( tag, "translator" );  // TODO: are there others?
-		  
-		if ( not_person ) fprintf( fp, "\"" );
-		
-		len = strlen( value );
-		for ( i=0; i<len; ++i ) {
-			ch = value[i];
-			// if ( ch!='\"' ) fprintf( fp, "%c", ch );
-			// else {
-			// 	if ( format_opts & BIBL_FORMAT_BIBOUT_BRACKETS || ( i>0 && value[i-1]=='\\' ) )
-			// 		fprintf( fp, "\"" );
-			// 	else {
-			// 		if ( nquotes % 2 == 0 )
-			// 			fprintf( fp, "``" );
-			// 		else    fprintf( fp, "\'\'" );
-			// 		nquotes++;
-			// 	}
-			// }
-			if ( ch == '\\' ) {
-			  fprintf( fp, "%c%c", ch, ch );
-			}
-			else if ( ch == '\"' && not_person)
-			  fprintf( fp, "\\%c", ch );
-			else		       fprintf( fp, "%c"  , ch );
-		}
-
-		// if ( format_opts & BIBL_FORMAT_BIBOUT_BRACKETS ) fprintf( fp, "}" );
-		// else fprintf( fp, "\"" );
-		if ( not_person )
-		  fprintf( fp, "\"" );
-		
-	}
-
-	/* ...finish reference */
-	// if ( format_opts & BIBL_FORMAT_BIBOUT_FINALCOMMA ) fprintf( fp, "," );
-	// fprintf( fp, "\n}\n\n" );
-	fprintf( fp, " )" );
-
-	fflush( fp );
-
-	return BIBL_OK;
 }

@@ -9,7 +9,7 @@
 \concept{bibentry}
 
 
-\title{Read and write bibentry files}
+\title{Read and write bibentry files or read bibtex strings}
 \description{Read and write bibentry files.}
 \usage{
 readBibentry(file, extra = FALSE, fbibentry = NULL)
@@ -20,8 +20,10 @@ writeBibentry(be, file = stdout(), style = c("Rstyle", "loose"))
   \item{be}{a bibentry object.}
   \item{file}{
 
-    filename, a character string or a connection. The default is stdout
-    (effectively, to write on the screen).
+    filename, a character string or a connection. For
+    \code{readBibentry}, input from the console can be specified by
+    \code{file = ""}.  The default for \code{writeBibentry} is
+    \code{stdout} (effectively, to write on the screen).
 
   }
   \item{extra}{if \code{TRUE} allow non-standard bibtex types.}
@@ -80,6 +82,8 @@ writeBibentry(be, file = stdout(), style = c("Rstyle", "loose"))
   bib files,
   
   \code{\link{bibConvert}}
+
+  \code{\link{charToBib}} for reading from a character vector  
 }
 \examples{
 bibs <- readBib(system.file("REFERENCES.bib", package = "rbibutils"),

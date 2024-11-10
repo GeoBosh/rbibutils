@@ -849,7 +849,7 @@ bibl_read( bibl *b, FILE *fp, char *filename, param *p )
 	int status = BIBL_OK;
 	param read_params;
 	bibl bin;
-	// REprintf("(bibl_read) in bibl_read!\n");
+	// REprintf("(bibl_read): in bibl_read!\n");
 
 	if ( !b )  return BIBL_ERR_BADINPUT;
 	if ( !fp ) return BIBL_ERR_BADINPUT;
@@ -903,7 +903,7 @@ bibl_read( bibl *b, FILE *fp, char *filename, param *p )
 		if ( debug_set( &read_params ) ) bibl_verbose( &bin, "post_clean_refs", "for bibl_read" );
 	}
 	
-	// // Georgi: for testing
+	// Georgi: for testing
 	// REprintf("bibl_read: (after(clean_refs)\n");
 	// for(long i = 0; i < bin.n; ++i) {
 	//   fields_report_stderr( bin.ref[i] );
@@ -922,7 +922,7 @@ bibl_read( bibl *b, FILE *fp, char *filename, param *p )
 	// }
 
 	if ( !read_params.output_raw ) {
-	        // REprintf("bibl_read: before convert_refs; read_params.output_raw is FALSE\n");
+	  // REprintf("(bibl_read) before convert_refs; read_params.output_raw is 0\n");
 		status = convert_refs( &bin, filename, b, &read_params );
 		if ( status!=BIBL_OK ) goto out;
 		if ( debug_set( &read_params ) ) bibl_verbose( b, "post_convert_refs", "for bibl_read" );
@@ -949,13 +949,16 @@ bibl_read( bibl *b, FILE *fp, char *filename, param *p )
 		if ( debug_set( &read_params ) ) bibl_verbose( &bin, "post_uniqueify_citekeys", "for bibl_read" );
 	}
 
+
+out:
 	// // Georgi: for testing
-	// REprintf("\nbibl_read: at end of bibl_read\n");
+	// REprintf("\n(bibl_read): at end of bibl_read\n");
 	// for(long i = 0; i < b->n; ++i) {
 	//   fields_report_stderr( b->ref[i] );
 	// }
 
-out:
+
+	
 	bibl_free( &bin );
 	bibl_freeparams( &read_params );
 

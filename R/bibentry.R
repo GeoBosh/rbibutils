@@ -700,3 +700,18 @@ lapply_bee <- function(bee, FUN, ..., null = "") {
     res[is.null(res)] <- null
     res
 }
+
+if(getRversion() >= '4.3.0') { ## new function .AtNames(); also: findMatches() is now exported
+    .DollarNames.bibentryExtra <- function(x, pattern = "") {    
+        wrk <- utils::findMatches(pattern, .bibentry_attribute_names)
+        field_names <- unique(unlist(lapply(unclass(x), names)))
+        c(wrk, utils::findMatches(pattern, field_names))
+    }
+} else { ## simplified matches, .DollarNames available but findMatches not (or not exported)
+    ## TODO: needs testing on R < 4.3.0
+    .DollarNames.bibentryExtra <- function(x, pattern = "") {    
+        wrk <- grep(pattern, .bibentry_attribute_names, value = TRUE)
+        field_names <- unique(unlist(lapply(unclass(x), names)))
+        c(wrk, grep(pattern, field_names, value = TRUE))
+    }
+}

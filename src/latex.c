@@ -520,11 +520,13 @@ latex2char( char *s, unsigned int *pos, int *unicode )
 	       // crude patch for \\v{z} and similar, should really consolidate all this.
 	       if(p[1] && p[2] && p[2] == '{'  && p[3]  && p[4] && p[4] == '}'  ) {
 		    p[2] = ' ';
-		    result = lookup_latex( latex_chars, 197, p, pos, unicode ); // until \Alpha in latex.c
+		    result = lookup_latex( latex_chars, nlatexchars_escaped_only, p, pos, unicode ); // until \Alpha in latex.c
 		    if ( result!=0 ) {
-			 *pos += 1;  // skip '}'
+			 *pos += 1;  // skip '}' // set unicode = 1 ? (no, lookup_latex() sets it if needed
 			 p[2] = '{';
 			 return result;
+		    } else {            // 2024-10-19 BUGFIX: restore '{' if conversion not successful
+			 p[2] = '{'; 
 		    }
 	       }
 	  }

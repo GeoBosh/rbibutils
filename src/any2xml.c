@@ -20,6 +20,9 @@
 #include "tomods.h"
 #include "bibprog.h"
 
+extern int convert_latex_escapes_only;
+extern void bibdirectin_more_cleanf( void );
+
 char *help0[] = {
 		 /* bib2xml */
 		 "Converts a Bibtex reference file into MODS XML\n\n",
@@ -82,6 +85,12 @@ any2xml_main( int *argcin, char *argv[], char *outfile[], double *nref)
 	param p;
 	int ihelp;
 	if(strcmp(progname, "bib2xml") == 0){
+	  // // 2024-10-12
+	  // // !!! :TODO: !!! temporary fix to prevent exporting '\' as
+	  // // '\backslash', '{' as '\{', '}' as '\}' and use a few other fixes
+	  // // for latex escape characters, initially done for 'direct'
+	  // convert_latex_escapes_only = 1;
+	  
 	  bibtexin_initparams( &p, progname );
 	  ihelp = 0;
 	}else if(strcmp(progname, "biblatex2xml") == 0){
@@ -134,6 +143,14 @@ any2xml_main( int *argcin, char *argv[], char *outfile[], double *nref)
 	// REprintf("(any2xml)after bibprog\n");
 
 	bibl_freeparams( &p );
+	if(strcmp(progname, "bib2xml") == 0){ // TODO: this probably should be removed
+	  // 2024-10-12
+	  // !!! :TODO: !!! temporary fix to prevent exportint '\' as
+	  // '\backslash', '{' as '\{', '}' as '\}' and use a few other fixes
+	  // for latex escape characters, initially done for 'direct'
+	  convert_latex_escapes_only = 0;
+	}
+	  // bibdirectin_more_cleanf(); // 2024-10-13 new; patch after fixing  \ => {\backslash} etc.
 
 	*argcin = argc;
 	// return EXIT_SUCCESS;

@@ -14,6 +14,9 @@
 #include "tomods.h"
 #include "args.h"
 
+extern int convert_latex_escapes_only;
+extern int export_tex_chars_only;
+
 static void
 args_tomods_help( char *progname, char *help1, char *help2 )
 {
@@ -105,6 +108,11 @@ tomods_processargs( int *argc, char *argv[], param *p,
 			p->charsetout_src = BIBL_SRC_USER;
 			subtract = 1;
 		} else if ( args_match( argv[i], "-nl", "--no-latex" ) ) {
+			p->latexin = 0;
+			subtract = 1;
+		} else if ( args_match( argv[i], "--convert_latex_escapes", "" ) ) { // Georgi 2024-10-17
+			convert_latex_escapes_only = 1;               // see also bib2be.c
+			export_tex_chars_only = 1;  // ????? 
 			p->latexin = 0;
 			subtract = 1;
 		} else if ( args_match( argv[i], "-nt", "--nosplit-title" ) ){

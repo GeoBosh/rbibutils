@@ -182,6 +182,12 @@ William McLean (2017).
 \keyword{ package }
 \seealso{
   \code{\link{bibConvert} for further details and examples}
+
+  \code{\link{readBib}},
+
+  \code{\link{charToBib}},
+
+  \code{\link{readBibentry}}, \code{\link{writeBibentry}}
 }
 %\examples{
 %}

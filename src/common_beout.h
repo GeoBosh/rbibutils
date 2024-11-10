@@ -11,6 +11,7 @@
 
 void bibentrydirectout_writeheader( FILE *outptr, param *pm );
 void bibentrydirectout_writefooter( FILE *outptr);
+int bibentrydirectout_write( fields *out, FILE *fp, param *pm, unsigned long refnum );
 
 void name_build_bibentry_direct( str *s, const char *p );
 void append_people_be( fields *in, char *tag, char *ctag, char *atag,

@@ -2,93 +2,97 @@
 ## It has been automatically generated from *.org sources.
 
 readBib <- function(file, encoding = NULL, ..., direct = FALSE,
-                    texChars = c("keep", "convert", "export", "Rdpack"),
-                    macros = NULL, extra = FALSE, key, fbibentry = NULL){
+		    texChars = c("keep", "convert", "export", "Rdpack"),
+		    macros = NULL, extra = FALSE, key, fbibentry = NULL){
 
     if(is.null(encoding))
-        encoding <- c("utf8", "utf8")  # would default input 'native' be better?
+	encoding <- c("utf8", "utf8")  # would default input 'native' be better?
     else {
-        encoding <- ifelse(encoding == "UTF-8", "utf8", encoding)
-        if(length(encoding) == 1)
-            encoding <- c(encoding, "utf8")
+	encoding <- ifelse(encoding == "UTF-8", "utf8", encoding)
+	if(length(encoding) == 1)
+	    encoding <- c(encoding, "utf8")
     }
 
     if(is.null(macros)){
-        if(!file.exists(file))
-            stop("file '", file, "' doesn't exist")
+	if(!file.exists(file))
+	    stop("file '", file, "' doesn't exist")
     }else{
-        fn <- tempfile(fileext = ".bib")
-                                        # TODO: changing this to try to fix a strange error on Windows,
-                                        #       though it turns out that
-                                        #       bib/litprog280macros_only.bib is not there during 'R CMD check'
-                                        # for(s in c(macros, file))
-                                        #     if(!file.append(fn, s))
-                                        #         stop("could not copy file ", s)
-        files <- c(macros, file)
-        exist_flags <- file.exists(files)
-        if(any(!exist_flags)){
-            stop("files  ", paste(files[!exist_flags], collapse = ", "), " do not exist")
-        }
-        
-        if(!file.copy(files[1], fn, overwrite = TRUE))
-            stop("could not copy file ", files[1], "\nto destination")
-        for(s in files[-1])
-            if(!file.append(fn, s))
-                stop("could not copy file ", s)
-        
-        file <- fn
+	fn <- tempfile(fileext = ".bib")
+					# TODO: changing this to try to fix a strange error on Windows,
+					#       though it turns out that
+					#       bib/litprog280macros_only.bib is not there during 'R CMD check'
+					# for(s in c(macros, file))
+					#     if(!file.append(fn, s))
+					#         stop("could not copy file ", s)
+	files <- c(macros, file)
+	exist_flags <- file.exists(files)
+	if(any(!exist_flags)){
+	    stop("files  ", paste(files[!exist_flags], collapse = ", "), " do not exist")
+	}
+
+	if(!file.copy(files[1], fn, overwrite = TRUE))
+	    stop("could not copy file ", files[1], "\nto destination")
+	for(s in files[-1])
+	    if(!file.append(fn, s))
+		stop("could not copy file ", s)
+
+	file <- fn
     }
-    
+
     if(!direct){
-        ## to make sure that the old behaviour before adding arguments is kept.
-        ##     TODO: relax and coordinate with direct = TRUE later
-        stopifnot(length(list(...)) == 0) # no ... arguments allowed
+	## to make sure that the old behaviour before adding arguments is kept.
+	##     TODO: relax and coordinate with direct = TRUE later
+	stopifnot(length(list(...)) == 0) # no ... arguments allowed
 
-        bib <- tempfile(fileext = ".bib")
-        on.exit(unlink(bib))
+	bib <- tempfile(fileext = ".bib")
+	on.exit(unlink(bib))
 
-        be <- bibConvert(file, bib, "bibtex",
-                         "bibentry", encoding = encoding, tex = "no_latex")
-        res <- be$bib
+	## 2024-11-12: reverting this back to the previous. Will resolve the issue in a different way.
+	## be <- bibConvert(file, bib, "bibtex",
+	##                                 # 2024-10-11 was: tex = "no_latex"
+	##                  "bibentry", encoding = encoding, tex = c("no_latex", "convert_latex_escapes"))
+	be <- bibConvert(file, bib, "bibtex",
+			 "bibentry", encoding = encoding, tex = "no_latex")
+	res <- be$bib
     }else{ ## direct is TRUE below
-        texChars <- match.arg(texChars)
-        switch(texChars,
-               convert = {
-                   ## was: tex <- "no_latex"
-                   tex <- c("convert_latex_escapes", "no_latex")
-               },
-               keep = {
-                   ## this will need separate no_latex option for infile and outfile.
-                   #stop(" 'texChars = keep' not implemented yet")
-                   tex <- c("keep_tex_chars", "no_latex")
-               },
-               Rdpack = {
-                   ## like 'keep' but patches for Rdpack, see issue #7 in rbibutils
-                   tex <- c("keep_tex_chars", "no_latex", "Rdpack")
-               },
-               export = {
-                   tex <- c("export_tex_chars")
-               },
-               ## default
-               tex <- NULL
-               )
+	texChars <- match.arg(texChars)
+	switch(texChars,
+	       convert = {
+		   ## was: tex <- "no_latex"
+		   tex <- c("convert_latex_escapes", "no_latex")
+	       },
+	       keep = {
+		   ## this will need separate no_latex option for infile and outfile.
+		   #stop(" 'texChars = keep' not implemented yet")
+		   tex <- c("keep_tex_chars", "no_latex")
+	       },
+	       Rdpack = {
+		   ## like 'keep' but patches for Rdpack, see issue #7 in rbibutils
+		   tex <- c("keep_tex_chars", "no_latex", "Rdpack")
+	       },
+	       export = {
+		   tex <- c("export_tex_chars")
+	       },
+	       ## default
+	       tex <- NULL
+	       )
 
-        res <- bibtexImport(file, encoding = encoding, tex = tex, extra = extra,
-                            fbibentry = fbibentry)
+	res <- bibtexImport(file, encoding = encoding, tex = tex, extra = extra,
+			    fbibentry = fbibentry)
     }
 
     if(!missing(key)){
-        ind <- which(grepl("dummyid", names(res)))
-        if(length(ind) > 0  &&  length(ind) != length(key)){
-            stop("length of 'key' is not equal to the number of keyless entries")
-        }else if(length(ind) > 0){
-            for(i in 1:length(ind))
-                res[ind[i]]$key <-  key[i]
-            ## TODO: it seems necessary to do also this. Investigate for a simpler approach.
-            names(res)[ind] <- key
-        }
+	ind <- which(grepl("dummyid", names(res)))
+	if(length(ind) > 0  &&  length(ind) != length(key)){
+	    stop("length of 'key' is not equal to the number of keyless entries")
+	}else if(length(ind) > 0){
+	    for(i in 1:length(ind))
+		res[ind[i]]$key <-  key[i]
+	    ## TODO: it seems necessary to do also this. Investigate for a simpler approach.
+	    names(res)[ind] <- key
+	}
     }
-    
+
     res
 }
 

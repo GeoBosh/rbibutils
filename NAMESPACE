@@ -1,6 +1,6 @@
 useDynLib(rbibutils, .registration=TRUE, .fixes = "C_")
 
-importFrom("utils", "person", "bibentry", "toBibtex")
+importFrom("utils", "person", "bibentry", "toBibtex", ".DollarNames")
 importFrom(tools, file_ext, toRd, bibstyle, getBibstyle)
 
 S3method(print, bibentryExtra)
@@ -13,6 +13,7 @@ S3method(c, bibentryExtra)
 S3method(names, bibentryExtra)
 
 S3method(toRd, bibentryExtra)
+S3method(.DollarNames, bibentryExtra)
 
 S3method(as.bibentryExtra, bibentry)
 

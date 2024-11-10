@@ -139,6 +139,9 @@ get_unicode( str *s, unsigned int *pi, int charsetin, int latexin, int utf8in, i
 {
 	unsigned int ch;
 	int unicode = 0, err = 0;
+
+	// REprintf("s->data[*pi] = %d\n", s->data[*pi]);
+
 	if ( xmlin && s->data[*pi]=='&' ) {
 		ch = decode_entity( s->data, pi, &unicode, &err );
 	} else if ( charsetin==CHARSET_GB18030 ) {
@@ -159,6 +162,11 @@ get_unicode( str *s, unsigned int *pi, int charsetin, int latexin, int utf8in, i
 	}
 	if ( !unicode && charsetin!=CHARSET_UNICODE )
 		ch = charset_lookupchar( charsetin, ch );
+	
+	// REprintf("(get_unicode) ch: %d, latexin: %d, utf8in: %d, charsetin = %d\n",
+	//	                ch,     latexin,     utf8in,      charsetin);
+	
+	// REprintf("(at end of get_unicode) s = %s\n", s->data);
 	return ch;
 }
 
@@ -169,7 +177,8 @@ write_unicode( str *s, unsigned int ch, int charsetout, int latexout,
 	unsigned int c;
 
 	// Georgi
-	// REprintf("(write_unicode) ch: %x, latexout: %d, utf8out: %d\n", ch, utf8out, charsetout);
+	// REprintf("(write_unicode) ch: %d, latexout: %d, utf8out: %d, charsetout = %d\n\n",
+	// 	                  ch,     latexout,      utf8out,    charsetout);
 	
 	if ( latexout ) {
 		addlatexchar( s, ch, xmlout, utf8out );
@@ -182,11 +191,8 @@ write_unicode( str *s, unsigned int ch, int charsetout, int latexout,
 		if ( xmlout ) addxmlchar( s, c );
 		else str_addchar( s, c );
 
-		// // Georgi
+		// Georgi
 		// REprintf("kiki: %x", c);
-		// int len = strlen(s); // s is str *, not char *
-		// for(int j = 0; j < len ; j++){
-		//   REprintf(" %x", s[j]);
 		  
 	}
 
@@ -207,6 +213,7 @@ str_convert( str *s,
 	int ok = 1;
 
 	if ( !s || s->len==0 ) return ok;
+	// REprintf("(str_convert): s = %s\n", s->data);
 
 	/* Ensure that string is internally allocated.
 	 * This fixes NULL pointer derefernce in CVE-2018-10775 in bibutils
@@ -223,6 +230,8 @@ str_convert( str *s,
 	if ( charsetout==CHARSET_UNKNOWN ) charsetout = CHARSET_DEFAULT;
 
 	while ( s->data[pos] ) {
+	// REprintf("(str_convert): pos = %d\n", pos);
+	// REprintf("(str_convert): s = %s\n", s->data);
 		ch = get_unicode( s, &pos, charsetin, latexin, utf8in, xmlin );
 		ok = write_unicode( &ns, ch, charsetout, latexout, utf8out, xmlout );
 		if ( !ok ) goto out;

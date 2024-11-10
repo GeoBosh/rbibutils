@@ -105,11 +105,11 @@ class \code{"bibentry"} from base R package 'utils'
 has a different emphasis and supports only the default Bibtex types.
  
 Functions are available for import and export, as well as subsetting with index operators.
-Export can be to plain text, bibtex, Latex, R code and Rd.  There is also a style,
+Export can be to plain text, bibtex, Latex, R code, html and Rd.  There is also a style,
 "JSSextra", which adds a few types for exporting bibliography references to Latex.
 
 Class \code{"bibentryExtra"} inherits from \code{"bibentry"} and is fully compatible with it
-for biblography items that are handled by bibentry.
+for biblography items that are handled by \code{"bibentry"}.
 
 In this document we use \emph{bib file} of just \emph{bib} to refer to files or character
 vectors containing bibliographic entries in Bibtex format, including Biblatex.
@@ -132,7 +132,7 @@ value. Here we remove it:
 wuertzetal$note <- NULL
 wuertzetal
 @ 
-This modfied value is used velow.
+This modfied value is used below.
 
 There are several function for import.
 

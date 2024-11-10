@@ -227,3 +227,75 @@ out:
 	str_free( &data );
 
 }
+
+
+
+/*****************************************************
+ PUBLIC: int bibentrydirectout_write()
+*****************************************************/
+
+// static int
+int
+bibentrydirectout_write( fields *out, FILE *fp, param *pm, unsigned long refnum )
+{
+    int i, j, len; // nquotes, format_opts = pm->format_opts;
+    char *tag, *value, ch;
+    int not_person, not_other; // Georgi
+
+    fprintf( fp, ",\n\n" ); // Georgi
+	
+    /* ...output type information "@article{" */
+    value = ( char * ) fields_value( out, 0, FIELDS_CHRP );
+    len = (value) ? strlen( value ) : 0;
+    fprintf( fp, "  bibentry(bibtype = \"" );
+    if(len > 0)
+	fprintf( fp, "%c", toupper((unsigned char)value[0]) );
+    for (i=1; i<len; ++i )
+	fprintf( fp, "%c", tolower((unsigned char)value[i]) );
+    fprintf( fp, "\"" );
+
+    /* ...output refnum "Smith2001" */
+    value = ( char * ) fields_value( out, 1, FIELDS_CHRP );
+    fprintf( fp, ",\n      key = \"%s\"", value );
+
+    /* ...rest of the reference */
+    for ( j=2; j<out->n; ++j ) {
+	// nquotes = 0;
+	tag   = ( char * ) fields_tag( out, j, FIELDS_CHRP );
+	value = ( char * ) fields_value( out, j, FIELDS_CHRP );
+	fprintf( fp, ",\n      " );
+
+	fprintf( fp, "%s", tag );
+	fprintf( fp, " = " );
+
+	not_person = strcmp( tag, "author" ) && strcmp( tag, "editor" ) 
+	    && strcmp( tag, "translator" );  // TODO: are there others?
+
+	not_other = strcmp( tag, "other" );
+		
+	if ( not_person && not_other ) fprintf( fp, "\"" );
+
+	len = strlen( value );
+	for ( i=0; i<len; ++i ) {
+	    ch = value[i];
+			
+	    if ( ch == '\\' )
+		fprintf( fp, "%c%c", ch, ch );
+	    else if ( ch == '\"' &&
+		      ( (not_person && not_other) || (i>0 && value[i-1]=='\\') ))
+		fprintf( fp, "\\%c", ch );
+	    else
+		fprintf( fp, "%c"  , ch );
+	}
+
+	if ( not_person && not_other )
+	    fprintf( fp, "\"" );
+    }
+
+    /* ...finish reference */
+    fprintf( fp, " )" );
+
+    fflush( fp );
+
+    return BIBL_OK;
+}

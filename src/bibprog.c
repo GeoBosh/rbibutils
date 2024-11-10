@@ -46,7 +46,7 @@ bibprog( int argc, char *argv[], param *p, char *outfile[] )
 	}
 	// REprintf("(bibprog) after bibl_read!\n");
 	
-	// // Georgi: for testing
+	// Georgi: for testing
 	// REprintf("(bibprog) Bh: before_bibl_write\n");
 	// for(long i = 0; i < b.n; ++i) {
 	//   fields_report_stderr( b.ref[i] );
