@@ -13,7 +13,7 @@ Read a bibliography file in one of the supported formats, convert it
 
     <a class="navbar-brand me-2" href="../index.html">rbibutils</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.2.16.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.3.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -245,6 +245,12 @@ Read a bibliography file in one of the supported formats, convert it
 <dd><p>number of references written to the output file.</p></dd>
 
 
+  <dt>bib</dt>
+<dd><p>when <code>outformat</code> is one of <code>"R"</code>, <code>"r"</code> or
+    <code>"bibentry"</code>), a bibentry object obtained by reading
+    <code>outfile</code>; otherwise not present.</p></dd>
+
+
 </dl><p>Normally, <code>nref_in</code> and <code>nref_out</code> are the same.
   If some references were imported successfully but failed on export,
   <code>nref_out</code> may be smaller than <code>nref_in</code>. In such cases
@@ -257,9 +263,7 @@ Read a bibliography file in one of the supported formats, convert it
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
-
-
-<p><!-- % bibentry: Rpackage:easyPubMed -->
+    <p><!-- % bibentry: Rpackage:easyPubMed -->
 Damiano Fantini (2019).
 “easyPubMed: Search and Retrieve Scientific Publication Records from PubMed.”
 R package version 2.13, <a href="https://CRAN.R-project.org/package=easyPubMed" class="external-link">https://CRAN.R-project.org/package=easyPubMed</a>.
@@ -269,6 +273,12 @@ Chris Putnam (2020).
 “Library bibutils, version 6.10.”
 <a href="https://sourceforge.net/projects/bibutils/" class="external-link">https://sourceforge.net/projects/bibutils/</a>.
 <!-- % end:bibentry:  bibutils6.10 --></p>
+    </div>
+    <div class="section level2">
+    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <div class="dont-index"><p><code><a href="readBib.html">readBib</a></code>,</p>
+<p><code><a href="readBib.html">charToBib</a></code>,</p>
+<p><code><a href="readBibentry.html">readBibentry</a></code>, <code><a href="readBibentry.html">writeBibentry</a></code></p></div>
     </div>
 
     <div class="section level2">
@@ -285,7 +295,7 @@ Chris Putnam (2020).
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/home/runner/work/_temp/Library/rbibutils/bib/ex0.biblatex"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $outfile</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/Rtmpl74smE/file195064128df0.xml"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/RtmpUCFATs/file196336929e00.xml"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $nref_in</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3</span>
@@ -303,7 +313,7 @@ Chris Putnam (2020).
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/home/runner/work/_temp/Library/rbibutils/bib/ex0.biblatex"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $outfile</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/Rtmpl74smE/file1950112a1685.bib"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/RtmpUCFATs/file19632338be9b.bib"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $nref_in</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3</span>
@@ -318,7 +328,7 @@ Chris Putnam (2020).
 <span class="r-in"><span><span class="va">fn_biblatex</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/home/runner/work/_temp/Library/rbibutils/bib/ex0.biblatex"</span>
 <span class="r-in"><span><span class="va">rds</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/Rtmpl74smE/file195067e02ca2.rds"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/RtmpUCFATs/file19636fdb9acf.rds"</span>
 <span class="r-in"><span><span class="va">be</span> <span class="op">&lt;-</span> <span class="fu">bibConvert</span><span class="op">(</span><span class="va">fn_biblatex</span>, <span class="va">rds</span>, <span class="st">"biblatex"</span>, <span class="st">"bibentry"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">bea</span> <span class="op">&lt;-</span> <span class="fu">bibConvert</span><span class="op">(</span><span class="va">fn_biblatex</span>, <span class="va">rds</span>, <span class="st">"biblatex"</span><span class="op">)</span> <span class="co"># same</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="va">rds</span><span class="op">)</span></span></span>
@@ -341,7 +351,7 @@ Chris Putnam (2020).
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/home/runner/work/_temp/Library/rbibutils/bib/ex0.biblatex"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $outfile</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/Rtmpl74smE/file19501fb9516c.R"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/RtmpUCFATs/file1963307ddcd.R"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $nref_in</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3</span>
@@ -411,10 +421,10 @@ Chris Putnam (2020).
 <span class="r-in"><span><span class="co">## now take the bib file and convert it to UTF-8</span></span></span>
 <span class="r-in"><span><span class="fu">bibConvert</span><span class="op">(</span><span class="va">bib</span>, <span class="va">bib2</span>, encoding <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cp1251"</span>, <span class="st">"utf8"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $infile</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/Rtmpl74smE/file1950112a1685.bib"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/RtmpUCFATs/file19632338be9b.bib"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $outfile</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/Rtmpl74smE/file195023ce73e6.bib"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/RtmpUCFATs/file19632e47bc89.bib"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $nref_in</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2</span>
@@ -435,7 +445,7 @@ Chris Putnam (2020).
 <span class="r-out co"><span class="r-pr">#&gt;</span> title="K{\`a}r{\`e} {\"u}{\"a} {\L}{\l}{\^e}{\'a}{\'e}",</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> journal="Latin-1 accents",</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> year="2020",</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> note="Having the similar title and author is helpful for debugging since authors are processed differently from other fields. Here is a formula: {\$}{\backslash}tan($\alpha$){\$}, {\$}{\backslash}sin($\delta$)/$\delta$ $\to$ 1{\$}, {\$}{\backslash}sqrt{\{}x{\}}{\$}."</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> note="Having the similar title and author is helpful for debugging since authors are processed differently from other fields. Here is a formula: $\tan(\alpha)$, $\sin(\delta)/\delta \to 1$, $\sqrt{x}$."</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="co">## use "no_latex" option to keep them Latin1:</span></span></span>
@@ -457,7 +467,7 @@ Chris Putnam (2020).
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/home/runner/work/_temp/Library/rbibutils/bib/xeCJK_utf8.bib"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $outfile</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/Rtmpl74smE/file19505072406a.bib"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/RtmpUCFATs/file19631b3fb87b.bib"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $nref_in</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
@@ -472,7 +482,7 @@ Chris Putnam (2020).
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/home/runner/work/_temp/Library/rbibutils/bib/xeCJK_utf8.bib"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $outfile</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/Rtmpl74smE/file19501b920b6e.rds"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/RtmpUCFATs/file19634a4bce8d.rds"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $nref_in</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
@@ -496,7 +506,7 @@ Chris Putnam (2020).
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/home/runner/work/_temp/Library/rbibutils/bib/easyPubMedvig.xml"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $outfile</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/Rtmpl74smE/file1950112a1685.bib"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/RtmpUCFATs/file19632338be9b.bib"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $nref_in</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 6</span>
