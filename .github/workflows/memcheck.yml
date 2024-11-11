@@ -32,8 +32,18 @@ jobs:
 
       - uses: r-lib/actions/setup-pandoc@v2
 
+      # 2024-11-11 use tinytex
+      - uses: r-lib/actions/setup-tinytex@v2
+      - run: tlmgr --version
+
+      - name: Install additional LaTeX packages
+        run: |
+          tlmgr install titlesec
+          tlmgr list --only-installed
+
       - name: Install valgrind
-        run: sudo apt-get install valgrind texlive-latex-base
+        # 2024-11-11 was: run: sudo apt-get install valgrind texlive-latex-base
+        run: sudo apt-get install valgrind
 
       - name: Query dependencies
         run: |
