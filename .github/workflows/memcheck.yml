@@ -76,9 +76,10 @@ jobs:
         run: |
           R -d "valgrind --tool=memcheck --leak-check=full" --vanilla < memcheck/examples.R
 
-      - name: valgrind - memcheck vignettes
-        run: |
-          R -d "valgrind --tool=memcheck --leak-check=full" --vanilla < memcheck/vignettes.R
+      # 2024-11-11 errors on missing LaTeX package 'xcolor.sty'
+      # - name: valgrind - memcheck vignettes
+      #   run: |
+      #     R -d "valgrind --tool=memcheck --leak-check=full" --vanilla < memcheck/vignettes.R
 
       - name: Upload check results
         if: failure()
