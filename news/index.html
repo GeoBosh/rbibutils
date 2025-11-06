@@ -33,28 +33,24 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="2.3.0.9000" id="rbibutils-2309000">rbibutils 2.3.0.9000<a class="anchor" aria-label="anchor" href="#rbibutils-2309000"></a></h2>
+<h2 class="pkg-version" data-toc-text="2.4" id="rbibutils-24">rbibutils 2.4<a class="anchor" aria-label="anchor" href="#rbibutils-24"></a></h2>
 <div class="section level3">
-<h3 id="todo-edit-this-section-before-release-2-3-0-9000">TODO: edit this section before release<a class="anchor" aria-label="anchor" href="#todo-edit-this-section-before-release-2-3-0-9000"></a></h3>
+<h3 id="advance-warning-about-a-future-potentially-incompatible-change-2-4">Advance warning about a future potentially incompatible change<a class="anchor" aria-label="anchor" href="#advance-warning-about-a-future-potentially-incompatible-change-2-4"></a></h3>
+<ul><li>A change of the default for argument <code>direct</code> of <code><a href="../reference/readBib.html">readBib()</a></code> is planned for rbibutils v3.0 (from <code>FALSE</code> to <code>TRUE</code>). For most users <code>direct = TRUE</code> is superior (better handling of maths, additional capabilities). If you really want <code>direct = FALSE</code>, please state that explicitly in the call to <code><a href="../reference/readBib.html">readBib()</a></code>.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="new-and-improved-features-2-4">New and improved features<a class="anchor" aria-label="anchor" href="#new-and-improved-features-2-4"></a></h3>
 <ul><li><p>now rbibutils gives warnings when it encounters undefined bibtex names (see <code>@string</code> bibtex macro), fixes issue#10. Such strings are used for consistent naming of journals, for example. The name is inserted in the output when undefined (previously this ws done silently).</p></li>
-<li><p>refactored <code>bibstyle_JSSextra</code>; new function <code>bibstyle_JSSextraLongNames</code> in preparation of dropping JSSRd and JSSRdLongNames from Rdpack.</p></li>
-<li><p>(!!! discard this note before release !!!) copied ‘bookVolume’ fro JSSRd in preparation toreplace JSSRd with JSSextra in Rdpack. A modified version of ‘sortKeys’ was already in JSSextra. The others in JSSRd were copies from JSS needed for scoping reasons - they are not needed in JSSextra since the functions here are created in the proper scope.</p></li>
-<li>
-<p><em>WARNING:</em> A change of the default for argument <code>direct</code> of <code><a href="../reference/readBib.html">readBib()</a></code> is planned for rbibutils v3.0 (from <code>FALSE</code> to <code>TRUE</code>). If you really want <code>direct = FALSE</code>, please state that explicitly. Note that for most users <code>direct = TRUE</code> is superior (better handling of maths, additional capabilities). Still, <code>direct =   FALSE</code> has some features that may be desirable for some applications.</p>
-<p><em>:TODO:</em> the documentation needs improving to describe the above.</p>
-</li>
 <li><p>consolidated <code>append_type</code> between the bibtex related formats. Internal, but fixed a bug causing technical reports to be converted to MISC when converting from isi and biblatex to bibtex.</p></li>
 <li><p>added completion for <code>bibentryExtra</code> objects. Useful for interactive use. For example in an R session if <code>be</code> is a <code>bibentryExtra</code> object, typing <code>be$bi</code> then the ‘Tab’ key will be completed to <code>be$bibtype</code>. Also, <code>be$</code> then ‘Tab’ will provide a choice from the available completions. This should work also in RStudio, whereever it provides completion.</p></li>
 <li><p>corrected some typo’s in the draft vignette.</p></li>
 <li><p>now using <code>bibentrydirectout_write</code> also in ‘bibentryout.c’. <code>bibentryout_write</code> was not in sync with changes in <code>bibentrydirectout_write</code>.</p></li>
-<li>
-<p>some long standing unnoticed bugs or shortcomings of the processing in <code><a href="../reference/readBib.html">readBib()</a></code> and <code>convert()</code> in the case <code>direct = FALSE</code> have been fixed.</p>
-<p><em>:TODO:</em> argument <code>texChars</code> is not supported when <code>direct = FALSE</code> but maybe after these fixes it can be done.</p>
-</li>
+<li><p>refactored <code>bibstyle_JSSextra</code>; new function <code>bibstyle_JSSextraLongNames</code> in preparation of removing bibstyles ‘JSSRd’ and ‘JSSRdLongNames’ from Rdpack.</p></li>
 </ul></div>
 <div class="section level3">
-<h3 id="bug-fixes-2-3-0-9000">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-2-3-0-9000"></a></h3>
-<ul><li>now bibstyle ‘JSSextra’ doesn’t change the ‘JSS’ style (the fix in v2.3 didn’t resolve this completely).</li>
+<h3 id="bug-fixes-2-4">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-2-4"></a></h3>
+<ul><li><p>now bibstyle ‘JSSextra’ doesn’t change the ‘JSS’ style (the fix in v2.3 didn’t resolve this completely).</p></li>
+<li><p>some long standing unnoticed bugs or shortcomings of the processing in <code><a href="../reference/readBib.html">readBib()</a></code> and <code>convert()</code> in the case <code>direct = FALSE</code> have been fixed.</p></li>
 </ul></div>
 </div>
     <div class="section level2">
