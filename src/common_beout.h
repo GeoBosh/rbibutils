@@ -9,6 +9,12 @@
 #ifndef COMMON_BEOUT_H
 #define COMMON_BEOUT_H
 
+#include <stdio.h>
+
+#include "fields.h"
+#include "bibutils.h"
+
+
 void bibentrydirectout_writeheader( FILE *outptr, param *pm );
 void bibentrydirectout_writefooter( FILE *outptr);
 int bibentrydirectout_write( fields *out, FILE *fp, param *pm, unsigned long refnum );

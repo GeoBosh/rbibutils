@@ -10,6 +10,8 @@
 #ifndef COMMON_BT_BTD_OUT_H
 #define COMMON_BT_BTD_OUT_H
 
+#include <stdio.h>
+
 #include "common_bt_blt_btd_out.h"
 
 

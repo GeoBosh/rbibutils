@@ -10,7 +10,9 @@
  * Program and source code released under the GPL version 2
  *
  */
+#include <ctype.h>
 #include "slist.h"
+#include "is_ws.h"
 
 #include "common_bt_btd_blt.h"
 
@@ -298,6 +300,35 @@ outerr:
 	return p;
 }
 
+// 2025-11-04 Georgi
+static int
+is_mon(char *s)
+{
+  if(strlen(s) != 3)
+    return(0);
+  
+  if(!strncasecmp(s, "jan", 3)) return 1;
+  if(!strncasecmp(s, "feb", 3)) return 2;
+  if(!strncasecmp(s, "mar", 3)) return 3;
+  if(!strncasecmp(s, "apr", 3)) return 4;
+  if(!strncasecmp(s, "may", 3)) return 5;
+  if(!strncasecmp(s, "jun", 3)) return 6;
+  if(!strncasecmp(s, "jul", 3)) return 7;
+  if(!strncasecmp(s, "aug", 3)) return 8;
+  if(!strncasecmp(s, "sep", 3)) return 9;
+  if(!strncasecmp(s, "oct", 3)) return 10;
+  if(!strncasecmp(s, "nov", 3)) return 11;
+  if(!strncasecmp(s, "dec", 3)) return 12;
+
+  return 0;
+}
+
+// 2025-11-04 Georgi
+static char *months_names[12] = {
+  "January", "February", "March", "April", "May", "June", 
+  "July", "August", "September", "October", "November", "December"
+};
+
 /* replace_strings()
  *
  * do bibtex string replacement for data tokens
@@ -305,12 +336,13 @@ outerr:
 static int
 replace_strings( slist *tokens )
 {
-	int i, n;
+  int i, n,   m1;
 	str *s;
 
 	for ( i=0; i<tokens->n; ++i ) {
 
 		s = slist_str( tokens, i );
+// REprintf("(replace_strings): i = %d, token = %s\n", i, s->data);
 
 		/* ...skip if token is protected by quotation marks or braces */
 		if ( token_is_escaped( s ) ) continue;
@@ -319,7 +351,21 @@ replace_strings( slist *tokens )
 		if ( !str_strcmpc( s, "#" ) ) continue;
 
 		n = slist_find( &find, s );
-		if ( slist_wasnotfound( &find, n ) ) continue;
+		if ( slist_wasnotfound( &find, n ) ) {
+		  // 2025-11-02 Georgi - warn about undefined bibtex @string's assume that a
+		  //   bibtex name defined by @string cannot start with a digit.  This is to
+		  //   avoid false alarm for things like year = 2025 or number = 3, since
+		  //   when the value of a field is a number bibtex allows it not to be
+		  //   enclosed in braces or quotes.
+		  if(!isdigit(*(s->data))) {
+		    m1 = is_mon(s->data);
+		    if(!m1)
+		      Rf_warning("(replace_strings) Undefined bibtex string name: %s\n", s->data);
+		    else
+		      str_strcpyc( s, months_names[m1 - 1] );
+		  }
+		  continue;
+		}
 
 		str_strcpy( s, slist_str( &replace, n ) );
 		if ( str_memerr( s ) ) return BIBL_ERR_MEMERR;

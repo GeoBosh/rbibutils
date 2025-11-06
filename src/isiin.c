@@ -20,6 +20,8 @@
 #include "bibformats.h"
 #include "generic.h"
 
+#include "common_most.h"
+
 extern variants isi_all[];
 extern int isi_nall;
 
@@ -362,15 +364,6 @@ out:
 	return status;
 }
 
-static void
-isiin_report_notag( param *p, char *tag )
-{
-	if ( p->verbose && strcmp( tag, "PT" ) ) {
-		if ( p->progname ) REprintf( "%s: ", p->progname );
-		REprintf( "Did not identify ISI tag '%s'\n", tag );
-	}
-}
-
 static int
 isiin_convertf( fields *bibin, fields *bibout, int reftype, param *p )
 {
@@ -428,7 +421,7 @@ isiin_convertf( fields *bibin, fields *bibout, int reftype, param *p )
 			continue;
 
 		if ( !translate_oldtag( str_cstr( intag ), reftype, p->all, p->nall, &process, &level, &outtag ) ) {
-			isiin_report_notag( p, str_cstr( intag ) );
+		  common_report_notag( p, str_cstr( intag ), "PT", "ISI" );
 			continue;
 		}
 

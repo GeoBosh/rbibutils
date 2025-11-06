@@ -52,8 +52,10 @@ test_that("charToBib works ok", {
     fn2  <- file.path(bibdir, "litprog280no_macros.bib")
     mac <- file.path(bibdir, "litprog280macros_only.bib")
 
+    ## 2025-11-04 wrap in expect_warning() the cases without the macros.
+    ##     previously these were passed on silently
     withmac <- readBib(fn2, direct = TRUE, macros = mac)
-    womac <- readBib(fn2, direct = TRUE)
+    expect_warning(womac <- readBib(fn2, direct = TRUE))
     expect_equal(withmac["Racine:2012:RPI"]$key, "Racine:2012:RPI")  # keys are equal
     expect_equal(  womac["Racine:2012:RPI"]$key, "Racine:2012:RPI")
     ## withmac expands the @STRING for journal, otherwise not
@@ -62,7 +64,7 @@ test_that("charToBib works ok", {
 
     charbib <- readLines(file.path(bibdir, "Rcore_with_abbr.bib"))
     withmac2 <- charToBib(charbib, direct = TRUE, macros = file.path(bibdir, "urlR.bib"))
-    womac2 <- charToBib(charbib, direct = TRUE)
+    expect_warning(womac2 <- charToBib(charbib, direct = TRUE))
     expect_equal(withmac2["Rcore"]$key, "Rcore")  # keys are equal
     expect_equal(  womac2["Rcore"]$key, "Rcore")
     ## withmac expands the @STRING for journal, otherwise not

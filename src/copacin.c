@@ -20,6 +20,8 @@
 #include "bibformats.h"
 #include "generic.h"
 
+#include "common_most.h"
+
 extern variants copac_all[];
 extern int copac_nall;
 
@@ -271,15 +273,6 @@ copacin_person( fields *bibin, int n, str *intag, str *invalue, int level, param
 	else return BIBL_ERR_MEMERR;
 }
 
-static void
-copacin_report_notag( param *p, char *tag )
-{
-	if ( p->verbose ) {
-		if ( p->progname ) REprintf( "%s: ", p->progname );
-		REprintf( "Cannot find tag '%s'\n", tag );
-	}
-}
-
 static int
 copacin_convertf( fields *bibin, fields *bibout, int reftype, param *p )
 {
@@ -330,7 +323,7 @@ copacin_convertf( fields *bibin, fields *bibout, int reftype, param *p )
 		intag = fields_tag( bibin, i, FIELDS_STRP );
 
 		if ( !translate_oldtag( str_cstr( intag ), reftype, p->all, p->nall, &process, &level, &outtag ) ) {
-			copacin_report_notag( p, str_cstr( intag ) );
+		  common_report_notag( p, str_cstr( intag ), "", "COPAC" );
 			continue;
 		}
 

@@ -549,6 +549,8 @@ endin_type( fields *bibin, int n, str *intag, str *invalue, int level, param *pm
 	return BIBL_OK;
 }
 
+// Georgi:
+// the format for REprintf (%s=%s) is different from the others, can't use the common one
 static void
 endin_notag( param *p, char *tag, char *data )
 {

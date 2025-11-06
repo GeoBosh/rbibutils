@@ -10,6 +10,8 @@
 #ifndef COMMON_BT_BLT_BTD_OUT_H
 #define COMMON_BT_BLT_BTD_OUT_H
 
+#include "fields.h"
+
 enum {
 	TYPE_UNKNOWN = 0,
 	TYPE_ARTICLE,
@@ -50,6 +52,11 @@ enum {
 enum {
       NUM_BIBENTRY_TYPES = NUM_BIBTEX_TYPES
 };
+
+extern char *output_bib_types[ NUM_TYPES ];
+
+// int is_TechReport_type( int type );
+void append_output_bib_type( int type, fields *out, int *status, int ntypes );
 
 void append_citekey( fields *in, fields *out, int format_opts, int *status );
 void append_simple( fields *in, char *intag, char *outtag, fields *out, int *status );

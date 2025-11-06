@@ -675,15 +675,6 @@ biblatexin_person( fields *bibin, int n, str *intag, str *invalue, int level, pa
 	return biblatex_names( bibout, outtag, invalue, level, &(pm->asis), &(pm->corps) );
 }
 
-static void
-biblatexin_notag( param *p, char *tag )
-{
-	if ( p->verbose && strcmp( tag, "INTERNAL_TYPE" ) ) {
-		if ( p->progname ) REprintf( "%s: ", p->progname );
-		REprintf( " Cannot find tag '%s'\n", tag );
-	}
-}
-
 static int
 biblatexin_convertf( fields *bibin, fields *bibout, int reftype, param *p )
 {
@@ -751,7 +742,7 @@ biblatexin_convertf( fields *bibin, fields *bibout, int reftype, param *p )
 		if ( str_is_empty( intag ) || str_is_empty( invalue ) ) continue;
 
 		if ( !translate_oldtag( intag->data, reftype, p->all, p->nall, &process, &level, &outtag ) ) {
-			biblatexin_notag( p, intag->data );
+		  common_report_notag( p, intag->data, "INTERNAL_TYPE", "BIBLATEX" );
 			continue;
 		}
 

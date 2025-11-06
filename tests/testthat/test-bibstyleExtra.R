@@ -7,16 +7,20 @@ test_that("register_JSSextra is ok", {
     expect_equal(tools::getBibstyle(), "JSS")
     ## tools::getBibstyle(TRUE)  # all styles, currently "JSS" only
 
-    register_JSSextra()
+    ## 2025-11-04 was: register_JSSextra()
+    bibstyle_JSSextra()
     if(curstyle == "JSS")
         expect_equal(tools::getBibstyle(), curstyle)
     
     expect_true( "JSSextra" %in% tools::getBibstyle(TRUE))
     ##tools::getBibstyle()      # ... but not default
 
-    register_JSSextra(reset = TRUE)
-    
-    register_JSSextra(TRUE)  # this makes it default
+    ## 2025-11-04 was:
+    ##   register_JSSextra(reset = TRUE)
+    ##   register_JSSextra(TRUE)  # this makes it default
+    tools::bibstyle("JSSextra", reset = TRUE)    
+    tools::bibstyle("JSSextra", .default = TRUE)
+
     expect_equal(tools::getBibstyle(), "JSSextra")
 
 })    

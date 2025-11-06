@@ -23,6 +23,8 @@
 #include "bibformats.h"
 #include "generic.h"
 
+#include "common_most.h"
+
 extern variants ris_all[];
 extern int ris_nall;
 
@@ -505,15 +507,6 @@ risin_thesis_hints( fields *bibin, int reftype, param *p, fields *bibout )
 	return BIBL_OK;
 }
 
-static void
-risin_report_notag( param *p, char *tag )
-{
-	if ( p->verbose && strcmp( tag, "TY" ) ) {
-		if ( p->progname ) REprintf( "%s: ", p->progname );
-		REprintf( "Did not identify RIS tag '%s'\n", tag );
-	}
-}
-
 static int
 risin_convertf( fields *bibin, fields *bibout, int reftype, param *p )
 {
@@ -567,7 +560,7 @@ risin_convertf( fields *bibin, fields *bibout, int reftype, param *p )
 	for ( i=0; i<nfields; ++i ) {
 		intag = fields_tag( bibin, i, FIELDS_STRP );
 		if ( !translate_oldtag( str_cstr( intag ), reftype, p->all, p->nall, &process, &level, &outtag ) ) {
-			risin_report_notag( p, str_cstr( intag ) );
+		  common_report_notag( p, str_cstr( intag ), "TY", "RIS" );
 			continue;
 		}
 		invalue = fields_value( bibin, i, FIELDS_STRP );

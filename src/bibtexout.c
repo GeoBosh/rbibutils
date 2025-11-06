@@ -87,8 +87,8 @@ bibtexout_type( fields *in, const char *progname, const char *filename, unsigned
 		{ "conference publication", TYPE_INPROCEEDINGS, LEVEL_ANY  },
 		{ "collection",             TYPE_COLLECTION,    LEVEL_MAIN },
 		{ "collection",             TYPE_INCOLLECTION,  LEVEL_ANY  },
-		{ "report",                 TYPE_REPORT,        LEVEL_ANY  },
-		{ "technical report",       TYPE_REPORT,        LEVEL_ANY  },
+		{ "report",                 TYPE_TECHREPORT,    LEVEL_ANY  },
+		{ "technical report",       TYPE_TECHREPORT,    LEVEL_ANY  },
 		{ "Masters thesis",         TYPE_MASTERSTHESIS, LEVEL_ANY  },
 		{ "Diploma thesis",         TYPE_DIPLOMATHESIS, LEVEL_ANY  },
 		{ "Ph.D. thesis",           TYPE_PHDTHESIS,     LEVEL_ANY  },
@@ -134,37 +134,6 @@ bibtexout_type( fields *in, const char *progname, const char *filename, unsigned
 	return type;
 }
 
-static void
-append_type( int type, fields *out, int *status )
-{
-    // 2023-11-05 was: char *typenames[ NUM_BIBTEX_TYPES ] = {
-	char *typenames[ NUM_TYPES ] = {
-		[ TYPE_ARTICLE       ] = "Article",
-		[ TYPE_INBOOK        ] = "Inbook",
-		[ TYPE_PROCEEDINGS   ] = "Proceedings",
-		[ TYPE_INPROCEEDINGS ] = "InProceedings",
-		[ TYPE_BOOK          ] = "Book",
-		[ TYPE_PHDTHESIS     ] = "PhdThesis",
-		[ TYPE_MASTERSTHESIS ] = "MastersThesis",
-		[ TYPE_DIPLOMATHESIS ] = "MastersThesis",
-		[ TYPE_REPORT        ] = "TechReport",
-		[ TYPE_MANUAL        ] = "Manual",
-		[ TYPE_COLLECTION    ] = "Collection",
-		[ TYPE_INCOLLECTION  ] = "InCollection",
-		[ TYPE_UNPUBLISHED   ] = "Unpublished",
-		[ TYPE_ELECTRONIC    ] = "Electronic",
-		[ TYPE_MISC          ] = "Misc",
-	};
-	int fstatus;
-	char *s;
-
-	if ( type < 0 || type >= NUM_BIBTEX_TYPES ) type = TYPE_MISC;
-	s = typenames[ type ];
-
-	fstatus = fields_add( out, "TYPE", s, LEVEL_MAIN );
-	if ( fstatus!=FIELDS_OK ) *status = BIBL_ERR_MEMERR;
-}
-
 static int
 bibtexout_assemble( fields *in, fields *out, param *pm, unsigned long refnum )
 {
@@ -172,7 +141,10 @@ bibtexout_assemble( fields *in, fields *out, param *pm, unsigned long refnum )
 
 	type = bibtexout_type( in, pm->progname, "", refnum );
 
-	append_type        ( type, out, &status );
+	// append_type        ( type, out, &status );
+	append_output_bib_type( type, out, &status, NUM_BIBTEX_TYPES );
+
+	
 	append_citekey     ( in, out, pm->format_opts, &status );
 	append_people      ( in, "AUTHOR",     "AUTHOR:CORP",     "AUTHOR:ASIS",     "author", LEVEL_MAIN, out, pm->format_opts, pm->latexout, &status );
 	append_people      ( in, "EDITOR",     "EDITOR:CORP",     "EDITOR:ASIS",     "editor", LEVEL_ANY, out, pm->format_opts, pm->latexout, &status );

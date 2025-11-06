@@ -392,25 +392,31 @@ test_that("bibConvert works ok", {
     ## tex.bib
     tex_fn <- system.file("bib", "tex.bib", package = "rbibutils")
 
-    bibConvert(tex_fn, tmp_ads)
-    bibConvert(tex_fn, tmp_bibtex)
-    bibConvert(tex_fn, tmp_biblatex)
-    bibConvert(tex_fn, tmp_biblatex, informat = "biblatex") # it's bibtex but should work
+    ## 2025-11-04 wrapping in expect_warning() the conversions from
+    ##    tex_fn below and further below, since it contains undefined
+    ##    bibtex name ibmjrd, which after hanling of undefined bibtex
+    ##    names throws warnings.
+    ##
+    ##    TODO: it is better and more useful test to define ibmjrd and remove expect_warning()
+    expect_warning(bibConvert(tex_fn, tmp_ads))
+    expect_warning(bibConvert(tex_fn, tmp_bibtex))
+    expect_warning(bibConvert(tex_fn, tmp_biblatex))
+    expect_warning(bibConvert(tex_fn, tmp_biblatex, informat = "biblatex")) # it's bibtex but should work
 
     ## bibConvert(tex_fn, tmp_copac) # not supported
     ## bibConvert(tex_fn, tmp_ebi)      # not supported
-    bibConvert(tex_fn, tmp_end)
+    expect_warning(bibConvert(tex_fn, tmp_end))
     ## bibConvert(tex_fn, tmp_endx)
-    bibConvert(tex_fn, tmp_isi)
+    expect_warning(bibConvert(tex_fn, tmp_isi))
     ## bibConvert(tex_fn, tmp_med)
-    bibConvert(tex_fn, tmp_nbib)
-    bibConvert(tex_fn, tmp_ris)
-    bibConvert(tex_fn, tmp_R, outformat = "Rstyle")
-    bibConvert(tex_fn, tmp_rds)
-    bibConvert(tex_fn, tmp_xml)
+    expect_warning(bibConvert(tex_fn, tmp_nbib))
+    expect_warning(bibConvert(tex_fn, tmp_ris))
+    expect_warning(bibConvert(tex_fn, tmp_R, outformat = "Rstyle"))
+    expect_warning(bibConvert(tex_fn, tmp_rds))
+    expect_warning(bibConvert(tex_fn, tmp_xml))
 
-    bibConvert(tex_fn, tmp_wordbib)
-    bibConvert(tex_fn, tmp_word, outformat = "word")
+    expect_warning(bibConvert(tex_fn, tmp_wordbib))
+    expect_warning(bibConvert(tex_fn, tmp_word, outformat = "word"))
 
     bibConvert(tmp_bibtex  , tmp_xml2)
     bibConvert(tmp_biblatex, tmp_xml2)
@@ -431,7 +437,7 @@ test_that("bibConvert works ok", {
     bibConvert(tmp_wordbib , tmp_xml2)
 
 
-    readBib(tex_fn, direct = TRUE)
+    expect_warning(readBib(tex_fn, direct = TRUE))
     readBib(xampl_fn, direct = TRUE)
 
     biblatex_fn <- system.file("bib", "biblatex-examples_sans_key_aksin.bib", package = "rbibutils")

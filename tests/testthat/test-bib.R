@@ -60,7 +60,8 @@ test_that("bibRead works ok", {
     expect_equal(litprog280$journal, "Journal of Applied Econometrics")
 
     ## string concatenation
-    expect_equal(litprog280$month, "jan--feb")
+    ## 2025-11-04 was: expect_equal(litprog280$month, "jan--feb")
+    expect_equal(litprog280$month, "January--February")
 
     ## litprog <- readBib("/home/georgi/repos/private/rbibutils/data-raw/litprog_no_atpreamble.bib", direct = TRUE)
 
@@ -81,14 +82,16 @@ test_that("bibRead works ok", {
 
     oldbibstyle <- tools::getBibstyle()
 
-    register_JSSextra()       # register "JSSextra"
+    ## 2025-11-04 comment out (JSSextra is made available by .onLoad()
+    ##     register_JSSextra()       # register "JSSextra"
     expect_true("JSSextra" %in% tools::getBibstyle(TRUE))
     ## TODO: currently register_JSSextra() doesn't set the style as default.
     ##       the test below confirms that
     if(oldbibstyle != "JSSextra")
         expect_true(tools::getBibstyle() != "JSSextra")
     
-    register_JSSextra(TRUE)  # this makes "JSSextra" default
+    ## 2025-11-04 was: register_JSSextra(TRUE)  # this makes "JSSextra" default
+    tools::bibstyle("JSSextra", .default = TRUE)
     expect_equal(tools::getBibstyle(), "JSSextra")
 
     ## setting default style with bibstyle():

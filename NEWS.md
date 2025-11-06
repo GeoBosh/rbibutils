@@ -1,6 +1,20 @@
 # rbibutils 2.3.0.9000
 
-## TODO: edit this section before release
+##  TODO: edit this section before release
+
+- now rbibutils gives warnings when it encounters undefined bibtex names (see
+  `@string` bibtex macro), fixes issue#10. Such strings are used for consistent
+  naming of journals, for example. The name is inserted in the output when
+  undefined (previously this ws done silently).
+
+- refactored `bibstyle_JSSextra`; new function `bibstyle_JSSextraLongNames` in
+  preparation of dropping JSSRd and JSSRdLongNames from Rdpack.
+
+- (!!! discard this note before release !!!)
+  copied 'bookVolume' fro JSSRd in preparation toreplace JSSRd with JSSextra in
+  Rdpack. A modified version of 'sortKeys' was already in JSSextra. The others
+  in JSSRd were copies from JSS needed for scoping reasons - they are not needed
+  in JSSextra since the functions here are created in the proper scope.
 
 - *WARNING:* A change of the default for argument `direct` of
   `readBib()` is planned for rbibutils v3.0 (from `FALSE` to
@@ -12,10 +26,14 @@
   
   *:TODO:* the documentation needs improving to describe the above.
 
+- consolidated `append_type` between the bibtex related formats.
+  Internal, but fixed a bug causing technical reports to be converted to MISC
+  when converting from isi and biblatex to bibtex.
+
 - added completion for `bibentryExtra` objects. Useful for interactive use. For
   example in an R session if `be` is a `bibentryExtra` object, typing `be$bi`
-  then '<Tab>' will be completed to `be$bibtype`. Also, `be$` then '<Tab>' will
-  provide a choice from the available completions. This should work also in
+  then the 'Tab' key will be completed to `be$bibtype`. Also, `be$` then 'Tab'
+  will provide a choice from the available completions. This should work also in
   RStudio, whereever it provides completion.
 
 - corrected some typo's in the draft vignette.
@@ -29,6 +47,11 @@
   
   *:TODO:* argument `texChars` is not supported when `direct = FALSE`
            but maybe after these fixes it can be done.
+
+## Bug fixes
+
+- now bibstyle 'JSSextra' doesn't change the 'JSS' style (the fix in v2.3 didn't
+  resolve this completely).
 
 
 # rbibutils 2.3

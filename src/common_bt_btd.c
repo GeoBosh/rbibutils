@@ -9,26 +9,12 @@
  * Program and source code released under the GPL version 2
  *
  */
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
-#include "is_ws.h"
-#include "intlist.h"
+
 #include "str.h"
-#include "utf8.h"
-#include "str_conv.h"
 #include "fields.h"
 #include "slist.h"
 #include "name.h"
-#include "title.h"
-#include "url.h"
-#include "reftypes.h"
 #include "latex_parse.h"
-#include "bibformats.h"
-#include "generic.h"
-
-#include "R.h"
 
 #include "common_bt_btd_blt.h"
 

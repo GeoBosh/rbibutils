@@ -4,7 +4,7 @@
 /*
  * bibentrydirectout.c  (based on bibtexout.c)
  *
- * Copyright (c) Georgi N. Boshnakov 2020-2023
+ * Copyright (c) Georgi N. Boshnakov 2020-2024
  *
  * Program and source code released under the GPL version 2
  *
@@ -28,11 +28,11 @@
 #include "common_bt_blt_btd_out.h"
 #include "common_beout.h"
 
+static int  bibentrydirectout_assemble( fields *in, fields *out, param *pm, unsigned long refnum );
+
 /*****************************************************
  PUBLIC: int bibentrydirectout_initparams()
 *****************************************************/
-
-static int  bibentrydirectout_assemble( fields *in, fields *out, param *pm, unsigned long refnum );
 
 int
 bibentrydirectout_initparams( param *pm, const char *progname )
@@ -70,8 +70,6 @@ bibentrydirectout_initparams( param *pm, const char *progname )
  PUBLIC: int bibentrydirectout_assemble()
 *****************************************************/
 
-// like append simple but puts the tag in quotes, in case it is not a syntactic name in R
-// (for known tags this is not needed as they are known to not contain special characters.
 static void
 append_simple_quoted_tag( fields *in, char *intag, char *outtag, fields *out, int *status )
 {
@@ -96,62 +94,6 @@ append_simple_quoted_tag( fields *in, char *intag, char *outtag, fields *out, in
 
 }
 
-// Georgi  new 2023-01-03; TODO: currently recognises bibtex types only
-// static int
-// bibentryout_type( char *fld_val )
-// {
-//     int len = strlen(fld_val);
-// 
-//     switch(len) {
-//     case  4:
-// 	if ( !strcmp( fld_val, "Book" ) )  return TYPE_BOOK;
-// 	if ( !strcmp( fld_val, "Misc" ) )  return TYPE_MISC;
-// 	break;
-// 
-//     case  6:
-// 	if ( !strcmp( fld_val, "Inbook" ) )  return TYPE_INBOOK;
-// 	if ( !strcmp( fld_val, "Manual" ) )  return TYPE_MANUAL;
-// 	break;
-// 
-//     case  7:
-// 	if ( !strcmp( fld_val, "Article" ) ) return TYPE_ARTICLE;
-// 	break;
-// 
-//     case  9:
-// 	if ( !strcmp( fld_val, "PhdThesis" ) )  return TYPE_PHDTHESIS;
-// 	break;
-// 
-//     case 10:
-// 	if ( !strcmp( fld_val, "TechReport" ) )  return TYPE_REPORT;
-// 	if ( !strcmp( fld_val, "Collection" ) )  return TYPE_COLLECTION;
-// 	if ( !strcmp( fld_val, "Electronic" ) )  return TYPE_ELECTRONIC;
-// 	break;
-// 
-//     case 11:
-// 	if ( !strcmp( fld_val, "Proceedings" ) ) return TYPE_PROCEEDINGS;
-// 	if ( !strcmp( fld_val, "Unpublished" ) )  return TYPE_UNPUBLISHED;
-// 	break;
-// 
-//     case 12:
-// 	if ( !strcmp( fld_val, "InCollection" ) ) return TYPE_INCOLLECTION;
-// 	break;
-// 
-//     case 13:
-// 	if ( !strcmp( fld_val, "InProceedings" ) )  return TYPE_INPROCEEDINGS;
-// 	if ( !strcmp( fld_val, "MastersThesis" ) )  return TYPE_MASTERSTHESIS;
-// 	if ( !strcmp( fld_val, "DiplomaThesis" ) )  return TYPE_DIPLOMATHESIS;
-// 	break;
-// 
-// 	// default:
-// 	//   // TODO: this is for Rdpack which erroneously accepted it in a package
-// 	//   //       remove support for this in a future version of rbibutils?
-// 	//   if ( !strcmp( fld_val, "online" ) )  return TYPE_MISC;
-// 	//   break;
-//     }
-//     return TYPE_UNKNOWN; // 0
-// }
-
-// something has gone wrong - type names don't come properly capitalised
 static int
 bibentryout_type( char *fld_val )
 {
@@ -198,9 +140,7 @@ bibentryout_type( char *fld_val )
 	if ( !strcasecmp( fld_val, "DiplomaThesis" ) )  return TYPE_DIPLOMATHESIS;
 	break;
 
-	// default:
-	//   // TODO: this is for Rdpack which erroneously accepted it in a package
-	//   //       remove support for this in a future version of rbibutils?
+    // default:
 	//   if ( !strcmp( fld_val, "online" ) )  return TYPE_MISC;
 	//   break;
     }
@@ -211,118 +151,96 @@ static int
 bibentrydirectout_assemble( fields *in, fields *out, param *pm, unsigned long refnum )
 {
   int type, status = BIBL_OK;
-
-  // // Georgi; for testing
-  // fields_report_stderr(in);
-
   int n, fstatus;
   char *fld_val;
+
   n = fields_find( in, "INTERNAL_TYPE", LEVEL_ANY );
 
-  // REprintf("\nassemble: INTERNAL_TYPE = %d\n", n);
-  // REprintf("\nassemble: FIELDS_NOTFOUND = %d\n", FIELDS_NOTFOUND);
-	
-  // append_type        ( type, out, &status );
-  if ( n!=FIELDS_NOTFOUND ) { // TODO: investigate what this 'if' is about!
-    fields_set_used( in, n ); //       Is it that there is no bibtype field? (see also 'else')
+  // append_type( type, out, &status );
+  if ( n!=FIELDS_NOTFOUND ) { // the item has one of the internal types
+    fields_set_used( in, n );
     fld_val = fields_value( in, n, FIELDS_CHRP );
-    
-// REprintf("\ntype = %s\n", fld_val);
 
     type = bibentryout_type(fld_val);
-      
-    // REprintf("(bibentrydirectout_assemble): fld_val=%s\n", fld_val);
-    //  REprintf("type = %d\n\n", type);
-      
-    // TODO: this is for Rdpack which erroneously accepted type "online" in a package.
-    //       remove support for this in a future version of rbibutils?
-    //
-    // 2023-11-04 now officially define that non-standard type are replaced with Misc and a
-    // truebibtype field is added
-    //     if ( strcmp( fld_val, "online" ) )
-    //       fstatus = fields_add( out, "bibtype", fld_val, LEVEL_MAIN );
-    //     else   // TODO: this is temporary patch!
-    //       fstatus = fields_add( out, "bibtype", "Misc", LEVEL_MAIN );
+
     if ( type != TYPE_UNKNOWN )
-	fstatus = fields_add( out, "bibtype", fld_val, LEVEL_MAIN );
+      fstatus = fields_add( out, "bibtype", fld_val, LEVEL_MAIN );
     else {
-	fstatus = fields_add( out, "bibtype", "Misc", LEVEL_MAIN );
-	// lowercase unknown bibtypes
-	for ( long int i=0; i < strlen(fld_val); i++ )
-	    fld_val[i] = (char)tolower(fld_val[i]);
-	fstatus = fields_add( in, "truebibtype", fld_val, LEVEL_MAIN );
+      // change the bibtype to "Misc" and store the actual type in "truebibtype"
+      fstatus = fields_add( out, "bibtype", "Misc", LEVEL_MAIN );
+      // lowercase unknown bibtypes
+      for ( long int i=0; i < strlen(fld_val); i++ )
+	fld_val[i] = (char)tolower(fld_val[i]);
+      fstatus = fields_add( in, "truebibtype", fld_val, LEVEL_MAIN );
     }
 
-  } else { // Is it that there is no bibtype field? (see also the 'if clause  above)
-    type = TYPE_MISC; // default to Misc; TODO: issue a message?
+  } else { // no internal type for this item
+    type = TYPE_MISC; // non-internal types default to Misc
     fstatus = fields_add( out, "bibtype", "Misc", LEVEL_MAIN );
   }
+
   if ( fstatus!=FIELDS_OK ) status = BIBL_ERR_MEMERR;
 
-     // append_citekey     ( in, out, pm->format_opts, &status );
-     append_simple      ( in, "REFNUM", "refnum", out, &status );
+  // append_citekey     ( in, out, pm->format_opts, &status );
+  append_simple      ( in, "REFNUM", "refnum", out, &status );
 
-append_simple      ( in, "truebibtype", "truebibtype", out, &status );
+  append_simple      ( in, "truebibtype", "truebibtype", out, &status );
      
-     append_people_be      ( in, "AUTHOR",     "AUTHOR:CORP",     "AUTHOR:ASIS",     "author", LEVEL_MAIN, out, pm->format_opts, pm->latexout, &status );
-     append_people_be      ( in, "EDITOR",     "EDITOR:CORP",     "EDITOR:ASIS",     "editor", LEVEL_ANY, out, pm->format_opts, pm->latexout, &status );
-     append_people_be      ( in, "TRANSLATOR", "TRANSLATOR:CORP", "TRANSLATOR:ASIS", "translator", LEVEL_ANY, out, pm->format_opts, pm->latexout, &status );
-     append_titles      ( in, type, out, pm->format_opts, &status );
-     append_date        ( in, out, &status );
-     append_simple      ( in, "EDITION",            "edition",   out, &status );
+  append_people_be   ( in, "AUTHOR",     "AUTHOR:CORP",     "AUTHOR:ASIS",     "author", LEVEL_MAIN, out, pm->format_opts, pm->latexout, &status );
+  append_people_be   ( in, "EDITOR",     "EDITOR:CORP",     "EDITOR:ASIS",     "editor", LEVEL_ANY, out, pm->format_opts, pm->latexout, &status );
+  append_people_be   ( in, "TRANSLATOR", "TRANSLATOR:CORP", "TRANSLATOR:ASIS", "translator", LEVEL_ANY, out, pm->format_opts, pm->latexout, &status );
+  append_titles      ( in, type, out, pm->format_opts, &status );
+  append_date        ( in, out, &status );
+  append_simple      ( in, "EDITION",            "edition",   out, &status );
 
-     append_simple      ( in, "INSTITUTION",        "institution", out, &status );
-     append_simple      ( in, "PUBLISHER",          "publisher", out, &status );
+  append_simple      ( in, "INSTITUTION",        "institution", out, &status );
+  append_simple      ( in, "PUBLISHER",          "publisher", out, &status );
 
 
-     append_simple      ( in, "ADDRESS",            "address",   out, &status );
-     append_simple      ( in, "VOLUME",             "volume",    out, &status );
-     append_issue_number( in, out, &status );
-     append_pages       ( in, out, pm->format_opts, &status );
-     append_keywords    ( in, out, &status );
-     append_simple      ( in, "CONTENTS",           "contents",  out, &status );
-     append_simple      ( in, "ABSTRACT",           "abstract",  out, &status );
-     append_simple      ( in, "LOCATION",           "location",  out, &status );
-     append_simple      ( in, "DEGREEGRANTOR",      "school",    out, &status );
-     append_simple      ( in, "DEGREEGRANTOR:ASIS", "school",    out, &status );
-     append_simple      ( in, "DEGREEGRANTOR:CORP", "school",    out, &status );
-     append_simpleall   ( in, "NOTES",              "note",      out, &status );
-     append_simpleall   ( in, "ANNOTE",             "annote",    out, &status );
-     append_simple      ( in, "ISBN",               "isbn",      out, &status );
-     append_simple      ( in, "ISSN",               "issn",      out, &status );
-     append_simple      ( in, "MRNUMBER",           "mrnumber",  out, &status );
-     append_simple      ( in, "CODEN",              "coden",     out, &status );
-     append_simple      ( in, "DOI",                "doi",       out, &status );
-     append_urls        ( in, out, &status );
-     append_fileattach  ( in, out, &status );
-     append_arxiv       ( in, out, &status );
-     append_simple      ( in, "EPRINTCLASS",        "primaryClass", out, &status );
-     append_isi         ( in, out, &status );
-     append_simple      ( in, "LANGUAGE",           "language",  out, &status );
-     append_howpublished( in, out, &status );
+  append_simple      ( in, "ADDRESS",            "address",   out, &status );
+  append_simple      ( in, "VOLUME",             "volume",    out, &status );
+  append_issue_number( in, out, &status );
+  append_pages       ( in, out, pm->format_opts, &status );
+  append_keywords    ( in, out, &status );
+  append_simple      ( in, "CONTENTS",           "contents",  out, &status );
+  append_simple      ( in, "ABSTRACT",           "abstract",  out, &status );
+  append_simple      ( in, "LOCATION",           "location",  out, &status );
+  append_simple      ( in, "DEGREEGRANTOR",      "school",    out, &status );
+  append_simple      ( in, "DEGREEGRANTOR:ASIS", "school",    out, &status );
+  append_simple      ( in, "DEGREEGRANTOR:CORP", "school",    out, &status );
+  append_simpleall   ( in, "NOTES",              "note",      out, &status );
+  append_simpleall   ( in, "ANNOTE",             "annote",    out, &status );
+  append_simple      ( in, "ISBN",               "isbn",      out, &status );
+  append_simple      ( in, "ISSN",               "issn",      out, &status );
+  append_simple      ( in, "MRNUMBER",           "mrnumber",  out, &status );
+  append_simple      ( in, "CODEN",              "coden",     out, &status );
+  append_simple      ( in, "DOI",                "doi",       out, &status );
+  append_urls        ( in, out, &status );
+  append_fileattach  ( in, out, &status );
+  append_arxiv       ( in, out, &status );
+  append_simple      ( in, "EPRINTCLASS",        "primaryClass", out, &status );
+  append_isi         ( in, out, &status );
+  append_simple      ( in, "LANGUAGE",           "language",  out, &status );
+  append_howpublished( in, out, &status );
 
-     append_simple      ( in, "CHAPTER",           "chapter",  out, &status ); // Georgi
+  append_simple      ( in, "CHAPTER",           "chapter",  out, &status ); // Georgi
 
-     // Georgi - some entries may have field 'key' (it is used by some bibtex styles)
-     //       other = c(key = "mykey")
-     append_key      ( in, "KEY",   "other"        ,  out, &status );
+  // Georgi - some entries may have field 'key' (it is used by some bibtex styles)
+  //       other = c(key = "mykey")
+  append_key      ( in, "KEY",   "other"        ,  out, &status );
 
-     int i, f_len;
-     char * fld_tag;
+  int i, f_len;
+  char * fld_tag;
 
-     f_len = fields_num( in );
-     for ( i=0; i<f_len; ++i ) {
-	  if( !fields_used(in, i) ){
-	       fld_tag = fields_tag( in, i, FIELDS_CHRP );
-	       fld_val = fields_value( in, i, FIELDS_CHRP );
+  f_len = fields_num( in );
+  for ( i=0; i<f_len; ++i ) {
+  	  if( !fields_used(in, i) ){
+  	       fld_tag = fields_tag( in, i, FIELDS_CHRP );
+  	       fld_val = fields_value( in, i, FIELDS_CHRP );
 
-	       // for(int i = 0; str[i]; i++){
-	       //   str[i] = tolower(str[i]);
-	       // }
-
-	       append_simple_quoted_tag( in, fld_tag, fld_tag, out, &status );
-	  }
-     }
-	
-     return status;
+  	       append_simple_quoted_tag( in, fld_tag, fld_tag, out, &status );
+  	  }
+  }
+  	
+  return status;
 }

@@ -13,11 +13,11 @@
 #ifndef COMMON_BT_BTD_BLT_H
 #define COMMON_BT_BTD_BLT_H
 
-// #include "fields.h"
+#include "fields.h"
 #include "bibutils.h"
-#include "charsets.h"
-#include "is_ws.h"
 #include "str.h"
+
+#include "common_most.h"
 
 
 typedef struct loc {

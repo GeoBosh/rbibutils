@@ -579,15 +579,6 @@ bibtexin_title( fields *bibin, int n, str *intag, str *invalue, int level, param
 	else return BIBL_ERR_MEMERR;
 }
 
-static void
-bibtexin_notag( param *p, char *tag )
-{
-	if ( p->verbose && strcmp( tag, "INTERNAL_TYPE" ) ) {
-		if ( p->progname ) REprintf( "%s: ", p->progname );
-		REprintf( "Cannot find tag '%s'\n", tag );
-	}
-}
-
 static int
 bibtexin_convertf( fields *bibin, fields *bibout, int reftype, param *p )
 {
@@ -650,7 +641,7 @@ bibtexin_convertf( fields *bibin, fields *bibout, int reftype, param *p )
 		invalue = fields_value( bibin, i, FIELDS_STRP );
 
 		if ( !translate_oldtag( str_cstr( intag ), reftype, p->all, p->nall, &process, &level, &outtag ) ) {
-			bibtexin_notag( p, str_cstr( intag ) );
+		  common_report_notag( p, str_cstr( intag ), "INTERNAL_TYPE", "BIBTEX" );
 			continue;
 		}
 

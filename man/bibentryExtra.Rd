@@ -178,8 +178,8 @@ as.bibentryExtra(x, \dots)
   \code{bibentryExtra} sets the \code{"names"} attribute to the keys of
   the bib entries in it. However, further changes in the names and/or
   the keys can make them different. If you want to keep the names always
-    consistent with the keys, set \code{names(bee) <- NULL}. This will
-  cause \code{names} to dynamically create collect the keys when called.
+  consistent with the keys, set \code{names(bee) <- NULL}. This will
+  cause \code{names} to dynamically collect the keys when called.
 
     
   \code{as.bibentryExtra} is a generic function for conversion of
@@ -188,7 +188,7 @@ as.bibentryExtra(x, \dots)
 
     
   
-  Details on the subsetting methods are given below. The main think that
+  Details on the subsetting methods are given below. The main thing that
   needs to be pointed out is that the bracket operators take as first
   argument the values of one or more keys, while for the dollar
   operators the argument is the name of a field (e.g., \code{journal}).
@@ -221,7 +221,7 @@ as.bibentryExtra(x, \dots)
 
   When \code{j} is completely missing, the subscript operations for
   \code{"bibentryExtra"} objects work exactly as for \code{bibentry}
-  objects (they don't have methods that use \code{j}).
+  objects (the latter don't have methods that use \code{j}).
   Alternatively, rather than use both \code{i} and \code{j}, one can set
   \code{i} to be a list of length 2, whose two components stand for
   \code{i} and \code{j}, respectively. The latter syntax can be used also
@@ -238,9 +238,9 @@ as.bibentryExtra(x, \dots)
       Note that the result is a list for several reasons. First, some
       fields may have more than one element. Second, some values are
       likely to be \code{NULL}. Third, some fields may be compound
-      objects, e.g. \sQuote{Author}, which is from class \code{"person"}.
-      However, if the the returned list has one element, the enlosing list
-      is removed (similarly to matrices with one row).
+      objects, e.g. \sQuote{Author}, which is from class
+      \code{"person"}.  However, if the returned list has one element,
+      the enlosing list is removed (similarly to matrices with one row).
 
       The \code{"bibentryExtra"} method for subset-assigment,
       \code{"$<-"}, assigns a new value to the specified field.  In most
@@ -277,14 +277,14 @@ as.bibentryExtra(x, \dots)
       omitted. This is equivalent to a call with \code{i = i[[1]]} and
       \code{j = i[[2]]}.
       
-      If there is no redundant comma in the call, as in \code{x[[i]]} or
-      \code{x[[i, drop = FALSE]]}, then \code{i} must be a single index
-      value (positive integer number or character string).  The result is
-      a \code{"bibentryExtra"} object. This case is compatible with the
+      If \code{j} is missing completely (i.e., there is no redundant
+      comma in the call), as in \code{x[[i]]} or \code{x[[i, drop = FALSE]]},
+      then \code{i} must be a single index value (positive
+      integer number or character string).  The result is a
+      \code{"bibentryExtra"} object. This case is compatible with the
       method for \code{"bibentry"} objects, which does not have argument
-      \code{j}. Note though that for the \code{"bibentry"} method \code{i}
-      can be of length more than 1.
-  }
+      \code{j}. Note though that for the \code{"bibentry"} method
+      \code{i} can be of length more than 1.  }
 
   \subsection{The double bracket assignment method}{
 
