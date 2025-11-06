@@ -342,7 +342,6 @@ replace_strings( slist *tokens )
 	for ( i=0; i<tokens->n; ++i ) {
 
 		s = slist_str( tokens, i );
-// REprintf("(replace_strings): i = %d, token = %s\n", i, s->data);
 
 		/* ...skip if token is protected by quotation marks or braces */
 		if ( token_is_escaped( s ) ) continue;
@@ -360,7 +359,7 @@ replace_strings( slist *tokens )
 		  if(!isdigit(*(s->data))) {
 		    m1 = is_mon(s->data);
 		    if(!m1)
-		      Rf_warning("(replace_strings) Undefined bibtex string name: %s\n", s->data);
+		      Rf_warning("Undefined bibtex string name: %s\n", s->data);
 		    else
 		      str_strcpyc( s, months_names[m1 - 1] );
 		  }

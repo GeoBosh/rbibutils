@@ -1,30 +1,19 @@
-# rbibutils 2.3.0.9000
+# rbibutils 2.4
 
-##  TODO: edit this section before release
+## Advance warning about a future potentially incompatible change
+
+- A change of the default for argument `direct` of `readBib()` is planned for
+  rbibutils v3.0 (from `FALSE` to `TRUE`). For most users `direct = TRUE` is
+  superior (better handling of maths, additional capabilities). If you really
+  want `direct = FALSE`, please state that explicitly in the call to
+  `readBib()`.
+
+## New and improved features
 
 - now rbibutils gives warnings when it encounters undefined bibtex names (see
   `@string` bibtex macro), fixes issue#10. Such strings are used for consistent
   naming of journals, for example. The name is inserted in the output when
   undefined (previously this ws done silently).
-
-- refactored `bibstyle_JSSextra`; new function `bibstyle_JSSextraLongNames` in
-  preparation of dropping JSSRd and JSSRdLongNames from Rdpack.
-
-- (!!! discard this note before release !!!)
-  copied 'bookVolume' fro JSSRd in preparation toreplace JSSRd with JSSextra in
-  Rdpack. A modified version of 'sortKeys' was already in JSSextra. The others
-  in JSSRd were copies from JSS needed for scoping reasons - they are not needed
-  in JSSextra since the functions here are created in the proper scope.
-
-- *WARNING:* A change of the default for argument `direct` of
-  `readBib()` is planned for rbibutils v3.0 (from `FALSE` to
-  `TRUE`). If you really want `direct = FALSE`, please state that
-  explicitly. Note that for most users `direct = TRUE` is superior
-  (better handling of maths, additional capabilities). Still, `direct =
-  FALSE` has some features that may be desirable for some
-  applications.
-  
-  *:TODO:* the documentation needs improving to describe the above.
 
 - consolidated `append_type` between the bibtex related formats.
   Internal, but fixed a bug causing technical reports to be converted to MISC
@@ -41,17 +30,18 @@
 - now using `bibentrydirectout_write` also in 'bibentryout.c'.
   `bibentryout_write` was not in sync with changes in `bibentrydirectout_write`.
 
-- some long standing unnoticed bugs or shortcomings of the processing
-  in `readBib()` and `convert()` in the case `direct = FALSE` have
-  been fixed. 
-  
-  *:TODO:* argument `texChars` is not supported when `direct = FALSE`
-           but maybe after these fixes it can be done.
+- refactored `bibstyle_JSSextra`; new function `bibstyle_JSSextraLongNames` in
+  preparation of removing bibstyles 'JSSRd' and 'JSSRdLongNames' from Rdpack.
 
+  
 ## Bug fixes
 
 - now bibstyle 'JSSextra' doesn't change the 'JSS' style (the fix in v2.3 didn't
   resolve this completely).
+
+- some long standing unnoticed bugs or shortcomings of the processing
+  in `readBib()` and `convert()` in the case `direct = FALSE` have
+  been fixed. 
 
 
 # rbibutils 2.3
