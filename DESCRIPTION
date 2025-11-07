@@ -1,12 +1,12 @@
 Package: rbibutils
 Type: Package
 Title: Read 'Bibtex' Files and Convert Between Bibliography Formats
-Version: 2.3.0.9000
+Version: 2.4
 Authors@R: c( person(given = c("Georgi", "N."), family = "Boshnakov", 
                      role = c("aut", "cre"), 	
                      email = "georgi.boshnakov@manchester.ac.uk",
-		     comment = c("R port, R code, new C code and modifications to bibutils' C code, conversion to Bibentry (R and C code)",
-		     comment = c(ORCID = "0000-0003-2839-346X")) ),
+		     comment = c(ORCID = "0000-0003-2839-346X",
+		                         "R port, R code, new C code and modifications to bibutils' C code, conversion to Bibentry (R and C code)") ),
               person(given = "Chris", family = "Putman",
                      role = "aut",
 		     comment = "src/*, author of the bibutils libraries, https://sourceforge.net/projects/bibutils/"),

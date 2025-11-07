@@ -66,7 +66,7 @@ charToBib(text, informat, \dots)
   \item{...}{
     
     for \code{charTobib}, arguments to be passed on to \code{readBib} or
-    \code{bibConvert}, see Details.
+    \code{bibConvert}, see section \dQuote{Details}.
     Not used by \code{readBib} and \code{writeBib} (which throw error to
     avoid silently ignoring unknown arguments).
 
@@ -74,7 +74,7 @@ charToBib(text, informat, \dots)
   \item{extra}{if \code{TRUE}, allow non-standard bibtex types.}
 
   \item{fbibentry}{a function to use for generating bib objects instead
-    of \code{bibentry()}, see Details.}
+    of \code{bibentry()}, see section \dQuote{Details}.}
 
 }
 \details{
@@ -123,9 +123,9 @@ charToBib(text, informat, \dots)
   Currently, \code{texChars = "export"} does not process properly
   mathematical formulas.
 
-  \code{fbibentry}, if supplied, should be a function with arguments
-  like bibentry to be used instead of \code{utils::bibentry} for
-  creating bib objects in \R.
+  \code{fbibentry}, if supplied, will be used in place of
+  \code{utils::bibentry} to create bib objects in \R. The arguments of
+  \code{fbibentry} should be the same as for \code{utils::bibentry}.
   
   \code{writeBib} writes a \code{bibentry} object to a bibtex file.
 

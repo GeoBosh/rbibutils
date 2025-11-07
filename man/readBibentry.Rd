@@ -29,7 +29,8 @@ writeBibentry(be, file = stdout(), style = c("Rstyle", "loose"))
   \item{extra}{if \code{TRUE} allow non-standard bibtex types.}
   \item{style}{
     if \code{"Rstyle"} (default), wrap in \code{c()}, otherwise don't
-    wrap and don't put commas between the entries, see Details section.
+    wrap and don't put commas between the entries, see section
+    \dQuote{Details}.
   }
   \item{fbibentry}{
 

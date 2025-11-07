@@ -13,7 +13,7 @@
 - now rbibutils gives warnings when it encounters undefined bibtex names (see
   `@string` bibtex macro), fixes issue#10. Such strings are used for consistent
   naming of journals, for example. The name is inserted in the output when
-  undefined (previously this ws done silently).
+  undefined (previously this was done silently).
 
 - consolidated `append_type` between the bibtex related formats.
   Internal, but fixed a bug causing technical reports to be converted to MISC
