@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">rbibutils</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.3.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -108,7 +108,7 @@
 <dd>
 
 <p>for <code>charTobib</code>, arguments to be passed on to <code>readBib</code> or
-    <code>bibConvert</code>, see Details.
+    <code>bibConvert</code>, see section “Details”.
     Not used by <code>readBib</code> and <code>writeBib</code> (which throw error to
     avoid silently ignoring unknown arguments).</p>
 <p></p></dd>
@@ -119,7 +119,7 @@
 
   <dt id="arg-fbibentry">fbibentry<a class="anchor" aria-label="anchor" href="#arg-fbibentry"></a></dt>
 <dd><p>a function to use for generating bib objects instead
-    of <code><a href="https://rdrr.io/r/utils/bibentry.html" class="external-link">bibentry()</a></code>, see Details.</p></dd>
+    of <code><a href="https://rdrr.io/r/utils/bibentry.html" class="external-link">bibentry()</a></code>, see section “Details”.</p></dd>
 
 
 </dl></div>
@@ -164,9 +164,9 @@
   <!-- % formulas may cause surprises. --></p>
 <p>Currently, <code>texChars = "export"</code> does not process properly
   mathematical formulas.</p>
-<p><code>fbibentry</code>, if supplied, should be a function with arguments
-  like bibentry to be used instead of <code><a href="https://rdrr.io/r/utils/bibentry.html" class="external-link">utils::bibentry</a></code> for
-  creating bib objects in <span style="R">R</span>.</p>
+<p><code>fbibentry</code>, if supplied, will be used in place of
+  <code><a href="https://rdrr.io/r/utils/bibentry.html" class="external-link">utils::bibentry</a></code> to create bib objects in <span style="R">R</span>. The arguments of
+  <code>fbibentry</code> should be the same as for <code><a href="https://rdrr.io/r/utils/bibentry.html" class="external-link">utils::bibentry</a></code>.</p>
 <p><code>writeBib</code> writes a <code>bibentry</code> object to a bibtex file.</p>
 <p><code>charTobib</code> is a convenience function for reading or converting
   bibliography information, accepting the input from a

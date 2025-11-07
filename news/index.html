@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">rbibutils</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.3.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -40,7 +40,7 @@
 </ul></div>
 <div class="section level3">
 <h3 id="new-and-improved-features-2-4">New and improved features<a class="anchor" aria-label="anchor" href="#new-and-improved-features-2-4"></a></h3>
-<ul><li><p>now rbibutils gives warnings when it encounters undefined bibtex names (see <code>@string</code> bibtex macro), fixes issue#10. Such strings are used for consistent naming of journals, for example. The name is inserted in the output when undefined (previously this ws done silently).</p></li>
+<ul><li><p>now rbibutils gives warnings when it encounters undefined bibtex names (see <code>@string</code> bibtex macro), fixes issue#10. Such strings are used for consistent naming of journals, for example. The name is inserted in the output when undefined (previously this was done silently).</p></li>
 <li><p>consolidated <code>append_type</code> between the bibtex related formats. Internal, but fixed a bug causing technical reports to be converted to MISC when converting from isi and biblatex to bibtex.</p></li>
 <li><p>added completion for <code>bibentryExtra</code> objects. Useful for interactive use. For example in an R session if <code>be</code> is a <code>bibentryExtra</code> object, typing <code>be$bi</code> then the ‘Tab’ key will be completed to <code>be$bibtype</code>. Also, <code>be$</code> then ‘Tab’ will provide a choice from the available completions. This should work also in RStudio, whereever it provides completion.</p></li>
 <li><p>corrected some typo’s in the draft vignette.</p></li>
