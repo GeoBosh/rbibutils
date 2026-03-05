@@ -299,9 +299,22 @@ bibstyle_JSSextra <- function(style = "JSSextra", reset = FALSE, make_default = 
                                         sentence(authorList(paper), fmtYear(paper$year), sep = " "),
                                         fmtTitle(paper$title),
                                         sentence(fmtHowpublished(paper$howpublished)),
-                                        sentence(extraInfo(paper),
-                                                 paste0("(visited on ", paper$urldate, ")"),
-                                                 sep = " ")
+                                        ## 2026-03-05 rough patch for issue Rdpack#40
+                                        ##   extraInfo() calls paper$url, which falls to paper$urldate if paper$url is missing
+                                        ##   TODO: a more robust fix
+                                        if(length(paper[["url", exact = TRUE]])) {
+                                            sentence(extraInfo(paper),
+                                                     paste0("(visited on ", paper$urldate, ")"),
+                                                     sep = " ")
+                                        } else {
+                                            warning("missing 'url' field in bibentry of type 'online'")
+                                            tmp_urldate <- paper$urldate
+                                            paper$urldate <- NULL
+                                            sentence(extraInfo(paper),
+                                                     paste0("(visited on ", tmp_urldate, ")"),
+                                                     sep = " ")
+                                        }
+                                        
                                         ))
                            },
                            ## default - TODO,

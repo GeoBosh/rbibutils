@@ -1,12 +1,15 @@
-# rbibutils 2.4.1
+# rbibutils 2.4.1.9000
 
 ## EDIT BEFORE RELEASE!
 
-- now '\slash' is handled by `toRd.bibentryExtra` (previously was in Rdpack).
+- fixed issue GeoBosh/Rdpack#40.
 
-- don't interpret '\slash' if the leading slash is escaped.
 
-- export `bibstyle_JSSextra` - not exported in v2.4.
+# rbibutils 2.4.1
+
+- now `\slash` is handled by `toRd.bibentryExtra` (previously was in Rdpack).
+
+- now `bibstyle_JSSextra` is exported (it was not in v2.4).
 
 - modified the `bibentryExtra` method for `toRd` to process `\slash`.
 
