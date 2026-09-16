@@ -1,0 +1,25 @@
+@article{full,
+  author = {Smith, John}, title = {Full date},
+  JournalTitle = {Some Journal}, Date = {2020-02-02}, volume = {3}
+}
+@article{yearmonth,
+  author = {Jones, Ann}, title = {Year and month},
+  journaltitle = {J}, date = "2019-07"
+}
+@article{precedence,
+  author = {Doe, Jane}, title = {Biblatex fields take precedence},
+  journal = {Old Journal}, journaltitle = {New Journal},
+  year = {1999}, month = {dec}, day = {31}, date = {2001~/2002-03}
+}
+@book{location,
+  author = {Brown, Bob}, title = {Location as address}, publisher = {P},
+  location = {Durham}, date = {2021}
+}
+@book{address,
+  author = {Brown, Bob}, title = {Address wins, unparsable date ignored}, publisher = {P},
+  address = {London}, location = {Durham}, year = 2005, date = {circa 2004}
+}
+@patent{patent,
+  author = {Green, Gill}, title = {A patent}, number = {1},
+  location = {countryfr}, date = {2010-05}
+}

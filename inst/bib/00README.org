@@ -1,3 +1,9 @@
+# 2026-09-16
+
+  =biblatex_aliases.bib= tests biblatex fields 'date', 'journaltitle' and 'location'
+  in the bibtex readers.
+
+
 # 2025-11-04
 
   add ~@string{j-GUTENBERG = Gutenberg journal}~ at the beginning of Cousquer*

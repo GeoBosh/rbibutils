@@ -10,6 +10,9 @@
  *
  */
 
+#include <ctype.h>
+#include <string.h>
+
 #include "str.h"
 #include "fields.h"
 #include "slist.h"
@@ -20,6 +23,128 @@
 
 extern slist find;
 extern slist replace;
+
+/* 2026-09-16: biblatex aliases
+ *
+ * Biblatex (and hence e.g. Zotero's Better BibTeX export) uses fields 'date' and
+ * 'journaltitle' instead of bibtex's 'year'/'month'/'day' and 'journal', and 'location'
+ * as an alias of 'address'.  Without 'year' and 'journal', R's bibentry() refuses to
+ * create entries of type 'Article', etc.
+ *
+ * Mirror pandoc (and biber): if present, 'date' and 'journaltitle' take precedence over
+ * 'year'/'month'/'day' and 'journal'; 'location' is used only if 'address' is missing
+ * (and not for patents).
+ * The biblatex fields themselves are kept.
+ */
+
+static const char *biblatex_month_names[12] = {
+  "January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December"
+};
+
+/* Parse the start of a biblatex/EDTF date: [-]YYYY[-MM[-DD]], optionally followed by
+ * an end of range ('/...'), a time ('T...') or qualifiers ('?', '~', '%').
+ * Months 21-24 (seasons) are ignored.
+ * Returns 1 on success, 0 if 'date' is not recognised (then it is ignored).
+ */
+static int
+parse_biblatex_date( const char *p, str *year, str *month, str *day )
+{
+	int m = 0;
+	const char *q;
+
+	str_empty( year ); str_empty( month ); str_empty( day );
+
+	while ( isspace( (unsigned char) *p ) ) p++;
+
+	q = p;
+	if ( *q == '-' ) q++;
+	if ( !( isdigit( (unsigned char) q[0] ) && isdigit( (unsigned char) q[1] ) &&
+		isdigit( (unsigned char) q[2] ) && isdigit( (unsigned char) q[3] ) ) )
+		return 0;
+	q += 4;
+	str_segcpy( year, (char *) p, (char *) q );
+
+	if ( q[0] == '-' && isdigit( (unsigned char) q[1] ) && isdigit( (unsigned char) q[2] ) ) {
+		m = 10 * ( q[1] - '0' ) + ( q[2] - '0' );
+		q += 3;
+		if ( m >= 1 && m <= 12 ) {
+			str_strcpyc( month, biblatex_month_names[m - 1] );
+			if ( q[0] == '-' && isdigit( (unsigned char) q[1] ) &&
+			     isdigit( (unsigned char) q[2] ) ) {
+				str_segcpy( day, (char *) q + 1, (char *) q + 3 );
+				q += 3;
+			}
+		} else if ( m < 21 || m > 24 ) {
+			return 0;
+		}
+	}
+
+	while ( *q == '?' || *q == '~' || *q == '%' ) q++;
+	while ( isspace( (unsigned char) *q ) ) q++;
+	if ( *q != '\0' && *q != '/' && *q != 'T' ) return 0;
+
+	return !str_memerr( year ) && !str_memerr( month ) && !str_memerr( day );
+}
+
+/* set field 'tag' to 'value', or remove all instances of 'tag' if 'value' is empty */
+static int
+biblatex_set_field( fields *bibin, const char *tag, str *value )
+{
+	int i;
+
+	for ( i = fields_num( bibin ) - 1; i >= 0; i-- ) {
+		if ( !fields_match_casetag( bibin, i, tag ) ) continue;
+		if ( fields_remove( bibin, i ) != FIELDS_OK ) return BIBL_ERR_MEMERR;
+	}
+	if ( str_has_value( value ) &&
+	     fields_add( bibin, tag, str_cstr( value ), LEVEL_MAIN ) != FIELDS_OK )
+		return BIBL_ERR_MEMERR;
+
+	return BIBL_OK;
+}
+
+static int
+process_biblatex_aliases( fields *bibin )
+{
+	int n, status = BIBL_OK;
+	str year, month, day, value;
+
+	strs_init( &year, &month, &day, &value, NULL );
+
+	n = fields_find( bibin, "date", LEVEL_MAIN );
+	if ( n != FIELDS_NOTFOUND &&
+	     parse_biblatex_date( fields_value( bibin, n, FIELDS_CHRP ), &year, &month, &day ) ) {
+		status = biblatex_set_field( bibin, "year", &year );
+		if ( status == BIBL_OK ) status = biblatex_set_field( bibin, "month", &month );
+		if ( status == BIBL_OK ) status = biblatex_set_field( bibin, "day", &day );
+		if ( status != BIBL_OK ) goto out;
+	}
+
+	n = fields_find( bibin, "journaltitle", LEVEL_MAIN );
+	if ( n != FIELDS_NOTFOUND ) {
+		str_strcpyc( &value, fields_value( bibin, n, FIELDS_CHRP ) );
+		status = biblatex_set_field( bibin, "journal", &value );
+		if ( status != BIBL_OK ) goto out;
+	}
+
+	/* for patents biblatex's 'location' is the jurisdiction, not an address */
+	n = fields_find( bibin, "INTERNAL_TYPE", LEVEL_MAIN );
+	if ( n != FIELDS_NOTFOUND && !strcasecmp( fields_value( bibin, n, FIELDS_CHRP ), "patent" ) )
+		goto out;
+
+	if ( fields_find( bibin, "address", LEVEL_MAIN ) == FIELDS_NOTFOUND ) {
+		n = fields_find( bibin, "location", LEVEL_MAIN );
+		if ( n != FIELDS_NOTFOUND &&
+		     fields_add( bibin, "address", fields_value( bibin, n, FIELDS_CHRP ),
+				 LEVEL_MAIN ) != FIELDS_OK )
+			status = BIBL_ERR_MEMERR;
+	}
+
+out:
+	strs_free( &year, &month, &day, &value, NULL );
+	return status;
+}
 
 /* process_ref()
  *
@@ -54,6 +179,8 @@ process_ref( fields *bibin, const char *p, loc *currloc )
 		if ( fstatus!=FIELDS_OK ) { status = BIBL_ERR_MEMERR; goto out; }
 
 	}
+
+	status = process_biblatex_aliases( bibin ); // 2026-09-16
 out:
 	strs_free( &type, &id, &tag, &data, NULL );
 	return status;
