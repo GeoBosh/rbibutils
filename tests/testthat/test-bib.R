@@ -281,6 +281,8 @@ test_that("bibRead works ok", {
 
 test_that("biblatex fields date, journaltitle and location are understood", {
     fn <- system.file("bib", "biblatex_aliases.bib", package = "rbibutils")
+    ## with direct = FALSE, the (pre-existing) conversion of type 'patent' to 'Misc'
+    ##   prints "Cannot identify TYPE in reference 6 patent"
     for(direct in c(TRUE, FALSE)){
         bib <- readBib(fn, direct = direct)
         expect_setequal(names(bib), c("full", "yearmonth", "precedence",
