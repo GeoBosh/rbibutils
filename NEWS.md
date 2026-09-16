@@ -4,13 +4,8 @@
 
 - fixed issue GeoBosh/Rdpack#40.
 
-- the bibtex readers (`readBib()` with `direct = TRUE` or `FALSE`, `bibConvert()` with
-  `informat = "bibtex"`) now understand the biblatex fields `date`, `journaltitle` and
-  `location`, as exported by Zotero's Better BibTeX, for example. Previously entries
-  using `date` and `journaltitle` instead of `year` and `journal` were dropped with a
-  warning. As in pandoc and biber, `date` (if it can be parsed) takes precedence over
-  `year`, `month` and `day`, and `journaltitle` over `journal`; `location` is used for
-  `address` if the latter is missing (except for patents). The biblatex fields are kept.
+- bibtex readers now parse the biblatex fields `date`, `journaltitle` and
+  `location`.
 
 
 # rbibutils 2.4.1

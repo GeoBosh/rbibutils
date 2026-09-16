@@ -93,14 +93,10 @@ charToBib(text, informat, \dots)
   non-standard fields in the bib entries are preserved in the bibentry
   object.
 
-  In both cases the biblatex fields \code{date}, \code{journaltitle}
-  and \code{location} (used, for example, by Zotero's Better BibTeX
-  export) are understood. As in pandoc and biber, \code{date} (if it has
-  the form \code{YYYY}, \code{YYYY-MM} or \code{YYYY-MM-DD}, possibly
-  followed by a range or qualifiers) takes precedence over \code{year},
-  \code{month} and \code{day}, and \code{journaltitle} over
+  Following pandoc and biber, \code{date} takes precedence over \code{year},
+  \code{month} and \code{day}, and \code{journaltitle} overrides
   \code{journal}. \code{location} is used for \code{address} if the
-  latter is missing (except for patents). The biblatex fields are kept
+  latter is missing (except for patents). These biblatex fields are kept
   when \code{direct = TRUE}.
 
   Argument \code{texChars}, currently implemented only for the case
