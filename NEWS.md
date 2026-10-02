@@ -4,6 +4,9 @@
 
 - fixed issue GeoBosh/Rdpack#40.
 
+- bibtex readers now parse the biblatex fields `date`, `journaltitle` and
+  `location`.
+
 
 # rbibutils 2.4.1
 

@@ -93,6 +93,12 @@ charToBib(text, informat, \dots)
   non-standard fields in the bib entries are preserved in the bibentry
   object.
 
+  Following pandoc and biber, \code{date} takes precedence over \code{year},
+  \code{month} and \code{day}, and \code{journaltitle} overrides
+  \code{journal}. \code{location} is used for \code{address} if the
+  latter is missing (except for patents). These biblatex fields are kept
+  when \code{direct = TRUE}.
+
   Argument \code{texChars}, currently implemented only for the case
   \code{direct = TRUE}, gives some control over the processing of TeX
   sequences representing characters (such as accented Latin characters):

@@ -278,3 +278,37 @@ test_that("bibRead works ok", {
     if(is.numeric(svnrev <- R.Version()$'svn rev')  &&  svnrev >= 84986)
         expect_known_value(accfn, "acc_fn.rds", FALSE)
 })
+
+test_that("biblatex fields date, journaltitle and location are understood", {
+    fn <- system.file("bib", "biblatex_aliases.bib", package = "rbibutils")
+    ## with direct = FALSE, the (pre-existing) conversion of type 'patent' to 'Misc'
+    ##   prints "Cannot identify TYPE in reference 6 patent"
+    for(direct in c(TRUE, FALSE)){
+        bib <- readBib(fn, direct = direct)
+        expect_setequal(names(bib), c("full", "yearmonth", "precedence",
+                                      "location", "address", "patent"))
+
+        expect_equal(bib[["full"]]$year, "2020")
+        expect_equal(bib[["full"]]$month, "February")
+        expect_equal(bib[["full"]]$day, "02")
+        expect_equal(bib[["full"]]$journal, "Some Journal")
+
+        expect_equal(bib[["yearmonth"]]$year, "2019")
+        expect_equal(bib[["yearmonth"]]$month, "July")
+        expect_null(bib[["yearmonth"]]$day)
+
+        ## date and journaltitle take precedence (as in pandoc and biber)
+        expect_equal(bib[["precedence"]]$year, "2001")
+        expect_null(bib[["precedence"]]$month)
+        expect_null(bib[["precedence"]]$day)
+        expect_equal(bib[["precedence"]]$journal, "New Journal")
+
+        expect_equal(bib[["location"]]$address, "Durham")
+        ## address takes precedence over location; unparsable date is ignored
+        expect_equal(bib[["address"]]$address, "London")
+        expect_equal(bib[["address"]]$year, "2005")
+
+        expect_null(bib[["patent"]]$address)
+        expect_equal(bib[["patent"]]$year, "2010")
+    }
+})
